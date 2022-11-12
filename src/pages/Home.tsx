@@ -14,13 +14,13 @@ function Home() {
   }, []);
 
   useEffect(() => {
-    async function b() {
+    async function c() {
       const r = await axios.get(
-        "https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?serviceKey=eixV3mOlRoqUyi%2BK9P6%2BS3BQMBXCroFM31lGc%2BOSp80JFNv7B8%2FiCEV49OSfF2bchwh5N7z50Sw8OQFWCkZbDg%3D%3D&pageNo=1&numOfRows=1000&dataType=JSON&base_date=20221108&base_time=0500&nx=55&ny=127"
+        "https://api.openweathermap.org/data/3.0/onecall?lat=33.44&lon=-94.04&exclude=hourly,daily&appid=eb5460afac5d3494e2e739c0c59e0988"
       );
       console.log(r);
     }
-    b();
+    c();
   }, []);
 
   return (

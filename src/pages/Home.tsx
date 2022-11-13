@@ -7,7 +7,6 @@ import styled from "styled-components";
 function Home() {
   const [isActive, setIsActive] = useState(false);
 
-
   useEffect(() => {
     async function a() {
       const res = await axios.get(

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, MouseEvent } from "react";
 import axios from "axios";
 import styled, { keyframes } from "styled-components";
 import { BiSearchAlt } from "react-icons/bi";
+import Datepicker from "./Datepicker";
 
 interface isProps {
   isActive: boolean;
@@ -25,6 +26,7 @@ function Search({ isActive, setIsActive }: isProps) {
             <BiSearchAlt size="20" style={{ display: "inline-block" }} />
           </SearchLabel>
           <SearchBox id="search" placeholder="Search" />
+          <Datepicker />
           <BtnContainer>
             <SearchBtn onClick={ModalHandler}> Reset </SearchBtn>
             <SearchBtn onClick={ModalHandler}> Search </SearchBtn>
@@ -43,7 +45,7 @@ function Search({ isActive, setIsActive }: isProps) {
 
 export default Search;
 
-const SearchModal = styled.div`
+const SearchModal = styled.form`
   margin: 10px auto;
   width: 335px;
   background-color: #ebebeb;
@@ -99,7 +101,7 @@ const BtnContainer = styled.button`
   width: 90%;
   height: 10%;
   margin: 0 auto;
-  top: 442px;
+  top: 102px;
   background: transparent;
   border: none;
   justify-content: space-between;

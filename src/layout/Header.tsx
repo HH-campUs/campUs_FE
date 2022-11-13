@@ -6,8 +6,8 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  position: relative;
-  z-index: 10010;
+  //position: relative;
+  //z-index: 10010;
   padding: 14px 0px;
   font-size: 14px;
   font-weight: bold;
@@ -36,9 +36,5 @@ const Wrapper = styled.div`
 // `;
 
 export default function Header() {
-  return (
-    <Layout>
-      <Wrapper>campUs</Wrapper>
-    </Layout>
-  );
+  return <Wrapper>campUs</Wrapper>;
 }

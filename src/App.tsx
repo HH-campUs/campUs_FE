@@ -84,17 +84,19 @@ function App() {
       <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
         <GlobalStyle />
         <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="result" element={<Result />} />
+          <Layout>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="result" element={<Result />} />
 
-            <Route path="detail" element={<Detail />} />
-            <Route path="detail/:id" element={<Detail />} />
-            <Route path="mypage" element={<Mypage />} />
-            <Route path="mypage/:id" element={<Mypage />} />
+              <Route path="detail" element={<Detail />} />
+              <Route path="detail/:id" element={<Detail />} />
+              <Route path="mypage" element={<Mypage />} />
+              <Route path="mypage/:id" element={<Mypage />} />
 
-            <Route path="/*" element={<NotFound />} />
-          </Routes>
+              <Route path="/*" element={<NotFound />} />
+            </Routes>
+          </Layout>
         </BrowserRouter>
       </ThemeProvider>
     </ErrorBoundary>

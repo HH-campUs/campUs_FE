@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, MouseEvent } from "react";
 import axios from "axios";
 import styled, { keyframes } from "styled-components";
+import { BiSearchAlt } from "react-icons/bi";
 
 interface isProps {
   isActive: boolean;
@@ -15,53 +16,101 @@ function Search({ isActive, setIsActive }: isProps) {
     setIsActive(!isActive);
   };
 
-  return <SearchModal></SearchModal>;
+  return (
+    <SearchModal style={{ transition: "all 0.5s ease-in-out" }}>
+      {isActive ? (
+        /* SearchModal - Active */
+        <SearchModal className="isActive">
+          <SearchLabel htmlFor="search">
+            <BiSearchAlt size="20" style={{ display: "inline-block" }} />
+          </SearchLabel>
+          <SearchBox id="search" placeholder="Search" />
+          <BtnContainer>
+            <SearchBtn onClick={ModalHandler}> Reset </SearchBtn>
+            <SearchBtn onClick={ModalHandler}> Search </SearchBtn>
+          </BtnContainer>
+        </SearchModal>
+      ) : (
+        /* SearchModal - Inactive (default) */
+        <SearchModal className="isNotActive" onClick={ModalHandler}>
+          <BiSearchAlt size="20" style={{ display: "inline-block" }} />
+          <span>search</span>
+        </SearchModal>
+      )}
+    </SearchModal>
+  );
 }
 
 export default Search;
 
 const SearchModal = styled.div`
+  margin: 10px auto;
   width: 335px;
-  height: 55px;
   background-color: #ebebeb;
   border-radius: 13px;
-  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   justify-content: center;
   align-items: center;
   transition: all 0.5s ease-out;
 
-  span {
-    font-size: 16px;
+  &.isNotActive {
+    height: 35px;
+    padding: 10px;
+    font-size: 1rem;
     color: #797979;
-    margin-left: 40px;
+
+    span {
+      margin-left: 10px;
+      font-size: 1.4rem;
+    }
   }
 
-  &_isNotActive {
-    height: 55px;
-  }
-
-  &_isActive {
+  &.isActive {
     height: 567px;
+    padding: 10px;
   }
 `;
+const SearchBox = styled.input`
+  width: inherit;
+  height: 35px;
+  font-size: 1rem;
+  background-color: transparent;
+  border: none;
+  justify-content: left;
+  display: flex;
 
-const SearchModal_isNotActive = styled(SearchModal)`
-  width: 335px;
-  background-color: #ebebeb;
-  border-radius: 13px;
-  justify-content: center;
-  align-items: center;
-
-  span {
-    font-size: 16px;
+  &::placeholder {
+    font-size: 1rem;
     color: #797979;
-    margin-left: 40px;
-    // display: flex;
+  }
+
+  &:focus {
+    outline: none;
   }
 `;
 
-const SearchModal_isActive = styled(SearchModal)`
-  width: 335px;
-  height: 567px;
-  background-color: #ebebeb;
+const SearchLabel = styled.label`
+  width: inherit;
+  height: 35px;
+  justify-content: left;
+  display: flex;
+`;
+
+const BtnContainer = styled.button`
+  width: 90%;
+  height: 10%;
+  margin: 0 auto;
+  top: 442px;
+  background: transparent;
+  border: none;
+  justify-content: space-between;
+  position: relative;
+  display: flex;
+`;
+
+const SearchBtn = styled.button`
+  width: 130px;
+  height: 43px;
+  font-size: 1rem;
+  background-color: #8d8d8d;
+  border-radius: 13px;
 `;

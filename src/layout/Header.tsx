@@ -1,6 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import Layout from "./Layout";
+
+export default function Header() {
+  return <Wrapper>campUs</Wrapper>;
+}
 
 const Wrapper = styled.div`
   display: flex;
@@ -16,25 +19,8 @@ const Wrapper = styled.div`
   height: 55px;
 
   background-color: ${(props) => props.theme.bgColor};
-  color: ${(props) => props.theme.textColor};
+  color: ${(props) => props.theme.accentColor};
   // background-size: 100% 100%;
   // background-repeat: no-repeat;
   // background-position: center center;
 `;
-
-//const RightTemplate = styled.div``;
-// const Container = styled.div`
-//   @media screen and (min-width: 915px) {
-//     max-width: 475px;
-//     margin-left: -17.5px;
-//   }
-//   @media screen and (min-width: 475px) {
-//     max-width: 475px;
-//     left: 50%;
-//     margin-left: 437.5px;
-//   }
-// `;
-
-export default function Header() {
-  return <Wrapper>campUs</Wrapper>;
-}

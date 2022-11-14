@@ -1,8 +1,16 @@
 import React from "react";
 import styled from "styled-components";
 
-//template widht = 915px.
-//큰도화지
+export default function Layout(props: any) {
+  return (
+    <Root>
+      <LeftTemplate />
+      <RightTemplate children={props.children} />
+    </Root>
+  );
+}
+
+//Root template width = 915px.
 const Root = styled.div`
   width: 100%;
   //width: 915px;
@@ -13,24 +21,25 @@ const Root = styled.div`
   display: flex;
   justify-content: center;
 `;
-//왼쪽
+//left
 const LeftTemplate = styled.div`
   width: 440px;
   min-height: 650px;
   border: soild 1px black;
-  background-color: red;
+  background-color: grey;
 
   @media screen and (max-width: 915px) {
     display: none;
     //margin-left: -17.5px;
   }
 `;
-//라이트
+//right
 const RightTemplate = styled.div`
-  background-color: black;
+  //background-color: teal;
   width: 475px;
-  height: 500px;
+  //height: 500px;
   max-width: 475px;
+  border: 0.5px solid whitesmoke;
 
   @media screen and (min-width: 915px) {
     max-width: 475px;
@@ -43,12 +52,3 @@ const RightTemplate = styled.div`
   // background-color: blue;
   //}
 `;
-
-export default function Layout(props: any) {
-  return (
-    <Root>
-      <LeftTemplate />
-      <RightTemplate children={props.children} />
-    </Root>
-  );
-}

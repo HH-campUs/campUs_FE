@@ -2,6 +2,10 @@ import React from "react";
 /* Switch가 react-router-dom ver 6 넘어가며 Switch를 지원 안하게 됨 -> Routes */
 import { BrowserRouter, Route, Routes, Outlet } from "react-router-dom";
 import Home from "./pages/Home";
+import Pop from "./pages/Pop";
+import Recommended from "./pages/Recommended";
+import Popular from "./pages/Popular";
+
 import Detail from "./pages/Detail";
 import Mypage from "./pages/Mypage";
 import Result from "./pages/Result";
@@ -86,7 +90,11 @@ function App() {
         <BrowserRouter>
           <Layout>
             <Routes>
-              <Route path="/" element={<Home />} />
+              <Route path="/" element={<Home />}>
+                <Route path="popping" element={<Pop />} />
+                <Route path="recommended" element={<Recommended />} />
+                <Route path="popular" element={<Popular />} />
+              </Route>
               <Route path="result" element={<Result />} />
 
               <Route path="detail" element={<Detail />} />

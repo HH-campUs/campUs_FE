@@ -8,6 +8,7 @@ import Datepicker from "./Datepicker";
 interface isProps {
   isActive: boolean;
   setIsActive: React.Dispatch<React.SetStateAction<boolean>>;
+  style: { margin: string };
 }
 
 interface searchData {
@@ -42,7 +43,8 @@ function Search({ isActive, setIsActive }: isProps) {
           <ModalBg>
             <SearchModal
               className="isActive"
-              style={{ transition: "all 0.5s ease-in-out" }}>
+              style={{ transition: "all 0.5s ease-in-out" }}
+            >
               <SearchLabel htmlFor="search">
                 <BiSearchAlt size="20" style={{ display: "inline-block" }} />
               </SearchLabel>
@@ -92,18 +94,19 @@ const ModalBg = styled.div`
 
 const SearchModal = styled.div`
   margin: 10px auto;
-  width: 335px;
+  width: 370px;
   background-color: #ebebeb;
   border-radius: 13px;
   justify-content: center;
-  align-items: center;
+  align-content: center;
+
   transition: all 0.5s ease-out;
-  position: absolute;
+
   z-index: 100;
 
   &.isNotActive {
     height: 35px;
-    padding: 10px;
+    padding: 5px;
     font-size: 1rem;
     color: #797979;
 

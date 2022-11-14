@@ -53,7 +53,8 @@ export default function Carousel() {
 
               setTransX(0);
             },
-          })}>
+          })}
+        >
           {imageList.map((url, i) => (
             <CarouselSlide key={i} className="flex-shrink-0">
               <CarouselImg
@@ -71,10 +72,10 @@ export default function Carousel() {
 }
 
 const CarouselViewer = styled.div`
-  width: 600px;
+  width: 475px;
   height: 200px !important;
-  margin-top: 200px;
   overflow: hidden;
+
   user-select: none;
 `;
 

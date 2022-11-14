@@ -1,7 +1,7 @@
 import registDragEvent from "../utils/registDragEvent";
 import { useState } from "react";
 import useCarouselSize from "./useCarouselSize";
-/* import styled from "styled-components"; */
+import styled from "styled-components";
 
 const imageList = [
   "https://blog.kakaocdn.net/dn/dpxiAT/btqUBv6Fvpn/E8xUMncq7AVuDeOim0LrMk/img.jpg",
@@ -26,14 +26,14 @@ export default function Carousel() {
 
   return (
     <>
-      <div
+      <CarouselViewer
         ref={ref}
         className="w-full max-w-lg"
         style={{
           height,
           overflow: hide ? "hidden" : "visible",
         }}>
-        <div
+        <CarouselSlider
           className="flex"
           style={{
             transform: `translateX(${-currentIndex * width + transX}px)`,
@@ -55,12 +55,45 @@ export default function Carousel() {
             },
           })}>
           {imageList.map((url, i) => (
-            <div key={i} className="flex-shrink-0">
-              <img draggable={false} src={url} alt="img" width={width} />
-            </div>
+            <CarouselSlide key={i} className="flex-shrink-0">
+              <CarouselImg
+                draggable={false}
+                src={url}
+                alt="img"
+                width={width}
+              />
+            </CarouselSlide>
           ))}
-        </div>
-      </div>
+        </CarouselSlider>
+      </CarouselViewer>
     </>
   );
 }
+
+const CarouselViewer = styled.div`
+  width: 600px;
+  height: 200px !important;
+  margin-top: 200px;
+  overflow: hidden;
+  user-select: none;
+`;
+
+const CarouselSlider = styled.div`
+  display: flex;
+`;
+
+const CarouselSlide = styled.div`
+  flex-shrink: 0;
+  display: block;
+  position: relative;
+`;
+
+const CarouselImg = styled.img`
+  width: 200px;
+  height: 200px;
+  padding-left: 10px;
+  border-radius: 1px solid;
+  object-fit: contain;
+  transition: all 0.3s ease;
+  flex: none;
+`;

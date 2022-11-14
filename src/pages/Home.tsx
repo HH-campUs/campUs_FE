@@ -28,18 +28,12 @@ function Home() {
   }, []);
 
   return (
-    <ModalBlur>
-      Home
+    <div>
+      ff
       <Search isActive={isActive} setIsActive={setIsActive} />
       <Carousel />
-    </ModalBlur>
+    </div>
   );
 }
 
 export default Home;
-
-const ModalBlur = styled.div`
-  width: 100vh;
-  height: 100vh;
-  background-color: #00000067;
-`;

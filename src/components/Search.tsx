@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, MouseEvent } from "react";
+import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import styled, { keyframes } from "styled-components";
 import { BiSearchAlt } from "react-icons/bi";
@@ -9,29 +10,51 @@ interface isProps {
   setIsActive: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-/* Search Modal 작동 여부 default = "false" */
+interface searchData {
+  selectInput?: string;
+  selectDate: string;
+  selectLocation?: string;
+}
 
 function Search({ isActive, setIsActive }: isProps) {
-  /* SearchModal 작동 boolean */
+  const [inputValue, setInputValue] = useState<searchData>({
+    selectInput: "",
+    selectDate: "",
+    selectLocation: "",
+  });
+
+  const { selectInput, selectDate, selectLocation } = inputValue;
+
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    /* const { selectInput, selectDate, selectLocation } = event.target;
+  setInputValue({event.target.value|); */
+  };
+
+  /* SearchModal 작동 boolean  default: false */
   const ModalHandler = () => {
     setIsActive(!isActive);
   };
 
   return (
-    <SearchModal style={{ transition: "all 0.5s ease-in-out" }}>
+    <SearchModal style={{ transition: "all 0.5s ease-in" }}>
       {isActive ? (
-        /* SearchModal - Active */
-        <SearchModal className="isActive">
-          <SearchLabel htmlFor="search">
-            <BiSearchAlt size="20" style={{ display: "inline-block" }} />
-          </SearchLabel>
-          <SearchBox id="search" placeholder="Search" />
-          <Datepicker />
-          <BtnContainer>
-            <SearchBtn onClick={ModalHandler}> Reset </SearchBtn>
-            <SearchBtn onClick={ModalHandler}> Search </SearchBtn>
-          </BtnContainer>
-        </SearchModal>
+        <Container>
+          <ModalBg>
+            <SearchModal
+              className="isActive"
+              style={{ transition: "all 0.5s ease-in-out" }}>
+              <SearchLabel htmlFor="search">
+                <BiSearchAlt size="20" style={{ display: "inline-block" }} />
+              </SearchLabel>
+              <SearchBox id="search" placeholder="Search" onChange={onChange} />
+              <Datepicker />
+              <BtnContainer>
+                <SearchBtn onClick={ModalHandler}> Reset </SearchBtn>
+                <SearchBtn onClick={ModalHandler}> Search </SearchBtn>
+              </BtnContainer>
+            </SearchModal>
+          </ModalBg>
+        </Container>
       ) : (
         /* SearchModal - Inactive (default) */
         <SearchModal className="isNotActive" onClick={ModalHandler}>
@@ -45,7 +68,29 @@ function Search({ isActive, setIsActive }: isProps) {
 
 export default Search;
 
-const SearchModal = styled.form`
+const Container = styled.div`
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  flex-direction: column;
+  align-items: center;
+  position: fixed;
+  display: flex;
+  transition: all 0.5s ease-in-out;
+`;
+
+const ModalBg = styled.div`
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(6px);
+`;
+
+const SearchModal = styled.div`
   margin: 10px auto;
   width: 335px;
   background-color: #ebebeb;
@@ -53,6 +98,8 @@ const SearchModal = styled.form`
   justify-content: center;
   align-items: center;
   transition: all 0.5s ease-out;
+  position: absolute;
+  z-index: 100;
 
   &.isNotActive {
     height: 35px;
@@ -71,6 +118,7 @@ const SearchModal = styled.form`
     padding: 10px;
   }
 `;
+
 const SearchBox = styled.input`
   width: inherit;
   height: 35px;

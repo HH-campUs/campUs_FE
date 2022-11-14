@@ -71,10 +71,11 @@ export default function Carousel() {
 }
 
 const CarouselViewer = styled.div`
-  width: 800px;
-  height: 400px;
+  width: 600px;
+  height: 200px !important;
+  margin-top: 200px;
   overflow: hidden;
-  user
+  user-select: none;
 `;
 
 const CarouselSlider = styled.div`
@@ -82,16 +83,14 @@ const CarouselSlider = styled.div`
 `;
 
 const CarouselSlide = styled.div`
-  width: 500px;
-  height: 300px;
   flex-shrink: 0;
   display: block;
   position: relative;
 `;
 
 const CarouselImg = styled.img`
-  width: 400px;
-  height: 400px;
+  width: 200px;
+  height: 200px;
   padding-left: 10px;
   border-radius: 1px solid;
   object-fit: contain;

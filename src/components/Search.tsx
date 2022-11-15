@@ -8,7 +8,6 @@ import Datepicker from "./Datepicker";
 interface isProps {
   isActive: boolean;
   setIsActive: React.Dispatch<React.SetStateAction<boolean>>;
-  style: { margin: string };
 }
 
 interface searchData {

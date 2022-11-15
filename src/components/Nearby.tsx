@@ -15,7 +15,7 @@ const TextBox = styled.div`
 const PlanBox = styled.div`
   width: 380px;
   height: 120px;
-  border-radius: 15px;
+  border-radius: 10px;
   box-shadow: 15px;
   background-color: whitesmoke;
   margin: 15px auto;

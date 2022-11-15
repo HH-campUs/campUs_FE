@@ -1,8 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import { width } from "@mui/system";
-import { Hidden } from "@mui/material";
 
 const Wrapper = styled.div`
   margin: 20px 10px 20px 10px;
@@ -44,21 +42,35 @@ export const ImgBox = styled.div`
 
 const PlaceName = styled.div`
   margin: 20px 0px;
-  width: 210px;
+  width: 260px;
   height: 70px;
+  justify-content: space-between;
+`;
+
+const PlaceBox = styled.div`
+  display: flex;
+  height: 50px;
+`;
+
+const Campname = styled.div`
+  width: 180px;
+  margin-top: 5px;
+  margin-left: 10px;
 `;
 
 const Location = styled.div`
   display: flex;
   align-items: center;
-  padding-top: 20px;
+  padding-left: 15px;
 `;
 
 const Dday = styled.div`
   width: 50px;
   height: 20px;
-  margin: 20px;
-  border-radius: 10px;
+  margin-top: 5px;
+  margin-left: 30px;
+
+  border-radius: 8px;
   background-color: grey;
   display: flex;
   align-items: center;
@@ -77,19 +89,16 @@ export default function MytravelPlan() {
       <PlanBox>
         <ImgBox />
         <PlaceName>
-          <div style={{ width: 180 }}>
-            캠핑장 이름두줄해놓으면 아래 아이콘밀려남
-          </div>
-
+          <PlaceBox>
+            <Campname>캠핑장 이름두줄해놓으면 아래 아이콘밀려남</Campname>
+            <Dday>D-16</Dday>
+          </PlaceBox>
           <Location>
             {/* component화. */}
             <LocationOnIcon /> <span>강원도 어디?</span>
             <LocationOnIcon /> <span>2022.12.28(달력)</span>
           </Location>
         </PlaceName>
-        <Dday>
-          <span>D-16</span>
-        </Dday>
       </PlanBox>
     </Wrapper>
   );

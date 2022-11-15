@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Carousel from "../components/Carousel";
-import Header from "../layout/Header";
-import Footer from "../layout/Footer";
+
 import MytravelPlan from "../components/MytravelPlan";
 import Subject from "../components/Subject";
 import Nearby from "../components/Nearby";
@@ -11,7 +10,6 @@ import Search from "../components/Search";
 
 //Css
 import styled from "styled-components";
-import { width } from "@mui/system";
 
 interface RouteState {
   state: {
@@ -51,15 +49,10 @@ function Home() {
   const popMatch = useMatch("/popping");
   const recommendedMatch = useMatch("/recommended");
   const popularMatch = useMatch("/popular");
-
+  //isActive={isActive} setIsActive={setIsActive}
   return (
     <>
-      <Header />
-      <Search
-        style={{ margin: "150px" }}
-        isActive={isActive}
-        setIsActive={setIsActive}
-      />
+      <Search isActive={isActive} setIsActive={setIsActive} />
 
       {/* 이것도 component화 시켜야하나? */}
       <Tabs>
@@ -74,13 +67,10 @@ function Home() {
         </Tab>
       </Tabs>
       <Outlet />
-
       <Carousel />
-
       <MytravelPlan />
       <Subject />
       <Nearby />
-      <Footer />
     </>
   );
 }

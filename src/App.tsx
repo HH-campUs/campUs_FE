@@ -13,12 +13,13 @@ import Result from "./pages/Result";
 import Error from "./pages/Error";
 import NotFound from "./pages/NotFound";
 import { ErrorBoundary } from "react-error-boundary";
-import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
+import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { darkTheme, lightTheme } from "./layout/theme";
 
 import { useRecoilValue } from "recoil";
 import { isDarkAtom } from "./atmos";
 import Layout from "./layout/Layout";
+import MyReview from "./pages/MyReview";
 
 const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
@@ -102,7 +103,9 @@ function App() {
               <Route path="detail" element={<Detail />} />
               <Route path="detail/:id" element={<Detail />} />
               <Route path="mypage" element={<Mypage />} />
-              <Route path="mypage/:id" element={<Mypage />} />
+              <Route path="mypage/:id" element={<Mypage />}>
+                <Route path="mypage/:id/myreview" element={<MyReview />} />
+              </Route>
 
               <Route path="/*" element={<NotFound />} />
             </Routes>

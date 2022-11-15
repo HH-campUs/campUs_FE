@@ -19,7 +19,6 @@ export default function Footer() {
           setValue(newValue);
         }}
       >
-        {/* 각 각 link연결 아직 안되어있음 home동작은잘되네 확인. */}
         <BottomNavigationAction
           label="Home"
           onClick={() => {
@@ -30,6 +29,9 @@ export default function Footer() {
         <BottomNavigationAction label="TBD" icon={<FavoriteIcon />} />
         <BottomNavigationAction label="TBD" icon={<FavoriteIcon />} />
         <BottomNavigationAction
+          onClick={() => {
+            navigate("/mypage");
+          }}
           label="마이페이지"
           icon={<PermIdentityIcon />}
         />

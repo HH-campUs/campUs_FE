@@ -1,8 +1,11 @@
 import React from "react";
+import { useLocation } from "react-router";
 import styled from "styled-components";
 
 export default function Header() {
-  return <Wrapper>campUs</Wrapper>;
+  const location = useLocation();
+
+  return location.pathname === "/mypage" ? null : <Wrapper>campUs</Wrapper>;
 }
 
 const Wrapper = styled.div`

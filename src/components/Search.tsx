@@ -9,7 +9,9 @@ import { Link } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 import { BiSearchAlt } from "react-icons/bi";
 import Datepicker from "./Datepicker";
+
 import { isProps, searchData } from "../interfaces/inSearch";
+
 
 function Search({ isActive, setIsActive }: isProps) {
   const [inputValue, setInputValue] = useState<searchData>({

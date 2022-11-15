@@ -3,13 +3,19 @@ import styled from "styled-components";
 import Header from "./Header";
 import Footer from "./Footer";
 
+
+
 export default function Layout(props: any) {
   return (
     <Root>
       <LeftTemplate />
       <RightTemplate>
         <Header />
+
+        <div style={{ marginBottom: 20 }}>{props.children}</div>
+
         {props.children}
+
         <Footer />
       </RightTemplate>
     </Root>
@@ -17,6 +23,7 @@ export default function Layout(props: any) {
 }
 
 //Root template width = 915px.
+//스크롤 땡겨지는거 막기
 const Root = styled.div`
   width: 100%;
   //width: 915px;

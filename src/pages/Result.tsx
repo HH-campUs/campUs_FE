@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Link, useNavigate, Outlet, useMatch } from "react-router-dom";
 import styled from "styled-components";
@@ -95,6 +96,7 @@ function Result() {
           </ResultBox>
         ))}
       </ResultContainer>
+
     </>
   );
 }

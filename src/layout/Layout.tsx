@@ -3,10 +3,7 @@ import styled from "styled-components";
 import Header from "./Header";
 import Footer from "./Footer";
 
-// <Root>
-//   <LeftTemplate />
-//   <RightTemplate children={props.children} />
-// </Root>
+
 
 export default function Layout(props: any) {
   return (
@@ -14,7 +11,11 @@ export default function Layout(props: any) {
       <LeftTemplate />
       <RightTemplate>
         <Header />
+
         <div style={{ marginBottom: 20 }}>{props.children}</div>
+
+        {props.children}
+
         <Footer />
       </RightTemplate>
     </Root>

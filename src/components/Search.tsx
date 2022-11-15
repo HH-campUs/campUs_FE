@@ -1,20 +1,17 @@
-import React, { useState, useEffect, useRef, MouseEvent } from "react";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  MouseEvent,
+  useCallback,
+} from "react";
+import { Link } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 import { BiSearchAlt } from "react-icons/bi";
 import Datepicker from "./Datepicker";
 
-interface isProps {
-  isActive: boolean;
-  setIsActive: React.Dispatch<React.SetStateAction<boolean>>;
-}
+import { isProps, searchData } from "../interfaces/inSearch";
 
-interface searchData {
-  selectInput?: string;
-  selectDate: string;
-  selectLocation?: string;
-}
 
 function Search({ isActive, setIsActive }: isProps) {
   const [inputValue, setInputValue] = useState<searchData>({
@@ -23,15 +20,27 @@ function Search({ isActive, setIsActive }: isProps) {
     selectLocation: "",
   });
 
+  useEffect(() => {
+    document.body.style.cssText = `
+    position: fixed;
+    top: -${window.scrollY}px;
+    overflow-y: scroll;
+    width: 100%;
+    `;
+    return () => {
+      const sY = document.body.style.top;
+      document.body.style.cssText = "";
+      window.scrollTo(0, parseInt(sY || "0", 10) * -1);
+    };
+  }, []);
+
   const { selectInput, selectDate, selectLocation } = inputValue;
 
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    /* const { selectInput, selectDate, selectLocation } = event.target;
-  setInputValue({event.target.value|); */
-  };
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {};
 
   /* SearchModal 작동 boolean  default: false */
-  const ModalHandler = () => {
+  const ModalHandler = (event: MouseEvent<HTMLElement>) => {
+    event.stopPropagation();
     setIsActive(!isActive);
   };
 
@@ -39,22 +48,21 @@ function Search({ isActive, setIsActive }: isProps) {
     <SearchModal style={{ transition: "all 0.5s ease-in" }}>
       {isActive ? (
         <Container>
-          <ModalBg>
-            <SearchModal
-              className="isActive"
-              style={{ transition: "all 0.5s ease-in-out" }}
-            >
-              <SearchLabel htmlFor="search">
-                <BiSearchAlt size="20" style={{ display: "inline-block" }} />
-              </SearchLabel>
-              <SearchBox id="search" placeholder="Search" onChange={onChange} />
-              <Datepicker />
-              <BtnContainer>
-                <SearchBtn onClick={ModalHandler}> Reset </SearchBtn>
-                <SearchBtn onClick={ModalHandler}> Search </SearchBtn>
-              </BtnContainer>
-            </SearchModal>
-          </ModalBg>
+          {/* 모달창 밖 blur background 토글 기능 부여 (event bubbling 해결) */}
+          <ModalBg onClick={ModalHandler} />
+          <SearchModal
+            className="isActive"
+            style={{ transition: "all 0.5s ease-in-out" }}>
+            <SearchLabel htmlFor="search">
+              <BiSearchAlt size="20" style={{ display: "inline-block" }} />
+            </SearchLabel>
+            <SearchBox id="search" placeholder="Search" onChange={onChange} />
+            <Datepicker />
+            <BtnContainer>
+              <ResetBtn onClick={ModalHandler}> Reset </ResetBtn>
+              <SearchBtn to="/Result"> Search </SearchBtn>
+            </BtnContainer>
+          </SearchModal>
         </Container>
       ) : (
         /* SearchModal - Inactive (default) */
@@ -98,7 +106,6 @@ const SearchModal = styled.div`
   border-radius: 13px;
   justify-content: center;
   align-content: center;
-
   transition: all 0.5s ease-out;
 
   z-index: 100;
@@ -118,6 +125,7 @@ const SearchModal = styled.div`
   &.isActive {
     height: 567px;
     padding: 10px;
+    position: fixed;
   }
 `;
 
@@ -159,10 +167,23 @@ const BtnContainer = styled.button`
   display: flex;
 `;
 
-const SearchBtn = styled.button`
+const ResetBtn = styled.button`
   width: 130px;
   height: 43px;
   font-size: 1rem;
   background-color: #8d8d8d;
   border-radius: 13px;
+`;
+
+const SearchBtn = styled(Link)`
+  width: 130px;
+  height: 43px;
+  font-size: 1rem;
+  text-align: center;
+  background-color: #8d8d8d;
+  border-radius: 13px;
+
+  :active {
+    background-color: #3b3b3b;
+  }
 `;

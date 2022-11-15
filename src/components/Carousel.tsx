@@ -53,8 +53,7 @@ export default function Carousel() {
 
               setTransX(0);
             },
-          })}
-        >
+          })}>
           {imageList.map((url, i) => (
             <CarouselSlide key={i} className="flex-shrink-0">
               <CarouselImg

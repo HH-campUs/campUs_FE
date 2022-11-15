@@ -1,11 +1,17 @@
 import React from "react";
 import styled from "styled-components";
+import Header from "./Header";
+import Footer from "./Footer";
 
 export default function Layout(props: any) {
   return (
     <Root>
       <LeftTemplate />
-      <RightTemplate children={props.children} />
+      <RightTemplate>
+        <Header />
+        {props.children}
+        <Footer />
+      </RightTemplate>
     </Root>
   );
 }

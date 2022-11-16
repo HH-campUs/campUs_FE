@@ -49,6 +49,9 @@ const GlobalStyle = createGlobalStyle`
     display: block;
   }
   /* HTML5 hidden-attribute fix for newer browsers */
+  *{
+    user-select: none;
+  }
   *[hidden] {
       display: none;
   }

@@ -1,12 +1,15 @@
 import React from "react";
-import { useLocation } from "react-router";
+import { useMatch } from "react-router";
 import styled from "styled-components";
 
 export default function Header() {
-  const location = useLocation();
+  const location = useMatch("/mypage/*");
 
-  return location.pathname === "/mypage" ? null : <Wrapper>campUs</Wrapper>;
+  return location ? null : <Wrapper>campUs</Wrapper>;
 }
+
+//useLocation - url정보가짐
+// return location.pathname === "/mypage" ? null : <Wrapper>campUs</Wrapper>;
 
 const Wrapper = styled.div`
   display: flex;

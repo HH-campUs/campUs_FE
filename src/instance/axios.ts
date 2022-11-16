@@ -1,6 +1,7 @@
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 
 /* 쿠키 토큰 넣어 주는 곳 */
+import { getCookieToken } from "./cookies";
 
 export const instance = axios.create({
   /* api 배포 되면 환경변수 넣어주기
@@ -14,11 +15,14 @@ export const instance = axios.create({
   withCredentials: true,
 });
 
-/* instance.interceptors.request.use(
-    (config: AxiosRequestConfig) =>
-        const token = getCookieToken();
-        return config;
-) */
+instance.interceptors.request.use((config: AxiosRequestConfig) => {
+  const token = getCookieToken();
+  if (token) {
+    config.headers = { authorization: token };
+    return config;
+  }
+  return config;
+});
 
 /* regExp
 email : ^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w+[.]?\w{2,3}

@@ -12,7 +12,6 @@ import Datepicker from "./Datepicker";
 
 import { isProps, searchData } from "../interfaces/inSearch";
 
-
 function Search({ isActive, setIsActive }: isProps) {
   const [inputValue, setInputValue] = useState<searchData>({
     selectInput: "",
@@ -20,7 +19,7 @@ function Search({ isActive, setIsActive }: isProps) {
     selectLocation: "",
   });
 
-  useEffect(() => {
+  /*   useEffect(() => {
     document.body.style.cssText = `
     position: fixed;
     top: -${window.scrollY}px;
@@ -32,7 +31,7 @@ function Search({ isActive, setIsActive }: isProps) {
       document.body.style.cssText = "";
       window.scrollTo(0, parseInt(sY || "0", 10) * -1);
     };
-  }, []);
+  }, []); */
 
   const { selectInput, selectDate, selectLocation } = inputValue;
 

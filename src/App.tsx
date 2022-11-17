@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 /* Switch가 react-router-dom ver 6 넘어가며 Switch를 지원 안하게 됨 -> Routes */
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Pop from "./pages/Pop";
@@ -49,6 +51,9 @@ const GlobalStyle = createGlobalStyle`
     display: block;
   }
   /* HTML5 hidden-attribute fix for newer browsers */
+  *{
+    user-select: none;
+  }
   *[hidden] {
       display: none;
   }
@@ -82,37 +87,40 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
+const queryClient = new QueryClient();
+
 function App() {
   const isDark = useRecoilValue(isDarkAtom);
 
   return (
-    /* 혹시모를 치명적인 Error를 서비스 이용자가 보지 못하게 에러 페이지로 보내버림 */
-    <ErrorBoundary FallbackComponent={Error}>
+    <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
         <GlobalStyle />
-        <BrowserRouter>
-          <Layout>
-            <Routes>
-              <Route path="/" element={<Home />}>
-                <Route path="popping" element={<Pop />} />
-                <Route path="recommended" element={<Recommended />} />
-                <Route path="popular" element={<Popular />} />
-              </Route>
-              <Route path="login" element={<Login />} />
-              <Route path="result" element={<Result />} />
-              {/* signUp없음. */}
-              <Route path="detail" element={<Detail />} />
-              <Route path="detail/:id" element={<Detail />} />
-              <Route path="/mypage" element={<Mypage />}>
-                <Route path=":id/myreview" element={<MyReview />} />
-              </Route>
+        <ErrorBoundary FallbackComponent={Error}>
+          <BrowserRouter>
+            <Layout>
+              <Routes>
+                <Route path="/" element={<Home />}>
+                  <Route path="popping" element={<Pop />} />
+                  <Route path="recommended" element={<Recommended />} />
+                  <Route path="popular" element={<Popular />} />
+                </Route>
+                <Route path="result" element={<Result />} />
 
-              <Route path="/*" element={<NotFound />} />
-            </Routes>
-          </Layout>
-        </BrowserRouter>
+                <Route path="detail" element={<Detail />} />
+                <Route path="detail/:id" element={<Detail />} />
+                <Route path="mypage" element={<Mypage />} />
+                <Route path="mypage/:id" element={<Mypage />}>
+                  <Route path="mypage/:id/myreview" element={<MyReview />} />
+                </Route>
+
+                <Route path="/*" element={<NotFound />} />
+              </Routes>
+            </Layout>
+          </BrowserRouter>
+        </ErrorBoundary>
       </ThemeProvider>
-    </ErrorBoundary>
+    </QueryClientProvider>
   );
 }
 

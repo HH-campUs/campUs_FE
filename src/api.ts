@@ -2,6 +2,7 @@ import axios from "axios";
 
 const BASE_URL = ``;
 
+//react-cookie
 const headers = {
   // accessToken: `${getCookie("accessToken")}`,
   // refreshToken: `${getCookie("refreshToken")}`,
@@ -15,7 +16,36 @@ export const campSTH = async () => {
 
   return response;
   //response.data
-
-  // axios.get(`${BASE_URL}/`).then((res) => console.log(res.data));
-  // return await axios.get(`${BASE_URL}/coins`).then((res) => res.data);
 };
+
+export const postApi = axios.create({
+  //baseUrl,
+  headers: {
+    //Autorization: mytoken,
+    "Content-Type": "multipart/form-data",
+    "Cache-Control": "no-cache",
+    withCredentails: true,
+  },
+});
+
+// export default instance;
+
+// //토큰 만료시 인터셉터
+
+// instance.interceptors.response.use(
+//   (response) => {
+//     return response;
+//   },
+//   async (error) => {
+//     if (error.response.status === 401) {
+//       try {
+//         const { data } = await instance.get(`/validate`);
+//         if (data.data.validate === 1) {
+//           // window.location.href = '/login'
+//         }
+//       } catch (error) {
+//         console.log(error);
+//       }
+//     }
+//   }
+// );

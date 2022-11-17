@@ -1,11 +1,17 @@
 import { borderBottom } from "@mui/system";
-import React from "react";
+import React, { useState } from "react";
 
-import { Link, Outlet, useMatch } from "react-router-dom";
+import {
+  Link,
+  Navigate,
+  Outlet,
+  useMatch,
+  useNavigate,
+} from "react-router-dom";
 import styled from "styled-components";
 
 const UserProfile = styled.div`
-  height: 170px;
+  height: 190px;
   display: flex;
   position: relative;
   background-color: lightgray;
@@ -33,7 +39,37 @@ const Welcome = styled.div`
 `;
 
 const Nickname = styled.div`
-  margin: 60px -7px;
+  margin: 75px -7px;
+`;
+
+const LoginBox = styled.div`
+  display: flex;
+  height: 80px;
+  padding: 25px;
+  gap: 15px;
+  margin: 35px 100px;
+`;
+
+const LoginBtn = styled.button`
+  width: 100px;
+  height: 30px;
+  font-size: 16px;
+  border: 0.5px none grey;
+  margin-top: 50px;
+  border-radius: 8px;
+  color: ${(props) => props.theme.textColor};
+  cursor: pointer;
+`;
+
+const SignBtn = styled.button`
+  width: 100px;
+  height: 30px;
+  font-size: 16px;
+  border: 0.5px none grey;
+  margin-top: 50px;
+  border-radius: 8px;
+  color: ${(props) => props.theme.textColor};
+  cursor: pointer;
 `;
 
 const Tabs = styled.div`
@@ -42,7 +78,7 @@ const Tabs = styled.div`
   justify-content: center;
   align-content: center;
   position: absolute;
-  margin: 135px 45px;
+  margin: 155px 45px;
   gap: 10px;
 `;
 
@@ -65,34 +101,60 @@ const Tab = styled.span<{ isActive: boolean }>`
 `;
 
 function Mypage() {
+  const [LoggedIn, setLoggedIn] = useState(false);
   const myReviewMatch = useMatch("/mypage/:id/myreview");
-
-  // const onClick = (event: any) => {
-  //   event.target.value(setClicked(''));
-  // };
+  const navigate = useNavigate();
 
   return (
     <>
-      <UserProfile>
-        <Profile>
-          <ProfileCircle></ProfileCircle>
-          <Welcome>반갑습니다, 인원님!</Welcome>
-          <Nickname>@nickName</Nickname>
-        </Profile>
+      {LoggedIn ? (
+        <UserProfile>
+          <Profile>
+            <ProfileCircle></ProfileCircle>
+            <Welcome>반갑습니다, 인원님!</Welcome>
+            <Nickname>@nickName</Nickname>
+          </Profile>
 
-        <Tabs>
-          <Tab isActive={Boolean(myReviewMatch)}>
-            <Link to="/mypage/:id/myreview">내 리뷰</Link>
-          </Tab>
-          {/* <Tab isActive={myReviewMatch !== null}>
-            <Link to="/:id/myreview"> 내 리뷰 </Link>
-          </Tab>
-          <Tab isActive={myReviewMatch !== null}>
-            <Link to="/:id/myreview"> 내 리뷰 </Link>
-          </Tab> */}
-        </Tabs>
-        <Outlet />
-      </UserProfile>
+          <Tabs>
+            <Tab isActive={Boolean(myReviewMatch)}>
+              <Link to="/mypage/:id/myreview">내 리뷰</Link>
+            </Tab>
+          </Tabs>
+          <Outlet />
+        </UserProfile>
+      ) : (
+        <UserProfile>
+          <Profile>
+            <Welcome>
+              로그인 하고 더 많은 <br></br>기능을 사용해 보세요!
+            </Welcome>
+          </Profile>
+
+          <LoginBox>
+            <LoginBtn
+              onClick={() => {
+                navigate("/login");
+              }}
+            >
+              로그인
+            </LoginBtn>
+            <SignBtn
+              onClick={() => {
+                navigate("/signup");
+              }}
+            >
+              회원가입
+            </SignBtn>
+          </LoginBox>
+
+          <Tabs>
+            <Tab isActive={Boolean(myReviewMatch)}>
+              <Link to="/mypage/:id/myreview">내 리뷰</Link>
+            </Tab>
+          </Tabs>
+          <Outlet />
+        </UserProfile>
+      )}
     </>
   );
 }
@@ -145,6 +207,7 @@ export default Mypage;
 //   }
 // }, [photo]);
 
+//img 미리보기.
 // const encodeFileToBase64 = (fileBlob) => {
 //   const reader = new FileReader();
 //   reader.readAsDataURL(fileBlob);

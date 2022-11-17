@@ -100,7 +100,7 @@ function App() {
               </Route>
               <Route path="login" element={<Login />} />
               <Route path="result" element={<Result />} />
-
+              {/* signUp없음. */}
               <Route path="detail" element={<Detail />} />
               <Route path="detail/:id" element={<Detail />} />
               <Route path="/mypage" element={<Mypage />}>

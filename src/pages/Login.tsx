@@ -24,7 +24,6 @@ const LoginTitle = styled.div`
 
 const LoginText = styled.div`
   justify-content: center;
-
   padding-left: 170px;
 `;
 
@@ -188,6 +187,7 @@ function Login() {
         <StBtn>로그인</StBtn>
       </LoginForm>
       {/* Form End */}
+      {/* Login아래 */}
       <SocialBox>
         <SocialText>SNS계정으로 로그인</SocialText>
         <SocialBtnBox>

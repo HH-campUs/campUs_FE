@@ -1,8 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import styled from "styled-components";
 
+import Ddetail from "../components/DetailPage/Ddetail";
+import Dreview from "../components/DetailPage/Dreview";
+import Dannounce from "../components/DetailPage/Dannounce";
 
 function Detail() {
+  const [radioShow, setRadioShow] = useState("review");
+
+  const selectComponent: any = {
+    detail: <Ddetail />,
+    review: <Dreview />,
+    announce: <Dannounce />,
+  };
+
   return (
     <>
       <MainImage />
@@ -24,19 +35,21 @@ function Detail() {
       <AddtripBtn>내 일정 추가하기</AddtripBtn>
       <RadioContainer>
         <label>
-          <RadioBtn type="radio" name="detail" checked />
+          <RadioBtn type="radio" id="detail" name="detail" checked />
           <BtnLabel>상세정보</BtnLabel>
         </label>
         <label>
-          <RadioBtn type="radio" name="detail" />
+          <RadioBtn type="radio" id="review" name="detail" />
           <BtnLabel>리뷰</BtnLabel>
         </label>
         <label>
-          <RadioBtn type="radio" name="detail" />
+          <RadioBtn type="radio" id="announce" name="detail" />
           <BtnLabel>공지사항</BtnLabel>
         </label>
       </RadioContainer>
-      <BottomContainer></BottomContainer>
+      <BottomContainer>
+        {radioShow && <div>{selectComponent[radioShow]}</div>}
+      </BottomContainer>
     </>
   );
 }
@@ -135,7 +148,6 @@ const BtnLabel = styled.div`
 
 const RadioBtn = styled.input.attrs({ type: "radio" })`
   width: inherit;
-  display: none;
 
   &:checked {
     display: inline-black;
@@ -151,4 +163,18 @@ const RadioBtn = styled.input.attrs({ type: "radio" })`
 const BottomContainer = styled.div`
   width: 100%;
   height: auto;
+  height: auto;
+`;
+
+const Exdetail = styled.div`
+  width: 100%;
+  height: 50px;
+`;
+const Exreview = styled.div`
+  width: 100%;
+  height: 50px;
+`;
+const Exannounce = styled.div`
+  width: 100%;
+  height: 50px;
 `;

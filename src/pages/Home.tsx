@@ -11,12 +11,6 @@ import Search from "../components/Search";
 //Css
 import styled from "styled-components";
 
-interface RouteState {
-  state: {
-    name: string;
-  };
-}
-
 function Home() {
   //const { state } = useLocation();
   // const name = location.state as RouteState
@@ -26,6 +20,7 @@ function Home() {
   const recommendedMatch = useMatch("/recommended");
   const popularMatch = useMatch("/popular");
   //isActive={isActive} setIsActive={setIsActive}
+
   return (
     <>
       <Search isActive={isActive} setIsActive={setIsActive} />

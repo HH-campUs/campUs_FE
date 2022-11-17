@@ -9,9 +9,7 @@ export default function Layout(props: any) {
       <LeftTemplate />
       <RightTemplate>
         <Header />
-
         <div style={{ marginBottom: 20 }}>{props.children}</div>
-
         <Footer />
       </RightTemplate>
     </Root>

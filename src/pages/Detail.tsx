@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import Datepicker from "../components/Datepicker";
-import { BiSearchAlt } from "react-icons/bi";
-import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+
 
 function Detail() {
   return (

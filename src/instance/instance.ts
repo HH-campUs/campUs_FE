@@ -15,6 +15,8 @@ export const instance = axios.create({
   withCredentials: true,
 });
 
+/* request / response 후 선 후행 처리를 커스텀 가능케 -> 예외처리로 넘어가기 전에
+가로채기 Ssap 가능 */
 instance.interceptors.request.use((config: AxiosRequestConfig) => {
   const token = getCookieToken();
   if (token) {
@@ -23,10 +25,3 @@ instance.interceptors.request.use((config: AxiosRequestConfig) => {
   }
   return config;
 });
-
-/* regExp
-email : ^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w+[.]?\w{2,3}
-
-패스워드는 8자리에서 20자리수이며, 대문자 소문자 숫자 특수기호 (!@#$%&)가 1개 이상 들어가야됨
-pw : ^(?=.*[A-Z].*[a-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$
-*/

@@ -98,13 +98,13 @@ function App() {
                 <Route path="recommended" element={<Recommended />} />
                 <Route path="popular" element={<Popular />} />
               </Route>
+              <Route path="login" element={<Login />} />
               <Route path="result" element={<Result />} />
-
+              {/* signUp없음. */}
               <Route path="detail" element={<Detail />} />
               <Route path="detail/:id" element={<Detail />} />
-              <Route path="mypage" element={<Mypage />} />
-              <Route path="mypage/:id" element={<Mypage />}>
-                <Route path="mypage/:id/myreview" element={<MyReview />} />
+              <Route path="/mypage" element={<Mypage />}>
+                <Route path=":id/myreview" element={<MyReview />} />
               </Route>
 
               <Route path="/*" element={<NotFound />} />

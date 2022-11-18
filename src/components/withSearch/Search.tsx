@@ -5,12 +5,14 @@ import React, {
   MouseEvent,
   useCallback,
 } from "react";
+import { useRecoilValue } from "recoil";
+import { DateState, ExportDate } from "../../store/dateAtom";
 import { Link } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 import { BiSearchAlt } from "react-icons/bi";
 import Datepicker from "./Datepicker";
-
-import { isProps, searchData } from "../interfaces/inSearch";
+import Location from "./Location";
+import { isProps, searchData } from "../../interfaces/inSearch";
 
 function Search({ isActive, setIsActive }: isProps) {
   const [inputValue, setInputValue] = useState<searchData>({
@@ -18,6 +20,8 @@ function Search({ isActive, setIsActive }: isProps) {
     selectDate: "",
     selectLocation: "",
   });
+
+  const selectDate = useRecoilValue(ExportDate);
 
   /*   useEffect(() => {
     document.body.style.cssText = `
@@ -33,7 +37,7 @@ function Search({ isActive, setIsActive }: isProps) {
     };
   }, []); */
 
-  const { selectInput, selectDate, selectLocation } = inputValue;
+  const { selectInput, selectLocation } = inputValue;
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {};
 
@@ -42,6 +46,12 @@ function Search({ isActive, setIsActive }: isProps) {
     event.stopPropagation();
     setIsActive(!isActive);
   };
+
+  const searchHandler = () => {
+    console.log(selectDate);
+  };
+
+  const resetHandler = () => {};
 
   return (
     <SearchModal style={{ transition: "all 0.5s ease-in" }}>
@@ -57,9 +67,12 @@ function Search({ isActive, setIsActive }: isProps) {
             </SearchLabel>
             <SearchBox id="search" placeholder="Search" onChange={onChange} />
             <Datepicker />
+            <Location />
             <BtnContainer>
-              <ResetBtn onClick={ModalHandler}> Reset </ResetBtn>
-              <SearchBtn to="/Result"> Search </SearchBtn>
+              <ResetBtn onClick={searchHandler}> Reset </ResetBtn>
+              <SearchBtn to="/Result" onClick={searchHandler}>
+                Search
+              </SearchBtn>
             </BtnContainer>
           </SearchModal>
         </Container>

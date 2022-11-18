@@ -1,86 +1,47 @@
-import * as React from "react";
-import dayjs, { Dayjs } from "dayjs";
-import isBetweenPlugin from "dayjs/plugin/isBetween";
-import { styled } from "@mui/material/styles";
-import TextField from "@mui/material/TextField";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
-import { PickersDay, PickersDayProps } from "@mui/x-date-pickers/PickersDay";
+import React, { useState, useEffect } from "react";
+import DatePicker from "react-datepicker";
+import "../style/components.scss";
+import "react-datepicker/dist/react-datepicker.css";
+import dayjs from "dayjs";
+import { originDate } from "../interfaces/inDate";
+import ko from "date-fns/locale/ko";
+import { getMonth, getDate, getDay } from "date-fns";
+import { DateState } from "../store/dateAtom";
+import styled from "styled-components";
 
-dayjs.extend(isBetweenPlugin);
+function Datepicker() {
+  const [startDate, setStartDate] = useState(new Date());
 
-interface CustomPickerDayProps extends PickersDayProps<Dayjs> {
-  dayIsBetween: boolean;
-  isFirstDay: boolean;
-  isLastDay: boolean;
-}
+  /* weather 로 넘길 string으로 */
+  const useYear = startDate.getFullYear().toString();
+  const useMonth = ["0" + (startDate.getMonth() + 1)].toString().slice(-2);
+  const useDate = ["0" + startDate.getDate()].slice(-2);
 
-const CustomPickersDay = styled(PickersDay, {
-  shouldForwardProp: (prop) =>
-    prop !== "dayIsBetween" && prop !== "isFirstDay" && prop !== "isLastDay",
-})<CustomPickerDayProps>(({ theme, dayIsBetween, isFirstDay, isLastDay }) => ({
-  ...(dayIsBetween && {
-    borderRadius: 0,
-    backgroundColor: theme.palette.primary.main,
-    color: theme.palette.common.white,
-    "&:hover, &:focus": {
-      backgroundColor: theme.palette.primary.dark,
-    },
-  }),
-  ...(isFirstDay && {
-    borderTopLeftRadius: "50%",
-    borderBottomLeftRadius: "50%",
-  }),
-  ...(isLastDay && {
-    borderTopRightRadius: "50%",
-    borderBottomRightRadius: "50%",
-  }),
-})) as React.ComponentType<CustomPickerDayProps>;
+  const useFullDate = useYear + useMonth + useDate;
 
-export default function CustomDay() {
-  const [value, setValue] = React.useState<Dayjs | null>(dayjs("2022-04-07"));
-
-  const renderWeekPickerDay = (
-    date: Dayjs,
-    selectedDates: Array<Dayjs | null>,
-    pickersDayProps: PickersDayProps<Dayjs>
-  ) => {
-    if (!value) {
-      return <PickersDay {...pickersDayProps} />;
-    }
-
-    const start = value.startOf("week");
-    const end = value.endOf("week");
-
-    const dayIsBetween = date.isBetween(start, end, null, "[]");
-    const isFirstDay = date.isSame(start, "day");
-    const isLastDay = date.isSame(end, "day");
-
-    return (
-      <CustomPickersDay
-        {...pickersDayProps}
-        disableMargin
-        dayIsBetween={dayIsBetween}
-        isFirstDay={isFirstDay}
-        isLastDay={isLastDay}
-      />
-    );
-  };
-
+  useEffect(() => {
+    console.log(useFullDate);
+  });
+  const [availableDays, setAvailableDays] = useState(false);
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <StaticDatePicker
-        displayStaticWrapperAs="desktop"
-        label="Week picker"
-        value={value}
-        onChange={(newValue) => {
-          setValue(newValue);
-        }}
-        renderDay={renderWeekPickerDay}
-        renderInput={(params) => <TextField {...params} />}
-        inputFormat="'Week of' MMM d"
-      />
-    </LocalizationProvider>
+    <UseDatepicker
+      selected={startDate}
+      dateFormat="yyyy-MM-dd"
+      onChange={(date: Date) => setStartDate(date)}
+      /* inline : 바로 달력 나오게 */
+      inline
+    />
   );
 }
+
+export default Datepicker;
+
+const UseDatepicker = styled(DatePicker)`
+  width: 90%;
+  height: 3rem;
+  font-size: 1.6rem;
+  font-weight: bold;
+  background-color: transparent;
+  color: white;
+  border: 1px solid;
+`;

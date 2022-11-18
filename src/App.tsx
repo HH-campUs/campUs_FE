@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import Home from "./pages/Home";
 import Login from "./pages/Login";
+import SignUp from "./pages/SignUp";
 import Pop from "./pages/Pop";
 import Recommended from "./pages/Recommended";
 import Popular from "./pages/Popular";
@@ -106,12 +107,15 @@ function App() {
                   <Route path="popular" element={<Popular />} />
                 </Route>
                 <Route path="result" element={<Result />} />
+                <Route path="login" element={<Login />} />
+
+                <Route path="signup" element={<SignUp />} />
 
                 <Route path="detail" element={<Detail />} />
                 <Route path="detail/:id" element={<Detail />} />
                 <Route path="mypage" element={<Mypage />} />
-                <Route path="mypage/:id" element={<Mypage />}>
-                  <Route path="mypage/:id/myreview" element={<MyReview />} />
+                <Route path="/mypage/:id" element={<Mypage />}>
+                  <Route path="/mypage/:id/myreview" element={<MyReview />} />
                 </Route>
 
                 <Route path="/*" element={<NotFound />} />

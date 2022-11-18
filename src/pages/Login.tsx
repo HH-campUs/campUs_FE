@@ -14,8 +14,11 @@ import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 //login 상태관리
 import { LoginState } from "../store/loginAtom";
 import { recoilPersist } from "recoil-persist";
+import Kakao from "../KaKao";
 
-const LoginWrap = styled.div``;
+const LoginWrap = styled.div`
+  height: 90vh;
+`;
 
 const LoginTitle = styled.div`
   display: flex;
@@ -179,6 +182,7 @@ function Login() {
           })}
           placeholder="비밀번호"
         />
+
         <TextBox>
           <FindUserInfo>
             <span>아이디 / 비밀번호 찾기</span>
@@ -209,3 +213,8 @@ function Login() {
 }
 
 export default Login;
+
+{
+  //위치수정해야함
+  /* <Kakao /> */
+}

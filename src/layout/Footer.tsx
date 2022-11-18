@@ -27,7 +27,7 @@ export default function Footer() {
           icon={<HomeIcon />}
         />
         <BottomNavigationAction label="TBD" icon={<FavoriteIcon />} />
-        <BottomNavigationAction label="TBD" icon={<FavoriteIcon />} />
+
         <BottomNavigationAction
           onClick={() => {
             navigate("/mypage");

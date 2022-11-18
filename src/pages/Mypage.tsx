@@ -1,4 +1,3 @@
-import { borderBottom } from "@mui/system";
 import React, { useState } from "react";
 
 import {
@@ -9,6 +8,7 @@ import {
   useNavigate,
 } from "react-router-dom";
 import styled from "styled-components";
+import KaKaomap from "../components/KaKaomap";
 
 const UserProfile = styled.div`
   height: 190px;
@@ -155,6 +155,9 @@ function Mypage() {
           <Outlet />
         </UserProfile>
       )}
+      <div style={{ marginLeft: "150px" }}>
+        <KaKaomap />
+      </div>
     </>
   );
 }

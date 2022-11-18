@@ -10,11 +10,12 @@ import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 
 // import kakaoLogin from "../assets/image/";
+import { KAKAO_AUTH_URL } from "../components/KaKaoAuth";
 
 //login 상태관리
 import { LoginState } from "../store/loginAtom";
 import { recoilPersist } from "recoil-persist";
-import Kakao from "../KaKao";
+import Kakao from "../KaKaoIcon";
 
 const LoginWrap = styled.div`
   height: 90vh;
@@ -156,6 +157,11 @@ function Login() {
     // setValue("toDo", "");
   };
 
+  const KaKaoLogin = () => {
+    window.location.href = KAKAO_AUTH_URL;
+  };
+  //
+
   return (
     <LoginWrap>
       <LoginTitle>
@@ -195,7 +201,11 @@ function Login() {
       <SocialBox>
         <SocialText>SNS계정으로 로그인</SocialText>
         <SocialBtnBox>
-          <KakaoBtn src="/images/kakao_login_medium.png" alt="kakaoLogin" />
+          <KakaoBtn
+            onClick={KaKaoLogin}
+            src="/images/kakao_login_medium.png"
+            alt="kakaoLogin"
+          />
           <GoogleBtn
             src="/images/btn_google_light_normal_ios.svg"
             alt="GoogleLogin"

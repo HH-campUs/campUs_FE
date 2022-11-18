@@ -62,7 +62,7 @@ export const postsApi = {
     );
   },
 
-  // ** 캠핑장 찜하기 , payload값없이 header로 토큰만보내면됨 / POST ** /
+  // ** 캠핑장 찜하기 , payload값없이 header로 access/refresh토큰만보내면됨 / POST ** /
   campingPicked: () => {
     return useMutation((payload: ICampingPicked) =>
       instance.post("/camps/:campId/pick")

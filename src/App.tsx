@@ -108,6 +108,7 @@ function App() {
                 </Route>
                 <Route path="result" element={<Result />} />
                 <Route path="login" element={<Login />} />
+
                 <Route path="signup" element={<SignUp />} />
 
                 <Route path="detail" element={<Detail />} />

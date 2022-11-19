@@ -4,57 +4,13 @@ import styled from "styled-components";
 import Ddetail from "../components/DetailPage/Ddetail";
 import Dreview from "../components/DetailPage/Dreview";
 import Dannounce from "../components/DetailPage/Dannounce";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import { Link, Outlet, useMatch } from "react-router-dom";
 
-function Detail() {
-  const [radioShow, setRadioShow] = useState("review");
-
-  const selectComponent: any = {
-    detail: <Ddetail />,
-    review: <Dreview />,
-    announce: <Dannounce />,
-  };
-
-  return (
-    <>
-      <MainImage />
-      <HashTagContainer>
-        <HashTag>반려동물</HashTag>
-        <HashTag>글램핑</HashTag>
-        <HashTag>빨리 나가 놀고싶다.</HashTag>
-      </HashTagContainer>
-      <MiddleContainer>
-        <LeftWrapper>
-          <h2>키미노..나마에와..★</h2>
-          <div className="pContainer">
-            <p>홋카이도</p>
-            <p>1월에 갑니다..maybe</p>
-          </div>
-        </LeftWrapper>
-        <WeatherImg />
-      </MiddleContainer>
-      <AddtripBtn>내 일정 추가하기</AddtripBtn>
-      <RadioContainer>
-        <label>
-          <RadioBtn type="radio" id="detail" name="detail" checked />
-          <BtnLabel>상세정보</BtnLabel>
-        </label>
-        <label>
-          <RadioBtn type="radio" id="review" name="detail" />
-          <BtnLabel>리뷰</BtnLabel>
-        </label>
-        <label>
-          <RadioBtn type="radio" id="announce" name="detail" />
-          <BtnLabel>공지사항</BtnLabel>
-        </label>
-      </RadioContainer>
-      <BottomContainer>
-        {radioShow && <div>{selectComponent[radioShow]}</div>}
-      </BottomContainer>
-    </>
-  );
-}
-
-export default Detail;
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 
 const MainImage = styled.div`
   margin: 0 auto;
@@ -64,117 +20,143 @@ const MainImage = styled.div`
   background-image: url("http://economychosun.com/query/upload/344/20200419231455_gltgzjsu.jpg");
 `;
 
-const HashTagContainer = styled.div`
-  margin: 0 50px;
-  width: 80%;
-  height: 60px;
-  flex-direction: row;
-  float: left;
-  position: relative;
-`;
-
-const HashTag = styled.div`
-  margin-top: 20px;
-  margin-right: 10px;
-  padding: 6px;
-  font-size: 0.8rem;
-  display: inline-block;
-  border: 1px solid rgba(0, 0, 0, 0.3);
-  border-radius: 13px;
-`;
-
 const MiddleContainer = styled.div`
+  margin-top: 15px;
   margin-left: 50px;
   width: 95%;
   height: 120px;
   display: flex;
+  flex-direction: column;
 `;
 
-const LeftWrapper = styled.div`
-  h2 {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #333333;
-  }
-
-  .pContainer {
-    margin: 10px auto;
-    flex-direction: column;
-    p {
-      margin-right: 10px;
-      font-size: 1rem;
-      color: #535353;
-      display: inline-block;
-      border: 1px solid rgba(0, 0, 0, 0.5);
-    }
-  }
-`;
-
-const WeatherImg = styled.img`
-  width: 50px;
-  height: 50px;
-  margin-left: 80px;
-  border: 1px solid rgba(0, 0, 0, 0.8);
-  border-radius: 10px;
+const UpperWrapper = styled.div`
   display: flex;
+  position: absolute;
+  justify-content: space-between;
+`;
+
+const Left = styled.div`
+  margin-top: 5px;
+  margin-left: 8px;
+  font-size: 1.5rem;
+`;
+
+const Right = styled.div`
+  margin-top: 10px;
+  margin-left: 65px;
+  font-size: 13px;
+  color: grey;
+`;
+
+const DownWrapper = styled.div`
+  margin: 30px 5px;
+  display: flex;
+  text-align: center;
+  align-items: center;
+
+  p {
+    font-size: 0.9rem;
+    color: grey;
+  }
+`;
+
+const PickBox = styled.div`
+  display: flex;
+  gap: 5px;
+  height: 50px;
+  text-align: center;
+  margin-top: -55px;
+`;
+
+const Pick = styled.p`
+  margin-left: 60px;
+  margin-top: 15px;
+  color: grey;
+  font-size: 0.8rem;
+`;
+
+const Review = styled.p`
+  font-size: 0.8rem;
+  text-decoration: underline;
+  margin-top: 15px;
+  color: grey;
 `;
 
 const AddtripBtn = styled.button`
-  width: 250px;
+  width: 120px;
   height: 30px;
-  margin: 0 auto;
   margin-top: -40px;
+  margin-left: 300px;
   font-size: 1rem;
-  border-radius: 10px;
   border: none;
+  padding-top: 6px;
   display: flex;
+  background-color: #024873;
+  color: whitesmoke;
 `;
 
-const RadioContainer = styled.div`
-  width: 475px;
-  height: 50px;
-  flex-direction: row;
+const Tabs = styled.div`
+  width: 380px;
   display: flex;
+  justify-content: center;
+  align-content: center;
+  margin: 30px 45px;
+  gap: 10px;
 `;
 
-const BtnLabel = styled.div`
-  width: 150px;
-  height: 50%;
-  font-size: 1rem;
-  border-top: none;
-  border-left: none;
-  border-right: none;
+const Tab = styled.span<{ isActive: boolean }>`
+  width: 33%;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 500;
+  background-color: ${(props) => props.theme.bgColor};
+  padding: 7px 0px;
+  border-bottom: ${(props) => (props.isActive ? "3px solid black" : "none")};
+  color: ${(props) =>
+    props.isActive ? props.theme.accentColor : props.theme.textColor};
 `;
 
-const RadioBtn = styled.input.attrs({ type: "radio" })`
-  width: inherit;
+function Detail() {
+  const announceMatch = useMatch("/detail/:id/announce");
+  const detailMatch = useMatch("/detail/:id/detail");
+  const reviewMatch = useMatch("/detail/:id/review");
 
-  &:checked {
-    display: inline-black;
-    background: none;
-    border-bottom: 2px solid rgba(0, 0, 0, 1);
-  }
-  &:checked + ${BtnLabel} {
-    background: none;
-    border-bottom: 2px solid rgba(0, 0, 0, 1);
-  }
-`;
+  return (
+    <Wrapper>
+      <MainImage />
+      <MiddleContainer>
+        <UpperWrapper>
+          <Left>노을공원 가족캠핑장</Left>
+          <Right>일반야영장 | 글램핑</Right>
+        </UpperWrapper>
+        <DownWrapper>
+          <div>
+            <LocationOnIcon />
+          </div>
+          <p>서울 마포구 하늘공원로 108-1</p>
+        </DownWrapper>
+      </MiddleContainer>
+      <PickBox>
+        <Pick>찜(30)</Pick>
+        <Review>리뷰(790)</Review>
+      </PickBox>
+      <AddtripBtn>내 여행일정 저장</AddtripBtn>
+      <Tabs>
+        <Tab isActive={Boolean(announceMatch)}>
+          <Link to="/detail/:id/announce"> 공지사항 </Link>
+        </Tab>
+        <Tab isActive={Boolean(detailMatch)}>
+          <Link to="/detail/:id/detail"> 상세정보</Link>
+        </Tab>
+        <Tab isActive={Boolean(reviewMatch)}>
+          <Link to="/detail/:id/review"> 리뷰</Link>
+        </Tab>
+      </Tabs>
+      <div>
+        <Outlet />
+      </div>
+    </Wrapper>
+  );
+}
 
-const BottomContainer = styled.div`
-  width: 100%;
-  height: auto;
-  height: auto;
-`;
-
-const Exdetail = styled.div`
-  width: 100%;
-  height: 50px;
-`;
-const Exreview = styled.div`
-  width: 100%;
-  height: 50px;
-`;
-const Exannounce = styled.div`
-  width: 100%;
-  height: 50px;
-`;
+export default Detail;

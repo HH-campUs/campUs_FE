@@ -2,6 +2,8 @@ import registDragEvent from "../utils/registDragEvent";
 import { useState } from "react";
 import useCarouselSize from "./useCarouselSize";
 import styled from "styled-components";
+import Bookmark from "@mui/icons-material/Bookmark";
+import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 
 const imageList = [
   "https://blog.kakaocdn.net/dn/dpxiAT/btqUBv6Fvpn/E8xUMncq7AVuDeOim0LrMk/img.jpg",
@@ -15,6 +17,12 @@ export default function Carousel() {
   const [hide, setHide] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [transX, setTransX] = useState(0);
+  const [bookmarking, setBookMarking] = useState(false);
+
+  const picking = () => {
+    setBookMarking((prev) => !prev);
+    console.log("asdfads");
+  };
 
   const { ref, width, height } = useCarouselSize();
 
@@ -32,7 +40,8 @@ export default function Carousel() {
         style={{
           height,
           overflow: hide ? "hidden" : "visible",
-        }}>
+        }}
+      >
         <CarouselSlider
           className="flex"
           style={{
@@ -53,7 +62,8 @@ export default function Carousel() {
 
               setTransX(0);
             },
-          })}>
+          })}
+        >
           {imageList.map((url, i) => (
             <CarouselSlide key={i} className="flex-shrink-0">
               <CarouselImg
@@ -62,6 +72,18 @@ export default function Carousel() {
                 alt="img"
                 width={width}
               />
+
+              {bookmarking ? (
+                <Bookmark
+                  sx={{ position: "relative", left: "-30px", top: "-160px" }}
+                  onClick={picking}
+                />
+              ) : (
+                <BookmarkBorderIcon
+                  sx={{ position: "relative", left: "-30px", top: "-160px" }}
+                  onClick={picking}
+                />
+              )}
             </CarouselSlide>
           ))}
         </CarouselSlider>

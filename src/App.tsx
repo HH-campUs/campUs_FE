@@ -6,12 +6,16 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
-import Pop from "./pages/Pop";
-import Recommended from "./pages/Recommended";
-import Popular from "./pages/Popular";
+import Pop from "./pages/Homedetail/Pop";
+import Recommended from "./pages/Homedetail/Recommended";
+import Popular from "./pages/Homedetail/Popular";
 
 import CResult from "./pages/CResult";
 import Detail from "./pages/Detail";
+import Dannounce from "./components/DetailPage/Dannounce";
+import Ddetail from "./components/DetailPage/Ddetail";
+import Dreview from "./components/DetailPage/Dreview";
+
 import Mypage from "./pages/Mypage";
 import Result from "./pages/Result";
 import Error from "./pages/Error";
@@ -21,9 +25,11 @@ import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { darkTheme, lightTheme } from "./layout/theme";
 
 import { useRecoilValue } from "recoil";
-import { isDarkAtom } from "./atmos";
+import { isDarkAtom } from "./store/atmos";
 import Layout from "./layout/Layout";
-import MyReview from "./pages/MyReview";
+import MyReview from "./pages/Mypage/MyReview";
+import MyPick from "./pages/Mypage/MyPick";
+import MyPlan from "./pages/Mypage/MyPlan";
 
 const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
@@ -113,11 +119,18 @@ function App() {
 
                 <Route path="signup" element={<SignUp />} />
 
-                <Route path="detail" element={<Detail />} />
-                <Route path="detail/:id" element={<Detail />} />
+                {/* <Route path="detail" element={<Detail />} /> */}
+                <Route path="/detail/:id" element={<Detail />}>
+                  <Route path="/detail/:id/announce" element={<Dannounce />} />
+                  <Route path="/detail/:id/detail" element={<Ddetail />} />
+                  <Route path="/detail/:id/review" element={<Dreview />} />
+                </Route>
+
                 <Route path="mypage" element={<Mypage />} />
                 <Route path="/mypage/:id" element={<Mypage />}>
                   <Route path="/mypage/:id/myreview" element={<MyReview />} />
+                  <Route path="/mypage/:id/mypick" element={<MyPick />} />
+                  <Route path="/mypage/:id/myplan" element={<MyPlan />} />
                 </Route>
 
                 <Route path="/*" element={<NotFound />} />

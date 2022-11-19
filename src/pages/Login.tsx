@@ -18,7 +18,7 @@ import { recoilPersist } from "recoil-persist";
 import Kakao from "../KaKaoIcon";
 
 const LoginWrap = styled.div`
-  height: 90vh;
+  height: 95vh;
 `;
 
 const LoginTitle = styled.div`
@@ -213,7 +213,6 @@ function Login() {
         </SocialBtnBox>
         <SignUpTextBox>
           <SignUpText>아직 회원이 아니신가요?</SignUpText>
-          {/* 회원가입페이지어디갔누 */}
           <SignUpLink onClick={() => navigate("/signup")}>회원가입</SignUpLink>
           <KeyboardArrowRightIcon sx={{ marginTop: "-6.5px" }} />
         </SignUpTextBox>

@@ -1,27 +1,34 @@
 import React, { useState } from "react";
 
-import {
-  Link,
-  Navigate,
-  Outlet,
-  useMatch,
-  useNavigate,
-} from "react-router-dom";
+import { Link, Outlet, useMatch, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import KaKaomap from "../components/KaKaomap";
+
+import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
+import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
+import MyPick from "./Mypage/MyPick";
+import MyPlan from "./Mypage/MyPlan";
+import { useForm } from "react-hook-form";
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 95vh;
+`;
 
 const UserProfile = styled.div`
-  height: 190px;
+  height: 200px;
   display: flex;
+  flex-direction: column;
   position: relative;
   background-color: lightgray;
 `;
 
 const Profile = styled.div`
   width: 100%;
-  height: 110px;
+  height: 70%;
   position: absolute;
   display: flex;
+  align-items: center;
 `;
 
 const ProfileCircle = styled.div`
@@ -32,28 +39,39 @@ const ProfileCircle = styled.div`
   margin: 25px;
 `;
 
+const ProfileText = styled.div``;
+
 const Welcome = styled.div`
-  margin: 35px 120px;
   font-weight: 500;
-  position: absolute;
 `;
 
 const Nickname = styled.div`
-  margin: 75px -7px;
+  margin-top: 5px;
 `;
+
+const ProfileArrow = styled.div`
+  align-items: center;
+  display: flex;
+`;
+
+const EditBtn = styled.button`
+  border-radius: 8px;
+  font-size: 0.9rem;
+  margin-left: 100px;
+`;
+
+const Alarmbell = styled.div``;
 
 const LoginBox = styled.div`
   display: flex;
-  height: 80px;
-  padding: 25px;
   gap: 15px;
-  margin: 35px 100px;
+  margin: 70px auto;
 `;
 
 const LoginBtn = styled.button`
-  width: 100px;
-  height: 30px;
-  font-size: 16px;
+  width: 180px;
+  height: 48px;
+  font-size: 1rem;
   border: 0.5px none grey;
   margin-top: 50px;
   border-radius: 8px;
@@ -62,74 +80,115 @@ const LoginBtn = styled.button`
 `;
 
 const SignBtn = styled.button`
-  width: 100px;
-  height: 30px;
-  font-size: 16px;
+  width: 180px;
+  height: 48px;
+  font-size: 1rem;
   border: 0.5px none grey;
   margin-top: 50px;
   border-radius: 8px;
-  color: ${(props) => props.theme.textColor};
+  color: whitesmoke;
+  background-color: grey;
   cursor: pointer;
 `;
 
 const Tabs = styled.div`
   width: 380px;
   display: flex;
-  justify-content: center;
-  align-content: center;
-  position: absolute;
-  margin: 155px 45px;
+  margin: 170px 45px;
   gap: 10px;
+  position: absolute;
 `;
 
 const Tab = styled.span<{ isActive: boolean }>`
   width: 33%;
   text-align: center;
-  text-transform: uppercase;
-  font-size: 20px;
+  font-size: 1rem;
   font-weight: 500;
+
   background-color: ${(props) => props.theme.bgColor};
-  //rgba(0, 0, 0, 0.5);
   padding: 7px 0px;
   /* border-bottom padding webkit */
   border-bottom: ${(props) => (props.isActive ? "3px solid black" : "none")};
   color: ${(props) =>
     props.isActive ? props.theme.accentColor : props.theme.textColor};
-  a {
-    display: block;
-  }
 `;
 
 function Mypage() {
-  const [LoggedIn, setLoggedIn] = useState(false);
+  const [LoggedIn, setLoggedIn] = useState(true);
+  const [previewImg, setPreviewImg] = useState("");
+  const [editProfile, setEditProfile] = useState(false);
   const myReviewMatch = useMatch("/mypage/:id/myreview");
+  const myPickMatch = useMatch("/mypage/:id/mypick");
+  const myPlanMatch = useMatch("/mypage/:id/myplan");
+
   const navigate = useNavigate();
 
+  const EditProfileHandler = () => {
+    setEditProfile((prev) => !prev);
+  };
+  //이미지 미리보기.
+  const encodeFileToBase64 = (fileBlob: any) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(fileBlob);
+    return new Promise(() => {
+      reader.onload = () => {
+        //  setPreviewImg(reader.result);
+      };
+    });
+  };
+
   return (
-    <>
+    <Wrapper>
       {LoggedIn ? (
         <UserProfile>
           <Profile>
+            {/* {editProfile ? } */}
             <ProfileCircle></ProfileCircle>
-            <Welcome>반갑습니다, 인원님!</Welcome>
-            <Nickname>@nickName</Nickname>
+            <ProfileText>
+              <Welcome>반갑습니다, 인원님!</Welcome>
+              <Nickname>@nickName</Nickname>
+            </ProfileText>
+
+            <ProfileArrow>
+              <KeyboardArrowRightIcon
+                sx={{ fontSize: 30, cursor: "pointer" }}
+                onClick={EditProfileHandler}
+              />
+            </ProfileArrow>
+            <EditBtn>수정</EditBtn>
+            <Alarmbell>
+              <NotificationsNoneIcon sx={{ marginLeft: "10px" }} />
+            </Alarmbell>
           </Profile>
 
           <Tabs>
+            <Tab isActive={Boolean(myPickMatch)}>
+              <Link to="/mypage/:id/mypick">찜한 캠핑장</Link>
+            </Tab>
+            <Tab isActive={Boolean(myPlanMatch)}>
+              <Link to="/mypage/:id/myplan">여행일정</Link>
+            </Tab>
             <Tab isActive={Boolean(myReviewMatch)}>
               <Link to="/mypage/:id/myreview">내 리뷰</Link>
             </Tab>
           </Tabs>
-          <Outlet />
+          <div
+            style={{
+              marginTop: "-120px",
+            }}
+          >
+            <Outlet />
+          </div>
         </UserProfile>
       ) : (
         <UserProfile>
           <Profile>
-            <Welcome>
-              로그인 하고 더 많은 <br></br>기능을 사용해 보세요!
-            </Welcome>
+            <ProfileText>
+              <Welcome style={{ margin: "20px", fontSize: "1.1rem" }}>
+                로그인 하고 더 많은 <br></br>기능을 사용해 보세요!
+              </Welcome>
+            </ProfileText>
           </Profile>
-
           <LoginBox>
             <LoginBtn
               onClick={() => {
@@ -146,19 +205,27 @@ function Mypage() {
               회원가입
             </SignBtn>
           </LoginBox>
-
-          <Tabs>
+          <Tabs style={{ marginTop: "200px" }}>
+            <Tab isActive={Boolean(myPickMatch)}>
+              <Link to="/mypage/:id/mypick">찜한 캠핑장</Link>
+            </Tab>
+            <Tab isActive={Boolean(myPlanMatch)}>
+              <Link to="/mypage/:id/myplan">여행일정</Link>
+            </Tab>
             <Tab isActive={Boolean(myReviewMatch)}>
               <Link to="/mypage/:id/myreview">내 리뷰</Link>
             </Tab>
           </Tabs>
-          <Outlet />
+          <div
+            style={{
+              marginTop: "20px",
+            }}
+          >
+            <Outlet />
+          </div>
         </UserProfile>
       )}
-      <div style={{ marginLeft: "150px" }}>
-        <KaKaomap />
-      </div>
-    </>
+    </Wrapper>
   );
 }
 

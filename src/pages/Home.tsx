@@ -10,6 +10,9 @@ import Search from "../components/Search";
 
 //Css
 import styled from "styled-components";
+//색상변경해서 메인카드 / 캠핑장목록UI 에 사용할 것.
+import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder"; //empty
+import BookmarkIcon from "@mui/icons-material/Bookmark"; //filled
 
 function Home() {
   //const { state } = useLocation();
@@ -38,7 +41,7 @@ function Home() {
         </Tab>
       </Tabs>
       <Outlet />
-      <Carousel />
+      <Carousel/>
       <MytravelPlan />
       <Subject />
       <Nearby />

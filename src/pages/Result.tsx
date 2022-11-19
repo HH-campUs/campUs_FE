@@ -5,6 +5,8 @@ import Datepicker from "../components/Datepicker";
 import { BiSearchAlt } from "react-icons/bi";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 //bookmark icon
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 
@@ -92,7 +94,7 @@ function Result() {
         </ResultTop>
         {DummyData.map((item, i) => (
           <ResultBox key={i}>
-            <ResultItem onClick={() => nav(`/detail`)}>
+            <ResultItem onClick={() => nav(`/detail/:id`)}>
               <ResultImg src={item.ImgUrl} alt={item.name} />
               <ResultSpan>리뷰({item.reviewNum})</ResultSpan>
             </ResultItem>

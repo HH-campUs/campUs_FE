@@ -10,6 +10,7 @@ import Pop from "./pages/Pop";
 import Recommended from "./pages/Recommended";
 import Popular from "./pages/Popular";
 
+import CResult from "./pages/CResult";
 import Detail from "./pages/Detail";
 import Mypage from "./pages/Mypage";
 import Result from "./pages/Result";
@@ -107,6 +108,7 @@ function App() {
                   <Route path="popular" element={<Popular />} />
                 </Route>
                 <Route path="result" element={<Result />} />
+                <Route path="cresult" element={<CResult />} />
                 <Route path="login" element={<Login />} />
 
                 <Route path="signup" element={<SignUp />} />

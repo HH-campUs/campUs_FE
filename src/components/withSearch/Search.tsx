@@ -147,7 +147,7 @@ const SearchBox = styled.input`
   font-size: 1rem;
   background-color: transparent;
   border: none;
-  justify-content: left;
+  position: relative;
   display: flex;
 
   &::placeholder {

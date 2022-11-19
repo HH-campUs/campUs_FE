@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import styled from "styled-components";
 
 //스크립트로 kakao maps api를 심으면, window전역 객체에 들어가게 된다.
 //함수형 컴포넌트는 이를 인식 할 수 없음. 이에 아래와 같이 지정.
@@ -16,13 +17,11 @@ export default function KaKaomap() {
     const map = new kakao.maps.Map(container, options);
   }, []);
 
-  return (
-    <div
-      id="map"
-      style={{
-        width: "300px",
-        height: "300px",
-      }}
-    ></div>
-  );
+  return <Wrapper id="map"></Wrapper>;
 }
+
+const Wrapper = styled.div`
+  width: 100%;
+  height: 300px;
+  border-radius: 8px;
+`;

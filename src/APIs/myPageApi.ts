@@ -20,7 +20,7 @@ export const MyPageApi = {
     });
   },
 
-  // ** 유저 정보 변경 / get ** //
+  // ** 유저 정보 변경 ** //
   editProfile: () => {
     return useMutation(async (payload: IEditProfile) => {
       const { data } = await postInstance.put("/users/myPage", {

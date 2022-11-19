@@ -91,7 +91,7 @@ export default function SignUp() {
         <div>
           <KeyboardArrowLeftIcon
             sx={{ fontSize: 40 }}
-            onClick={() => navigate("/")}
+            onClick={() => navigate(-1)}
           />
         </div>
 

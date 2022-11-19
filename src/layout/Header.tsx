@@ -3,6 +3,7 @@ import { useMatch } from "react-router";
 import styled from "styled-components";
 
 export default function Header() {
+  //굳이 location사용할 이유가 사라지는듯.
   const location = useMatch("/mypage/*");
 
   return location ? null : <Wrapper>campUs</Wrapper>;

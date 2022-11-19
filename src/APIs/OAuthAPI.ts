@@ -19,5 +19,4 @@ export const OAuthAPI = {
         window.location.href = "/"
       });
   }, */
-  /* google */
 };

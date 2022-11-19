@@ -6,7 +6,7 @@ import MytravelPlan from "../components/MytravelPlan";
 import Subject from "../components/Subject";
 import Nearby from "../components/Nearby";
 import { Link, Outlet, useMatch } from "react-router-dom";
-import Search from "../components/Search";
+import Search from "../components/withSearch/Search";
 
 //Css
 import styled from "styled-components";

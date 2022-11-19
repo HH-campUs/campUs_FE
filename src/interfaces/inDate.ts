@@ -1,5 +1,5 @@
 export interface originDate {
-  dateData: string | Date | any;
+  DateState: string;
 }
 
 export interface useDate {

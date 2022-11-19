@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate, Outlet, useMatch } from "react-router-dom";
 import styled from "styled-components";
-import Datepicker from "../components/Datepicker";
+import Datepicker from "../components/withSearch/Datepicker";
 import { BiSearchAlt } from "react-icons/bi";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 
@@ -36,8 +36,7 @@ function Result() {
             <ModalBg>
               <SearchModal
                 className="isActive"
-                style={{ transition: "all 0.5s ease-in-out" }}
-              >
+                style={{ transition: "all 0.5s ease-in-out" }}>
                 <SearchLabel htmlFor="search"></SearchLabel>
                 <SearchBox
                   id="search"
@@ -68,8 +67,7 @@ function Result() {
         {isWeather ? (
           <WeatherModal
             className="isActive"
-            style={{ transition: "all 0.5s ease-in-out" }}
-          >
+            style={{ transition: "all 0.5s ease-in-out" }}>
             <div onClick={WeatherHandler}>
               <FaChevronUp />
             </div>
@@ -78,8 +76,7 @@ function Result() {
           <WeatherModal
             className="isNotActive"
             style={{ transition: "all 0.5s ease-in-out" }}
-            onClick={WeatherHandler}
-          >
+            onClick={WeatherHandler}>
             <img src="../../public/ex.png" />
             <div>오늘의 날씨는 ~~ 이러이러 하다~</div>
             <FaChevronDown />

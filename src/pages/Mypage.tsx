@@ -5,9 +5,9 @@ import styled from "styled-components";
 
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
-import MyPick from "./Mypage/MyPick";
+/* import MyPick from "./Mypage/MyPick";
 import MyPlan from "./Mypage/MyPlan";
-import { useForm } from "react-hook-form";
+import { useForm } from "react-hook-form"; */
 
 const Wrapper = styled.div`
   display: flex;
@@ -115,7 +115,7 @@ const Tab = styled.span<{ isActive: boolean }>`
 
 function Mypage() {
   const [LoggedIn, setLoggedIn] = useState(true);
-  const [previewImg, setPreviewImg] = useState("");
+  /*  const [previewImg, setPreviewImg] = useState(""); */
   const [editProfile, setEditProfile] = useState(false);
   const myReviewMatch = useMatch("/mypage/:id/myreview");
   const myPickMatch = useMatch("/mypage/:id/mypick");
@@ -125,6 +125,7 @@ function Mypage() {
 
   const EditProfileHandler = () => {
     setEditProfile((prev) => !prev);
+    console.log(editProfile);
   };
   //이미지 미리보기.
   const encodeFileToBase64 = (fileBlob: any) => {
@@ -175,8 +176,7 @@ function Mypage() {
           <div
             style={{
               marginTop: "-120px",
-            }}
-          >
+            }}>
             <Outlet />
           </div>
         </UserProfile>
@@ -193,15 +193,13 @@ function Mypage() {
             <LoginBtn
               onClick={() => {
                 navigate("/login");
-              }}
-            >
+              }}>
               로그인
             </LoginBtn>
             <SignBtn
               onClick={() => {
                 navigate("/signup");
-              }}
-            >
+              }}>
               회원가입
             </SignBtn>
           </LoginBox>
@@ -219,8 +217,7 @@ function Mypage() {
           <div
             style={{
               marginTop: "20px",
-            }}
-          >
+            }}>
             <Outlet />
           </div>
         </UserProfile>

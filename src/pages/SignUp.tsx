@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
-import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { ISignUpForm } from "../interfaces/inLogin";
@@ -76,7 +75,7 @@ const StBtn = styled.button`
 export default function SignUp() {
   const navigate = useNavigate();
 
-  const { register, handleSubmit, watch, setValue } = useForm<ISignUpForm>();
+  const { register, handleSubmit } = useForm<ISignUpForm>();
   const handleValid = (data: ISignUpForm) => {
     // setToDos((oldToDos) => [
     //   { text: data.toDo, id: Date.now(), category },

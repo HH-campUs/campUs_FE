@@ -55,13 +55,16 @@ function Search({ isActive, setIsActive }: isProps) {
 
   return (
     <SearchModal style={{ transition: "all 0.5s ease-in" }}>
-      {isActive ? (
+      <SearchModal className="isNotActive" onClick={ModalHandler}>
+        <BiSearchAlt size="20" style={{ display: "inline-block" }} />
+        <span>search</span>
+      </SearchModal>
+
+      {isActive && (
         <Container>
-          {/* 모달창 밖 blur background 토글 기능 부여 (event bubbling 해결) */}
           <ModalBg onClick={ModalHandler} />
-          <SearchModal
-            className="isActive"
-            style={{ transition: "all 0.5s ease-in-out" }}>
+          {/* 모달창 밖 blur background 토글 기능 부여 (event bubbling 해결) */}
+          <SearchModal className="isActive">
             <SearchLabel htmlFor="search">
               <BiSearchAlt size="20" style={{ display: "inline-block" }} />
             </SearchLabel>
@@ -76,12 +79,6 @@ function Search({ isActive, setIsActive }: isProps) {
             </BtnContainer>
           </SearchModal>
         </Container>
-      ) : (
-        /* SearchModal - Inactive (default) */
-        <SearchModal className="isNotActive" onClick={ModalHandler}>
-          <BiSearchAlt size="20" style={{ display: "inline-block" }} />
-          <span>search</span>
-        </SearchModal>
       )}
     </SearchModal>
   );
@@ -89,10 +86,30 @@ function Search({ isActive, setIsActive }: isProps) {
 
 export default Search;
 
+const slideIn = keyframes`
+  from {bottom: -500px; opacity: 0} 
+    to {bottom: 0; opacity: 1}
+`;
+
+const slideOut = keyframes`
+  from {bottom: 0px; opacity: 1} 
+    to {bottom: -500px; opacity: 0}
+`;
+
+const fadeIn = keyframes`
+  from {opacity: 0} 
+    to {opacity: 1}
+`;
+
+const fadeOut = keyframes`
+  from {opacity: 1} 
+    to {opacity: 0}
+`;
+
 const Container = styled.div`
   width: 100%;
   height: 100%;
-  z-index: 100;
+  z-index: 10;
   top: 0;
   left: 0;
   right: 0;
@@ -109,6 +126,8 @@ const ModalBg = styled.div`
   height: 100%;
   background-color: rgba(0, 0, 0, 0.55);
   backdrop-filter: blur(6px);
+  animation-name: ${fadeIn};
+  animation-duration: 0.2s;
 `;
 
 const SearchModal = styled.div`
@@ -118,8 +137,6 @@ const SearchModal = styled.div`
   border-radius: 13px;
   justify-content: center;
   align-content: center;
-  transition: all 0.5s ease-out;
-
   z-index: 100;
 
   &.isNotActive {
@@ -135,9 +152,15 @@ const SearchModal = styled.div`
   }
 
   &.isActive {
-    height: 567px;
+    height: 600px;
+    left: 10;
+    bottom: 0;
     padding: 10px;
     position: fixed;
+    z-index: 100;
+    overflow: auto;
+    animation: ${slideIn};
+    animation-duration: 0.7s;
   }
 `;
 
@@ -159,6 +182,10 @@ const SearchBox = styled.input`
     outline: none;
   }
 `;
+
+/* const ToggleBox = styled.div`
+  width:
+`; */
 
 const SearchLabel = styled.label`
   width: inherit;

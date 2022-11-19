@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import { Link, useNavigate, Outlet, useMatch } from "react-router-dom";
 import styled from "styled-components";
 import Datepicker from "../components/withSearch/Datepicker";
-import { BiSearchAlt } from "react-icons/bi";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+import Bg from "../static/testpic.jpg";
 
 //bookmark icon
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 
-function Result() {
+function CResult() {
   const nav = useNavigate();
   const [isActive, setIsActive] = useState(false);
   const [isWeather, setIsWeather] = useState(false);
@@ -28,60 +28,7 @@ function Result() {
 
   return (
     <>
-      <SearchModal style={{ transition: "all 0.5s ease-in" }}>
-        {isActive ? (
-          <Container>
-            <ModalBg>
-              <SearchModal
-                className="isActive"
-                style={{ transition: "all 0.5s ease-in-out" }}>
-                <SearchLabel htmlFor="search"></SearchLabel>
-                <SearchBox
-                  id="search"
-                  placeholder="Search"
-                  onChange={onChange}
-                />
-                <Datepicker />
-                <BtnContainer>
-                  <ResetBtn onClick={ModalHandler}> Reset </ResetBtn>
-                  <SearchBtn to="/Result" onClick={ModalHandler}>
-                    Search
-                  </SearchBtn>
-                </BtnContainer>
-              </SearchModal>
-            </ModalBg>
-          </Container>
-        ) : (
-          /* SearchModal - Inactive (default) */
-          <SearchModal className="isNotActive" onClick={ModalHandler}>
-            <div>지역 : 어디어디</div>
-            <div>날짜 : 날짜날짜</div>
-          </SearchModal>
-        )}
-      </SearchModal>
-
-      {/* Weather modal */}
-      <WeatherModal>
-        {isWeather ? (
-          <WeatherModal
-            className="isActive"
-            style={{ transition: "all 0.5s ease-in-out" }}>
-            <div onClick={WeatherHandler}>
-              <FaChevronUp />
-            </div>
-          </WeatherModal>
-        ) : (
-          <WeatherModal
-            className="isNotActive"
-            style={{ transition: "all 0.5s ease-in-out" }}
-            onClick={WeatherHandler}>
-            <img src="../../public/ex.png" />
-            <div>오늘의 날씨는 ~~ 이러이러 하다~</div>
-            <FaChevronDown />
-          </WeatherModal>
-        )}
-      </WeatherModal>
-
+      <TopContainer>탑임</TopContainer>
       <ResultContainer>
         <ResultTop>
           <div>검색결과 (000개)</div>
@@ -102,7 +49,7 @@ function Result() {
   );
 }
 
-export default Result;
+export default CResult;
 
 /* dummy data */
 
@@ -181,158 +128,21 @@ const DummyData: Array<Dummy> = [
 
 /* result */
 
-const Container = styled.div`
-  width: 100%;
-  height: 100%;
-  z-index: 100;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  flex-direction: column;
-  align-items: center;
-  position: fixed;
-  display: flex;
-  transition: all 0.5s ease-in-out;
-`;
-
-const ModalBg = styled.div`
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(6px);
-`;
-
-const SearchModal = styled.div`
-  margin: 10px auto;
-  width: 370px;
-  background-color: #ebebeb;
-  border-radius: 13px;
-  justify-content: center;
-  align-content: center;
-
-  transition: all 0.5s ease-out;
-
-  z-index: 100;
-
-  &.isNotActive {
-    height: 65px;
-    padding: 5px;
-    font-size: 1rem;
-    color: #797979;
-    justify-content: space-between !important;
-    display: flex;
-
-    span {
-      margin-left: 10px;
-      font-size: 1.4rem;
-    }
-  }
-
-  &.isActive {
-    height: 567px;
-    padding: 10px;
-  }
-`;
-
-const SearchBox = styled.input`
-  width: inherit;
-  height: 35px;
-  font-size: 1rem;
-  background-color: transparent;
-  border: none;
-  justify-content: left;
-  display: flex;
-
-  &::placeholder {
-    font-size: 1rem;
-    color: #797979;
-  }
-
-  &:focus {
-    outline: none;
-  }
-`;
-
-const SearchLabel = styled.label`
-  width: inherit;
-  height: 35px;
-  justify-content: left;
-  display: flex;
-`;
-
-const BtnContainer = styled.button`
-  width: 90%;
-  height: 10%;
+const TopContainer = styled.div`
+  width: auto;
+  max-width: 475px;
+  height: 300px;
   margin: 0 auto;
-  top: 102px;
-  background: transparent;
-  border: none;
-  justify-content: space-between;
-  position: relative;
-  display: flex;
-`;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 
-const ResetBtn = styled.button`
-  width: 130px;
-  height: 43px;
-  font-size: 1rem;
-  background-color: #8d8d8d;
-  border-radius: 13px;
-`;
-
-const SearchBtn = styled(Link)`
-  width: 130px;
-  height: 43px;
-  font-size: 1rem;
-  text-align: center;
-  background-color: #8d8d8d;
-  border-radius: 13px;
-
-  :active {
-    background-color: #3b3b3b;
-  }
-`;
-
-/* weather */
-
-const WeatherModal = styled.div`
-  margin: 10px auto;
-  width: 370px;
-  background-color: #ebebeb;
-  border-radius: 13px;
-  justify-content: center;
-  align-content: center;
-
-  transition: all 0.5s ease-out;
-
-  z-index: 100;
-
-  &.isNotActive {
-    height: 100px;
-    padding: 5px;
-    font-size: 1rem;
-    color: #797979;
-
-    span {
-      margin-left: 10px;
-      font-size: 1.4rem;
-    }
-
-    img {
-      display: inline-block;
-    }
-  }
-
-  &.isActive {
-    height: 367px;
-    padding: 10px;
-  }
+  background-image: url(${Bg});
+  background-size: cover;
 `;
 
 const ResultContainer = styled.div`
   margin: 0;
-  padding: 50px;
+  padding: 35px;
   flex: 1 1 0%;
 `;
 
@@ -348,32 +158,33 @@ const ResultTop = styled.div`
 `;
 
 const ResultBox = styled.div`
-  margin: 0 auto;
+  width: 160px;
+  height: 200px;
+  margin: 0 20px;
   height: auto;
   flex-direction: column;
-  display: flex;
+  justify-content: space-between;
+  position: relative;
+  display: inline-block;
+  align-items: top;
 `;
 
 const ResultItem = styled.div`
-  width: 370px;
-  height: 140px;
-  margin: 20px auto;
+  width: 150px;
+  height: 150px;
   border-radius: 10px;
-  position: relative;
 `;
 
 const ResultImg = styled.img`
   width: 100%;
   height: 100%;
-  border-radius: 13px;
+  border-radius: 10px;
   display: block;
   object-fit: cover;
 `;
 
 const ResultSpan = styled.div`
-  top: 20%;
-  left: 50%;
-  transform: translate(75%, -200%);
+  transform: translate(50%, -200%);
   color: white;
   font-weight: bold;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.911);

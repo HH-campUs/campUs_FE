@@ -157,10 +157,9 @@ const SearchModal = styled.div`
     bottom: 0;
     padding: 10px;
     position: fixed;
-    //display: none;
     z-index: 100;
     overflow: auto;
-    animation: ${slideOut};
+    animation: ${slideIn};
     animation-duration: 0.7s;
   }
 `;

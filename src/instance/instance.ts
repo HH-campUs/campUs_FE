@@ -3,10 +3,10 @@ import axios, { AxiosRequestConfig } from "axios";
 /* 쿠키 토큰 넣어 주는 곳 */
 import { getCookieToken } from "./cookies";
 
+// const serverUrl = process.env.REACT_APP_API;
+
 export const instance = axios.create({
-  /* api 배포 되면 환경변수 넣어주기
-    baseUrl: process.env.<environment>
-    */
+  baseURL: process.env.REACT_APP_API,
   headers: {
     "content-type": "application/json;charset=utf-8",
     accept: "application/json, ",
@@ -17,7 +17,7 @@ export const instance = axios.create({
 
 //리뷰작성용 content-type : multipart/form-data.
 export const postInstance = axios.create({
-  //baseUrl,
+  baseURL: process.env.REACT_APP_API,
   headers: {
     //Autorization: mytoken,
     "Content-Type": "multipart/form-data",

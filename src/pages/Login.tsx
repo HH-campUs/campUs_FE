@@ -9,13 +9,14 @@ import styled from "styled-components";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 
-// import kakaoLogin from "../assets/image/";
 import { KAKAO_AUTH_URL } from "../components/KaKaoAuth";
-
-//login 상태관리
 import { LoginState } from "../store/loginAtom";
 import { recoilPersist } from "recoil-persist";
-import Kakao from "../KaKaoIcon";
+
+import { useMutation } from "@tanstack/react-query";
+
+// import kakaoLogin from "../assets/image/";
+//import Kakao from "../KaKaoIcon";
 
 const LoginWrap = styled.div`
   height: 95vh;
@@ -145,22 +146,17 @@ const SignUpLink = styled.p`
 `;
 
 function Login() {
+  const serverUrl = process.env.REACT_APP_API;
   const navigate = useNavigate();
   //로그인상태관리 - recoil-persist사용 -> localstorage토큰저장.
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
+
   const { register, handleSubmit, watch, setValue } = useForm<ILoginForm>();
-  const handleValid = (data: ILoginForm) => {
-    // setToDos((oldToDos) => [
-    //   { text: data.toDo, id: Date.now(), category },
-    //   ...oldToDos,
-    // ]);
-    // setValue("toDo", "");
-  };
+  const handleValid = (data: ILoginForm) => {};
 
   const KaKaoLogin = () => {
     window.location.href = KAKAO_AUTH_URL;
   };
-  //
 
   return (
     <LoginWrap>
@@ -177,13 +173,13 @@ function Login() {
       {/* Form Start */}
       <LoginForm onSubmit={handleSubmit(handleValid)}>
         <StInput
-          {...register("LoginId", {
+          {...register("email", {
             required: "validation Id",
           })}
-          placeholder="아이디"
+          placeholder="이메일"
         />
         <StInput
-          {...register("Password", {
+          {...register("password", {
             required: "validation Password",
           })}
           placeholder="비밀번호"

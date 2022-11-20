@@ -1,10 +1,10 @@
 export interface ILoginForm {
-  LoginId: string;
-  Password: string;
+  email: string;
+  password: string;
 }
 
 export interface ISignUpForm {
-  LoginId: string;
-  Password: string;
-  PasswordCheck: string;
+  email: string;
+  password: string;
+  passwordcheck: string;
 }

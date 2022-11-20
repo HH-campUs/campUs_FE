@@ -9,6 +9,8 @@ import MyPick from "./Mypage/MyPick";
 import MyPlan from "./Mypage/MyPlan";
 import { useForm } from "react-hook-form";
 
+import Avatar from "@mui/material/Avatar";
+
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -35,7 +37,6 @@ const ProfileCircle = styled.div`
   width: 75px;
   height: 75px;
   border-radius: 75px;
-  background-color: grey;
   margin: 25px;
 `;
 
@@ -115,26 +116,17 @@ const Tab = styled.span<{ isActive: boolean }>`
 
 function Mypage() {
   const [LoggedIn, setLoggedIn] = useState(true);
-  const [previewImg, setPreviewImg] = useState("");
   const [editProfile, setEditProfile] = useState(false);
   const myReviewMatch = useMatch("/mypage/:id/myreview");
   const myPickMatch = useMatch("/mypage/:id/mypick");
   const myPlanMatch = useMatch("/mypage/:id/myplan");
-
   const navigate = useNavigate();
+
+  const { register, handleSubmit, watch, setValue } = useForm();
 
   const EditProfileHandler = () => {
     setEditProfile((prev) => !prev);
-  };
-  //이미지 미리보기.
-  const encodeFileToBase64 = (fileBlob: any) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(fileBlob);
-    return new Promise(() => {
-      reader.onload = () => {
-        //  setPreviewImg(reader.result);
-      };
-    });
+    console.log("efef");
   };
 
   return (
@@ -142,20 +134,53 @@ function Mypage() {
       {LoggedIn ? (
         <UserProfile>
           <Profile>
-            {/* {editProfile ? } */}
-            <ProfileCircle></ProfileCircle>
-            <ProfileText>
-              <Welcome>반갑습니다, 인원님!</Welcome>
-              <Nickname>@nickName</Nickname>
-            </ProfileText>
+            {editProfile ? (
+              <>
+                <ProfileCircle>
+                  <img
+                    src="/images/abstract-user-flat-4.png"
+                    alt="PFP"
+                    height={"75px"}
+                  />
+                </ProfileCircle>
+                <ProfileText>
+                  <Welcome>반갑습니다, 인원님!</Welcome>
+                  <Nickname>@nickName</Nickname>
+                </ProfileText>
 
-            <ProfileArrow>
-              <KeyboardArrowRightIcon
-                sx={{ fontSize: 30, cursor: "pointer" }}
-                onClick={EditProfileHandler}
-              />
-            </ProfileArrow>
-            <EditBtn>수정</EditBtn>
+                {/* 클릭하면 닉네임이 인풋처럼 바뀜 -> 리액트쿼리로 닉네임 변경요청 -> 서버에서 변경해줌 -> 그값을어케표시해준담 인풋은안되고? */}
+                <ProfileArrow>
+                  <KeyboardArrowRightIcon
+                    sx={{ fontSize: 30, cursor: "pointer" }}
+                    onClick={EditProfileHandler}
+                  />
+                </ProfileArrow>
+                <EditBtn>수정</EditBtn>
+              </>
+            ) : (
+              <>
+                <ProfileCircle>
+                  <img
+                    src="/images/abstract-user-flat-4.png"
+                    alt="PFP"
+                    height={"75px"}
+                  />
+                </ProfileCircle>
+                <ProfileText>
+                  <Welcome>반갑습니다, 인원님!</Welcome>
+                  <Nickname>@nickName</Nickname>
+                </ProfileText>
+
+                <ProfileArrow>
+                  <KeyboardArrowRightIcon
+                    sx={{ fontSize: 30, cursor: "pointer" }}
+                    onClick={EditProfileHandler}
+                  />
+                </ProfileArrow>
+                <EditBtn>완료</EditBtn>
+              </>
+            )}
+
             <Alarmbell>
               <NotificationsNoneIcon sx={{ marginLeft: "10px" }} />
             </Alarmbell>

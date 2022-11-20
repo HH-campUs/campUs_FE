@@ -13,6 +13,8 @@ import { KAKAO_AUTH_URL } from "../components/KaKaoAuth";
 import { LoginState } from "../store/loginAtom";
 import { recoilPersist } from "recoil-persist";
 
+import { useMutation } from "@tanstack/react-query";
+
 // import kakaoLogin from "../assets/image/";
 //import Kakao from "../KaKaoIcon";
 
@@ -148,19 +150,13 @@ function Login() {
   const navigate = useNavigate();
   //로그인상태관리 - recoil-persist사용 -> localstorage토큰저장.
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
+
   const { register, handleSubmit, watch, setValue } = useForm<ILoginForm>();
-  const handleValid = (data: ILoginForm) => {
-    // setToDos((oldToDos) => [
-    //   { text: data.toDo, id: Date.now(), category },
-    //   ...oldToDos,
-    // ]);
-    // setValue("toDo", "");
-  };
+  const handleValid = (data: ILoginForm) => {};
 
   const KaKaoLogin = () => {
     window.location.href = KAKAO_AUTH_URL;
   };
-  //
 
   return (
     <LoginWrap>
@@ -180,7 +176,7 @@ function Login() {
           {...register("email", {
             required: "validation Id",
           })}
-          placeholder="아이디"
+          placeholder="이메일"
         />
         <StInput
           {...register("password", {

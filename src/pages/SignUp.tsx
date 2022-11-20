@@ -1,10 +1,114 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { ISignUpForm } from "../interfaces/inLogin";
+import { errorSelector } from "recoil";
+import { signUpApi } from "../APIs/loginApi";
+import { useMutation } from "@tanstack/react-query";
+import { red } from "@mui/material/colors";
+
+export default function SignUp() {
+  const [isActive, setIsActive] = useState(false);
+  const navigate = useNavigate();
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<ISignUpForm>();
+
+  console.log(errors);
+
+  const { mutate } = useMutation(signUpApi);
+  const email = watch("email");
+  const password = watch("password");
+  const passwordRef = useRef<string | null>(null);
+  passwordRef.current = watch("password");
+
+  const handleValid = (data: ISignUpForm) => {
+    console.log(data);
+    mutate(data);
+    // loginApi.postSignup({ data });
+    // setToDos((oldToDos) => [
+    //   { text: data.toDo, id: Date.now(), category },
+    //   ...oldToDos,
+    // ]);
+    // setValue("toDo", "");
+  };
+
+  return (
+    <LoginWrap>
+      <LoginTitle>
+        <div>
+          <KeyboardArrowLeftIcon
+            sx={{ fontSize: 40 }}
+            onClick={() => navigate(-1)}
+          />
+        </div>
+
+        <LoginText>회원가입</LoginText>
+      </LoginTitle>
+      {/* Form Start */}
+      <LoginForm onSubmit={handleSubmit(handleValid)}>
+        <StInput
+          unValid={Boolean(errors.email)}
+          placeholder="이메일"
+          // onKeyUp={IsPassedLogin}
+          {...register("email", {
+            required: "이메일을 입력해주세요.",
+            pattern: {
+              value: /^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w+[.]?\w{2,3}/,
+              message: "올바른 이메일 형식을 입력해주세요.",
+            },
+          })}
+        />
+        {errors.email?.message}
+        <StInput
+          unValid={Boolean(errors.password)}
+          type="password"
+          placeholder="비밀번호"
+          {...register("password", {
+            required: "비밀번호를 입력해주세요.",
+            maxLength: {
+              value: 20,
+              message: "20자리 이하로 작성해주세요",
+            },
+            minLength: {
+              value: 8,
+              message: "8자리 이상으로 작성해주세요",
+            },
+            pattern: {
+              value:
+                /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$/,
+              message:
+                "영어, 대문자, 특수기호(!@#$%&)가 포함된 8~20자리 입니다.",
+            },
+          })}
+        />
+        {errors.password?.message}
+        <StInput
+          unValid={Boolean(errors.passwordcheck)}
+          type="password"
+          placeholder="비밀번호 입력확인"
+          {...register("passwordcheck", {
+            required: "비밀번호 입력확인",
+            validate: (value) => value === passwordRef.current,
+          })}
+        />
+        {errors.passwordcheck?.message}
+        {/* form end */}
+        <TextBox>
+          <FindUserInfo></FindUserInfo>
+        </TextBox>
+        <StBtn>회원가입</StBtn>
+      </LoginForm>
+    </LoginWrap>
+  );
+}
 
 const LoginWrap = styled.div``;
 
@@ -31,11 +135,11 @@ const LoginForm = styled.form`
   }
 `;
 
-const StInput = styled.input`
+const StInput = styled.input<{ unValid: boolean }>`
   width: 350px;
   height: 61px;
   font-size: 16px;
-  border: 2px solid grey;
+  border: 2px solid ${(props) => (props.unValid ? "red" : "grey")};
   border-radius: 8px;
   transition: all 0.5s linear;
   padding: 10px;
@@ -71,58 +175,5 @@ const StBtn = styled.button`
   border-radius: 8px;
   padding: 10px;
   color: ${(props) => props.theme.textColor};
+  cursor: pointer;
 `;
-
-export default function SignUp() {
-  const navigate = useNavigate();
-
-  const { register, handleSubmit, watch, setValue } = useForm<ISignUpForm>();
-  const handleValid = (data: ISignUpForm) => {
-    // setToDos((oldToDos) => [
-    //   { text: data.toDo, id: Date.now(), category },
-    //   ...oldToDos,
-    // ]);
-    // setValue("toDo", "");
-  };
-
-  return (
-    <LoginWrap>
-      <LoginTitle>
-        <div>
-          <KeyboardArrowLeftIcon
-            sx={{ fontSize: 40 }}
-            onClick={() => navigate(-1)}
-          />
-        </div>
-
-        <LoginText>회원가입</LoginText>
-      </LoginTitle>
-      {/* Form Start */}
-      <LoginForm onSubmit={handleSubmit(handleValid)}>
-        <StInput
-          {...register("LoginId", {
-            required: "validation Id",
-          })}
-          placeholder="아이디"
-        />
-        <StInput
-          {...register("Password", {
-            required: "validation Password",
-          })}
-          placeholder="비밀번호"
-        />
-        <StInput
-          {...register("PasswordCheck", {
-            required: "validation PasswordCheck",
-          })}
-          placeholder="비밀번호확인"
-        />
-
-        <TextBox>
-          <FindUserInfo></FindUserInfo>
-        </TextBox>
-        <StBtn>회원가입</StBtn>
-      </LoginForm>
-    </LoginWrap>
-  );
-}

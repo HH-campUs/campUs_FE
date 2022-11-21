@@ -9,6 +9,7 @@ import SignUp from "./pages/SignUp";
 import Pop from "./pages/Homedetail/Pop";
 import Recommended from "./pages/Homedetail/Recommended";
 import Popular from "./pages/Homedetail/Popular";
+import Splash from "./pages/Splash";
 
 import CResult from "./pages/CResult";
 import Detail from "./pages/Detail";
@@ -116,7 +117,7 @@ function App() {
                 <Route path="result" element={<Result />} />
                 <Route path="cresult" element={<CResult />} />
                 <Route path="login" element={<Login />} />
-
+                <Route path="splash" element={<Splash />} />
                 <Route path="signup" element={<SignUp />} />
 
                 {/* <Route path="detail" element={<Detail />} /> */}

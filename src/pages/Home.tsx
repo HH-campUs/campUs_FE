@@ -18,7 +18,7 @@ function Home() {
   //const { state } = useLocation();
   // const name = location.state as RouteState
   // 선택한 url로 갈시에 object받음. 아니면 null값.
-  const [isActive, setIsActive] = useState(true);
+  const [isActive, setIsActive] = useState(false);
   const popMatch = useMatch("/popping");
   const recommendedMatch = useMatch("/recommended");
   const popularMatch = useMatch("/popular");

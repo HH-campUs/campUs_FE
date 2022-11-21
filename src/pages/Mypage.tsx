@@ -1,15 +1,142 @@
 import React, { useState } from "react";
-
 import { Link, Outlet, useMatch, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
-import MyPick from "./Mypage/MyPick";
-import MyPlan from "./Mypage/MyPlan";
-import { useForm } from "react-hook-form";
 
-import Avatar from "@mui/material/Avatar";
+import ProfileModal from "../components/ProfileModal";
+
+function Mypage() {
+  const [LoggedIn, setLoggedIn] = useState(true);
+  // const [modalOpen, setModalOpen] = useState<myModal>(false);
+  const [isPopUp, setIsPopUp] = useState(false);
+  const myReviewMatch = useMatch("/mypage/:id/myreview");
+  const myPickMatch = useMatch("/mypage/:id/mypick");
+  const myPlanMatch = useMatch("/mypage/:id/myplan");
+  const navigate = useNavigate();
+
+  return (
+    <Wrapper>
+      {LoggedIn ? (
+        <UserProfile>
+          <Profile>
+            <>
+              <ProfileCircle>
+                <img
+                  src="/images/blank-profile-picture-973460_1280.webp"
+                  alt="PFP"
+                  height={"75px"}
+                />
+              </ProfileCircle>
+              <ProfileText>
+                <Welcome>반갑습니다, 인원님!</Welcome>
+                <Nickname>@nickName</Nickname>
+              </ProfileText>
+              <ProfileArrow>
+                <KeyboardArrowRightIcon
+                  sx={{ fontSize: 30, cursor: "pointer" }}
+                />
+              </ProfileArrow>
+              <ProfileModal isPopUp={isPopUp} setIsPopUp={setIsPopUp} />
+            </>
+
+            {/* <Alarmbell>
+              <NotificationsNoneIcon sx={{ marginLeft: "10px" }} />
+            </Alarmbell> */}
+          </Profile>
+
+          <Tabs>
+            <Tab isActive={Boolean(myPickMatch)}>
+              <Link to="/mypage/:id/mypick">찜한 캠핑장</Link>
+            </Tab>
+            <Tab isActive={Boolean(myPlanMatch)}>
+              <Link to="/mypage/:id/myplan">여행일정</Link>
+            </Tab>
+            <Tab isActive={Boolean(myReviewMatch)}>
+              <Link to="/mypage/:id/myreview">내 리뷰</Link>
+            </Tab>
+          </Tabs>
+          <div
+            style={{
+              marginTop: "-120px",
+            }}
+          >
+            <Outlet />
+          </div>
+        </UserProfile>
+      ) : (
+        <UserProfile>
+          <Profile>
+            <ProfileText>
+              <Welcome style={{ margin: "20px", fontSize: "1.1rem" }}>
+                로그인 하고 더 많은 <br></br>기능을 사용해 보세요!
+              </Welcome>
+            </ProfileText>
+          </Profile>
+          <LoginBox>
+            <LoginBtn
+              onClick={() => {
+                navigate("/login");
+              }}
+            >
+              로그인
+            </LoginBtn>
+            <SignBtn
+              onClick={() => {
+                navigate("/signup");
+              }}
+            >
+              회원가입
+            </SignBtn>
+          </LoginBox>
+          <Tabs style={{ marginTop: "200px" }}>
+            <Tab isActive={Boolean(myPickMatch)}>
+              <Link to="/mypage/:id/mypick">찜한 캠핑장</Link>
+            </Tab>
+            <Tab isActive={Boolean(myPlanMatch)}>
+              <Link to="/mypage/:id/myplan">여행일정</Link>
+            </Tab>
+            <Tab isActive={Boolean(myReviewMatch)}>
+              <Link to="/mypage/:id/myreview">내 리뷰</Link>
+            </Tab>
+          </Tabs>
+          <div
+            style={{
+              marginTop: "20px",
+            }}
+          >
+            <Outlet />
+          </div>
+        </UserProfile>
+      )}
+    </Wrapper>
+  );
+}
+
+{
+  /* <>
+<ProfileCircle>
+  <img
+    src="/images/abstract-user-flat-4.png"
+    alt="PFP"
+    height={"75px"}
+  />
+</ProfileCircle>
+<ProfileText>
+  <Welcome>반갑습니다, 인원님!</Welcome>
+  <Nickname>@nickName</Nickname>
+</ProfileText>
+
+<ProfileArrow>
+  <KeyboardArrowRightIcon
+    sx={{ fontSize: 30, cursor: "pointer" }}
+  />
+</ProfileArrow>
+<EditBtn onClick={EditProfileHandler}>완료</EditBtn>
+</> */
+}
+
+export default Mypage;
 
 const Wrapper = styled.div`
   display: flex;
@@ -113,148 +240,6 @@ const Tab = styled.span<{ isActive: boolean }>`
   color: ${(props) =>
     props.isActive ? props.theme.accentColor : props.theme.textColor};
 `;
-
-function Mypage() {
-  const [LoggedIn, setLoggedIn] = useState(true);
-  const [editProfile, setEditProfile] = useState(false);
-  const myReviewMatch = useMatch("/mypage/:id/myreview");
-  const myPickMatch = useMatch("/mypage/:id/mypick");
-  const myPlanMatch = useMatch("/mypage/:id/myplan");
-  const navigate = useNavigate();
-
-  const { register, handleSubmit, watch, setValue } = useForm();
-
-  const EditProfileHandler = () => {
-    setEditProfile((prev) => !prev);
-    console.log("efef");
-  };
-
-  return (
-    <Wrapper>
-      {LoggedIn ? (
-        <UserProfile>
-          <Profile>
-            {editProfile ? (
-              <>
-                <ProfileCircle>
-                  <img
-                    src="/images/abstract-user-flat-4.png"
-                    alt="PFP"
-                    height={"75px"}
-                  />
-                </ProfileCircle>
-                <ProfileText>
-                  <Welcome>반갑습니다, 인원님!</Welcome>
-                  <Nickname>@nickName</Nickname>
-                </ProfileText>
-
-                {/* 클릭하면 닉네임이 인풋처럼 바뀜 -> 리액트쿼리로 닉네임 변경요청 -> 서버에서 변경해줌 -> 그값을어케표시해준담 인풋은안되고? */}
-                <ProfileArrow>
-                  <KeyboardArrowRightIcon
-                    sx={{ fontSize: 30, cursor: "pointer" }}
-                    onClick={EditProfileHandler}
-                  />
-                </ProfileArrow>
-                <EditBtn>수정</EditBtn>
-              </>
-            ) : (
-              <>
-                <ProfileCircle>
-                  <img
-                    src="/images/abstract-user-flat-4.png"
-                    alt="PFP"
-                    height={"75px"}
-                  />
-                </ProfileCircle>
-                <ProfileText>
-                  <Welcome>반갑습니다, 인원님!</Welcome>
-                  <Nickname>@nickName</Nickname>
-                </ProfileText>
-
-                <ProfileArrow>
-                  <KeyboardArrowRightIcon
-                    sx={{ fontSize: 30, cursor: "pointer" }}
-                    onClick={EditProfileHandler}
-                  />
-                </ProfileArrow>
-                <EditBtn>완료</EditBtn>
-              </>
-            )}
-
-            <Alarmbell>
-              <NotificationsNoneIcon sx={{ marginLeft: "10px" }} />
-            </Alarmbell>
-          </Profile>
-
-          <Tabs>
-            <Tab isActive={Boolean(myPickMatch)}>
-              <Link to="/mypage/:id/mypick">찜한 캠핑장</Link>
-            </Tab>
-            <Tab isActive={Boolean(myPlanMatch)}>
-              <Link to="/mypage/:id/myplan">여행일정</Link>
-            </Tab>
-            <Tab isActive={Boolean(myReviewMatch)}>
-              <Link to="/mypage/:id/myreview">내 리뷰</Link>
-            </Tab>
-          </Tabs>
-          <div
-            style={{
-              marginTop: "-120px",
-            }}
-          >
-            <Outlet />
-          </div>
-        </UserProfile>
-      ) : (
-        <UserProfile>
-          <Profile>
-            <ProfileText>
-              <Welcome style={{ margin: "20px", fontSize: "1.1rem" }}>
-                로그인 하고 더 많은 <br></br>기능을 사용해 보세요!
-              </Welcome>
-            </ProfileText>
-          </Profile>
-          <LoginBox>
-            <LoginBtn
-              onClick={() => {
-                navigate("/login");
-              }}
-            >
-              로그인
-            </LoginBtn>
-            <SignBtn
-              onClick={() => {
-                navigate("/signup");
-              }}
-            >
-              회원가입
-            </SignBtn>
-          </LoginBox>
-          <Tabs style={{ marginTop: "200px" }}>
-            <Tab isActive={Boolean(myPickMatch)}>
-              <Link to="/mypage/:id/mypick">찜한 캠핑장</Link>
-            </Tab>
-            <Tab isActive={Boolean(myPlanMatch)}>
-              <Link to="/mypage/:id/myplan">여행일정</Link>
-            </Tab>
-            <Tab isActive={Boolean(myReviewMatch)}>
-              <Link to="/mypage/:id/myreview">내 리뷰</Link>
-            </Tab>
-          </Tabs>
-          <div
-            style={{
-              marginTop: "20px",
-            }}
-          >
-            <Outlet />
-          </div>
-        </UserProfile>
-      )}
-    </Wrapper>
-  );
-}
-
-export default Mypage;
 
 //useForm사용해야 할 것 같다.
 //userProfile변경위함.

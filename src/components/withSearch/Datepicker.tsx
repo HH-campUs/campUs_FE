@@ -44,7 +44,8 @@ function Datepicker() {
         addDays(new Date(), 7),
       ]}
       /* 선택 못하는 날들 (= 지난 날들) */
-      excludeDates={[subDays(new Date(), 1), subDays(new Date(), 5)]}
+      minDate={new Date()}
+      scrollableMonthYearDropdown={true}
       /* inline : 바로 달력 나오게 */
       inline
     />

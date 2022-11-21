@@ -49,13 +49,13 @@ const StInput = styled.input`
   width: 350px;
   height: 61px;
   font-size: 16px;
-  border: 2px solid grey;
+  border: 1px solid grey;
   border-radius: 8px;
   transition: all 0.5s linear;
+
   padding: 10px;
   &:focus {
-    border: 2px solid red;
-    //outline: none;
+    border: 1px solid red;
   }
 `;
 
@@ -128,7 +128,7 @@ const SignUpTextBox = styled.div`
   display: flex;
   position: absolute;
   margin-top: 100px;
-  margin-left: 125px;
+  margin-left: 140px;
   color: ${(props) => props.theme.textColor};
   font-size: 13px;
 `;

@@ -9,7 +9,7 @@ import SignUp from "./pages/SignUp";
 import Pop from "./pages/Homedetail/Pop";
 import Recommended from "./pages/Homedetail/Recommended";
 import Popular from "./pages/Homedetail/Popular";
-import Splash from "./pages/Splash";
+/* import Splash from "./pages/Splash"; */
 
 import CResult from "./pages/CResult";
 import Detail from "./pages/Detail";
@@ -112,8 +112,8 @@ function App() {
           <BrowserRouter>
             <Layout>
               <Routes>
-                <Route path="/" element={<Splash />} />
-                <Route path="home/" element={<Home />}>
+                {/* <Route path="/" element={<Splash />} /> */}
+                <Route path="/" element={<Home />}>
                   <Route path="popping" element={<Pop />} />
                   <Route path="recommended" element={<Recommended />} />
                   <Route path="popular" element={<Popular />} />

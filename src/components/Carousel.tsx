@@ -40,8 +40,7 @@ export default function Carousel() {
         style={{
           height,
           overflow: hide ? "hidden" : "visible",
-        }}
-      >
+        }}>
         <CarouselSlider
           className="flex"
           style={{
@@ -62,8 +61,7 @@ export default function Carousel() {
 
               setTransX(0);
             },
-          })}
-        >
+          })}>
           {imageList.map((url, i) => (
             <CarouselSlide key={i} className="flex-shrink-0">
               <CarouselImg

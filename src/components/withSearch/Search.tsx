@@ -14,7 +14,7 @@ import Datepicker from "./Datepicker";
 import Location from "./Location";
 import { isProps, searchData } from "../../interfaces/inSearch";
 
-function Search({ isActive, setIsActive }: isProps) {
+function Search({ isActive, setIsActive }: isProps): JSX.Element {
   const [inputValue, setInputValue] = useState<searchData>({
     selectInput: "",
     selectDate: "",
@@ -121,12 +121,12 @@ const Container = styled.div`
   transition: all 0.5s ease-in-out;
 `;
 
-const ModalBg = styled.div`
+const ModalBg = (isActive: isProps) => styled.div`
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.55);
   backdrop-filter: blur(6px);
-  animation-name: ${fadeIn};
+  animation-name: ${isActive ? fadeOut : fadeIn};
   animation-duration: 0.2s;
 `;
 

@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useRecoilState } from "recoil";
 import DatePicker from "react-datepicker";
-import "../../style/components.scss";
-import "react-datepicker/dist/react-datepicker.css";
+import "../../style/customDatepicker.css";
 import dayjs from "dayjs";
 import { originDate } from "../../interfaces/inDate";
 import ko from "date-fns/locale/ko";
-import { getMonth, getDate, getDay } from "date-fns";
+import { getMonth, getDate, getDay, subDays, addDays } from "date-fns";
 import { DateState } from "../../store/dateAtom";
 import styled from "styled-components";
 
@@ -31,6 +30,16 @@ function Datepicker() {
       selected={startDate}
       dateFormat="yyyy-MM-dd"
       onChange={(date: Date) => setStartDate(date)}
+      highlightDates={[
+        addDays(new Date(), 0),
+        addDays(new Date(), 1),
+        addDays(new Date(), 2),
+        addDays(new Date(), 3),
+        addDays(new Date(), 4),
+        addDays(new Date(), 5),
+        addDays(new Date(), 6),
+        addDays(new Date(), 7),
+      ]}
       /* inline : 바로 달력 나오게 */
       inline
     />
@@ -41,10 +50,4 @@ export default Datepicker;
 
 const UseDatepicker = styled(DatePicker)`
   width: 90%;
-  height: 3rem;
-  font-size: 1.6rem;
-  font-weight: bold;
-  background-color: transparent;
-  color: white;
-  border: 1px solid;
 `;

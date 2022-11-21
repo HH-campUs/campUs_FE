@@ -2,11 +2,13 @@ import { useQuery } from "@tanstack/react-query";
 import { instance } from "../instance/instance";
 import { IGetCampCatInfo, IGetCampReview } from "../interfaces/get";
 
+const serverUrl = process.env.REACT_APP_API;
+
 export const getApi = {
   // ** 캠핑장 카테고리 정보 조회 / get ** //
   getCampCatInfo: () => {
     return useQuery(["campcatinfo"], async () => {
-      const { data } = await instance.get<IGetCampCatInfo>("/camps");
+      const { data } = await instance.get<IGetCampCatInfo>(`${serverUrl}`);
       return data;
     });
   },
@@ -15,7 +17,7 @@ export const getApi = {
   getCampReview: () => {
     return useQuery(["reviewinfo"], async () => {
       const { data } = await instance.get<IGetCampReview>(
-        "/camps/:campId/review"
+        `${serverUrl}/camps/:campId/review`
       );
       return data;
     });

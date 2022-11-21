@@ -5,7 +5,7 @@ import Carousel from "../components/Carousel";
 import MytravelPlan from "../components/MytravelPlan";
 import Subject from "../components/Subject";
 import Nearby from "../components/Nearby";
-import { Link, Outlet, useMatch } from "react-router-dom";
+import { Link, Outlet, useMatch, useNavigate } from "react-router-dom";
 import Search from "../components/withSearch/Search";
 
 //Css
@@ -17,12 +17,12 @@ import BookmarkIcon from "@mui/icons-material/Bookmark"; //filled
 function Home() {
   //const { state } = useLocation();
   // const name = location.state as RouteState
+
   // 선택한 url로 갈시에 object받음. 아니면 null값.
   const [isActive, setIsActive] = useState(false);
   const popMatch = useMatch("/popping");
   const recommendedMatch = useMatch("/recommended");
   const popularMatch = useMatch("/popular");
-  //isActive={isActive} setIsActive={setIsActive}
 
   return (
     <>

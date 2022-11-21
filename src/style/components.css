@@ -2,7 +2,7 @@
   width: 80% !important;
   height: auto;
   background-color: transparent !important;
-  * {
-    color: blue !important;
-  }
 }
+.custom * {
+  color: blue !important;
+}/*# sourceMappingURL=components.css.map */

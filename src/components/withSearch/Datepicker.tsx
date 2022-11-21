@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useRecoilState } from "recoil";
 import DatePicker from "react-datepicker";
-import "../../style/components.scss";
 import "react-datepicker/dist/react-datepicker.css";
 import dayjs from "dayjs";
 import { originDate } from "../../interfaces/inDate";

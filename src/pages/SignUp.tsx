@@ -1,17 +1,15 @@
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
-import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { ISignUpForm } from "../interfaces/inLogin";
-import { errorSelector } from "recoil";
 import { signUpApi } from "../APIs/loginApi";
 import { useMutation } from "@tanstack/react-query";
-import { red } from "@mui/material/colors";
+
+const serverUrl = process.env.REACT_APP_API;
 
 export default function SignUp() {
-  const [isActive, setIsActive] = useState(false);
   const navigate = useNavigate();
 
   const {
@@ -23,7 +21,6 @@ export default function SignUp() {
 
   console.log(errors);
 
-  const { mutate } = useMutation(signUpApi);
   const email = watch("email");
   const password = watch("password");
   const passwordRef = useRef<string | null>(null);
@@ -31,7 +28,7 @@ export default function SignUp() {
 
   const handleValid = (data: ISignUpForm) => {
     console.log(data);
-    mutate(data);
+    signUpApi(data);
     // loginApi.postSignup({ data });
     // setToDos((oldToDos) => [
     //   { text: data.toDo, id: Date.now(), category },
@@ -66,7 +63,7 @@ export default function SignUp() {
             },
           })}
         />
-        {errors.email?.message}
+        <ErrorMessage>{errors.email?.message}</ErrorMessage>
         <StInput
           unValid={Boolean(errors.password)}
           type="password"
@@ -89,7 +86,7 @@ export default function SignUp() {
             },
           })}
         />
-        {errors.password?.message}
+        <ErrorMessage> {errors.password?.message}</ErrorMessage>
         <StInput
           unValid={Boolean(errors.passwordcheck)}
           type="password"
@@ -99,7 +96,7 @@ export default function SignUp() {
             validate: (value) => value === passwordRef.current,
           })}
         />
-        {errors.passwordcheck?.message}
+        <ErrorMessage>{errors.passwordcheck?.message}</ErrorMessage>
         {/* form end */}
         <TextBox>
           <FindUserInfo></FindUserInfo>
@@ -139,12 +136,12 @@ const StInput = styled.input<{ unValid: boolean }>`
   width: 350px;
   height: 61px;
   font-size: 16px;
-  border: 2px solid ${(props) => (props.unValid ? "red" : "grey")};
+  border: 1px solid ${(props) => (props.unValid ? "red" : "grey")};
   border-radius: 8px;
   transition: all 0.5s linear;
   padding: 10px;
   &:focus {
-    border: 2px solid red;
+    border: 1px solid #024873;
     //outline: none;
   }
 `;
@@ -176,4 +173,22 @@ const StBtn = styled.button`
   padding: 10px;
   color: ${(props) => props.theme.textColor};
   cursor: pointer;
+`;
+
+const ErrorMail = styled.p`
+  margin-top: -10px;
+  font-size: 0.85rem;
+  color: red;
+`;
+
+const ErrorMessage = styled.p`
+  margin-top: -10px;
+  font-size: 0.85rem;
+  color: red;
+`;
+
+const ErrorPassword = styled.p`
+  margin-top: -10px;
+  font-size: 0.85rem;
+  color: red;
 `;

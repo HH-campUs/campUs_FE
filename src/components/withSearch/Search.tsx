@@ -69,7 +69,9 @@ function Search({ isActive, setIsActive }: isProps) {
               <BiSearchAlt size="20" style={{ display: "inline-block" }} />
             </SearchLabel>
             <SearchBox id="search" placeholder="Search" onChange={onChange} />
-            <Datepicker />
+            <DateContainer>
+              <Datepicker />
+            </DateContainer>
             <Location />
             <BtnContainer>
               <ResetBtn onClick={searchHandler}> Reset </ResetBtn>
@@ -133,7 +135,7 @@ const ModalBg = styled.div`
 const SearchModal = styled.div`
   margin: 10px auto;
   width: 370px;
-  background-color: #ebebeb;
+  background-color: #ffffff;
   border-radius: 13px;
   justify-content: center;
   align-content: center;
@@ -183,15 +185,16 @@ const SearchBox = styled.input`
   }
 `;
 
-/* const ToggleBox = styled.div`
-  width:
-`; */
-
 const SearchLabel = styled.label`
   width: inherit;
   height: 35px;
   justify-content: left;
   display: flex;
+`;
+
+const DateContainer = styled.div`
+  width: 90%;
+  margin: 0 auto;
 `;
 
 const BtnContainer = styled.button`

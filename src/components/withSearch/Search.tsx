@@ -157,12 +157,16 @@ const SearchModal = styled.div`
     height: 43rem;
     left: 10;
     bottom: 0;
-    padding: 10px;
+    padding: 1.25rem;
     position: fixed;
     z-index: 100;
     overflow: auto;
     animation: ${slideIn};
     animation-duration: 0.7s;
+
+    ::-webkit-scrollbar {
+      display: none;
+    }
   }
 `;
 
@@ -193,8 +197,13 @@ const SearchLabel = styled.label`
 `;
 
 const DateContainer = styled.div`
-  width: 90%;
-  margin: 0 auto;
+  width: 20.938rem;
+  height: 24.938rem;
+  margin: 1rem 0 3.875rem;
+  padding: 1.56rem 0rem;
+  border-radius: 10px;
+  border: solid 1px #e3e3e3;
+  background-color: #fff;
 `;
 
 const BtnContainer = styled.button`

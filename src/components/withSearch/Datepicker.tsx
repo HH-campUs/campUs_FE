@@ -5,7 +5,7 @@ import "../../style/customDatepicker.css";
 import dayjs from "dayjs";
 import { originDate } from "../../interfaces/inDate";
 import { ko } from "date-fns/locale";
-import { getMonth, getDate, getDay, addDays } from "date-fns";
+import { getMonth, getDate, getDay, addDays, subDays } from "date-fns";
 import { DateState } from "../../store/dateAtom";
 import styled from "styled-components";
 
@@ -30,7 +30,9 @@ function Datepicker() {
       selected={startDate}
       dateFormat="yyyy-MM-dd"
       onChange={(date: Date) => setStartDate(date)}
+      /* 한글 */
       locale={ko}
+      /* 날씨 정보를 제공을 해주는 날들 오늘 + 7일 */
       highlightDates={[
         addDays(new Date(), 0),
         addDays(new Date(), 1),
@@ -41,6 +43,8 @@ function Datepicker() {
         addDays(new Date(), 6),
         addDays(new Date(), 7),
       ]}
+      /* 선택 못하는 날들 (= 지난 날들) */
+      excludeDates={[subDays(new Date(), 1), subDays(new Date(), 5)]}
       /* inline : 바로 달력 나오게 */
       inline
     />

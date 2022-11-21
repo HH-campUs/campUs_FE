@@ -37,10 +37,3 @@ export interface IGetCampResult {
   eqpmnLendCl: string;
   reviewCount: number;
 }
-
-export interface IGetCampReview {
-  userId: number;
-  campId: number;
-  reviewImg: string;
-  reviewComment: string;
-}

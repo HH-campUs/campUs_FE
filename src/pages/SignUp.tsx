@@ -64,7 +64,7 @@ export default function SignUp() {
             },
           })}
         />
-        <span>{errors.email?.message}</span>
+        <ErrorMessage>{errors.email?.message}</ErrorMessage>
         <StInput
           unValid={Boolean(errors.password)}
           type="password"
@@ -87,7 +87,7 @@ export default function SignUp() {
             },
           })}
         />
-        <span> {errors.password?.message}</span>
+        <ErrorMessage> {errors.password?.message}</ErrorMessage>
         <StInput
           unValid={Boolean(errors.passwordcheck)}
           type="password"
@@ -97,7 +97,7 @@ export default function SignUp() {
             validate: (value) => value === passwordRef.current,
           })}
         />
-        <span>{errors.passwordcheck?.message}</span>
+        <ErrorMessage>{errors.passwordcheck?.message}</ErrorMessage>
         {/* form end */}
         <TextBox>
           <FindUserInfo></FindUserInfo>
@@ -137,12 +137,12 @@ const StInput = styled.input<{ unValid: boolean }>`
   width: 350px;
   height: 61px;
   font-size: 16px;
-  border: 2px solid ${(props) => (props.unValid ? "red" : "grey")};
+  border: 1px solid ${(props) => (props.unValid ? "red" : "grey")};
   border-radius: 8px;
   transition: all 0.5s linear;
   padding: 10px;
   &:focus {
-    border: 2px solid #024873;
+    border: 1px solid #024873;
     //outline: none;
   }
 `;
@@ -174,4 +174,22 @@ const StBtn = styled.button`
   padding: 10px;
   color: ${(props) => props.theme.textColor};
   cursor: pointer;
+`;
+
+const ErrorMail = styled.p`
+  margin-top: -10px;
+  font-size: 0.85rem;
+  color: red;
+`;
+
+const ErrorMessage = styled.p`
+  margin-top: -10px;
+  font-size: 0.85rem;
+  color: red;
+`;
+
+const ErrorPassword = styled.p`
+  margin-top: -10px;
+  font-size: 0.85rem;
+  color: red;
 `;

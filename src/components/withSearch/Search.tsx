@@ -154,7 +154,7 @@ const SearchModal = styled.div`
   }
 
   &.isActive {
-    height: 600px;
+    height: 43rem;
     left: 10;
     bottom: 0;
     padding: 10px;

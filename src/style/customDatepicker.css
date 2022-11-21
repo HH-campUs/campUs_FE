@@ -101,7 +101,7 @@
   background-color: #fff;
   color: #000;
   border: 1px solid #aeaeae;
-  border-radius: 0.3rem;
+  border-radius: 0.6rem;
   display: inline-block;
   position: relative;
 }
@@ -517,12 +517,14 @@
 .react-datepicker__year-text--today {
   font-weight: bold;
 }
+
+/* highlighted day bg color */
 .react-datepicker__day--highlighted,
 .react-datepicker__month-text--highlighted,
 .react-datepicker__quarter-text--highlighted,
 .react-datepicker__year-text--highlighted {
   border-radius: 0.3rem;
-  background-color: #3dcc4a;
+  background-color: #5185a6;
   color: #fff;
 }
 .react-datepicker__day--highlighted:hover,
@@ -543,6 +545,8 @@
 .react-datepicker__year-text--highlighted-custom-2 {
   color: green;
 }
+
+/* selected day bg color */
 .react-datepicker__day--selected,
 .react-datepicker__day--in-selecting-range,
 .react-datepicker__day--in-range,
@@ -556,7 +560,7 @@
 .react-datepicker__year-text--in-selecting-range,
 .react-datepicker__year-text--in-range {
   border-radius: 0.3rem;
-  background-color: #216ba5;
+  background-color: #024873;
   color: #fff;
 }
 .react-datepicker__day--selected:hover,

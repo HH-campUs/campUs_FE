@@ -109,7 +109,8 @@ function App() {
           <BrowserRouter>
             <Layout>
               <Routes>
-                <Route path="/" element={<Home />}>
+                <Route path="/" element={<Splash />} />
+                <Route path="home/" element={<Home />}>
                   <Route path="popping" element={<Pop />} />
                   <Route path="recommended" element={<Recommended />} />
                   <Route path="popular" element={<Popular />} />
@@ -117,7 +118,7 @@ function App() {
                 <Route path="result" element={<Result />} />
                 <Route path="cresult" element={<CResult />} />
                 <Route path="login" element={<Login />} />
-                <Route path="splash" element={<Splash />} />
+                {/* <Route path="splash" element={<Splash />} /> */}
                 <Route path="signup" element={<SignUp />} />
 
                 {/* <Route path="detail" element={<Detail />} /> */}

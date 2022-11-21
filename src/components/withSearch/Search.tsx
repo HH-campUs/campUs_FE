@@ -183,10 +183,6 @@ const SearchBox = styled.input`
   }
 `;
 
-/* const ToggleBox = styled.div`
-  width:
-`; */
-
 const SearchLabel = styled.label`
   width: inherit;
   height: 35px;

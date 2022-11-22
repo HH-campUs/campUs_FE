@@ -249,7 +249,7 @@
   top: -4px;
 } */
 
-/* 담달 넘기기 버튼 hover */
+/* 담달 넘기기 버튼 호버 */
 .react-datepicker__navigation:hover *::before {
   border-color: #a6a6a6;
 }
@@ -585,7 +585,8 @@
 .react-datepicker__month-text--highlighted:hover,
 .react-datepicker__quarter-text--highlighted:hover,
 .react-datepicker__year-text--highlighted:hover {
-  background-color: #32be3f;
+  background-color: #9cc4f0;
+  border-radius: 0.125rem;
 }
 .react-datepicker__day--highlighted-custom-1,
 .react-datepicker__month-text--highlighted-custom-1,

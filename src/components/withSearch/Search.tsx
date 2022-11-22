@@ -134,7 +134,7 @@ const ModalBg = styled.div`
 
 const SearchModal = styled.div`
   margin: 10px auto;
-  width: 370px;
+  width: 23.438rem;
   background-color: #ffffff;
   border-radius: 13px;
   justify-content: center;
@@ -157,10 +157,10 @@ const SearchModal = styled.div`
     height: 43rem;
     left: 10;
     bottom: 0;
-    padding: 1.25rem;
+    padding: 25px 20px 39px;
     position: fixed;
     z-index: 100;
-    overflow: auto;
+    //overflow: auto;
     animation: ${slideIn};
     animation-duration: 0.7s;
 

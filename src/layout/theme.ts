@@ -1,18 +1,18 @@
 import { DefaultTheme } from "styled-components";
 
-export const darkTheme: DefaultTheme = {
+const darkTheme: DefaultTheme = {
   bgColor: "#2f3640",
   textColor: "white",
   accentColor: "#9c88ff",
 };
 
-export const lightTheme: DefaultTheme = {
+const lightTheme: DefaultTheme = {
   bgColor: "whitesmoke",
   textColor: "#718093",
   accentColor: "#1e272e",
 };
 
-export const colorTheme = {
+const colorTheme = {
   text: "#222222",
   text2: "#666666",
   text3: "#909090",
@@ -24,10 +24,10 @@ export const colorTheme = {
 };
 
 /* convert px to rem */
-export const pixelToRem = (size: number) => `${size / 16}rem`;
+const pixelToRem = (size: number) => `${size / 16}rem`;
 
 /* font-set (article / font-weight / font-size / color) */
-export const font = {
+const fontTheme = {
   /* Headerline */
   Headerline1: `
  font-size: ${pixelToRem(20)};
@@ -93,3 +93,13 @@ export const font = {
  color: ${colorTheme.text};
 `,
 };
+
+export const theme = {
+  darkTheme,
+  lightTheme,
+  fontTheme,
+  pixelToRem,
+  colorTheme,
+};
+
+export type Theme = typeof theme;

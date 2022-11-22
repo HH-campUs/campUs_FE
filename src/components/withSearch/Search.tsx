@@ -65,6 +65,11 @@ function Search({ isActive, setIsActive }: isProps) {
           <ModalBg onClick={ModalHandler} />
           {/* 모달창 밖 blur background 토글 기능 부여 (event bubbling 해결) */}
           <SearchModal className="isActive">
+            {/* Headline + close btn */}
+            <TopContainer>
+              <SearchTitle>어디로 가시나요?</SearchTitle>
+              <CloseBtn onClick={ModalHandler}>X</CloseBtn>
+            </TopContainer>
             <SearchLabel htmlFor="search">
               <BiSearchAlt size="20" style={{ display: "inline-block" }} />
             </SearchLabel>
@@ -168,6 +173,23 @@ const SearchModal = styled.div`
       display: none;
     }
   }
+`;
+
+const TopContainer = styled.div`
+  width: 100%;
+  margin-top: 26px;
+  justify-content: space-between;
+`;
+
+const SearchTitle = styled.div`
+  ${(props) => props.theme.fontTheme.Headerline1}
+  display: inline-block;
+`;
+
+const CloseBtn = styled.button`
+  width: 30px;
+  height: 30px;
+  display: inline-block;
 `;
 
 const SearchBox = styled.input`

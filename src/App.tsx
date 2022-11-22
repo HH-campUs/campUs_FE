@@ -23,7 +23,7 @@ import Error from "./pages/Error";
 import NotFound from "./pages/NotFound";
 import { ErrorBoundary } from "react-error-boundary";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
-import { darkTheme, lightTheme } from "./layout/theme";
+import { theme } from "./layout/theme";
 
 import { useRecoilValue } from "recoil";
 import { isDarkAtom } from "./store/atmos";
@@ -106,7 +106,7 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
+      <ThemeProvider theme={theme}>
         <GlobalStyle />
         <ErrorBoundary FallbackComponent={Error}>
           <BrowserRouter>

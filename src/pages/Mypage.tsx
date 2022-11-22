@@ -15,15 +15,6 @@ function Mypage() {
   const myPlanMatch = useMatch("/mypage/:id/myplan");
   const navigate = useNavigate();
 
-  const getWeather = useGetApi.useGetWeather();
-  useEffect(() => {
-    /* const res = axios.get(
-      `https://campus99.shop/weathers?pardo=서울&dt=20221122`
-    );
-    console.log(res); */
-    console.log(getWeather.data);
-  });
-
   return (
     <Wrapper>
       {LoggedIn ? (

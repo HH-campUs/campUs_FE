@@ -14,9 +14,120 @@ import { LoginState } from "../store/loginAtom";
 import { recoilPersist } from "recoil-persist";
 
 import { useMutation } from "@tanstack/react-query";
+// import { loginApi } from "../APIs/loginApi";
+import { instance } from "../instance/instance";
+import { setAccessToken } from "../instance/cookies";
 
 // import kakaoLogin from "../assets/image/";
 //import Kakao from "../KaKaoIcon";
+
+function Login() {
+  const serverUrl = process.env.REACT_APP_API;
+  const navigate = useNavigate();
+  //로그인상태관리 - recoil-persist사용 -> localstorage토큰저장.
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ILoginForm>();
+
+  // export const loginApi = async (payload: ILoginForm) => {
+  //   const data = await instance.post(`${serverUrl}/users/login`, {
+  //     email: payload.email,
+  //     password: payload.password,
+  //   });
+  //   return data;
+  // };
+
+  const handleValid = (data: ILoginForm) => {
+    // loginApi(data);
+  };
+
+  const KaKaoLogin = () => {
+    window.location.href = KAKAO_AUTH_URL;
+  };
+
+  return (
+    <LoginWrap>
+      <LoginTitle>
+        <div>
+          <KeyboardArrowLeftIcon
+            sx={{ fontSize: 40 }}
+            onClick={() => navigate("/")}
+          />
+        </div>
+
+        <LoginText>로그인</LoginText>
+      </LoginTitle>
+      {/* Form Start */}
+      <LoginForm onSubmit={handleSubmit(handleValid)}>
+        <StInput
+          {...register("email", {
+            required: "Emial을 입력해 주세요.",
+            pattern: {
+              value: /^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w+[.]?\w{2,3}/,
+              message: "올바른 이메일 형식을 입력해주세요.",
+            },
+          })}
+          placeholder="이메일"
+        />
+        <StInput
+          {...register("password", {
+            required: "비밀번호를 입력해주세요.",
+            maxLength: {
+              value: 20,
+              message: "20자리 이하로 작성해주세요",
+            },
+            minLength: {
+              value: 8,
+              message: "8자리 이상으로 작성해주세요",
+            },
+            pattern: {
+              value:
+                /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$/,
+              message:
+                "영어, 대문자, 특수기호(!@#$%&)가 포함된 8~20자리 입니다.",
+            },
+          })}
+          placeholder="비밀번호"
+          type="password"
+        />
+
+        <TextBox>
+          <FindUserInfo>
+            <span>아이디 / 비밀번호 찾기</span>
+          </FindUserInfo>
+        </TextBox>
+        <StBtn>로그인</StBtn>
+      </LoginForm>
+      {/* Form End */}
+      {/* Login아래 */}
+      <SocialBox>
+        <SocialText>SNS계정으로 로그인</SocialText>
+        <SocialBtnBox>
+          <KakaoBtn
+            onClick={KaKaoLogin}
+            src="/images/kakao_login_medium.png"
+            alt="kakaoLogin"
+          />
+          <GoogleBtn
+            src="/images/btn_google_light_normal_ios.svg"
+            alt="GoogleLogin"
+          />
+        </SocialBtnBox>
+        <SignUpTextBox>
+          <SignUpText>아직 회원이 아니신가요?</SignUpText>
+          <SignUpLink onClick={() => navigate("/signup")}>회원가입</SignUpLink>
+          <KeyboardArrowRightIcon sx={{ marginTop: "-6.5px" }} />
+        </SignUpTextBox>
+      </SocialBox>
+    </LoginWrap>
+  );
+}
+
+export default Login;
 
 const LoginWrap = styled.div`
   height: 95vh;
@@ -85,6 +196,7 @@ const StBtn = styled.button`
   border-radius: 8px;
   padding: 10px;
   color: ${(props) => props.theme.textColor};
+  cursor: pointer;
 `;
 
 const SocialBox = styled.div`
@@ -144,80 +256,6 @@ const SignUpLink = styled.p`
   color: black;
   cursor: pointer;
 `;
-
-function Login() {
-  const serverUrl = process.env.REACT_APP_API;
-  const navigate = useNavigate();
-  //로그인상태관리 - recoil-persist사용 -> localstorage토큰저장.
-  const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
-
-  const { register, handleSubmit, watch, setValue } = useForm<ILoginForm>();
-  const handleValid = (data: ILoginForm) => {};
-
-  const KaKaoLogin = () => {
-    window.location.href = KAKAO_AUTH_URL;
-  };
-
-  return (
-    <LoginWrap>
-      <LoginTitle>
-        <div>
-          <KeyboardArrowLeftIcon
-            sx={{ fontSize: 40 }}
-            onClick={() => navigate("/")}
-          />
-        </div>
-
-        <LoginText>로그인</LoginText>
-      </LoginTitle>
-      {/* Form Start */}
-      <LoginForm onSubmit={handleSubmit(handleValid)}>
-        <StInput
-          {...register("email", {
-            required: "validation Id",
-          })}
-          placeholder="이메일"
-        />
-        <StInput
-          {...register("password", {
-            required: "validation Password",
-          })}
-          placeholder="비밀번호"
-        />
-
-        <TextBox>
-          <FindUserInfo>
-            <span>아이디 / 비밀번호 찾기</span>
-          </FindUserInfo>
-        </TextBox>
-        <StBtn>로그인</StBtn>
-      </LoginForm>
-      {/* Form End */}
-      {/* Login아래 */}
-      <SocialBox>
-        <SocialText>SNS계정으로 로그인</SocialText>
-        <SocialBtnBox>
-          <KakaoBtn
-            onClick={KaKaoLogin}
-            src="/images/kakao_login_medium.png"
-            alt="kakaoLogin"
-          />
-          <GoogleBtn
-            src="/images/btn_google_light_normal_ios.svg"
-            alt="GoogleLogin"
-          />
-        </SocialBtnBox>
-        <SignUpTextBox>
-          <SignUpText>아직 회원이 아니신가요?</SignUpText>
-          <SignUpLink onClick={() => navigate("/signup")}>회원가입</SignUpLink>
-          <KeyboardArrowRightIcon sx={{ marginTop: "-6.5px" }} />
-        </SignUpTextBox>
-      </SocialBox>
-    </LoginWrap>
-  );
-}
-
-export default Login;
 
 {
   //위치수정해야함

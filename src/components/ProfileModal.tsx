@@ -1,13 +1,13 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import styled, { keyframes } from "styled-components";
 
 import { useForm } from "react-hook-form";
-import SaveAsIcon from "@mui/icons-material/SaveAs";
 import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 import { isPop } from "../interfaces/Modal";
 
 import { IEditPfForm } from "../interfaces/MyPage";
+import { useMyPageApi } from "../APIs/myPageApi";
 // import { MyPageApi } from "../APIs/myPageApi";
 
 export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
@@ -18,9 +18,20 @@ export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
     formState: { errors },
   } = useForm<IEditPfForm>();
 
-  // const kkkk = MyPageApi.editProfile();
+  //이미지미리보기
+  const [imagePreview, setImagePreview] = useState("");
+  const image = watch("profileImg");
+  useEffect(() => {
+    if (image && image.length > 0) {
+      const file: any = image[0];
+      setImagePreview(URL.createObjectURL(file));
+    }
+  }, [image]);
+
+  const profileEdit = useMyPageApi.useEditProfile();
   const handleValid = (data: IEditPfForm) => {
-    // kkkk.mutate(data);
+    profileEdit.mutate(data);
+    console.log(data);
   };
 
   const modalPop = () => {
@@ -41,19 +52,28 @@ export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
               <PfBox>
                 <PfText>기본 프로필 편집</PfText>
                 <PfCircle>
+                  <ImgPreview src={imagePreview} />
                   <img
-                    src="/images/blank-profile-picture-973460_1280.webp"
+                    src="/images/kakaopf.jpeg"
                     alt="PFP"
-                    height={"75px"}
+                    style={{ height: "75px", borderRadius: "125px" }}
                   />
                   <CameraCircle>
-                    <PhotoCameraIcon
-                      sx={{
-                        marginLeft: "4px",
-                        marginTop: "3px",
-                        position: "absolute",
-                      }}
-                    />
+                    <label>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        style={{ display: "none" }}
+                        {...register("profileImg")}
+                      />
+                      <PhotoCameraIcon
+                        sx={{
+                          marginLeft: "4px",
+                          marginTop: "3px",
+                          position: "absolute",
+                        }}
+                      />
+                    </label>
                   </CameraCircle>
                 </PfCircle>
               </PfBox>
@@ -62,10 +82,10 @@ export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
                 placeholder="닉네임"
                 {...register("nickname", {
                   required: "8자 이내로 적어주세요.",
-                  pattern: {
-                    value: /^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w+[.]?\w{2,3}/,
-                    message: "형식에 맞지 않는 닉네임입니다.",
-                  },
+                  // pattern: {
+                  //   value: /^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w+[.]?\w{2,3}/,
+                  //   message: "형식에 맞지 않는 닉네임입니다.",
+                  // },
                 })}
               />
               <ErrorNick>{errors.nickname?.message}</ErrorNick>
@@ -156,6 +176,13 @@ const PfCircle = styled.div`
   height: 75px;
   border-radius: 75px;
   margin: 10px auto;
+  position: relative;
+`;
+const ImgPreview = styled.img`
+  width: 75px;
+  height: 75px;
+  border-radius: 75px;
+  position: absolute;
 `;
 
 const CameraCircle = styled.div`

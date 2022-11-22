@@ -13,10 +13,6 @@ export interface IDeleteReviewPosts {
   //id값 필요할텐데 명세서에 아무것도 없음.
 }
 
-export interface IPostWeather {
-  pardo: string;
-  dt: string;
-}
 
 export interface IPostTravelPlan {
   userId: number;

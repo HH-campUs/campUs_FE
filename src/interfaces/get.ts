@@ -9,6 +9,11 @@ export interface IGetCampReview {
   reviewComment: string;
 }
 
+export interface IGetWeather {
+  pardo: string;
+  dt: string;
+}
+
 export interface IGetCampResult {
   campId: number;
   campName: string;

@@ -1,4 +1,4 @@
 
 [build]
-publish = "public"
-command = "npm run build"
+publish = "build"
+command = "CI= npm run build"

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import styled from "styled-components";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import { useForm } from "react-hook-form";
@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { ISignUpForm } from "../interfaces/inLogin";
 import { signUpApi } from "../APIs/loginApi";
 import { useMutation } from "@tanstack/react-query";
+import { instance, postInstance } from "../instance/instance";
+import axios from "axios";
 
 const serverUrl = process.env.REACT_APP_API;
 
@@ -26,15 +28,13 @@ export default function SignUp() {
   const passwordRef = useRef<string | null>(null);
   passwordRef.current = watch("password");
 
-  const handleValid = (data: ISignUpForm) => {
-    console.log(data);
-    signUpApi(data);
-    // loginApi.postSignup({ data });
-    // setToDos((oldToDos) => [
-    //   { text: data.toDo, id: Date.now(), category },
-    //   ...oldToDos,
-    // ]);
-    // setValue("toDo", "");
+  const handleValid = async (data: any) => {
+    try {
+      const res = await axios.post(`${serverUrl}/users/signup`, data);
+      return res;
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (

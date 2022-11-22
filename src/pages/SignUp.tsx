@@ -23,19 +23,26 @@ export default function SignUp() {
 
   console.log(errors);
 
-  const email = watch("email");
-  const password = watch("password");
+  // export const signUpApi = async (payload: ISignUpForm) => {
+  //   const data = await instance.post(`${serverUrl}/users/signup`, {
+  //     email: payload.email,
+  //     password: payload.password,
+  //   });
+  //   return data;
+  // };
+
   const passwordRef = useRef<string | null>(null);
   passwordRef.current = watch("password");
 
-  const handleValid = async (data: any) => {
-    try {
-      const res = await axios.post(`${serverUrl}/users/signup`, data);
-      return res;
-    } catch (err) {
-      console.log(err);
-    }
+
+  const handleValid = (data: ISignUpForm) => {
+    console.log(data);
+    signUpApi(data);
+
   };
+
+  const mailwatch = watch("email");
+  console.log(mailwatch);
 
   return (
     <LoginWrap>
@@ -54,11 +61,12 @@ export default function SignUp() {
         <StInput
           unValid={Boolean(errors.email)}
           placeholder="이메일"
-          // onKeyUp={IsPassedLogin}
           {...register("email", {
             required: "이메일을 입력해주세요.",
             pattern: {
               value: /^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w+[.]?\w{2,3}/,
+              //
+              // /^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w+[.]?\w{2,3}/,
               message: "올바른 이메일 형식을 입력해주세요.",
             },
           })}
@@ -81,6 +89,9 @@ export default function SignUp() {
             pattern: {
               value:
                 /^(?=.*[A-Z].*[a-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$/,
+
+              // /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$/,
+
               message:
                 "영어, 대문자, 특수기호(!@#$%&)가 포함된 8~20자리 입니다.",
             },
@@ -97,11 +108,12 @@ export default function SignUp() {
           })}
         />
         <ErrorMessage>{errors.passwordcheck?.message}</ErrorMessage>
-        {/* form end */}
+
         <TextBox>
           <FindUserInfo></FindUserInfo>
         </TextBox>
         <StBtn>회원가입</StBtn>
+        {/* form end */}
       </LoginForm>
     </LoginWrap>
   );

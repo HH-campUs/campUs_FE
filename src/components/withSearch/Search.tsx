@@ -65,6 +65,11 @@ function Search({ isActive, setIsActive }: isProps) {
           <ModalBg onClick={ModalHandler} />
           {/* 모달창 밖 blur background 토글 기능 부여 (event bubbling 해결) */}
           <SearchModal className="isActive">
+            {/* Headline + close btn */}
+            <TopContainer>
+              <SearchTitle>어디로 가시나요?</SearchTitle>
+              <CloseBtn onClick={ModalHandler}>X</CloseBtn>
+            </TopContainer>
             <SearchLabel htmlFor="search">
               <BiSearchAlt size="20" style={{ display: "inline-block" }} />
             </SearchLabel>
@@ -134,7 +139,7 @@ const ModalBg = styled.div`
 
 const SearchModal = styled.div`
   margin: 10px auto;
-  width: 370px;
+  width: 23.438rem;
   background-color: #ffffff;
   border-radius: 13px;
   justify-content: center;
@@ -154,16 +159,37 @@ const SearchModal = styled.div`
   }
 
   &.isActive {
-    height: 600px;
+    height: 43rem;
     left: 10;
     bottom: 0;
-    padding: 10px;
+    padding: 25px 20px 39px;
     position: fixed;
     z-index: 100;
-    overflow: auto;
+    //overflow: auto;
     animation: ${slideIn};
     animation-duration: 0.7s;
+
+    ::-webkit-scrollbar {
+      display: none;
+    }
   }
+`;
+
+const TopContainer = styled.div`
+  width: 100%;
+  margin-top: 26px;
+  justify-content: space-between;
+`;
+
+const SearchTitle = styled.div`
+  ${(props) => props.theme.fontTheme.Headerline1}
+  display: inline-block;
+`;
+
+const CloseBtn = styled.button`
+  width: 30px;
+  height: 30px;
+  display: inline-block;
 `;
 
 const SearchBox = styled.input`
@@ -193,8 +219,13 @@ const SearchLabel = styled.label`
 `;
 
 const DateContainer = styled.div`
-  width: 90%;
-  margin: 0 auto;
+  width: 20.938rem;
+  height: 24.938rem;
+  margin: 1rem 0 3.875rem;
+  padding: 1.56rem 0rem;
+  border-radius: 10px;
+  border: solid 1px #e3e3e3;
+  background-color: #fff;
 `;
 
 const BtnContainer = styled.button`

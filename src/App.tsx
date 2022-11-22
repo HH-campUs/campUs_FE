@@ -114,9 +114,9 @@ function App() {
               <Routes>
                 <Route path="/" element={<Splash />} />
                 <Route path="home/" element={<Home />}>
-                  <Route path="popping" element={<Pop />} />
-                  <Route path="recommended" element={<Recommended />} />
-                  <Route path="popular" element={<Popular />} />
+                  <Route path="home/popping" element={<Pop />} />
+                  <Route path="home/recommended" element={<Recommended />} />
+                  <Route path="home/popular" element={<Popular />} />
                 </Route>
                 <Route path="result" element={<Result />} />
                 <Route path="cresult" element={<CResult />} />

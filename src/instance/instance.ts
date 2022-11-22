@@ -3,13 +3,15 @@ import axios, { AxiosRequestConfig } from "axios";
 /* 쿠키 토큰 넣어 주는 곳 */
 import { getCookieToken } from "./cookies";
 
+const myToken = getCookieToken();
 // const serverUrl = process.env.REACT_APP_API;
 
 export const instance = axios.create({
   baseURL: process.env.REACT_APP_API,
   headers: {
-    "content-type": "application/json;charset=utf-8",
-    accept: "application/json, ",
+    //   "content-type": "application/json;charset=utf-8",
+    //   accept: "application/json, ",
+    "Cache-Control": "no-cache",
     "Access-Control-Allow-Origin": "*",
   },
   withCredentials: true,

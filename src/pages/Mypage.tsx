@@ -1,19 +1,38 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, Outlet, useMatch, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 
 import ProfileModal from "../components/ProfileModal";
+import { useGetApi } from "../APIs/getApi";
+import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
 
 function Mypage() {
   const [LoggedIn, setLoggedIn] = useState(true);
-  // const [modalOpen, setModalOpen] = useState<myModal>(false);
   const [isPopUp, setIsPopUp] = useState(false);
   const myReviewMatch = useMatch("/mypage/:id/myreview");
   const myPickMatch = useMatch("/mypage/:id/mypick");
   const myPlanMatch = useMatch("/mypage/:id/myplan");
   const navigate = useNavigate();
+
+  // useEffect(() => {
+  //   const res = axios.get(
+  //     `https://campus99.shop/weathers?pardo=서울&dt=20221122`
+  //   );
+  //   console.log(res);
+  // });
+  // const weather = useQuery(["weatherinfo"], async () => {
+  //   const { data } = await instance.get<IGetWeather>(`${serverUrl}/weathers`);
+  //   console.log(data);
+  //   return data;
+  // });
+
+  const weatherk = useGetApi.useGetWeather();
+  useEffect(() => {
+    console.log(weatherk.data);
+  }, []);
 
   return (
     <Wrapper>
@@ -23,9 +42,10 @@ function Mypage() {
             <>
               <ProfileCircle>
                 <img
-                  src="/images/blank-profile-picture-973460_1280.webp"
+                  src="/images/kakaopf.jpeg"
                   alt="PFP"
                   height={"75px"}
+                  style={{ borderRadius: "125px" }}
                 />
               </ProfileCircle>
               <ProfileText>
@@ -111,29 +131,6 @@ function Mypage() {
       )}
     </Wrapper>
   );
-}
-
-{
-  /* <>
-<ProfileCircle>
-  <img
-    src="/images/abstract-user-flat-4.png"
-    alt="PFP"
-    height={"75px"}
-  />
-</ProfileCircle>
-<ProfileText>
-  <Welcome>반갑습니다, 인원님!</Welcome>
-  <Nickname>@nickName</Nickname>
-</ProfileText>
-
-<ProfileArrow>
-  <KeyboardArrowRightIcon
-    sx={{ fontSize: 30, cursor: "pointer" }}
-  />
-</ProfileArrow>
-<EditBtn onClick={EditProfileHandler}>완료</EditBtn>
-</> */
 }
 
 export default Mypage;

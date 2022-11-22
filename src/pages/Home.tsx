@@ -20,9 +20,9 @@ function Home() {
 
   // 선택한 url로 갈시에 object받음. 아니면 null값.
   const [isActive, setIsActive] = useState(false);
-  const popMatch = useMatch("/popping");
-  const recommendedMatch = useMatch("/recommended");
-  const popularMatch = useMatch("/popular");
+  const popMatch = useMatch("home/popping");
+  const recommendedMatch = useMatch("home/recommended");
+  const popularMatch = useMatch("home/popular");
 
   return (
     <>
@@ -31,13 +31,13 @@ function Home() {
       {/* 이것도 component화 시켜야하나? */}
       <Tabs>
         <Tab isActive={popMatch !== null}>
-          <Link to="/popping"> 요즘뜨는곳 </Link>
+          <Link to="home/popping"> 요즘뜨는곳 </Link>
         </Tab>
         <Tab isActive={recommendedMatch !== null}>
-          <Link to="/recommended"> 추천 캠핑장</Link>
+          <Link to="home/recommended"> 추천 캠핑장</Link>
         </Tab>
         <Tab isActive={popularMatch !== null}>
-          <Link to="/popular"> 가장 인기</Link>
+          <Link to="home/popular"> 가장 인기</Link>
         </Tab>
       </Tabs>
       <Outlet />

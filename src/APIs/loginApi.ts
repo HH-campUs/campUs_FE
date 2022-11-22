@@ -14,6 +14,17 @@ export const signUpApi = async (payload: ISignUpForm) => {
   return data;
 };
 
+// email: payload.email,
+// password: payload.password,
+// export const loginApi = async (payload: ILoginForm) => {
+//   const data = await instance.post(`${serverUrl}/users/login`, {
+//     email: payload.email,
+//     password: payload.password,
+//   })
+//   .then((reponse)=>)
+//   return data;
+// };
+
 // export const loginApi = {
 // postSignup: () => {
 //   return useMutation((payload: ISignUpForm) =>

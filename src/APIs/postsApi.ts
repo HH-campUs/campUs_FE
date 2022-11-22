@@ -5,7 +5,6 @@ import { instance, postInstance } from "../instance/instance";
 import {
   IReviewPosts,
   IEditReviewPosts,
-  IPostWeather,
   IPostTravelPlan,
   ICampingPicked,
 } from "../interfaces/Posts";
@@ -45,16 +44,6 @@ export const postsApi = {
       );
       return data;
     });
-  },
-
-  //** 날씨정보조회?? / post - 확인필요. */
-  postWeather: () => {
-    return useMutation((payload: IPostWeather) =>
-      instance.post(`${serverUrl}/weathers`, {
-        pardo: payload.pardo,
-        dt: payload.dt,
-      })
-    );
   },
 
   //** 여행일정등록 / post */

@@ -9,7 +9,7 @@ import SignUp from "./pages/SignUp";
 import Pop from "./pages/Homedetail/Pop";
 import Recommended from "./pages/Homedetail/Recommended";
 import Popular from "./pages/Homedetail/Popular";
-import Splash from "./pages/Splash";
+/* import Splash from "./pages/Splash"; */
 
 import CResult from "./pages/CResult";
 import Detail from "./pages/Detail";
@@ -23,7 +23,7 @@ import Error from "./pages/Error";
 import NotFound from "./pages/NotFound";
 import { ErrorBoundary } from "react-error-boundary";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
-import { darkTheme, lightTheme } from "./layout/theme";
+import { theme } from "./layout/theme";
 
 import { useRecoilValue } from "recoil";
 import { isDarkAtom } from "./store/atmos";
@@ -106,17 +106,19 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
+      <ThemeProvider theme={theme}>
         <GlobalStyle />
         <ErrorBoundary FallbackComponent={Error}>
           <BrowserRouter>
             <Layout>
               <Routes>
-                <Route path="/" element={<Splash />} />
+
+                {/* <Route path="/" element={<Splash />} /> */}
                 <Route path="home/" element={<Home />}>
                   <Route path="home/popping" element={<Pop />} />
                   <Route path="home/recommended" element={<Recommended />} />
                   <Route path="home/popular" element={<Popular />} />
+
                 </Route>
                 <Route path="result" element={<Result />} />
                 <Route path="cresult" element={<CResult />} />

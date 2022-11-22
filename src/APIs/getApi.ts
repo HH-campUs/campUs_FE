@@ -1,9 +1,11 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useInfiniteQuery } from "@tanstack/react-query";
 import { instance } from "../instance/instance";
 import {
   IGetCampCatInfo,
   IGetCampReview,
-  IGetWeather,
+
+  IGetCampResult,
+
 } from "../interfaces/get";
 
 const serverUrl = process.env.REACT_APP_API;
@@ -14,6 +16,15 @@ export const useGetApi = {
   useGetCampCatInfo: () => {
     return useQuery(["campcatinfo"], async () => {
       const { data } = await instance.get<IGetCampCatInfo>(`${serverUrl}`);
+      return data;
+    });
+  },
+
+  // ** 캠핑장 결과 조회 - search (Infinite) / get ** //
+  getCampResult: () => {
+    return useInfiniteQuery(["campResult"], async () => {
+      /* request query에 payload값 받아야됨. (page) */
+      const { data } = await instance.get<IGetCampResult>(`${serverUrl}`);
       return data;
     });
   },

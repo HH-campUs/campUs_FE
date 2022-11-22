@@ -1,12 +1,13 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import styled from "styled-components";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
-import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { ISignUpForm } from "../interfaces/inLogin";
 import { signUpApi } from "../APIs/loginApi";
 import { useMutation } from "@tanstack/react-query";
+import { instance, postInstance } from "../instance/instance";
+import axios from "axios";
 
 const serverUrl = process.env.REACT_APP_API;
 
@@ -33,9 +34,11 @@ export default function SignUp() {
   const passwordRef = useRef<string | null>(null);
   passwordRef.current = watch("password");
 
+
   const handleValid = (data: ISignUpForm) => {
     console.log(data);
     signUpApi(data);
+
   };
 
   const mailwatch = watch("email");
@@ -86,7 +89,9 @@ export default function SignUp() {
             pattern: {
               value:
                 /^(?=.*[A-Z].*[a-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$/,
+
               // /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$/,
+
               message:
                 "영어, 대문자, 특수기호(!@#$%&)가 포함된 8~20자리 입니다.",
             },

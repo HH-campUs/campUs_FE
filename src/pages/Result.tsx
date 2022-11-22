@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate, Outlet, useMatch } from "react-router-dom";
 import styled from "styled-components";
 import Datepicker from "../components/withSearch/Datepicker";
 import { BiSearchAlt } from "react-icons/bi";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
-
+import { useGetApi } from "../APIs/getApi";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 //bookmark icon
@@ -27,6 +27,11 @@ function Result() {
     /* const { selectInput, selectDate, selectLocation } = event.target;
   setInputValue({event.target.value|); */
   };
+
+  const getWeather = useGetApi.useGetWeather();
+  useEffect(() => {
+    console.log(getWeather.data);
+  });
 
   return (
     <>

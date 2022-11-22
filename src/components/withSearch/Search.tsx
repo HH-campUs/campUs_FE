@@ -77,7 +77,10 @@ function Search({ isActive, setIsActive }: isProps) {
             <DateContainer>
               <Datepicker />
             </DateContainer>
-            <Location />
+            <SearchBtn to="/Result" onClick={searchHandler}>
+              Search
+            </SearchBtn>
+            {/*    <Location /> */}
             <BtnContainer>
               <ResetBtn onClick={searchHandler}> Reset </ResetBtn>
               <SearchBtn to="/Result" onClick={searchHandler}>

@@ -6,8 +6,6 @@ import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 
 import ProfileModal from "../components/ProfileModal";
 import { useGetApi } from "../APIs/getApi";
-import axios from "axios";
-import { useQuery } from "@tanstack/react-query";
 
 function Mypage() {
   const [LoggedIn, setLoggedIn] = useState(true);
@@ -17,22 +15,14 @@ function Mypage() {
   const myPlanMatch = useMatch("/mypage/:id/myplan");
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   const res = axios.get(
-  //     `https://campus99.shop/weathers?pardo=서울&dt=20221122`
-  //   );
-  //   console.log(res);
-  // });
-  // const weather = useQuery(["weatherinfo"], async () => {
-  //   const { data } = await instance.get<IGetWeather>(`${serverUrl}/weathers`);
-  //   console.log(data);
-  //   return data;
-  // });
-
-  const weatherk = useGetApi.useGetWeather();
+  const getWeather = useGetApi.useGetWeather();
   useEffect(() => {
-    console.log(weatherk.data);
-  }, []);
+    /* const res = axios.get(
+      `https://campus99.shop/weathers?pardo=서울&dt=20221122`
+    );
+    console.log(res); */
+    console.log(getWeather.data);
+  });
 
   return (
     <Wrapper>

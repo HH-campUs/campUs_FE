@@ -119,7 +119,7 @@ const LocationText = styled.div`
 /* After Dropdown -> contents */
 const Dcontents = styled.div`
   width: 95%;
-  height: ${(props) => props.theme.pixelToRem(170)};
+  height: ${(props) => props.theme.pixelToRem(190)};
   margin: 0 auto;
   background-color: ${(props) => props.theme.colorTheme.textWhite};
   border-top: 1px solid ${(props) => props.theme.colorTheme.border};

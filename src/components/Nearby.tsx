@@ -2,6 +2,22 @@ import React from "react";
 import styled from "styled-components";
 import { ImgBox } from "./MytravelPlan";
 
+export default function Nearby() {
+  return (
+    <Wrapper>
+      <TextBox>가장 가까운 캠핑장</TextBox>
+      <PlanBox>
+        <ImgBox />
+        <Distance>
+          <DistanceText>10km | 20분</DistanceText>
+          <LocationName>캠핑장 이름 적는곳</LocationName>
+          <HashTag>반려동물</HashTag>
+        </Distance>
+      </PlanBox>
+    </Wrapper>
+  );
+}
+
 const Wrapper = styled.div`
   margin: 20px 10px 20px 10px;
   font-weight: 500; //temporary
@@ -44,19 +60,3 @@ const HashTag = styled.div`
   text-align: center;
   padding: 2px;
 `;
-
-export default function Nearby() {
-  return (
-    <Wrapper>
-      <TextBox>가장 가까운 캠핑장</TextBox>
-      <PlanBox>
-        <ImgBox />
-        <Distance>
-          <DistanceText>10km | 20분</DistanceText>
-          <LocationName>캠핑장 이름 적는곳</LocationName>
-          <HashTag>반려동물</HashTag>
-        </Distance>
-      </PlanBox>
-    </Wrapper>
-  );
-}

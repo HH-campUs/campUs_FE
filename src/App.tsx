@@ -13,9 +13,9 @@ import Popular from "./pages/Homedetail/Popular";
 
 import CResult from "./pages/CResult";
 import Detail from "./pages/Detail";
-import Dannounce from "./components/DetailPage/Dannounce";
-import Ddetail from "./components/DetailPage/Ddetail";
-import Dreview from "./components/DetailPage/Dreview";
+import Dannounce from "./pages/DetailPage/Dannounce";
+import Ddetail from "./pages/DetailPage/Ddetail";
+import Dreview from "./pages/DetailPage/Dreview";
 
 import Mypage from "./pages/Mypage";
 import Result from "./pages/Result";

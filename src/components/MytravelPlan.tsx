@@ -2,6 +2,33 @@ import React from "react";
 import styled from "styled-components";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 
+export default function MytravelPlan() {
+  return (
+    <Wrapper>
+      <TextBox>
+        <MyPlan>내 여행일정</MyPlan>
+        <AllList>전체보기</AllList>
+      </TextBox>
+
+      {/* div는 최대 넓이를 가짐. */}
+      <PlanBox>
+        <ImgBox />
+        <PlaceName>
+          <PlaceBox>
+            <Campname>캠핑장 이름두줄해놓으면 아래 아이콘밀려남</Campname>
+            <Dday>D-16</Dday>
+          </PlaceBox>
+          <Location>
+            {/* component화. */}
+            <LocationOnIcon /> <span>강원도 어디?</span>
+            <LocationOnIcon /> <span>2022.12.28(달력)</span>
+          </Location>
+        </PlaceName>
+      </PlanBox>
+    </Wrapper>
+  );
+}
+
 const Wrapper = styled.div`
   margin: 20px 10px 20px 10px;
 `;
@@ -76,30 +103,3 @@ const Dday = styled.div`
   align-items: center;
   justify-content: center;
 `;
-
-export default function MytravelPlan() {
-  return (
-    <Wrapper>
-      <TextBox>
-        <MyPlan>내 여행일정</MyPlan>
-        <AllList>전체보기</AllList>
-      </TextBox>
-
-      {/* div는 최대 넓이를 가짐. */}
-      <PlanBox>
-        <ImgBox />
-        <PlaceName>
-          <PlaceBox>
-            <Campname>캠핑장 이름두줄해놓으면 아래 아이콘밀려남</Campname>
-            <Dday>D-16</Dday>
-          </PlaceBox>
-          <Location>
-            {/* component화. */}
-            <LocationOnIcon /> <span>강원도 어디?</span>
-            <LocationOnIcon /> <span>2022.12.28(달력)</span>
-          </Location>
-        </PlaceName>
-      </PlanBox>
-    </Wrapper>
-  );
-}

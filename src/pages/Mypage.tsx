@@ -11,10 +11,12 @@ import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 
 import ProfileModal from "../components/ProfileModal";
+
 import { useRecoilState } from "recoil";
 import { LoginState } from "../store/loginAtom";
 import { removeAccessToken, removeRefreshToken } from "../instance/cookies";
 import { useMyPageApi } from "../APIs/myPageApi";
+
 
 function Mypage() {
   const [toKen, setToken] = useRecoilState(LoginState);
@@ -53,6 +55,7 @@ function Mypage() {
   // const { data } = await instance.get("/users/myPage");
   //   return data;
   // });
+
 
   return (
     <Wrapper>

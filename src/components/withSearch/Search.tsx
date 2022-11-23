@@ -6,7 +6,13 @@ import React, {
   useCallback,
 } from "react";
 import { useRecoilValue } from "recoil";
-import { DateState, ExportDate } from "../../store/dateAtom";
+import {
+  DateState,
+  ExportDate,
+  ExportYear,
+  ExportMonth,
+  ExportDay,
+} from "../../store/dateAtom";
 import { Link } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 import { BiSearchAlt } from "react-icons/bi";
@@ -21,8 +27,35 @@ function Search({ isActive, setIsActive }: isProps) {
     selectLocation: "",
   });
 
-  const selectDate = useRecoilValue(ExportDate);
+  const [openDate, setOpenDate] = useState(false);
+  const [openLocation, setOpenLocation] = useState(false);
 
+  const selectDate = useRecoilValue(ExportDate);
+  const selectYear = useRecoilValue(ExportYear);
+  const selectMonth = useRecoilValue(ExportMonth);
+  const selectDay = useRecoilValue(ExportDay);
+
+  const { selectInput, selectLocation } = inputValue;
+
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {};
+
+  /* SearchModal 작동 boolean  default: false */
+  const ModalHandler = (event: MouseEvent<HTMLElement>) => {
+    event.stopPropagation();
+    setIsActive(!isActive);
+  };
+
+  const DateFolder = () => {
+    setOpenDate(!openDate);
+  };
+
+  const searchHandler = () => {
+    console.log(selectDate);
+  };
+
+  const resetHandler = () => {};
+
+  /* 추후에 모달 열리고 ModalBg에서 scroll x */
   /*   useEffect(() => {
     document.body.style.cssText = `
     position: fixed;
@@ -36,22 +69,6 @@ function Search({ isActive, setIsActive }: isProps) {
       window.scrollTo(0, parseInt(sY || "0", 10) * -1);
     };
   }, []); */
-
-  const { selectInput, selectLocation } = inputValue;
-
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {};
-
-  /* SearchModal 작동 boolean  default: false */
-  const ModalHandler = (event: MouseEvent<HTMLElement>) => {
-    event.stopPropagation();
-    setIsActive(!isActive);
-  };
-
-  const searchHandler = () => {
-    console.log(selectDate);
-  };
-
-  const resetHandler = () => {};
 
   return (
     <SearchModal style={{ transition: "all 0.5s ease-in" }}>
@@ -68,20 +85,33 @@ function Search({ isActive, setIsActive }: isProps) {
             {/* Headline + close btn */}
             <TopContainer>
               <SearchTitle>어디로 가시나요?</SearchTitle>
-              <CloseBtn onClick={ModalHandler}>X</CloseBtn>
+              <CloseBtn src="/images/closeBtn.svg" onClick={ModalHandler} />
             </TopContainer>
-            <SearchLabel htmlFor="search">
-              <BiSearchAlt size="20" style={{ display: "inline-block" }} />
-            </SearchLabel>
-            <SearchBox id="search" placeholder="Search" onChange={onChange} />
-            <DateContainer>
-              <Datepicker />
-            </DateContainer>
+            <SearchLabel htmlFor="search"></SearchLabel>
+            <SearchBox
+              id="search"
+              placeholder="강원도 캠핑장"
+              onChange={onChange}
+            />
+
+            <DateInfo onClick={DateFolder}>
+              <SubTitle>떠나고 싶은 날</SubTitle>
+              <DateText>
+                {selectMonth}월 {selectDay}일
+              </DateText>
+            </DateInfo>
+            {/* 데이트 피커 */}
+            {openDate ? <Datepicker /> : null}
+            {/* <DateContainer></DateContainer> */}
+
             <Location />
+
             <BtnContainer>
-              <ResetBtn onClick={searchHandler}> Reset </ResetBtn>
+              <ResetBtn onClick={searchHandler}>
+                <img src="/images/reset.svg" alt="reset" />
+              </ResetBtn>
               <SearchBtn to="/Result" onClick={searchHandler}>
-                Search
+                검색하기
               </SearchBtn>
             </BtnContainer>
           </SearchModal>
@@ -92,7 +122,7 @@ function Search({ isActive, setIsActive }: isProps) {
 }
 
 export default Search;
-
+/* animations */
 const slideIn = keyframes`
   from {bottom: -500px; opacity: 0} 
     to {bottom: 0; opacity: 1}
@@ -128,6 +158,7 @@ const Container = styled.div`
   transition: all 0.5s ease-in-out;
 `;
 
+/* Modal Background */
 const ModalBg = styled.div`
   width: 100%;
   height: 100%;
@@ -137,6 +168,7 @@ const ModalBg = styled.div`
   animation-duration: 0.2s;
 `;
 
+/* Search bar */
 const SearchModal = styled.div`
   margin: 10px auto;
   width: 23.438rem;
@@ -177,7 +209,8 @@ const SearchModal = styled.div`
 
 const TopContainer = styled.div`
   width: 100%;
-  margin-top: 26px;
+  margin-top: 10px;
+  display: flex;
   justify-content: space-between;
 `;
 
@@ -186,28 +219,38 @@ const SearchTitle = styled.div`
   display: inline-block;
 `;
 
-const CloseBtn = styled.button`
-  width: 30px;
-  height: 30px;
+const CloseBtn = styled.img`
+  width: ${(props) => props.theme.pixelToRem(24)};
+  height: ${(props) => props.theme.pixelToRem(24)};
   display: inline-block;
 `;
 
 const SearchBox = styled.input`
-  width: inherit;
-  height: 35px;
-  font-size: 1rem;
-  background-color: transparent;
-  border: none;
-  position: relative;
-  display: flex;
-
-  &::placeholder {
-    font-size: 1rem;
-    color: #797979;
-  }
+  width: ${(props) => props.theme.pixelToRem(335)};
+  height: ${(props) => props.theme.pixelToRem(54)};
+  margin-top: -13px;
+  padding: 15px 20px 15px 55px;
+  border-radius: 10px;
+  border: solid 1px #eee;
+  background-color: #f5f5f5;
+  background-image: url("/images/search.svg");
+  background-repeat: no-repeat;
+  background-position: ${(props) => props.theme.pixelToRem(23)} center;
 
   &:focus {
     outline: none;
+  }
+
+  ::placeholder {
+    ${(props) => props.theme.fontTheme.Subtitle3};
+    color: #797979 !important;
+    letter-spacing: normal;
+    font-family: Pretendard;
+    text-align: left;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    font-style: normal;
   }
 `;
 
@@ -219,44 +262,113 @@ const SearchLabel = styled.label`
 `;
 
 const DateContainer = styled.div`
-  width: 20.938rem;
-  height: 24.938rem;
-  margin: 1rem 0 3.875rem;
-  padding: 1.56rem 0rem;
+  width: ${(props) => props.theme.pixelToRem(335)};
+  height: auto;
+  margin: 16px 0 62px;
+  padding: 25px 0;
   border-radius: 10px;
   border: solid 1px #e3e3e3;
   background-color: #fff;
 `;
 
+/* datepicker 열기전에 정보 보여주는 */
+const DateInfo = styled.div`
+  width: ${(props) => props.theme.pixelToRem(335)};
+  height: ${(props) => props.theme.pixelToRem(70)};
+  margin: 16px 0;
+  padding: 25px 20px;
+  border-radius: ${(props) => props.theme.pixelToRem(10)};
+  border: solid ${(props) => props.theme.pixelToRem(1)} #e3e3e3;
+  background-color: ${(props) => props.theme.colorTheme.textWhite};
+  justify-content: space-between;
+  display: flex;
+`;
+
+const SubTitle = styled.div`
+  width: 116px;
+  height: 20px;
+
+  font-family: Pretendard;
+  font-size: ${(props) => props.theme.pixelToRem(16)};
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: ${(props) => props.theme.pixelToRem(-0.5)};
+  text-align: left;
+  color: #333;
+`;
+
+const DateText = styled.div`
+  width: 124px;
+  height: 20px;
+  font-family: Pretendard;
+  font-size: ${(props) => props.theme.pixelToRem(16)};
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: ${(props) => props.theme.pixelToRem(-0.5)};
+  text-align: right;
+  color: #333;
+`;
+
+const LocationInfo = styled(DateInfo)``;
+
+const SubLocation = styled(SubTitle)``;
+
+const LocationText = styled(DateText)`
+  width: auto !important;
+  margin-left: 40px !important;
+  img {
+    position: absolute;
+  }
+`;
+
 const BtnContainer = styled.button`
-  width: 90%;
-  height: 10%;
+  width: ${(props) => props.theme.pixelToRem(337)};
+  height: ${(props) => props.theme.pixelToRem(54)};
   margin: 0 auto;
-  top: 102px;
+  bottom: ${(props) => props.theme.pixelToRem(50)};
   background: transparent;
   border: none;
   justify-content: space-between;
-  position: relative;
+  position: fixed;
   display: flex;
 `;
 
 const ResetBtn = styled.button`
-  width: 130px;
-  height: 43px;
-  font-size: 1rem;
-  background-color: #8d8d8d;
-  border-radius: 13px;
+  width: ${(props) => props.theme.pixelToRem(70)};
+  height: 100%;
+  flex-grow: 0;
+  margin: 0 14px 0 0;
+  opacity: 0.74;
+  border-radius: 10px;
+  background-color: ${(props) => props.theme.colorTheme.textWhite};
+  border: solid 1px #e2e2e2;
+
+  /* :active {
+
+  } */
 `;
 
 const SearchBtn = styled(Link)`
-  width: 130px;
-  height: 43px;
-  font-size: 1rem;
+  width: ${(props) => props.theme.pixelToRem(251)};
+  height: 100%;
+  padding: 14px 0;
+  font-size: ${(props) => props.theme.pixelToRem(16)};
+  color: ${(props) => props.theme.colorTheme.textWhite};
+  flex-grow: 0;
+  border-radius: ${(props) => props.theme.pixelToRem(10)};
+  background-color: ${(props) => props.theme.colorTheme.primary1};
+  font-family: Pretendard;
+  ${(props) => props.theme.fontTheme.Body2};
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
   text-align: center;
-  background-color: #8d8d8d;
-  border-radius: 13px;
-
-  :active {
+  color: #fff !important;
+  /* :active {
     background-color: #3b3b3b;
-  }
+  } */
 `;

@@ -1,5 +1,9 @@
-import { useQuery, useInfiniteQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { instance } from "../instance/instance";
+import { useRecoilValue } from "recoil";
+import { ExportDate } from "../store/dateAtom";
+import { ExportLocation } from "../store/locationAtom";
+
 import {
   IGetCampCatInfo,
   IGetCampReview,
@@ -38,10 +42,17 @@ export const useGetApi = {
     });
   },
 
+  /* 날씨 조회 */
   useGetWeather: () => {
+    /* date, location 값을 useRecoilValue로 이전 컴포넌트에서 사용된 selector들을 활용하여 저장 */
+    const date = useRecoilValue(ExportDate);
+    const location = useRecoilValue(ExportLocation);
+    /* const location =  */
     return useQuery(["weatherinfo"], async () => {
-      const { data } = await instance.get<IGetWeather>("/weathers/");
-      console.log("data", data);
+      const { data } = await instance.get<IGetWeather>(
+        `/weathers?pardo=${location}&dt=${date}`
+      );
+      console.log(data);
       return data;
     });
   },

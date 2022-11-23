@@ -3,9 +3,8 @@ import { instance } from "../instance/instance";
 import {
   IGetCampCatInfo,
   IGetCampReview,
-
   IGetCampResult,
-
+  IGetWeather,
 } from "../interfaces/get";
 
 const serverUrl = process.env.REACT_APP_API;
@@ -21,8 +20,8 @@ export const useGetApi = {
   },
 
   // ** 캠핑장 결과 조회 - search (Infinite) / get ** //
-  getCampResult: () => {
-    return useInfiniteQuery(["campResult"], async () => {
+  useGetCampResult: () => {
+    return useQuery(["campResult"], async () => {
       /* request query에 payload값 받아야됨. (page) */
       const { data } = await instance.get<IGetCampResult>(`${serverUrl}`);
       return data;
@@ -41,8 +40,8 @@ export const useGetApi = {
 
   useGetWeather: () => {
     return useQuery(["weatherinfo"], async () => {
-      const { data } = await instance.get<IGetWeather>("/weathers");
-      console.log(data);
+      const { data } = await instance.get<IGetWeather>("/weathers/");
+      console.log("data", data);
       return data;
     });
   },

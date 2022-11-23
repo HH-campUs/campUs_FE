@@ -11,6 +11,11 @@ import axios from "axios";
 
 const serverUrl = process.env.REACT_APP_API;
 
+//11/22화
+//1.instance 헤더오류?로 바디에 값이 안담김.
+//2.req값을 쿼리로 전송해야하는데 body로전송해서 api안먹음
+//3. use안붙여서 사용안됬음.
+
 export default function SignUp() {
   const navigate = useNavigate();
 
@@ -34,15 +39,23 @@ export default function SignUp() {
   const passwordRef = useRef<string | null>(null);
   passwordRef.current = watch("password");
 
-
   const handleValid = (data: ISignUpForm) => {
     console.log(data);
     signUpApi(data);
-
   };
 
   const mailwatch = watch("email");
   console.log(mailwatch);
+
+  // =======
+  //   const handleValid = async (data: any) => {
+  //     try {
+  //       const res = await axios.post(`${serverUrl}/users/signup`, data);
+  //       return res;
+  //     } catch (err) {
+  //       console.log(err);
+  //     }
+  // >>>>>>> master
 
   return (
     <LoginWrap>

@@ -1,9 +1,5 @@
 import React, { useState, useRef } from "react";
 import styled from "styled-components";
-
-import Ddetail from "../components/DetailPage/Ddetail";
-import Dreview from "../components/DetailPage/Dreview";
-import Dannounce from "../components/DetailPage/Dannounce";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { Link, Outlet, useMatch } from "react-router-dom";
 

@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from "react";
-
-import styled, { keyframes } from "styled-components";
-
 import { useForm } from "react-hook-form";
-import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 import { isPop } from "../interfaces/Modal";
-
 import { IEditPfForm } from "../interfaces/MyPage";
 import { useMyPageApi } from "../APIs/myPageApi";
-// import { MyPageApi } from "../APIs/myPageApi";
+//css
+import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
+import styled, { keyframes } from "styled-components";
 
 export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
   const {
@@ -38,10 +35,12 @@ export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
     setIsPopUp((prev) => !prev);
   };
 
+  const checkPf = useMyPageApi.useGetMyPage().data?.data[0];
+
   return (
     <>
       <PfModalWrap className="setIsPopUp" onClick={modalPop}>
-        편집
+        수정
       </PfModalWrap>
 
       {isPopUp && (
@@ -52,11 +51,15 @@ export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
               <PfBox>
                 <PfText>기본 프로필 편집</PfText>
                 <PfCircle>
-                  <ImgPreview src={imagePreview} />
+                  {imagePreview && <ImgPreview src={imagePreview} />}
                   <img
                     src="/images/kakaopf.jpeg"
                     alt="PFP"
-                    style={{ height: "75px", borderRadius: "125px" }}
+                    style={{
+                      height: "75px",
+                      borderRadius: "125px",
+                      objectFit: "cover",
+                    }}
                   />
                   <CameraCircle>
                     <label>

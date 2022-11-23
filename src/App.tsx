@@ -124,7 +124,7 @@ function App() {
                 {/* <Route path="splash" element={<Splash />} /> */}
                 <Route path="signup" element={<SignUp />} />
 
-                {/* <Route path="detail" element={<Detail />} /> */}
+                <Route path="detail" element={<Detail />} />
                 <Route path="/detail/:id" element={<Detail />}>
                   <Route path="/detail/:id/announce" element={<Dannounce />} />
                   <Route path="/detail/:id/detail" element={<Ddetail />} />

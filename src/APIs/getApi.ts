@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { instance } from "../instance/instance";
 import { useRecoilValue } from "recoil";
 import { ExportDate } from "../store/dateAtom";
+import { ExportLocation } from "../store/locationAtom";
 
 import {
   IGetCampCatInfo,
@@ -23,13 +24,16 @@ export const useGetApi = {
   },
 
   // ** 캠핑장 결과 조회 - search (Infinite) / get ** //
-  /*   getCampResult: () => {
-    return useInfiniteQuery(["campResult"], async () => {
-  
-      const { data } = await instance.get<IGetCampResult>(`${serverUrl}`);
+  useGetCampResult: () => {
+    const date = useRecoilValue(ExportDate);
+    const location = useRecoilValue(ExportLocation);
+    return useQuery(["campResult"], async () => {
+      const { data } = await instance.get<IGetCampResult>(
+        `/camps?address=${location}&numOfRows={10}&pageNo={1}`
+      );
       return data;
     });
-  }, */
+  },
 
   // ** 캠핑장 리뷰 조회 / get ** //
   useGetCampReview: () => {
@@ -45,10 +49,11 @@ export const useGetApi = {
   useGetWeather: () => {
     /* date, location 값을 useRecoilValue로 이전 컴포넌트에서 사용된 selector들을 활용하여 저장 */
     const date = useRecoilValue(ExportDate);
+    const location = useRecoilValue(ExportLocation);
     /* const location =  */
     return useQuery(["weatherinfo"], async () => {
       const { data } = await instance.get<IGetWeather>(
-        `/weathers?pardo=${"강원"}&dt=${date}`
+        `/weathers?pardo=${location}&dt=${date}`
       );
       console.log(data);
       return data;

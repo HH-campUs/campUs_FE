@@ -31,7 +31,7 @@ function Result() {
   const getWeather = useGetApi.useGetWeather();
   useEffect(() => {
     console.log(getWeather.data);
-  });
+  }, []);
 
   return (
     <>

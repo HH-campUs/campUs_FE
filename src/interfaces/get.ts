@@ -20,7 +20,6 @@ export interface IGetCampResult {
   /* 야영장 종류 */
   induty: string;
   doNm: string;
-  /*  */
   sigunguNm: string;
   address: string;
   X: string | number;

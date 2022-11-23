@@ -56,7 +56,7 @@ function Location() {
           <img src="/images/dropdown.svg" alt="dropdown" />
         </LocationText>
       </LocationInfo>
-      {openLocation ? null : (
+      {openLocation == false ? null : (
         <Dcontents>
           {localData.map((item) => (
             <Locations key={item.name} onClick={LocationChange} id={item.value}>

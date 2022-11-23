@@ -28,7 +28,6 @@ function Search({ isActive, setIsActive }: isProps) {
   });
 
   const [openDate, setOpenDate] = useState(false);
-  const [openLocation, setOpenLocation] = useState(false);
 
   const selectDate = useRecoilValue(ExportDate);
   const selectYear = useRecoilValue(ExportYear);

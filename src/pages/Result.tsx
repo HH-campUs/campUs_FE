@@ -27,15 +27,16 @@ function Result() {
   setInputValue({event.target.value|); */
   };
 
-  const getWeather = useGetApi.useGetWeather();
-  useEffect(() => {
-    console.log(getWeather.data);
-  }, []);
+  const getWeather = useGetApi.useGetWeather().data?.weather[0];
+  console.log(getWeather);
 
   return (
     <>
       <ReSearch>
-        <div>
+        <div
+          onClick={() => {
+            nav(-1);
+          }}>
           <img src="/images/back.svg" alt="back" />
           검색조건
         </div>
@@ -52,7 +53,7 @@ function Result() {
           <img src="/images/sunRain.svg" alt="weather img" />
           <div className="secondSeparate">
             <div className="infoBox">
-              <div className="local">충청남도</div>
+              <div className="local">{getWeather.pardo}</div>
               <div className="date">12월 20일 9:52</div>
             </div>
             <div className="tempBox">
@@ -62,7 +63,7 @@ function Result() {
           </div>
           <div className="thirdSeparate">
             <img src="/images/pop.svg" alt="pop" />
-            <span>20%</span>
+            <span>{getWeather.pop * 100}%</span>
           </div>
           <FaChevronUp />
         </WeatherModal>
@@ -451,7 +452,7 @@ const InnerBg = styled.div`
   letter-spacing: normal;
   text-align: right;
   color: #fff;
-  opacity: 0.3;
+  opacity: 0.6;
   border-radius: 4px;
   background-color: #000;
   position: absoulte;

@@ -47,7 +47,6 @@ export const useGetApi = {
     /* date, location 값을 useRecoilValue로 이전 컴포넌트에서 사용된 selector들을 활용하여 저장 */
     const date = useRecoilValue(ExportDate);
     const location = useRecoilValue(ExportLocation);
-    /* const location =  */
     return useQuery(["weatherinfo"], async () => {
       const { data } = await instance.get<IGetWeather>(
         `/weathers?pardo=${location}&dt=${date}`

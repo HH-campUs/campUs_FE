@@ -25,12 +25,9 @@ export const useGetApi = {
 
   // ** 캠핑장 결과 조회 - search (Infinite) / get ** //
   useGetCampResult: () => {
-    const date = useRecoilValue(ExportDate);
-    const location = useRecoilValue(ExportLocation);
     return useQuery(["campResult"], async () => {
-      const { data } = await instance.get<IGetCampResult>(
-        `/camps?address=${location}&numOfRows={10}&pageNo={1}`
-      );
+      /* request query에 payload값 받아야됨. (page) */
+      const { data } = await instance.get<IGetCampResult>(`${serverUrl}`);
       return data;
     });
   },

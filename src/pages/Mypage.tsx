@@ -1,23 +1,65 @@
-import React, { useEffect, useState } from "react";
-import { Link, Outlet, useMatch, useNavigate } from "react-router-dom";
+import React, { useLayoutEffect, useState } from "react";
+import {
+  Link,
+  Outlet,
+  useMatch,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 import styled from "styled-components";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 
 import ProfileModal from "../components/ProfileModal";
-import { useGetApi } from "../APIs/getApi";
+
+import { useRecoilState } from "recoil";
+import { LoginState } from "../store/loginAtom";
+import { removeAccessToken, removeRefreshToken } from "../instance/cookies";
+import { useMyPageApi } from "../APIs/myPageApi";
+
 
 function Mypage() {
-  const [LoggedIn, setLoggedIn] = useState(true);
+  const [toKen, setToken] = useRecoilState(LoginState);
+
   const [isPopUp, setIsPopUp] = useState(false);
   const myReviewMatch = useMatch("/mypage/:id/myreview");
   const myPickMatch = useMatch("/mypage/:id/mypick");
   const myPlanMatch = useMatch("/mypage/:id/myplan");
   const navigate = useNavigate();
 
+  const logOut = () => {
+    removeAccessToken();
+    removeRefreshToken();
+    setToken(null);
+    navigate("/");
+  };
+
+  const { id } = useParams();
+
+  const checkPf = useMyPageApi.useGetMyPage().data?.data[0];
+
+  // useLayoutEffect(() => {}, [checkPf]);
+
+  // Authorization: `Bearer ${accessToken} ${refreshToken}`,
+
+  // const serverUrl = process.env.REACT_APP_API;
+  // const accessToken = getCamperToken();
+  // const refreshToken = getRefreshToken();
+  // const headers = {
+  //   Authorization: `Bearer ${accessToken}`,
+  //   refreshToken: `Bearer ${refreshToken}`,
+  // };
+  // instance사용시 refreshtoken사라져버림.
+  // const check = useQuery(["mypageinfo"], async () => {
+  // const { data } = await axios.get(`${serverUrl}/users/myPage`, { headers });
+  // const { data } = await instance.get("/users/myPage");
+  //   return data;
+  // });
+
+
   return (
     <Wrapper>
-      {LoggedIn ? (
+      {toKen ? (
         <UserProfile>
           <Profile>
             <>
@@ -30,8 +72,8 @@ function Mypage() {
                 />
               </ProfileCircle>
               <ProfileText>
-                <Welcome>반갑습니다, 인원님!</Welcome>
-                <Nickname>@nickName</Nickname>
+                <Welcome>반갑습니다 {checkPf?.nickname} 님!</Welcome>
+                <Nickname></Nickname>
               </ProfileText>
               <ProfileArrow>
                 <KeyboardArrowRightIcon
@@ -39,9 +81,10 @@ function Mypage() {
                 />
               </ProfileArrow>
               <ProfileModal isPopUp={isPopUp} setIsPopUp={setIsPopUp} />
+              <LogoutBtn onClick={logOut}>로그아웃</LogoutBtn>
             </>
 
-            {/* <Alarmbell>
+            {/* <Alarmbell> 
               <NotificationsNoneIcon sx={{ marginLeft: "10px" }} />
             </Alarmbell> */}
           </Profile>
@@ -60,7 +103,8 @@ function Mypage() {
           <div
             style={{
               marginTop: "-120px",
-            }}>
+            }}
+          >
             <Outlet />
           </div>
         </UserProfile>
@@ -77,13 +121,15 @@ function Mypage() {
             <LoginBtn
               onClick={() => {
                 navigate("/login");
-              }}>
+              }}
+            >
               로그인
             </LoginBtn>
             <SignBtn
               onClick={() => {
                 navigate("/signup");
-              }}>
+              }}
+            >
               회원가입
             </SignBtn>
           </LoginBox>
@@ -101,7 +147,8 @@ function Mypage() {
           <div
             style={{
               marginTop: "20px",
-            }}>
+            }}
+          >
             <Outlet />
           </div>
         </UserProfile>
@@ -144,6 +191,7 @@ const ProfileCircle = styled.div`
 const ProfileText = styled.div``;
 
 const Welcome = styled.div`
+  margin-top: 8px;
   font-weight: 500;
 `;
 
@@ -156,10 +204,9 @@ const ProfileArrow = styled.div`
   display: flex;
 `;
 
-const EditBtn = styled.button`
+const LogoutBtn = styled.button`
   border-radius: 8px;
   font-size: 0.9rem;
-  margin-left: 100px;
 `;
 
 const Alarmbell = styled.div``;

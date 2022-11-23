@@ -10,13 +10,12 @@ import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 
 import { KAKAO_AUTH_URL } from "../components/KaKaoAuth";
-import { LoginState } from "../store/loginAtom";
+import { LoginState, userInfo } from "../store/loginAtom";
 import { recoilPersist } from "recoil-persist";
 
 import { useMutation } from "@tanstack/react-query";
-// import { loginApi } from "../APIs/loginApi";
 import { instance } from "../instance/instance";
-import { setAccessToken } from "../instance/cookies";
+import { setAccessToken, setRefreshToken } from "../instance/cookies";
 
 // import kakaoLogin from "../assets/image/";
 //import Kakao from "../KaKaoIcon";
@@ -25,7 +24,8 @@ function Login() {
   const serverUrl = process.env.REACT_APP_API;
   const navigate = useNavigate();
   //로그인상태관리 - recoil-persist사용 -> localstorage토큰저장.
-  const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
+  const [toKen, setToken] = useRecoilState(LoginState);
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(userInfo);
 
   const {
     register,
@@ -33,16 +33,44 @@ function Login() {
     formState: { errors },
   } = useForm<ILoginForm>();
 
-  // export const loginApi = async (payload: ILoginForm) => {
-  //   const data = await instance.post(`${serverUrl}/users/login`, {
-  //     email: payload.email,
-  //     password: payload.password,
-  //   });
+  // export const signin = async (payload) => {
+  //   const data = await instance.post("users/login", payload);
   //   return data;
   // };
 
-  const handleValid = (data: ILoginForm) => {
-    // loginApi(data);
+  // export const instance = axios.create({
+  //   baseURL: process.env.REACT_APP_API,
+  //   headers: {
+  //     // "content-type": "application/json;charset=utf-8",
+  //     // accept: "application/json, ",
+  //     Authorization: `Bearer ${myToken}, ${refreshToken}`,
+  //     "Cache-Control": "no-cache",
+  //     "Access-Control-Allow-Origin": "*",
+  //   },
+  //   withCredentials: true,
+  // });
+
+  const loginApi = async (payload: ILoginForm) => {
+    const data = await instance.post("users/login", {
+      email: payload.email,
+      password: payload.password,
+    });
+    return data;
+  };
+
+  const handleValid = async (data: ILoginForm) => {
+    const response = await loginApi(data);
+
+    if (response.status === 200) {
+      //리스폰스확인필!
+      setAccessToken(response.data.Tokens.AccessToken);
+      setRefreshToken(response.data.Tokens.RefreshToken);
+      setToken(response.data.Tokens.AccessToken);
+
+      setIsLoggedIn(true);
+      navigate("/");
+    }
+    console.log(response.data);
   };
 
   const KaKaoLogin = () => {

@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import KaKaomap from "../KaKaomap";
+import KaKaomap from "../../components/KaKaomap";
 
 const Wrapper = styled.div`
   margin-bottom: 40px;

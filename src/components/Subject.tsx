@@ -2,15 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import Carousel from "./Carousel";
 
-const Wrapper = styled.div`
-  margin: 20px 10px 20px 10px;
-  font-weight: 500; //temporary
-`;
-
-const TextBox = styled.div`
-  margin-bottom: 10px;
-`;
-
 export default function Subject() {
   return (
     <Wrapper>
@@ -20,3 +11,12 @@ export default function Subject() {
     </Wrapper>
   );
 }
+
+const Wrapper = styled.div`
+  margin: 20px 10px 20px 10px;
+  font-weight: 500; //temporary
+`;
+
+const TextBox = styled.div`
+  margin-bottom: 10px;
+`;

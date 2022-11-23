@@ -1,24 +1,18 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { useNavigate } from "react-router";
 import { ILoginForm } from "../interfaces/inLogin";
+
+import { KAKAO_AUTH_URL } from "../components/KaKaoAuth";
+import { LoginState, userInfo } from "../store/loginAtom";
+import { instance } from "../instance/instance";
+import { setAccessToken, setRefreshToken } from "../instance/cookies";
 
 //css
 import styled from "styled-components";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
-
-import { KAKAO_AUTH_URL } from "../components/KaKaoAuth";
-import { LoginState, userInfo } from "../store/loginAtom";
-import { recoilPersist } from "recoil-persist";
-
-import { useMutation } from "@tanstack/react-query";
-import { instance } from "../instance/instance";
-import { setAccessToken, setRefreshToken } from "../instance/cookies";
-
-// import kakaoLogin from "../assets/image/";
-//import Kakao from "../KaKaoIcon";
 
 function Login() {
   const serverUrl = process.env.REACT_APP_API;
@@ -89,7 +83,7 @@ function Login() {
 
         <LoginText>로그인</LoginText>
       </LoginTitle>
-      {/* Form Start */}
+
       <LoginForm onSubmit={handleSubmit(handleValid)}>
         <StInput
           {...register("email", {
@@ -130,20 +124,16 @@ function Login() {
         </TextBox>
         <StBtn>로그인</StBtn>
       </LoginForm>
-      {/* Form End */}
-      {/* Login아래 */}
+
       <SocialBox>
         <SocialText>SNS계정으로 로그인</SocialText>
         <SocialBtnBox>
-          <KakaoBtn
-            onClick={KaKaoLogin}
-            src="/images/kakao_login_medium.png"
-            alt="kakaoLogin"
-          />
-          <GoogleBtn
-            src="/images/btn_google_light_normal_ios.svg"
-            alt="GoogleLogin"
-          />
+          <KakaoBtn onClick={KaKaoLogin}>
+            <img src="/images/kakaoCircle.svg" alt="kakaoLogin" />
+          </KakaoBtn>
+          <GoogleBtn>
+            <img src="/images/GoogleCircle.svg" alt="GoogleLogin" />
+          </GoogleBtn>
         </SocialBtnBox>
         <SignUpTextBox>
           <SignUpText>아직 회원이 아니신가요?</SignUpText>
@@ -230,62 +220,45 @@ const StBtn = styled.button`
 const SocialBox = styled.div`
   position: relative;
   text-align: center;
-  margin-top: 25px;
+  margin: 25px 0;
+  padding: 10px;
+  flex-direction: column;
+  display: flex;
 `;
 
 const SocialText = styled.p`
   color: ${(props) => props.theme.textColor};
-  font-size: 13px;
+  font-size: 0.75rem;
 `;
 
 const SocialBtnBox = styled.div`
-  position: absolute;
-  margin-top: -15px;
-  margin-left: 60px;
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+  gap: 10px;
 `;
 
-const KakaoBtn = styled.img`
+const KakaoBtn = styled.div`
   cursor: pointer;
-  position: absolute;
-  left: 10px;
-  top: 30px;
-  width: 80px;
-  height: 36px;
-  margin-left: 100px;
 `;
 
-const GoogleBtn = styled.img`
+const GoogleBtn = styled.div`
   cursor: pointer;
-  position: absolute;
-  left: 10px;
-  top: 28px;
-  width: 80px;
-  height: 40px;
-  margin-left: 170px;
 `;
 
 const SignUpTextBox = styled.div`
   display: flex;
-  position: absolute;
-  margin-top: 100px;
-  margin-left: 140px;
+  justify-content: center;
+  margin-top: 25px;
   color: ${(props) => props.theme.textColor};
-  font-size: 13px;
+  font-size: 0.75rem;
 `;
 
 const SignUpText = styled.p`
   margin-right: 10px;
+  color: gray;
 `;
 
 const SignUpLink = styled.p`
-  justify-content: center;
-  text-align: center;
-  align-items: center;
-  color: black;
   cursor: pointer;
 `;
-
-{
-  //위치수정해야함
-  /* <Kakao /> */
-}

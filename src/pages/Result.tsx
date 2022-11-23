@@ -304,23 +304,20 @@ const SearchBtn = styled(Link)`
 /* weather */
 
 const WeatherModal = styled.div`
-  margin: 10px auto;
-  width: 370px;
-  background-color: #ebebeb;
-  border-radius: 13px;
-  justify-content: center;
-  align-content: center;
+  width: ${(props) => props.theme.pixelToRem(335)};
+  flex-grow: 0;
+  margin: 14px 19px 44px 21px;
+  padding: 14px 17px 9px 11px;
+  border-radius: ${(props) => props.theme.pixelToRem(10)};
+  border: solid 1px ${(props) => props.theme.colorTheme.border};
+  background-color: rgba(81, 133, 166, 0.13);
 
   transition: all 0.5s ease-out;
 
   z-index: 100;
 
   &.isNotActive {
-    height: 100px;
-    padding: 5px;
-    font-size: 1rem;
-    color: #797979;
-
+    height: ${(props) => props.theme.pixelToRem(90)};
     span {
       margin-left: 10px;
       font-size: 1.4rem;

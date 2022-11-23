@@ -52,7 +52,6 @@ export const useGetApi = {
       const { data } = await instance.get<IGetWeather>(
         `/weathers?pardo=${location}&dt=${date}`
       );
-      console.log(data);
       return data;
     });
   },

@@ -15,7 +15,7 @@ export default function MytravelPlan() {
         <ImgBox />
         <PlaceName>
           <PlaceBox>
-            <Campname>캠핑장 이름두줄해놓으면 아래 아이콘밀려남</Campname>
+            <Campname>캠핑장 이름두줄해도 아이콘안밀려남</Campname>
             <Dday>D-16</Dday>
           </PlaceBox>
           <Location>
@@ -44,8 +44,8 @@ const MyPlan = styled.div`
 `;
 
 const AllList = styled.div`
-  font-size: small;
-  color: ${(props) => props.theme.textColor};
+  font-size: 0.8rem;
+  color: grey;
 `;
 
 const PlanBox = styled.div`

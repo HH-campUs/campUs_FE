@@ -56,9 +56,3 @@ export const useGetApi = {
     });
   },
 };
-
-// {
-//   enabled: !!getCookieToken(), -> 이거뭐냐
-//   refetchOnMount: false,
-//   refetchOnWindowFocus: false,
-// },

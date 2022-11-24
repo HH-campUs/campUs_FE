@@ -35,7 +35,7 @@ function Result() {
       <ReSearch>
         <div
           onClick={() => {
-            nav(-1);
+            nav("/");
           }}>
           <img src="/images/back.svg" alt="back" />
           검색조건

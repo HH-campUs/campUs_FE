@@ -11,7 +11,7 @@ import Recommended from "./pages/Homedetail/Recommended";
 import Popular from "./pages/Homedetail/Popular";
 import Splash from "./pages/Splash";
 
-import CResult from "./pages/CResult";
+import Topic from "./pages/Topic";
 import Detail from "./pages/Detail";
 import Dannounce from "./pages/DetailPage/Dannounce";
 import Ddetail from "./pages/DetailPage/Ddetail";
@@ -119,7 +119,7 @@ function App() {
                   <Route path="/popular" element={<Popular />} />
                 </Route>
                 <Route path="result" element={<Result />} />
-                <Route path="cresult" element={<CResult />} />
+                <Route path="topic" element={<Topic />} />
                 <Route path="login" element={<Login />} />
                 {/* <Route path="splash" element={<Splash />} /> */}
                 <Route path="signup" element={<SignUp />} />

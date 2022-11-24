@@ -46,7 +46,6 @@ const RightTemplate = styled.div`
   width: 475px;
   //height: 500px;
   max-width: 475px;
-  border: 0.5px solid whitesmoke;
 
   @media screen and (min-width: 915px) {
     max-width: 475px;

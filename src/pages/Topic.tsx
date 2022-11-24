@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import { Link, useNavigate, Outlet, useMatch } from "react-router-dom";
 import styled from "styled-components";
 import Datepicker from "../components/withSearch/Datepicker";
-import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+import { BiChevronDown } from "react-icons/bi";
 import Bg from "../static/testpic.jpg";
 
 //bookmark icon
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 
-function CResult() {
+function Topic() {
   const nav = useNavigate();
   const [isActive, setIsActive] = useState(false);
   const [isWeather, setIsWeather] = useState(false);
@@ -28,11 +28,24 @@ function CResult() {
 
   return (
     <>
-      <TopContainer>탑임</TopContainer>
+      <TopContainer>
+        <BackBtn onClick={() => nav(`/`)}>
+          <img src="/images/back.svg" alt="back" />
+        </BackBtn>
+      </TopContainer>
+
       <ResultContainer>
         <ResultTop>
-          <div>검색결과 (000개)</div>
-          <div>인기순</div>
+          <div>
+            <span className="result"> 검색결과 </span>
+            <span className="total"> (000개)</span>
+          </div>
+          <div>
+            <span className="popular">
+              인기순{" "}
+              <BiChevronDown size="30" style={{ display: "inlineBox" }} />
+            </span>
+          </div>
         </ResultTop>
         {DummyData.map((item, i) => (
           <ResultBox key={i}>
@@ -41,7 +54,7 @@ function CResult() {
               <ResultSpan>리뷰({item.reviewNum})</ResultSpan>
             </ResultItem>
             <ResultDetail>{item.location}</ResultDetail>
-            <ResultDetail>{item.address}</ResultDetail>
+            <ResultDetail2>{item.address}</ResultDetail2>
           </ResultBox>
         ))}
       </ResultContainer>
@@ -49,7 +62,7 @@ function CResult() {
   );
 }
 
-export default CResult;
+export default Topic;
 
 /* dummy data */
 
@@ -130,14 +143,28 @@ const DummyData: Array<Dummy> = [
 
 const TopContainer = styled.div`
   width: auto;
-  max-width: 475px;
-  height: 300px;
+  max-width: ${(props) => props.theme.pixelToRem(475)};
+  height: ${(props) => props.theme.pixelToRem(300)};
   margin: 0 auto;
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
-
+  border-bottom-left-radius: ${(props) => props.theme.pixelToRem(12)};
+  border-bottom-right-radius: ${(props) => props.theme.pixelToRem(12)};
   background-image: url(${Bg});
   background-size: cover;
+`;
+
+const BackBtn = styled.div`
+  width: ${(props) => props.theme.pixelToRem(32)};
+  height: ${(props) => props.theme.pixelToRem(32)};
+  margin: 30px 15px;
+  padding: 4px;
+  border-radius: ${(props) => props.theme.pixelToRem(25)};
+  background-color: rgba(255, 255, 255, 0.5);
+  object-fit: contain;
+  position: absolute;
+
+  img {
+    display: inline-block;
+  }
 `;
 
 const ResultContainer = styled.div`
@@ -148,6 +175,7 @@ const ResultContainer = styled.div`
 
 const ResultTop = styled.div`
   width: inherit;
+  margin-top: 40px;
   padding: {
     top: 10px;
     left: 10px;
@@ -155,12 +183,49 @@ const ResultTop = styled.div`
   }
   justify-content: space-between;
   display: flex;
+
+  .result {
+    font-family: Pretendard;
+    font-size: 20px;
+    font-weight: 600;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: left;
+    color: #333;
+  }
+
+  .total {
+    font-family: Pretendard;
+    font-size: ${(props) => props.theme.pixelToRem(14)};
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.29;
+    letter-spacing: normal;
+    text-align: left;
+    color: #797979;
+  }
+
+  .popular {
+    font-family: Pretendard;
+    font-size: ${(props) => props.theme.pixelToRem(14)};
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.29;
+    letter-spacing: normal;
+    text-align: right;
+    color: #797979;
+    display: inline-block;
+  }
 `;
 
 const ResultBox = styled.div`
-  width: 160px;
-  height: 200px;
-  margin: 0 20px;
+  width: ${(props) => props.theme.pixelToRem(180)};
+  height: auto;
+  margin: 30px 10px;
   height: auto;
   flex-direction: column;
   justify-content: space-between;
@@ -170,8 +235,8 @@ const ResultBox = styled.div`
 `;
 
 const ResultItem = styled.div`
-  width: 150px;
-  height: 150px;
+  width: ${(props) => props.theme.pixelToRem(160)};
+  height: ${(props) => props.theme.pixelToRem(139)};
   border-radius: 10px;
 `;
 
@@ -188,15 +253,22 @@ const ResultSpan = styled.div`
   color: white;
   font-weight: bold;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.911);
-  font-size: 1rem;
+  font-size: ${(props) => props.theme.pixelToRem(16)};
   position: absoulte;
   z-index: 2;
 `;
 
 const ResultDetail = styled.div`
-  width: 370px;
   height: 60px;
-  margin-bottom: -20px;
+  margin-top: 10px;
+  background-color: transparent;
+  font-size: 1rem;
+  color: black;
+`;
+
+const ResultDetail2 = styled.div`
+  height: 60px;
+  margin-top: -20px;
   background-color: transparent;
   font-size: 1rem;
   color: black;

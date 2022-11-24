@@ -70,17 +70,20 @@ function Search({ isActive, setIsActive }: isProps) {
   }, []); */
 
   return (
-    <SearchModal style={{ transition: "all 0.5s ease-in" }}>
-      <SearchModal className="isNotActive" onClick={ModalHandler}>
+    <SearchModal isActive={isActive} style={{ transition: "all 0.5s ease-in" }}>
+      <SearchModal
+        isActive={isActive}
+        className="isNotActive"
+        onClick={ModalHandler}>
         <BiSearchAlt size="20" style={{ display: "inline-block" }} />
         <span>search</span>
       </SearchModal>
 
       {isActive && (
         <Container>
-          <ModalBg onClick={ModalHandler} />
+          <ModalBg isActive={isActive} onClick={ModalHandler} />
           {/* 모달창 밖 blur background 토글 기능 부여 (event bubbling 해결) */}
-          <SearchModal className="isActive">
+          <SearchModal isActive={isActive} className="isActive">
             {/* Headline + close btn */}
             <TopContainer>
               <SearchTitle>어디로 가시나요?</SearchTitle>
@@ -109,7 +112,7 @@ function Search({ isActive, setIsActive }: isProps) {
               <ResetBtn onClick={searchHandler}>
                 <img src="/images/reset.svg" alt="reset" />
               </ResetBtn>
-              <SearchBtn to="/Result" onClick={searchHandler}>
+              <SearchBtn to="/result" onClick={searchHandler}>
                 검색하기
               </SearchBtn>
             </BtnContainer>
@@ -158,17 +161,17 @@ const Container = styled.div`
 `;
 
 /* Modal Background */
-const ModalBg = styled.div`
+const ModalBg = styled.div<{ isActive: boolean }>`
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.55);
   backdrop-filter: blur(6px);
-  animation-name: ${fadeIn};
+  animation-name: ${(props) => (props.isActive ? fadeOut : fadeIn)};
   animation-duration: 0.2s;
 `;
 
 /* Search bar */
-const SearchModal = styled.div`
+const SearchModal = styled.div<{ isActive: boolean }>`
   margin: 10px auto;
   width: 23.438rem;
   background-color: #ffffff;
@@ -197,7 +200,7 @@ const SearchModal = styled.div`
     position: fixed;
     z-index: 100;
     //overflow: auto;
-    animation: ${slideIn};
+    animation: ${(props) => (props.isActive ? slideOut : slideIn)};
     animation-duration: 0.7s;
 
     ::-webkit-scrollbar {

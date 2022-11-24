@@ -1,29 +1,28 @@
-import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 function Splash() {
-  const nav = useNavigate();
-
+  const [isShow, setIsShow] = useState<boolean>(true);
   useEffect(() => {
     setTimeout(() => {
-      nav("/home");
+      setIsShow(false);
     }, 3000);
   });
 
-  return (
+  return isShow ? (
     <SplashBg>
-      <SplashLogo />
+      <SplashLogo src="/images/kakaopf.jpeg" />
     </SplashBg>
+  ) : (
+    <></>
   );
 }
-
 export default Splash;
 
 const SplashBg = styled.div`
-  width: 100%;
+  width: 100vw;
   max-width: 473px;
-  height: 100%;
+  height: 100vh;
   background-color: #024873;
   position: absolute;
   z-index: 100;

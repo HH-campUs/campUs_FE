@@ -45,7 +45,7 @@ function Result() {
 
       {/* Weather modal */}
 
-      {isWeather == false ? (
+      {/*   {isWeather == false ? (
         <WeatherModal
           className="isNotActive"
           style={{ transition: "all 0.5s ease-in-out" }}
@@ -57,8 +57,8 @@ function Result() {
               <div className="date">12월 20일 9:52</div>
             </div>
             <div className="tempBox">
-              <div className="tem">16°</div>
-              <div className="temHL">2/18°</div>
+              <div className="tem">{ getWeather.day }°</div>
+              <div className="temHL">{getWeather.min}/{ getWeather.max}°</div>
             </div>
           </div>
           <div className="thirdSeparate">
@@ -75,7 +75,7 @@ function Result() {
           <img src="/images/sunRain.svg" alt="weather img" />
           16°
         </WeatherModal>
-      )}
+      )} */}
 
       <ResultContainer>
         <ResultTop>

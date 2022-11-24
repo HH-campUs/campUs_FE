@@ -109,10 +109,10 @@ function App() {
       <ThemeProvider theme={theme}>
         <GlobalStyle />
         <ErrorBoundary FallbackComponent={Error}>
+          {/*  <Splash /> */}
           <BrowserRouter>
             <Layout>
               <Routes>
-                {/* <Route path="/" element={<Splash />} /> */}
                 <Route path="/" element={<Home />}>
                   <Route path="/popping" element={<Pop />} />
                   <Route path="/recommended" element={<Recommended />} />

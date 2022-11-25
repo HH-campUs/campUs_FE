@@ -16,6 +16,7 @@ import {
 import { Link } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 import { BiSearchAlt } from "react-icons/bi";
+// import SearchIcon from "@mui/icons-material/Search";
 import Datepicker from "./Datepicker";
 import Location from "./Location";
 import { isProps, searchData } from "../../interfaces/inSearch";
@@ -74,7 +75,7 @@ function Search({ isActive, setIsActive }: isProps) {
     <SearchModal style={{ transition: "all 0.5s ease-in" }}>
       <SearchModal className="isNotActive" onClick={ModalHandler}>
         <BiSearchAlt size="20" style={{ display: "inline-block" }} />
-        <span>search</span>
+        <span>캠핑 어디로 가시나요?</span>
       </SearchModal>
 
       {isActive && (
@@ -131,6 +132,7 @@ const slideIn = keyframes`
 const slideOut = keyframes`
   from {bottom: 0px; opacity: 1} 
     to {bottom: -500px; opacity: 0}
+    
 `;
 
 const fadeIn = keyframes`
@@ -179,14 +181,14 @@ const SearchModal = styled.div`
   z-index: 100;
 
   &.isNotActive {
-    height: 35px;
+    height: 40px;
     padding: 5px;
     font-size: 1rem;
     color: #797979;
-
+    background-color: lightgray;
     span {
       margin-left: 10px;
-      font-size: 1.4rem;
+      font-size: 0.9rem;
     }
   }
 

@@ -28,9 +28,9 @@ function Result() {
   };
 
   const getWeather = useGetApi.useGetWeather();
-  useEffect(() => {
-    console.log(getWeather.data);
-  }, []);
+  // useEffect(() => {
+  //   console.log(getWeather.data);
+  // }, []);
 
   return (
     <>
@@ -48,7 +48,8 @@ function Result() {
         <WeatherModal
           className="isNotActive"
           style={{ transition: "all 0.5s ease-in-out" }}
-          onClick={WeatherHandler}>
+          onClick={WeatherHandler}
+        >
           <img src="/images/sunRain.svg" alt="weather img" />
           <div className="secondSeparate">
             <div className="infoBox">
@@ -70,7 +71,8 @@ function Result() {
         <WeatherModal
           className="isActive"
           style={{ transition: "all 0.5s ease-in-out" }}
-          onClick={WeatherHandler}>
+          onClick={WeatherHandler}
+        >
           <img src="/images/sunRain.svg" alt="weather img" />
           16°
         </WeatherModal>

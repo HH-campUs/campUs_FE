@@ -38,8 +38,8 @@ function Location() {
   const [sendLocation, setSendLocation] = useRecoilState(selectLo);
 
   const LocationChange = (event: any) => {
-    setLocationValue(event.target.id);
-    setSendLocation(event.target.id);
+    setLocationValue(event.currentTarget.id);
+    setSendLocation(event.currentTarget.id);
     console.log(locationValue, sendLocation);
   };
 

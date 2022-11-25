@@ -95,43 +95,4 @@ const CampText = styled.div`
 const AllList = styled.div`
   font-size: 0.8rem;
   color: grey;
-
-  //isDarkatom변경없을시에는 lightTheme - textColor-white
-  // const Tabs = styled.div
 `;
-//   display: grid;
-//   grid-template-columns: repeat(3, 1fr);
-//   margin: 25px 10px;
-//   gap: 10px;
-// `;
-
-// const Tab = styled.span<{ isActive: boolean }>`
-//   text-align: center;
-//   text-transform: uppercase;
-//   font-size: 12px;
-//   font-weight: 400;
-//   background-color: ${(props) => props.theme.bgColor};
-//   //rgba(0, 0, 0, 0.5);
-//   padding: 7px 0px;
-//   border-radius: 10px;
-//   color: ${(props) =>
-//     props.isActive ? props.theme.accentColor : props.theme.textColor};
-//   a {
-//     display: block;
-//   }
-// `;
-
-{
-  /* <Tabs>
-<Tab isActive={popMatch !== null}>
-  <Link to="/popping"> 요즘뜨는곳 </Link>
-</Tab>
-<Tab isActive={recommendedMatch !== null}>
-  <Link to="/recommended"> 추천 캠핑장</Link>
-</Tab>
-<Tab isActive={popularMatch !== null}>
-  <Link to="/popular"> 가장 인기</Link>
-</Tab> 
-</Tabs>
-      <Outlet />*/
-}

@@ -57,6 +57,7 @@ const SplashLogo = styled.div`
 const Root = styled.div`
   width: 100vw;
   //width: 915px;
+  /* margin-top: 200px; */
   margin: 0 auto;
   box-sizing: border-box;
   display: flex;

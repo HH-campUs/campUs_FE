@@ -36,7 +36,6 @@ export default function Layout(props: any) {
 const Root = styled.div`
   width: 100%;
   //width: 915px;
-  margin: 0 auto;
   box-sizing: border-box;
   overflow: hidden;
   position: relative;
@@ -58,7 +57,7 @@ const LeftTemplate = styled.div`
 const SplashLogo = styled.div`
   width: 475px;
   height: inherit;
-  padding: 20px;
+  padding: 20p;
   display: flex;
 `;
 //right

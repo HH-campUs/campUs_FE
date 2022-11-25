@@ -28,89 +28,91 @@ export default function Subject() {
           />
         </WeatherModal>
         {isWeather && (
-          <Container>
-            <ModalBg onClick={isModal} />
-            <WeatherModal className="isActive">
-              <ModalBox>
-                <TextBox>
-                  <TextSub>이번주 날씨 가장 좋은 곳</TextSub>
-                  <TextSec>다가오는 토요일의 날씨를 보여드립니다.</TextSec>
-                </TextBox>
-                <WeatherInfo>
-                  <Icon>
-                    <img src="/images/Sunny.svg" alt="sunny" />
-                  </Icon>
-                  <CenterInfo>
-                    <Loca>부산광역시</Loca>
-                    <PopPercent>강수확률 2%</PopPercent>
-                  </CenterInfo>
-                  <TempInfo>
-                    <MinMax>
-                      <p style={{ color: "blue" }}>2</p>
-                      <p style={{ color: "red" }}>18</p>
-                    </MinMax>
-                    <Regular>18</Regular>
-                  </TempInfo>
-                </WeatherInfo>
-                <DayInfo>12월 32일 기준</DayInfo>
+          <Container onClick={isModal}>
+            <div></div>
+            <Wrapper>
+              <WeatherModal className="isActive">
+                <ModalBox>
+                  <TextBox>
+                    <TextSub>이번주 날씨 가장 좋은 곳</TextSub>
+                    <TextSec>다가오는 토요일의 날씨를 보여드립니다.</TextSec>
+                  </TextBox>
+                  <WeatherInfo>
+                    <Icon>
+                      <img src="/images/Sunny.svg" alt="sunny" />
+                    </Icon>
+                    <CenterInfo>
+                      <Loca>부산광역시</Loca>
+                      <PopPercent>강수확률 2%</PopPercent>
+                    </CenterInfo>
+                    <TempInfo>
+                      <MinMax>
+                        <p style={{ color: "blue" }}>2</p>
+                        <p style={{ color: "red" }}>18</p>
+                      </MinMax>
+                      <Regular>18</Regular>
+                    </TempInfo>
+                  </WeatherInfo>
+                  <DayInfo>12월 32일 기준</DayInfo>
 
-                <IconBox>
-                  <IconOne>
-                    <img
-                      src="/images/Sunset.svg"
-                      alt="sunset"
-                      style={{
-                        display: "block",
-                        margin: "auto",
-                        paddingBottom: "5px",
-                      }}
-                    />
-                    <Score>0000</Score>
-                    <Detail>풍속</Detail>
-                  </IconOne>
-                  <IconTwo>
-                    <img
-                      src="/images/Sunset.svg"
-                      alt="sunset"
-                      style={{
-                        display: "block",
-                        margin: "auto",
-                        paddingBottom: "5px",
-                      }}
-                    />
-                    <Score>0000</Score>
-                    <Detail>미세먼지</Detail>
-                  </IconTwo>
-                  <IconThree>
-                    <img
-                      src="/images/Sunset.svg"
-                      alt="sunset"
-                      style={{
-                        display: "block",
-                        margin: "auto",
-                        paddingBottom: "5px",
-                      }}
-                    />
-                    <Score>0000</Score>
-                    <Detail>일몰</Detail>
-                  </IconThree>
-                  <IconFour>
-                    <img
-                      src="/images/Sunset.svg"
-                      alt="sunset"
-                      style={{
-                        display: "block",
-                        margin: "auto",
-                        paddingBottom: "5px",
-                      }}
-                    />
-                    <Score>0000</Score>
-                    <Detail>자외선지수</Detail>
-                  </IconFour>
-                </IconBox>
-                <GoCampBtn>부산 캠핑장 둘러보기</GoCampBtn>
-              </ModalBox>
-            </WeatherModal>
+                  <IconBox>
+                    <IconOne>
+                      <img
+                        src="/images/Sunset.svg"
+                        alt="sunset"
+                        style={{
+                          display: "block",
+                          margin: "auto",
+                          paddingBottom: "5px",
+                        }}
+                      />
+                      <Score>0000</Score>
+                      <Detail>풍속</Detail>
+                    </IconOne>
+                    <IconTwo>
+                      <img
+                        src="/images/Sunset.svg"
+                        alt="sunset"
+                        style={{
+                          display: "block",
+                          margin: "auto",
+                          paddingBottom: "5px",
+                        }}
+                      />
+                      <Score>0000</Score>
+                      <Detail>미세먼지</Detail>
+                    </IconTwo>
+                    <IconThree>
+                      <img
+                        src="/images/Sunset.svg"
+                        alt="sunset"
+                        style={{
+                          display: "block",
+                          margin: "auto",
+                          paddingBottom: "5px",
+                        }}
+                      />
+                      <Score>0000</Score>
+                      <Detail>일몰</Detail>
+                    </IconThree>
+                    <IconFour>
+                      <img
+                        src="/images/Sunset.svg"
+                        alt="sunset"
+                        style={{
+                          display: "block",
+                          margin: "auto",
+                          paddingBottom: "5px",
+                        }}
+                      />
+                      <Score>0000</Score>
+                      <Detail>자외선지수</Detail>
+                    </IconFour>
+                  </IconBox>
+                  <GoCampBtn>부산 캠핑장 둘러보기</GoCampBtn>
+                </ModalBox>
+              </WeatherModal>
+            </Wrapper>
           </Container>
         )}
       </WeatherModal>
@@ -133,6 +135,13 @@ const ContentText = styled.div`
   color: whitesmoke;
 `;
 
+const Wrapper = styled.div`
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  transition: all 0.5s ease-in-out;
+`;
+
 const WeatherModal = styled.div`
   height: 60px;
   background-color: #85a8e6;
@@ -145,8 +154,9 @@ const WeatherModal = styled.div`
     height: 25rem;
     width: 475px;
     bottom: 0;
-    position: fixed;
-    transform: translateX(222.5px);
+    /* position없으면 위치속성 안먹음. */
+    /* transform -> 위치작용 */
+    position: relative;
     z-index: 100;
     animation: ${slideIn};
     animation-duration: 0.7s;
@@ -165,23 +175,42 @@ const Container = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  flex-direction: column;
+
   align-items: center;
   position: fixed;
   display: flex;
   transition: all 0.5s ease-in-out;
-
-  /* background-color: white; */
-`;
-
-const ModalBg = styled.div`
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(6px);
+  justify-content: center;
   animation-name: ${fadeIn};
   animation-duration: 0.2s;
+  background-color: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(6px);
+
+  & > div:first-child {
+    width: 475px;
+    min-height: 650px;
+    @media screen and (max-width: 915px) {
+      display: none;
+    }
+  }
+  & > div:last-child {
+    width: 475px;
+    max-width: 475px;
+
+    @media screen and (min-width: 915px) {
+      max-width: 475px;
+    }
+  }
 `;
+
+// const ModalBg = styled.div`
+//   width: 100%;
+//   height: 100%;
+//   background-color: rgba(0, 0, 0, 0.55);
+//   backdrop-filter: blur(6px);
+//   animation-name: ${fadeIn};
+//   animation-duration: 0.2s;
+// `;
 
 const ModalBox = styled.div`
   height: 100px;

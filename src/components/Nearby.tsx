@@ -21,7 +21,7 @@ export default function Nearby() {
 const Wrapper = styled.div`
   margin: 20px 10px 20px 10px;
   font-weight: 500; //temporary
-  height: 200px; //temporary 수정해야함. 끝에짤리는이슈있음.
+  height: 200px;
 `;
 
 const TextBox = styled.div`

@@ -29,7 +29,7 @@ function Splash() {
         <SplashBg>
           <SplashLogo>
             <Lottie options={defaultOptions} height={500} width={500} />
-            <span>campUs</span>
+            {/* <span>campUs</span> */}
           </SplashLogo>
         </SplashBg>
       </RightTemplate>

@@ -17,6 +17,7 @@ function Topic() {
   const [isActive, setIsActive] = useState(false);
   const [isWeather, setIsWeather] = useState(false);
   const [isSearch, setIsSearch] = useRecoilState(isModal);
+  const [topic, isTopic] = useState(false);
 
   const ModalHandler = () => {
     setIsActive(!isActive);

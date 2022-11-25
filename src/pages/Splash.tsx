@@ -19,7 +19,7 @@ function Splash() {
   useEffect(() => {
     setTimeout(() => {
       setIsShow(false);
-    }, 300000);
+    }, 3000);
   }, []);
 
   return isShow ? (

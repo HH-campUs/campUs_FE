@@ -5,7 +5,7 @@ import Carousel from "./Carousel";
 export default function Subject() {
   return (
     <Wrapper>
-      <TextBox>주제별</TextBox>
+      <span>주제별</span>
       {/* 캐루셀 별로 사이즈가 필요한 것 같은데 조정안되나? */}
       <Carousel />
     </Wrapper>
@@ -13,10 +13,6 @@ export default function Subject() {
 }
 
 const Wrapper = styled.div`
-  margin: 20px 10px 20px 10px;
+  margin-top: 40px;
   font-weight: 500; //temporary
-`;
-
-const TextBox = styled.div`
-  margin-bottom: 10px;
 `;

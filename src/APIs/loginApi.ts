@@ -4,7 +4,8 @@ import { instance, postInstance } from "../instance/instance";
 import { ISignUpForm } from "../interfaces/inLogin";
 import { ILoginForm } from "../interfaces/inLogin";
 
-const serverUrl = process.env.REACT_APP_API;
+// const serverUrl = process.env.REACT_APP_API;
+
 
 /* 회원가입 */
 export const signUpApi = async (payload: ISignUpForm) => {
@@ -14,6 +15,7 @@ export const signUpApi = async (payload: ISignUpForm) => {
   });
   return data;
 };
+
 
 /* 이메일 중복확인 */
 export const duplicateApi = async (payload: any) => {

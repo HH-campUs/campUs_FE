@@ -51,14 +51,19 @@ export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
               <PfBox>
                 <PfText>기본 프로필 편집</PfText>
                 <PfCircle>
-                  {imagePreview && <ImgPreview src={imagePreview} />}
+                  {imagePreview && (
+                    <ImgPreview
+                      style={{ objectFit: "cover" }}
+                      src={imagePreview}
+                    />
+                  )}
                   <img
                     src="/images/kakaopf.jpeg"
                     alt="PFP"
                     style={{
                       height: "75px",
                       borderRadius: "125px",
-                      objectFit: "cover",
+                      objectFit: "contain",
                     }}
                   />
                   <CameraCircle>

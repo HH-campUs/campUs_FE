@@ -184,9 +184,11 @@ const StInput = styled.input`
 
   padding: 10px;
   &:focus {
-    border: 1px solid red;
+    border: 1px solid #5185a6;
   }
 `;
+
+//  #5185A6 #024873;
 
 const TextBox = styled.div`
   display: flex;

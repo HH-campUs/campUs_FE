@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useRecoilState } from "recoil";
-import { selectLo, ExportLocation } from "../../store/locationAtom";
+import { selectLo, showLo } from "../../store/locationAtom";
 import styled from "styled-components";
 
 interface local {
@@ -32,7 +32,7 @@ function Location() {
   const [openLocation, setOpenLocation] = useState(false);
 
   /* 화면상에 나올 지역명 */
-  const [locationValue, setLocationValue] = useState("");
+  const [locationValue, setLocationValue] = useRecoilState(showLo);
 
   /* backend에 보내줄 request 형태의 지역명 */
   const [sendLocation, setSendLocation] = useRecoilState(selectLo);

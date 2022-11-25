@@ -1,4 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
+/* import {} from "../store/dateAtom"; */
+import { showLo, ExportLocation } from "../store/locationAtom";
+import { StrMonth, StrDay } from "../store/dateAtom";
+
 import { Link, useNavigate, Outlet, useMatch } from "react-router-dom";
 import styled from "styled-components";
 import Datepicker from "../components/withSearch/Datepicker";
@@ -11,8 +16,15 @@ import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 
 function Result() {
   const nav = useNavigate();
+
+  /* data */
   const [isActive, setIsActive] = useState(false);
   const [isWeather, setIsWeather] = useState(false);
+  const locationValue = useRecoilValue(showLo);
+  const Month = useRecoilValue(StrMonth);
+  const Day = useRecoilValue(StrDay);
+
+  const getWeather = useGetApi.useGetWeather().data;
 
   const ModalHandler = () => {
     setIsActive(!isActive);
@@ -22,12 +34,11 @@ function Result() {
     setIsWeather(!isWeather);
   };
 
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    /* const { selectInput, selectDate, selectLocation } = event.target;
-  setInputValue({event.target.value|); */
-  };
+  /*  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { selectInput, selectDate, selectLocation } = event.target;
+  setInputValue({event.target.value|);
+  }; */
 
-  const getWeather = useGetApi.useGetWeather().data?.weather[0];
   console.log(getWeather);
 
   return (
@@ -40,12 +51,14 @@ function Result() {
           <img src="/images/back.svg" alt="back" />
           검색조건
         </div>
-        <div>12월 20일 | 충청남도</div>
+        <div>
+          {Month}월 {Day}일 | {locationValue}
+        </div>
       </ReSearch>
 
       {/* Weather modal */}
 
-      {/*   {isWeather == false ? (
+      {isWeather == false ? (
         <WeatherModal
           className="isNotActive"
           style={{ transition: "all 0.5s ease-in-out" }}
@@ -53,17 +66,21 @@ function Result() {
           <img src="/images/sunRain.svg" alt="weather img" />
           <div className="secondSeparate">
             <div className="infoBox">
-              <div className="local">{getWeather.pardo}</div>
-              <div className="date">12월 20일 9:52</div>
+              <div className="local">{locationValue}</div>
+              <div className="date">
+                {Month}월 {Day}일
+              </div>
             </div>
             <div className="tempBox">
-              <div className="tem">{ getWeather.day }°</div>
-              <div className="temHL">{getWeather.min}/{ getWeather.max}°</div>
+              <div className="tem">{getWeather?.weather[0].day}°</div>
+              <div className="temHL">
+                {getWeather?.weather[0].min}/{getWeather?.weather[0].max}°
+              </div>
             </div>
           </div>
           <div className="thirdSeparate">
             <img src="/images/pop.svg" alt="pop" />
-            <span>{getWeather.pop * 100}%</span>
+            <span>{getWeather?.weather[0].pop * 100}%</span>
           </div>
           <FaChevronUp />
         </WeatherModal>
@@ -75,7 +92,7 @@ function Result() {
           <img src="/images/sunRain.svg" alt="weather img" />
           16°
         </WeatherModal>
-      )} */}
+      )}
 
       <ResultContainer>
         <ResultTop>

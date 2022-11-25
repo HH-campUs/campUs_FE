@@ -1,8 +1,10 @@
-import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
+import { useQuery, useInfiniteQuery } from "@tanstack/react-query";
+import { useInView } from "react-intersection-observer";
 import { instance } from "../instance/instance";
-import { useRecoilValue } from "recoil";
-import { ExportDate } from "../store/dateAtom";
-import { ExportLocation } from "../store/locationAtom";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { ExportDate, DateState } from "../store/dateAtom";
+import { ExportLocation, selectLo } from "../store/locationAtom";
 
 import {
   IGetCampCatInfo,
@@ -12,6 +14,8 @@ import {
 } from "../interfaces/get";
 
 const serverUrl = process.env.REACT_APP_API;
+
+/* const [isDate, setIsDate] */
 
 // ** 캠핑장 카테고리 정보 조회 / get ** //
 
@@ -25,11 +29,28 @@ export const useGetApi = {
 
   // ** 캠핑장 결과 조회 - search (Infinite) / get ** //
   useGetCampResult: () => {
-    return useQuery(["campResult"], async () => {
-      /* request query에 payload값 받아야됨. (page) */
-      const { data } = await instance.get<IGetCampResult>(`${serverUrl}`);
-      return data;
-    });
+    const location = useRecoilValue(selectLo);
+    const { fetchNextPage, isFetching, data, error } = useInfiniteQuery(
+      ["campResult"],
+      async ({ pageParam = 1 }) => {
+        const res = await instance.get<IGetCampResult>(
+          `/camps?address=${location}&numOfRows=${10}&pageNo=${pageParam}`
+          /* {
+          getNextPageParam : (cur:any) => cur.nextPage,
+        } */
+        );
+        console.log(res);
+        return res.data;
+      }
+    );
+
+    /* 여기 inView 부분은 커스텀 hook 처럼 못쓸 듯..? */
+    /* const [ref, inView] = useInView();
+    useEffect(() => {
+      if (!data) return;
+
+
+    }) */
   },
 
   // ** 캠핑장 리뷰 조회 / get ** //
@@ -44,13 +65,13 @@ export const useGetApi = {
 
   /* 날씨 조회 */
   useGetWeather: () => {
-    /* date, location 값을 useRecoilValue로 이전 컴포넌트에서 사용된 selector들을 활용하여 저장 */
-    const date = useRecoilValue(ExportDate);
-    const location = useRecoilValue(ExportLocation);
+    const date = useRecoilValue(DateState);
+    const location = useRecoilValue(selectLo);
     return useQuery(["weatherinfo"], async () => {
       const { data } = await instance.get<IGetWeather>(
         `/weathers?pardo=${location}&dt=${date}`
       );
+      console.log(date, location);
       return data;
     });
   },

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useRecoilState } from "recoil";
 import axios from "axios";
 import Carousel from "../components/Carousel";
 
@@ -7,8 +8,9 @@ import Subject from "../components/Subject";
 import Nearby from "../components/Nearby";
 import { Link, Outlet, useMatch, useNavigate } from "react-router-dom";
 import Search from "../components/withSearch/Search";
-
+import { isModal } from "../store/searchAtom";
 //Css
+import { BiSearchAlt } from "react-icons/bi";
 import styled from "styled-components";
 //색상변경해서 메인카드 / 캠핑장목록UI 에 사용할 것.
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder"; //empty
@@ -20,13 +22,28 @@ function Home() {
 
   // 선택한 url로 갈시에 object받음. 아니면 null값.
   const [isActive, setIsActive] = useState(false);
+  const [isSearch, setIsSearch] = useRecoilState(isModal);
   const popMatch = useMatch("/popping");
   const recommendedMatch = useMatch("/recommended");
   const popularMatch = useMatch("/popular");
 
+  const openModal = (event: any) => {
+    event.stopPropagation();
+    setIsSearch(true);
+  };
+
+  const closeModal = (event: MouseEvent) => {
+    event.stopPropagation();
+    setIsSearch(false);
+  };
+
   return (
     <>
-      <Search isActive={isActive} setIsActive={setIsActive} />
+      {isSearch == false ? null : <Search />}
+      <SearchModal className="isNotActive" onClick={openModal}>
+        <BiSearchAlt size="20" style={{ display: "inline-block" }} />
+        <span>search</span>
+      </SearchModal>
 
       {/* 이것도 component화 시켜야하나? */}
       <Tabs>
@@ -50,6 +67,29 @@ function Home() {
 }
 
 export default Home;
+
+/* Search bar */
+const SearchModal = styled.div`
+  margin: 10px auto;
+  width: 23.438rem;
+  background-color: #ffffff;
+  border-radius: 13px;
+  justify-content: center;
+  align-content: center;
+  z-index: 100;
+
+  &.isNotActive {
+    height: 35px;
+    padding: 5px;
+    font-size: 1rem;
+    color: #797979;
+
+    span {
+      margin-left: 10px;
+      font-size: 1.4rem;
+    }
+  }
+`;
 
 //isDarkatom변경없을시에는 lightTheme - textColor-white
 const Tabs = styled.div`

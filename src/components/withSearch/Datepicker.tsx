@@ -1,17 +1,23 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useRecoilState } from "recoil";
 import DatePicker from "react-datepicker";
 import "../../style/customDatepicker.css";
 import dayjs from "dayjs";
 import { originDate } from "../../interfaces/inDate";
 import { ko } from "date-fns/locale";
-import { getMonth, getDate, getDay, addDays, subDays } from "date-fns";
-import { DateState, StrYear, StrMonth, StrDay } from "../../store/dateAtom";
+import { addDays } from "date-fns";
+import {
+  StartDate,
+  DateState,
+  StrYear,
+  StrMonth,
+  StrDay,
+} from "../../store/dateAtom";
 import styled from "styled-components";
 
 function Datepicker() {
   /* 처음에 new Date()로 datepicker에게 인지 */
-  const [startDate, setStartDate] = useState(new Date());
+  const [startDate, setStartDate] = useRecoilState(StartDate);
   const [sendDate, setSendDate] = useRecoilState(DateState);
   const [sendYear, setSendYear] = useRecoilState(StrYear);
   const [sendMonth, setSendMonth] = useRecoilState(StrMonth);

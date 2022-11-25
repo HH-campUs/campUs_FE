@@ -7,12 +7,13 @@ import React, {
 } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
-  DateState,
+  StartDate,
   ExportDate,
   ExportYear,
   ExportMonth,
   ExportDay,
 } from "../../store/dateAtom";
+import { selectLo, showLo } from "../../store/locationAtom";
 import { isModal } from "../../store/searchAtom";
 import { Link } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
@@ -29,8 +30,10 @@ function Search() {
   });
 
   const [isSearch, setIsSearch] = useRecoilState(isModal);
-
   const [openDate, setOpenDate] = useState(false);
+  const [startDate, setStartDate] = useRecoilState(StartDate);
+  const [locationValue, setLocationValue] = useRecoilState(showLo);
+  const [sendLocation, setSendLocation] = useRecoilState(selectLo);
 
   const selectDate = useRecoilValue(ExportDate);
   const selectYear = useRecoilValue(ExportYear);
@@ -42,10 +45,6 @@ function Search() {
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {};
 
   /* SearchModal 작동 boolean  default: false */
-  const ModalHandler = (event: MouseEvent) => {
-    event.stopPropagation();
-    setIsSearch(!isSearch);
-  };
 
   const closeModal = (event: MouseEvent) => {
     event.stopPropagation();
@@ -57,10 +56,13 @@ function Search() {
   };
 
   const searchHandler = () => {
+    setIsSearch(false);
     console.log(selectDate);
   };
 
-  const resetHandler = () => {};
+  const resetHandler = () => {
+    return setLocationValue(""), setSendLocation(""), setStartDate(new Date());
+  };
 
   /* 추후에 모달 열리고 ModalBg에서 scroll x */
   /*   useEffect(() => {
@@ -83,13 +85,13 @@ function Search() {
 
   return (
     <Container>
-      <ModalBg isSearch={isSearch} onClick={ModalHandler} />
+      <ModalBg isSearch={isSearch} onClick={closeModal} />
       {/* 모달창 밖 blur background 토글 기능 부여 (event bubbling 해결) */}
       <SearchModal isSearch={isSearch} className="isSearch">
         {/* Headline + close btn */}
         <TopContainer>
           <SearchTitle>어디로 가시나요?</SearchTitle>
-          <CloseBtn src="/images/closeBtn.svg" onClick={ModalHandler} />
+          <CloseBtn src="/images/closeBtn.svg" onClick={closeModal} />
         </TopContainer>
         <SearchLabel htmlFor="search"></SearchLabel>
         <SearchBox
@@ -111,7 +113,7 @@ function Search() {
         <Location />
 
         <BtnContainer>
-          <ResetBtn onClick={searchHandler}>
+          <ResetBtn onClick={resetHandler}>
             <img src="/images/reset.svg" alt="reset" />
           </ResetBtn>
           <SearchBtn to="/result" onClick={searchHandler}>
@@ -167,7 +169,7 @@ const ModalBg = styled.div<{ isSearch: boolean }>`
   background-color: rgba(0, 0, 0, 0.55);
   backdrop-filter: blur(6px);
   animation-name: ${(props) => (props.isSearch ? fadeOut : fadeIn)};
-  animation-duration: 0.2s;
+  animation-duration: 0.4s;
 `;
 
 /* Search bar */

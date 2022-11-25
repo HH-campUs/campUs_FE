@@ -1,6 +1,12 @@
 import { atom, selector } from "recoil";
 /* import { originDate } from "../interfaces/inSearch"; */
 
+/* react-datepicker startDate */
+export const StartDate = atom<Date>({
+  key: "StartState",
+  default: new Date(),
+});
+
 /* 백엔드에 보낼 연월일 */
 export const DateState = atom<string>({
   key: "DateState",

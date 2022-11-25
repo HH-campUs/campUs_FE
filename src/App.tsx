@@ -6,9 +6,12 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
-/* import Splash from "./pages/Splash"; */
+import Pop from "./pages/Homedetail/Pop";
+import Recommended from "./pages/Homedetail/Recommended";
+import Popular from "./pages/Homedetail/Popular";
+import Splash from "./pages/Splash";
 
-import CResult from "./pages/CResult";
+import Topic from "./pages/Topic";
 import Detail from "./pages/Detail";
 import Dannounce from "./pages/DetailPage/Dannounce";
 import Ddetail from "./pages/DetailPage/Ddetail";
@@ -57,6 +60,13 @@ const GlobalStyle = createGlobalStyle`
     display: block;
   }
   /* HTML5 hidden-attribute fix for newer browsers */
+
+  @font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
   *{
     user-select: none;
   }
@@ -65,12 +75,6 @@ const GlobalStyle = createGlobalStyle`
   }
   body {
     line-height: 1;
-    -ms-overflow-style: none; /* 인터넷 익스플로러 */
-    scrollbar-width: none; /* 파이어폭스 */
-    &::-webkit-scrollbar {
-    display: none;
-    }
-
   }
   menu, ol, ul {
     list-style: none;
@@ -91,16 +95,7 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
   }
   body{
-    @font-face {
-        font-family: 'Pretendard-Regular';
-        src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
-        font-weight: 400;
-        font-style: normal;
-        }
-        *{
-        user-select: none;
-      }
-    /* font-family: 'Source Sans Pro', sans-serif; */
+    font-family: 'Source Sans Pro', sans-serif;
   }
   a{
     text-decoration: none;
@@ -121,14 +116,17 @@ function App() {
       <ThemeProvider theme={theme}>
         <GlobalStyle />
         <ErrorBoundary FallbackComponent={Error}>
+          <Splash />
           <BrowserRouter>
             <Layout>
               <Routes>
-                {/* <Route path="/" element={<Splash />} /> */}
-                <Route path="/" element={<Home />} />
-
+                <Route path="/" element={<Home />}>
+                  <Route path="/popping" element={<Pop />} />
+                  <Route path="/recommended" element={<Recommended />} />
+                  <Route path="/popular" element={<Popular />} />
+                </Route>
                 <Route path="result" element={<Result />} />
-                <Route path="cresult" element={<CResult />} />
+                <Route path="topic" element={<Topic />} />
                 <Route path="login" element={<Login />} />
                 {/* <Route path="splash" element={<Splash />} /> */}
                 <Route path="signup" element={<SignUp />} />

@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRecoilState } from "recoil";
-import { selectLo, ExportLocation } from "../../store/locationAtom";
+import { selectLo, showLo } from "../../store/locationAtom";
 import styled from "styled-components";
 
 interface local {
@@ -32,34 +32,43 @@ function Location() {
   const [openLocation, setOpenLocation] = useState(false);
 
   /* 화면상에 나올 지역명 */
-  const [locationValue, setLocationValue] = useState<string>();
+  const [locationValue, setLocationValue] = useRecoilState(showLo);
 
   /* backend에 보내줄 request 형태의 지역명 */
   const [sendLocation, setSendLocation] = useRecoilState(selectLo);
 
-  const LocationChange = (event: any) => {
-    setLocationValue(event.currentTarget.id);
+  /* recoil의 비동기적인 요소에 대해서 조사해보자 */
+  const LocationChange = (event: any, params: string) => {
     setSendLocation(event.currentTarget.id);
-    console.log(locationValue, sendLocation);
+    setLocationValue(params);
   };
 
   const LocationFolder = () => {
     setOpenLocation(!openLocation);
   };
 
+  useEffect(() => {
+    console.log(sendLocation);
+  });
+
   return (
     <Dropdown>
       <LocationInfo onClick={LocationFolder}>
         <SubLocation>지역선택</SubLocation>
         <LocationText>
-          {locationValue == null ? "전체/도" : locationValue}
+          {locationValue == "" ? "전체/도" : locationValue}
           <img src="/images/dropdown.svg" alt="dropdown" />
         </LocationText>
       </LocationInfo>
       {openLocation == false ? null : (
         <Dcontents>
           {localData.map((item) => (
-            <Locations key={item.name} onClick={LocationChange} id={item.value}>
+            <Locations
+              key={item.name}
+              onClick={(event) => {
+                LocationChange(event, item.name);
+              }}
+              id={item.value}>
               {item.name}
             </Locations>
           ))}

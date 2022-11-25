@@ -5,7 +5,7 @@ import React, {
   MouseEvent,
   useCallback,
 } from "react";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import {
   DateState,
   ExportDate,
@@ -13,23 +13,24 @@ import {
   ExportMonth,
   ExportDay,
 } from "../../store/dateAtom";
+import { isModal } from "../../store/searchAtom";
 import { Link } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 import { BiSearchAlt } from "react-icons/bi";
-// import SearchIcon from "@mui/icons-material/Search";
 import Datepicker from "./Datepicker";
 import Location from "./Location";
 import { isProps, searchData } from "../../interfaces/inSearch";
 
-function Search({ isActive, setIsActive }: isProps) {
+function Search() {
   const [inputValue, setInputValue] = useState<searchData>({
     selectInput: "",
     selectDate: "",
     selectLocation: "",
   });
 
+  const [isSearch, setIsSearch] = useRecoilState(isModal);
+
   const [openDate, setOpenDate] = useState(false);
-  const [openLocation, setOpenLocation] = useState(false);
 
   const selectDate = useRecoilValue(ExportDate);
   const selectYear = useRecoilValue(ExportYear);
@@ -41,9 +42,14 @@ function Search({ isActive, setIsActive }: isProps) {
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {};
 
   /* SearchModal 작동 boolean  default: false */
-  const ModalHandler = (event: MouseEvent<HTMLElement>) => {
+  const ModalHandler = (event: MouseEvent) => {
     event.stopPropagation();
-    setIsActive(!isActive);
+    setIsSearch(!isSearch);
+  };
+
+  const closeModal = (event: MouseEvent) => {
+    event.stopPropagation();
+    setIsSearch(false);
   };
 
   const DateFolder = () => {
@@ -71,54 +77,49 @@ function Search({ isActive, setIsActive }: isProps) {
     };
   }, []); */
 
+  useEffect(() => {
+    console.log(isSearch);
+  }, []);
+
   return (
-    <SearchModal style={{ transition: "all 0.5s ease-in" }}>
-      <SearchModal className="isNotActive" onClick={ModalHandler}>
-        <BiSearchAlt size="20" style={{ display: "inline-block" }} />
-        <span>캠핑 어디로 가시나요?</span>
+    <Container>
+      <ModalBg isSearch={isSearch} onClick={ModalHandler} />
+      {/* 모달창 밖 blur background 토글 기능 부여 (event bubbling 해결) */}
+      <SearchModal isSearch={isSearch} className="isSearch">
+        {/* Headline + close btn */}
+        <TopContainer>
+          <SearchTitle>어디로 가시나요?</SearchTitle>
+          <CloseBtn src="/images/closeBtn.svg" onClick={ModalHandler} />
+        </TopContainer>
+        <SearchLabel htmlFor="search"></SearchLabel>
+        <SearchBox
+          id="search"
+          placeholder="강원도 캠핑장"
+          onChange={onChange}
+        />
+
+        <DateInfo onClick={DateFolder}>
+          <SubTitle>떠나고 싶은 날</SubTitle>
+          <DateText>
+            {selectMonth}월 {selectDay}일
+          </DateText>
+        </DateInfo>
+        {/* 데이트 피커 */}
+        {openDate ? <Datepicker /> : null}
+        {/* <DateContainer></DateContainer> */}
+
+        <Location />
+
+        <BtnContainer>
+          <ResetBtn onClick={searchHandler}>
+            <img src="/images/reset.svg" alt="reset" />
+          </ResetBtn>
+          <SearchBtn to="/result" onClick={searchHandler}>
+            검색하기
+          </SearchBtn>
+        </BtnContainer>
       </SearchModal>
-
-      {isActive && (
-        <Container>
-          <ModalBg onClick={ModalHandler} />
-          {/* 모달창 밖 blur background 토글 기능 부여 (event bubbling 해결) */}
-          <SearchModal className="isActive">
-            {/* Headline + close btn */}
-            <TopContainer>
-              <SearchTitle>어디로 가시나요?</SearchTitle>
-              <CloseBtn src="/images/closeBtn.svg" onClick={ModalHandler} />
-            </TopContainer>
-            <SearchLabel htmlFor="search"></SearchLabel>
-            <SearchBox
-              id="search"
-              placeholder="강원도 캠핑장"
-              onChange={onChange}
-            />
-
-            <DateInfo onClick={DateFolder}>
-              <SubTitle>떠나고 싶은 날</SubTitle>
-              <DateText>
-                {selectMonth}월 {selectDay}일
-              </DateText>
-            </DateInfo>
-            {/* 데이트 피커 */}
-            {openDate ? <Datepicker /> : null}
-            {/* <DateContainer></DateContainer> */}
-
-            <Location />
-
-            <BtnContainer>
-              <ResetBtn onClick={searchHandler}>
-                <img src="/images/reset.svg" alt="reset" />
-              </ResetBtn>
-              <SearchBtn to="/Result" onClick={searchHandler}>
-                검색하기
-              </SearchBtn>
-            </BtnContainer>
-          </SearchModal>
-        </Container>
-      )}
-    </SearchModal>
+    </Container>
   );
 }
 
@@ -132,7 +133,6 @@ const slideIn = keyframes`
 const slideOut = keyframes`
   from {bottom: 0px; opacity: 1} 
     to {bottom: -500px; opacity: 0}
-    
 `;
 
 const fadeIn = keyframes`
@@ -161,17 +161,17 @@ const Container = styled.div`
 `;
 
 /* Modal Background */
-const ModalBg = styled.div`
+const ModalBg = styled.div<{ isSearch: boolean }>`
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.55);
   backdrop-filter: blur(6px);
-  animation-name: ${fadeIn};
+  animation-name: ${(props) => (props.isSearch ? fadeOut : fadeIn)};
   animation-duration: 0.2s;
 `;
 
 /* Search bar */
-const SearchModal = styled.div`
+const SearchModal = styled.div<{ isSearch: boolean }>`
   margin: 10px auto;
   width: 23.438rem;
   background-color: #ffffff;
@@ -180,19 +180,7 @@ const SearchModal = styled.div`
   align-content: center;
   z-index: 100;
 
-  &.isNotActive {
-    height: 40px;
-    padding: 5px;
-    font-size: 1rem;
-    color: #797979;
-    background-color: lightgray;
-    span {
-      margin-left: 10px;
-      font-size: 0.9rem;
-    }
-  }
-
-  &.isActive {
+  &.isSearch {
     height: 43rem;
     left: 10;
     bottom: 0;
@@ -200,7 +188,7 @@ const SearchModal = styled.div`
     position: fixed;
     z-index: 100;
     //overflow: auto;
-    animation: ${slideIn};
+    animation: ${(props) => (props.isSearch == false ? slideOut : slideIn)};
     animation-duration: 0.7s;
 
     ::-webkit-scrollbar {

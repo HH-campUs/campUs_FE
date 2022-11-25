@@ -1,13 +1,18 @@
 import React, { useState, useRef } from "react";
+import { useRecoilState } from "recoil";
+
 import styled from "styled-components";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { Link, Outlet, useMatch } from "react-router-dom";
-
+import Search from "../components/withSearch/Search";
+import { isModal } from "../store/searchAtom";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder"; //empty
 import BookmarkIcon from "@mui/icons-material/Bookmark"; //filled
 import { fontSize } from "@mui/system";
 
 function Detail() {
+const [isSearch, setIsSearch] = useRecoilState(isModal);
+
   const announceMatch = useMatch("/detail/:id/announce");
   const detailMatch = useMatch("/detail/:id/detail");
   const reviewMatch = useMatch("/detail/:id/review");
@@ -19,6 +24,8 @@ function Detail() {
   };
 
   return (
+  <>
+  {isSearch == false ? null : <Search />}
     <Wrapper>
       <MainImage />
       <MiddleContainer>
@@ -97,6 +104,7 @@ function Detail() {
         <Outlet />
       </div>
     </Wrapper>
+    </>
   );
 }
 

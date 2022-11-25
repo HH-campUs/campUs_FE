@@ -1,4 +1,9 @@
 import React, { useLayoutEffect, useState } from "react";
+import { useRecoilState } from "recoil";
+
+import { isModal } from "../store/searchAtom";
+import Search from "../components/withSearch/Search";
+
 import {
   Link,
   Outlet,
@@ -12,14 +17,13 @@ import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 
 import ProfileModal from "../components/ProfileModal";
 
-import { useRecoilState } from "recoil";
 import { LoginState } from "../store/loginAtom";
 import { removeAccessToken, removeRefreshToken } from "../instance/cookies";
 import { useMyPageApi } from "../APIs/myPageApi";
 
-
 function Mypage() {
   const [toKen, setToken] = useRecoilState(LoginState);
+  const [isSearch, setIsSearch] = useRecoilState(isModal);
 
   const [isPopUp, setIsPopUp] = useState(false);
   const myReviewMatch = useMatch("/mypage/:id/myreview");
@@ -56,104 +60,102 @@ function Mypage() {
   //   return data;
   // });
 
-
   return (
-    <Wrapper>
-      {toKen ? (
-        <UserProfile>
-          <Profile>
-            <>
-              <ProfileCircle>
-                <img
-                  src="/images/kakaopf.jpeg"
-                  alt="PFP"
-                  height={"75px"}
-                  style={{ borderRadius: "125px" }}
-                />
-              </ProfileCircle>
-              <ProfileText>
-                <Welcome>반갑습니다 {checkPf?.nickname} 님!</Welcome>
-                <Nickname></Nickname>
-              </ProfileText>
-              <ProfileArrow>
-                <KeyboardArrowRightIcon
-                  sx={{ fontSize: 30, cursor: "pointer" }}
-                />
-              </ProfileArrow>
-              <ProfileModal isPopUp={isPopUp} setIsPopUp={setIsPopUp} />
-              <LogoutBtn onClick={logOut}>로그아웃</LogoutBtn>
-            </>
+    <>
+      {isSearch == false ? null : <Search />}
+      <Wrapper>
+        {toKen ? (
+          <UserProfile>
+            <Profile>
+              <>
+                <ProfileCircle>
+                  <img
+                    src="/images/kakaopf.jpeg"
+                    alt="PFP"
+                    height={"75px"}
+                    style={{ borderRadius: "125px" }}
+                  />
+                </ProfileCircle>
+                <ProfileText>
+                  <Welcome>반갑습니다 {checkPf?.nickname} 님!</Welcome>
+                  <Nickname></Nickname>
+                </ProfileText>
+                <ProfileArrow>
+                  <KeyboardArrowRightIcon
+                    sx={{ fontSize: 30, cursor: "pointer" }}
+                  />
+                </ProfileArrow>
+                <ProfileModal isPopUp={isPopUp} setIsPopUp={setIsPopUp} />
+                <LogoutBtn onClick={logOut}>로그아웃</LogoutBtn>
+              </>
 
-            {/* <Alarmbell> 
+              {/* <Alarmbell> 
               <NotificationsNoneIcon sx={{ marginLeft: "10px" }} />
             </Alarmbell> */}
-          </Profile>
+            </Profile>
 
-          <Tabs>
-            <Tab isActive={Boolean(myPickMatch)}>
-              <Link to="/mypage/:id/mypick">찜한 캠핑장</Link>
-            </Tab>
-            <Tab isActive={Boolean(myPlanMatch)}>
-              <Link to="/mypage/:id/myplan">여행일정</Link>
-            </Tab>
-            <Tab isActive={Boolean(myReviewMatch)}>
-              <Link to="/mypage/:id/myreview">내 리뷰</Link>
-            </Tab>
-          </Tabs>
-          <div
-            style={{
-              marginTop: "-120px",
-            }}
-          >
-            <Outlet />
-          </div>
-        </UserProfile>
-      ) : (
-        <UserProfile>
-          <Profile>
-            <ProfileText>
-              <Welcome style={{ margin: "20px", fontSize: "1.1rem" }}>
-                로그인 하고 더 많은 <br></br>기능을 사용해 보세요!
-              </Welcome>
-            </ProfileText>
-          </Profile>
-          <LoginBox>
-            <LoginBtn
-              onClick={() => {
-                navigate("/login");
-              }}
-            >
-              로그인
-            </LoginBtn>
-            <SignBtn
-              onClick={() => {
-                navigate("/signup");
-              }}
-            >
-              회원가입
-            </SignBtn>
-          </LoginBox>
-          <Tabs style={{ marginTop: "200px" }}>
-            <Tab isActive={Boolean(myPickMatch)}>
-              <Link to="/mypage/:id/mypick">찜한 캠핑장</Link>
-            </Tab>
-            <Tab isActive={Boolean(myPlanMatch)}>
-              <Link to="/mypage/:id/myplan">여행일정</Link>
-            </Tab>
-            <Tab isActive={Boolean(myReviewMatch)}>
-              <Link to="/mypage/:id/myreview">내 리뷰</Link>
-            </Tab>
-          </Tabs>
-          <div
-            style={{
-              marginTop: "20px",
-            }}
-          >
-            <Outlet />
-          </div>
-        </UserProfile>
-      )}
-    </Wrapper>
+            <Tabs>
+              <Tab isActive={Boolean(myPickMatch)}>
+                <Link to="/mypage/:id/mypick">찜한 캠핑장</Link>
+              </Tab>
+              <Tab isActive={Boolean(myPlanMatch)}>
+                <Link to="/mypage/:id/myplan">여행일정</Link>
+              </Tab>
+              <Tab isActive={Boolean(myReviewMatch)}>
+                <Link to="/mypage/:id/myreview">내 리뷰</Link>
+              </Tab>
+            </Tabs>
+            <div
+              style={{
+                marginTop: "-120px",
+              }}>
+              <Outlet />
+            </div>
+          </UserProfile>
+        ) : (
+          <UserProfile>
+            <Profile>
+              <ProfileText>
+                <Welcome style={{ margin: "20px", fontSize: "1.1rem" }}>
+                  로그인 하고 더 많은 <br></br>기능을 사용해 보세요!
+                </Welcome>
+              </ProfileText>
+            </Profile>
+            <LoginBox>
+              <LoginBtn
+                onClick={() => {
+                  navigate("/login");
+                }}>
+                로그인
+              </LoginBtn>
+              <SignBtn
+                onClick={() => {
+                  navigate("/signup");
+                }}>
+                회원가입
+              </SignBtn>
+            </LoginBox>
+            <Tabs style={{ marginTop: "200px" }}>
+              <Tab isActive={Boolean(myPickMatch)}>
+                <Link to="/mypage/:id/mypick">찜한 캠핑장</Link>
+              </Tab>
+              <Tab isActive={Boolean(myPlanMatch)}>
+                <Link to="/mypage/:id/myplan">여행일정</Link>
+              </Tab>
+              <Tab isActive={Boolean(myReviewMatch)}>
+                <Link to="/mypage/:id/myreview">내 리뷰</Link>
+              </Tab>
+            </Tabs>
+            <div
+              style={{
+                marginTop: "20px",
+              }}>
+              <Outlet />
+            </div>
+          </UserProfile>
+        )}
+      </Wrapper>
+    </>
   );
 }
 

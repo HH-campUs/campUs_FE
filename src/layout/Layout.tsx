@@ -1,12 +1,27 @@
 import React from "react";
+import Lottie from "react-lottie";
+import pcLottie from "../style/pcLottie.json";
 import styled from "styled-components";
 import Header from "./Header";
 import Footer from "./Footer";
 
 export default function Layout(props: any) {
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: pcLottie,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
+
   return (
     <Root>
-      <LeftTemplate />
+      <LeftTemplate>
+        <SplashLogo>
+          <Lottie options={defaultOptions} height={300} width={300} />
+        </SplashLogo>
+      </LeftTemplate>
       <RightTemplate>
         {/* <Header /> */}
         <div style={{ marginBottom: 20 }}>{props.children}</div>
@@ -30,21 +45,29 @@ const Root = styled.div`
 `;
 //left
 const LeftTemplate = styled.div`
-  width: 440px;
+  width: 475px;
   min-height: 650px;
-  border: soild 1px black;
-  background-color: grey;
+  background-color: transparent;
 
   @media screen and (max-width: 915px) {
     display: none;
     //margin-left: -17.5px;
   }
 `;
+
+const SplashLogo = styled.div`
+  width: 475px;
+  height: inherit;
+  padding: 20px;
+  display: flex;
+`;
 //right
 const RightTemplate = styled.div`
+  //background-color: teal;
   width: 475px;
   //height: 500px;
   max-width: 475px;
+
   @media screen and (min-width: 915px) {
     max-width: 475px;
     //margin-left: -17.5px;

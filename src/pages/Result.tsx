@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
+import { useInView } from "react-intersection-observer";
+
 /* import {} from "../store/dateAtom"; */
 import { showLo, ExportLocation } from "../store/locationAtom";
 import { StrMonth, StrDay } from "../store/dateAtom";
-
+import Search from "../components/withSearch/Search";
+import { isModal } from "../store/searchAtom";
 import { Link, useNavigate, Outlet, useMatch } from "react-router-dom";
 import styled from "styled-components";
-import Datepicker from "../components/withSearch/Datepicker";
-import { BiSearchAlt } from "react-icons/bi";
-import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+import { FaChevronUp } from "react-icons/fa";
 import { useGetApi } from "../APIs/getApi";
 
 //bookmark icon
@@ -20,11 +21,23 @@ function Result() {
   /* data */
   const [isActive, setIsActive] = useState(false);
   const [isWeather, setIsWeather] = useState(false);
+  const [isSearch, setIsSearch] = useRecoilState(isModal);
+
   const locationValue = useRecoilValue(showLo);
   const Month = useRecoilValue(StrMonth);
   const Day = useRecoilValue(StrDay);
 
   const getWeather = useGetApi.useGetWeather().data;
+
+  const [ref, inView] = useInView();
+
+  /*  const { fetchNextPage, isFetching, data, error } = useGetApi.useGetCampResult();
+
+  useEffect(() => {
+    if (inView) {
+      fetchNextPage();
+  }
+}, [inView]); */
 
   const ModalHandler = () => {
     setIsActive(!isActive);
@@ -34,15 +47,11 @@ function Result() {
     setIsWeather(!isWeather);
   };
 
-  /*  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { selectInput, selectDate, selectLocation } = event.target;
-  setInputValue({event.target.value|);
-  }; */
-
   console.log(getWeather);
 
   return (
     <>
+      {isSearch == false ? null : <Search />}
       <ReSearch>
         <div
           onClick={() => {
@@ -121,6 +130,7 @@ function Result() {
           </ResultBox>
         ))}
       </ResultContainer>
+      <div ref={ref} style={{ width: "inherit", height: "" }}></div>
     </>
   );
 }

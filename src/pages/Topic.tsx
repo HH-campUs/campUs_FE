@@ -1,4 +1,8 @@
 import React, { useState } from "react";
+import { useRecoilState } from "recoil";
+
+import Search from "../components/withSearch/Search";
+import { isModal } from "../store/searchAtom";
 import { Link, useNavigate, Outlet, useMatch } from "react-router-dom";
 import styled from "styled-components";
 import Datepicker from "../components/withSearch/Datepicker";
@@ -12,6 +16,7 @@ function Topic() {
   const nav = useNavigate();
   const [isActive, setIsActive] = useState(false);
   const [isWeather, setIsWeather] = useState(false);
+  const [isSearch, setIsSearch] = useRecoilState(isModal);
 
   const ModalHandler = () => {
     setIsActive(!isActive);
@@ -28,6 +33,8 @@ function Topic() {
 
   return (
     <>
+      {isSearch == false ? null : <Search />}
+
       <TopContainer>
         <BackBtn onClick={() => nav(`/`)}>
           <img src="/images/back.svg" alt="back" />

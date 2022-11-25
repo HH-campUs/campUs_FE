@@ -1,13 +1,18 @@
 import React, { useState, useRef } from "react";
+import { useRecoilState } from "recoil";
+
 import styled from "styled-components";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { Link, Outlet, useMatch } from "react-router-dom";
-
+import Search from "../components/withSearch/Search";
+import { isModal } from "../store/searchAtom";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder"; //empty
 import BookmarkIcon from "@mui/icons-material/Bookmark"; //filled
 import { fontSize } from "@mui/system";
 
 function Detail() {
+  const [isSearch, setIsSearch] = useRecoilState(isModal);
+
   const announceMatch = useMatch("/detail/:id/announce");
   const detailMatch = useMatch("/detail/:id/detail");
   const reviewMatch = useMatch("/detail/:id/review");
@@ -19,84 +24,87 @@ function Detail() {
   };
 
   return (
-    <Wrapper>
-      <MainImage />
-      <MiddleContainer>
-        <UpperWrapper>
-          <Left>노을공원 가족캠핑장</Left>
-          <Right>일반야영장 | 글램핑</Right>
-        </UpperWrapper>
-        <DownWrapper>
-          <div>
-            <LocationOnIcon />
-          </div>
-          <p>서울 마포구 하늘공원로 108-1</p>
-        </DownWrapper>
-      </MiddleContainer>
-      <PickBox>
-        <Pick>찜(30)</Pick>
-        <Review>리뷰(790)</Review>
-      </PickBox>
-      {/* <AddtripBtn>내 여행일정 저장</AddtripBtn> */}
-      <IconBox>
-        <PickImg onClick={marking}>
-          {bookmark ? (
-            <BookmarkBorderIcon sx={{ width: "35px", height: "35px" }} />
-          ) : (
-            <BookmarkIcon sx={{ width: "35px", height: "35px" }} />
-          )}
-          <IconText style={{ marginLeft: "2px" }}>찜하기</IconText>
-        </PickImg>
-        <PlanImg>
-          <img src="/images/icon-plan.svg" />
-          <IconText style={{ marginLeft: "-3px" }}>일정추가</IconText>
-        </PlanImg>
-        <ReviewImg>
-          <img src="/images/icon-review2.svg" />
-          <IconText style={{ marginLeft: "-3px" }}>리뷰작성</IconText>
-        </ReviewImg>
-        <ShareImg>
-          <img src="/images/icon-share.svg" />
-          <IconText style={{ marginLeft: "-3px" }}> 공유하기</IconText>
-        </ShareImg>
-      </IconBox>
-      <WFcBox>
-        <WeatherBox>
-          <Calendar>
-            <img
-              src="/images/Calendar.svg"
-              alt="calendar"
-              style={{ height: "20px" }}
-            />
-            <p>12월 20일~</p>
-          </Calendar>
-          <RecoWeather>캠핑 추천 날씨</RecoWeather>
-          <DetailWeather>부산북구 날씨 상세</DetailWeather>
-        </WeatherBox>
-        <FcBox>
-          <FcTextBox>
-            <FcLeft>시설요약</FcLeft>
-            <Right>전체보기</Right>
-          </FcTextBox>
-          <FcIconBox>ICon Will be added</FcIconBox>
-        </FcBox>
-      </WFcBox>
+    <>
+      {isSearch == false ? null : <Search />}
+      <Wrapper>
+        <MainImage />
+        <MiddleContainer>
+          <UpperWrapper>
+            <Left>노을공원 가족캠핑장</Left>
+            <Right>일반야영장 | 글램핑</Right>
+          </UpperWrapper>
+          <DownWrapper>
+            <div>
+              <LocationOnIcon />
+            </div>
+            <p>서울 마포구 하늘공원로 108-1</p>
+          </DownWrapper>
+        </MiddleContainer>
+        <PickBox>
+          <Pick>찜(30)</Pick>
+          <Review>리뷰(790)</Review>
+        </PickBox>
+        {/* <AddtripBtn>내 여행일정 저장</AddtripBtn> */}
+        <IconBox>
+          <PickImg onClick={marking}>
+            {bookmark ? (
+              <BookmarkBorderIcon sx={{ width: "35px", height: "35px" }} />
+            ) : (
+              <BookmarkIcon sx={{ width: "35px", height: "35px" }} />
+            )}
+            <IconText style={{ marginLeft: "2px" }}>찜하기</IconText>
+          </PickImg>
+          <PlanImg>
+            <img src="/images/icon-plan.svg" />
+            <IconText style={{ marginLeft: "-3px" }}>일정추가</IconText>
+          </PlanImg>
+          <ReviewImg>
+            <img src="/images/icon-review2.svg" />
+            <IconText style={{ marginLeft: "-3px" }}>리뷰작성</IconText>
+          </ReviewImg>
+          <ShareImg>
+            <img src="/images/icon-share.svg" />
+            <IconText style={{ marginLeft: "-3px" }}> 공유하기</IconText>
+          </ShareImg>
+        </IconBox>
+        <WFcBox>
+          <WeatherBox>
+            <Calendar>
+              <img
+                src="/images/Calendar.svg"
+                alt="calendar"
+                style={{ height: "20px" }}
+              />
+              <p>12월 20일~</p>
+            </Calendar>
+            <RecoWeather>캠핑 추천 날씨</RecoWeather>
+            <DetailWeather>부산북구 날씨 상세</DetailWeather>
+          </WeatherBox>
+          <FcBox>
+            <FcTextBox>
+              <FcLeft>시설요약</FcLeft>
+              <Right>전체보기</Right>
+            </FcTextBox>
+            <FcIconBox>ICon Will be added</FcIconBox>
+          </FcBox>
+        </WFcBox>
 
-      <Tabs>
-        <Tab isActive={Boolean(announceMatch)}>
-          <Link to="/detail/:id/announce"> 공지사항 </Link>
-        </Tab>
-        <Tab isActive={Boolean(detailMatch)}>
-          <Link to="/detail/:id/detail"> 상세정보</Link>
-        </Tab>
-        <Tab isActive={Boolean(reviewMatch)}>
-          <Link to="/detail/:id/review"> 리뷰</Link>
-        </Tab>
-      </Tabs>
-      <div>
-        <Outlet />
-      </div>
-    </Wrapper>
+        <Tabs>
+          <Tab isActive={Boolean(announceMatch)}>
+            <Link to="/detail/:id/announce"> 공지사항 </Link>
+          </Tab>
+          <Tab isActive={Boolean(detailMatch)}>
+            <Link to="/detail/:id/detail"> 상세정보</Link>
+          </Tab>
+          <Tab isActive={Boolean(reviewMatch)}>
+            <Link to="/detail/:id/review"> 리뷰</Link>
+          </Tab>
+        </Tabs>
+        <div>
+          <Outlet />
+        </div>
+      </Wrapper>
+    </>
   );
 }
 

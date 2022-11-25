@@ -1,19 +1,37 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import Lottie from "react-lottie";
+import lottie from "../style/lottie.json";
 
 function Splash() {
   const [isShow, setIsShow] = useState<boolean>(true);
+
+  /* lottie animation */
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: lottie,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
+
   useEffect(() => {
     setTimeout(() => {
       setIsShow(false);
-    }, 3000);
+    }, 300000);
   }, []);
 
   return isShow ? (
     <Root>
       <LeftTemplate />
       <RightTemplate>
-        <SplashBg></SplashBg>
+        <SplashBg>
+          <SplashLogo>
+            <Lottie options={defaultOptions} height={500} width={500} />
+            <span>campUs</span>
+          </SplashLogo>
+        </SplashBg>
       </RightTemplate>
     </Root>
   ) : (
@@ -26,10 +44,14 @@ const SplashBg = styled.div`
   width: 100vw;
   max-width: 475px;
   height: 100vh;
-  background-color: #2481bb;
+  padding: 0 auto;
+  background-color: ${(props) => props.theme.colorTheme.main};
 `;
-const SplashLogo = styled.img`
+const SplashLogo = styled.div`
+  width: 290px;
+  height: 290px;
   margin: 0 auto;
+  display: flex;
 `;
 
 const Root = styled.div`
@@ -55,10 +77,10 @@ const Root = styled.div`
 `;
 //left
 const LeftTemplate = styled.div`
-  width: 440px;
+  width: 475px;
   min-height: 650px;
   border: soild 1px black;
-  background-color: grey;
+  background-color: white;
 
   @media screen and (max-width: 915px) {
     display: none;

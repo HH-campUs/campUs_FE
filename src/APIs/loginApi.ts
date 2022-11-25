@@ -6,6 +6,7 @@ import { ILoginForm } from "../interfaces/inLogin";
 
 const serverUrl = process.env.REACT_APP_API;
 
+/* 회원가입 */
 export const signUpApi = async (payload: ISignUpForm) => {
   const data = await instance.post(`/users/signup`, {
     email: payload.email,
@@ -14,6 +15,13 @@ export const signUpApi = async (payload: ISignUpForm) => {
   return data;
 };
 
+/* 이메일 중복확인 */
+export const duplicateApi = async (payload: any) => {
+  const data = await instance.post(`/users/signup/check`, {
+    email: payload.email,
+  });
+  return data;
+};
 // export const loginApi = {
 // postSignup: () => {
 //   return useMutation((payload: ISignUpForm) =>

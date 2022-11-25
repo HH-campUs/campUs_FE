@@ -18,6 +18,7 @@ const colorTheme = {
   text3: "#909090",
   border: "#e3e3e3",
   textWhite: "#ffffff",
+  main: "#024873",
   primary1: "#024873",
   primary2: "#5185A6",
   primary3: "#9DD3F5",

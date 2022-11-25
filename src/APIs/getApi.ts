@@ -40,17 +40,9 @@ export const useGetApi = {
         } */
         );
         console.log(res);
-        return res.data;
+        return res;
       }
     );
-
-    /* 여기 inView 부분은 커스텀 hook 처럼 못쓸 듯..? */
-    /* const [ref, inView] = useInView();
-    useEffect(() => {
-      if (!data) return;
-
-
-    }) */
   },
 
   // ** 캠핑장 리뷰 조회 / get ** //

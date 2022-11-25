@@ -1,10 +1,10 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, MouseEvent } from "react";
 import styled from "styled-components";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { ISignUpForm } from "../interfaces/inLogin";
-import { signUpApi } from "../APIs/loginApi";
+import { signUpApi, duplicateApi } from "../APIs/loginApi";
 import { useMutation } from "@tanstack/react-query";
 import { instance, postInstance } from "../instance/instance";
 import axios from "axios";
@@ -19,6 +19,7 @@ const serverUrl = process.env.REACT_APP_API;
 export default function SignUp() {
   const navigate = useNavigate();
 
+  const [isDup, setIsDup] = useState(false);
   const {
     register,
     handleSubmit,
@@ -42,6 +43,11 @@ export default function SignUp() {
   const handleValid = (data: ISignUpForm) => {
     console.log(data);
     signUpApi(data);
+  };
+
+  const handleDuplicate = (data: ISignUpForm) => {
+    console.log(data);
+    duplicateApi(data);
   };
 
   const mailwatch = watch("email");
@@ -71,19 +77,22 @@ export default function SignUp() {
       </LoginTitle>
       {/* Form Start */}
       <LoginForm onSubmit={handleSubmit(handleValid)}>
-        <StInput
-          unValid={Boolean(errors.email)}
-          placeholder="이메일"
-          {...register("email", {
-            required: "이메일을 입력해주세요.",
-            pattern: {
-              value: /^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w+[.]?\w{2,3}/,
-              //
-              // /^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w+[.]?\w{2,3}/,
-              message: "올바른 이메일 형식을 입력해주세요.",
-            },
-          })}
-        />
+        <label style={{ position: "relative" }}>
+          <StInput
+            unValid={Boolean(errors.email)}
+            placeholder="이메일"
+            {...register("email", {
+              required: "이메일을 입력해주세요.",
+              pattern: {
+                value: /^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w+[.]?\w{2,3}/,
+                //
+                // /^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w+[.]?\w{2,3}/,
+                message: "올바른 이메일 형식을 입력해주세요.",
+              },
+            })}
+          />
+        </label>
+        <></>
         <ErrorMessage>{errors.email?.message}</ErrorMessage>
         <StInput
           unValid={Boolean(errors.password)}
@@ -158,22 +167,38 @@ const LoginForm = styled.form`
 `;
 
 const StInput = styled.input<{ unValid: boolean }>`
-  width: 350px;
-  height: 61px;
-  font-size: 16px;
+  width: ${(props) => props.theme.pixelToRem(350)};
+  height: ${(props) => props.theme.pixelToRem(61)};
+  font-size: ${(props) => props.theme.pixelToRem(16)};
   border: 1px solid ${(props) => (props.unValid ? "red" : "grey")};
-  border-radius: 8px;
+  border-radius: ${(props) => props.theme.pixelToRem(8)};
   transition: all 0.5s linear;
   padding: 10px;
   &:focus {
     border: 1px solid #024873;
     //outline: none;
   }
+
+  &:nth-child(1) {
+    position: absoulte;
+  }
+`;
+const DuplBtn = styled.button`
+  right: ${(props) => props.theme.pixelToRem(0)};
+  width: ${(props) => props.theme.pixelToRem(80)};
+  height: ${(props) => props.theme.pixelToRem(61)};
+  color: ${(props) => props.theme.colorTheme.textWhite} !important;
+  ${(props) => props.theme.fontTheme.Subtitle3};
+  padding: auto 0;
+  background-color: #0f5986;
+  border-top-right-radius: ${(props) => props.theme.pixelToRem(8)};
+  border-bottom-right-radius: ${(props) => props.theme.pixelToRem(8)};
+  position: absolute;
 `;
 
 const TextBox = styled.div`
   display: flex;
-  font-size: 13px;
+  font-size: ${(props) => props.theme.pixelToRem(13)};
   position: absolute;
 
   margin-top: 155px;
@@ -189,12 +214,12 @@ const FindUserInfo = styled.p`
 `;
 
 const StBtn = styled.button`
-  width: 350px;
-  height: 61px;
-  font-size: 16px;
-  border: 0.5px none grey;
+  width: ${(props) => props.theme.pixelToRem(350)};
+  height: ${(props) => props.theme.pixelToRem(61)};
+  font-size: ${(props) => props.theme.pixelToRem(16)};
+  border: ${(props) => props.theme.pixelToRem(0.5)} none grey;
   margin-top: 50px;
-  border-radius: 8px;
+  border-radius: ${(props) => props.theme.pixelToRem(8)};
   padding: 10px;
   color: ${(props) => props.theme.textColor};
   cursor: pointer;

@@ -45,11 +45,11 @@ function Detail() {
           ) : (
             <BookmarkIcon sx={{ width: "35px", height: "35px" }} />
           )}
-          <IconText style={{ marginLeft: "2px" }}>찜하기</IconText>
+          <IconText>찜하기</IconText>
         </PickImg>
         <PlanImg>
           <img src="/images/icon-plan.svg" />
-          <IconText style={{ marginLeft: "-3px" }}>일정추가</IconText>
+          <IconText style={{ marginLeft: "-5.5px" }}>일정추가</IconText>
         </PlanImg>
         <ReviewImg>
           <img src="/images/icon-review2.svg" />

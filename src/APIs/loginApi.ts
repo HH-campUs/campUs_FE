@@ -4,15 +4,15 @@ import { instance, postInstance } from "../instance/instance";
 import { ISignUpForm } from "../interfaces/inLogin";
 import { ILoginForm } from "../interfaces/inLogin";
 
-const serverUrl = process.env.REACT_APP_API;
+// const serverUrl = process.env.REACT_APP_API;
 
-export const signUpApi = async (payload: ISignUpForm) => {
-  const data = await instance.post(`/users/signup`, {
-    email: payload.email,
-    password: payload.password,
-  });
-  return data;
-};
+// const signUpApi = async (payload: ISignUpForm) => {
+//   const data = await instance.post(`/users/signup`, {
+//     email: payload.email,
+//     password: payload.password,
+//   });
+//   return data;
+// };
 
 // export const loginApi = {
 // postSignup: () => {

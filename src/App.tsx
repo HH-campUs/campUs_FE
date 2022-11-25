@@ -6,9 +6,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
-import Pop from "./pages/Homedetail/Pop";
-import Recommended from "./pages/Homedetail/Recommended";
-import Popular from "./pages/Homedetail/Popular";
 /* import Splash from "./pages/Splash"; */
 
 import CResult from "./pages/CResult";
@@ -94,7 +91,16 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
   }
   body{
-    font-family: 'Source Sans Pro', sans-serif;
+    @font-face {
+        font-family: 'Pretendard-Regular';
+        src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+        font-weight: 400;
+        font-style: normal;
+        }
+        *{
+        user-select: none;
+      }
+    /* font-family: 'Source Sans Pro', sans-serif; */
   }
   a{
     text-decoration: none;
@@ -119,11 +125,8 @@ function App() {
             <Layout>
               <Routes>
                 {/* <Route path="/" element={<Splash />} /> */}
-                <Route path="/" element={<Home />}>
-                  <Route path="/popping" element={<Pop />} />
-                  <Route path="/recommended" element={<Recommended />} />
-                  <Route path="/popular" element={<Popular />} />
-                </Route>
+                <Route path="/" element={<Home />} />
+
                 <Route path="result" element={<Result />} />
                 <Route path="cresult" element={<CResult />} />
                 <Route path="login" element={<Login />} />

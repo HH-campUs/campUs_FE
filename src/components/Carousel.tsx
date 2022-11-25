@@ -119,7 +119,7 @@ const CarouselViewer = styled.div`
 
 const CarouselSlider = styled.div`
   display: flex;
-  margin-bottom: 20px;
+
 `;
 
 const CarouselSlide = styled.div`

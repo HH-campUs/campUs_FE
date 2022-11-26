@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
-
-import styled, { keyframes } from "styled-components";
-
 import { useForm } from "react-hook-form";
-import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 import { isPop } from "../interfaces/Modal";
-
 import { IEditPfForm } from "../interfaces/MyPage";
 import { useMyPageApi } from "../APIs/myPageApi";
-// import { MyPageApi } from "../APIs/myPageApi";
+import { useNavigate } from "react-router-dom";
+//css
+import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
+import styled, { keyframes } from "styled-components";
 
 export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
+  const navigate = useNavigate();
+  const checkPf = useMyPageApi.useGetMyPage().data?.data[0];
   const {
     register,
     handleSubmit,
@@ -27,21 +27,32 @@ export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
       setImagePreview(URL.createObjectURL(file));
     }
   }, [image]);
-
+  // 유사배열확인
   const profileEdit = useMyPageApi.useEditProfile();
+
   const handleValid = (data: IEditPfForm) => {
-    profileEdit.mutate(data);
+    const body = { nickname: data.nickname, profileImg: data.profileImg[0] };
+    profileEdit.mutate(body);
     console.log(data);
   };
 
+  // window.location.replace("/mypage");
   const modalPop = () => {
+    setIsPopUp((prev) => !prev);
+  };
+
+  const kmodalPop = () => {
+    setIsPopUp((prev) => !prev);
+  };
+
+  const gmodalPop = () => {
     setIsPopUp((prev) => !prev);
   };
 
   return (
     <>
       <PfModalWrap className="setIsPopUp" onClick={modalPop}>
-        편집
+        수정
       </PfModalWrap>
 
       {isPopUp && (
@@ -52,17 +63,27 @@ export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
               <PfBox>
                 <PfText>기본 프로필 편집</PfText>
                 <PfCircle>
-                  <ImgPreview src={imagePreview} />
+                  {imagePreview && (
+                    <ImgPreview
+                      style={{ objectFit: "cover" }}
+                      src={imagePreview}
+                    />
+                  )}
                   <img
                     src="/images/kakaopf.jpeg"
                     alt="PFP"
-                    style={{ height: "75px", borderRadius: "125px" }}
+                    style={{
+                      height: "75px",
+                      borderRadius: "125px",
+                      objectFit: "contain",
+                    }}
                   />
                   <CameraCircle>
                     <label>
                       <input
                         type="file"
                         accept="image/*"
+                        Content-Type="multipart/form-data"
                         style={{ display: "none" }}
                         {...register("profileImg")}
                       />

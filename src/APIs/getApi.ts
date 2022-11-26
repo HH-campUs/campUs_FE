@@ -1,14 +1,21 @@
+import { useEffect } from "react";
 import { useQuery, useInfiniteQuery } from "@tanstack/react-query";
+import { useInView } from "react-intersection-observer";
 import { instance } from "../instance/instance";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { ExportDate, DateState } from "../store/dateAtom";
+import { ExportLocation, selectLo } from "../store/locationAtom";
+
 import {
   IGetCampCatInfo,
   IGetCampReview,
-
   IGetCampResult,
-
+  IGetWeather,
 } from "../interfaces/get";
 
 const serverUrl = process.env.REACT_APP_API;
+
+/* const [isDate, setIsDate] */
 
 // ** 캠핑장 카테고리 정보 조회 / get ** //
 
@@ -21,12 +28,21 @@ export const useGetApi = {
   },
 
   // ** 캠핑장 결과 조회 - search (Infinite) / get ** //
-  getCampResult: () => {
-    return useInfiniteQuery(["campResult"], async () => {
-      /* request query에 payload값 받아야됨. (page) */
-      const { data } = await instance.get<IGetCampResult>(`${serverUrl}`);
-      return data;
-    });
+  useGetCampResult: () => {
+    const location = useRecoilValue(selectLo);
+    const { fetchNextPage, isFetching, data, error } = useInfiniteQuery(
+      ["campResult"],
+      async ({ pageParam = 1 }) => {
+        const res = await instance.get<IGetCampResult>(
+          `/camps?address=${location}&numOfRows=${10}&pageNo=${pageParam}`
+          /* {
+          getNextPageParam : (cur:any) => cur.nextPage,
+        } */
+        );
+        console.log(res);
+        return res;
+      }
+    );
   },
 
   // ** 캠핑장 리뷰 조회 / get ** //
@@ -39,17 +55,16 @@ export const useGetApi = {
     });
   },
 
+  /* 날씨 조회 */
   useGetWeather: () => {
+    const date = useRecoilValue(DateState);
+    const location = useRecoilValue(selectLo);
     return useQuery(["weatherinfo"], async () => {
-      const { data } = await instance.get<IGetWeather>("/weathers");
-      console.log(data);
+      const { data } = await instance.get<IGetWeather>(
+        `/weathers?pardo=${location}&dt=${date}`
+      );
+      console.log(date, location);
       return data;
     });
   },
 };
-
-// {
-//   enabled: !!getCookieToken(), -> 이거뭐냐
-//   refetchOnMount: false,
-//   refetchOnWindowFocus: false,
-// },

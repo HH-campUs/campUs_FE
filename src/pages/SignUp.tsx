@@ -1,15 +1,13 @@
-import React, { useRef, useState, useEffect } from "react";
-import styled from "styled-components";
-import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { ISignUpForm } from "../interfaces/inLogin";
-import { signUpApi } from "../APIs/loginApi";
-import { useMutation } from "@tanstack/react-query";
-import { instance, postInstance } from "../instance/instance";
-import axios from "axios";
+import { instance } from "../instance/instance";
 
-const serverUrl = process.env.REACT_APP_API;
+//css
+import styled from "styled-components";
+import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
+import CheckIcon from "@mui/icons-material/Check";
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -21,28 +19,52 @@ export default function SignUp() {
     formState: { errors },
   } = useForm<ISignUpForm>();
 
-  console.log(errors);
+  const [mailCK, setMailCk] = useState(false);
 
-  // export const signUpApi = async (payload: ISignUpForm) => {
-  //   const data = await instance.post(`${serverUrl}/users/signup`, {
-  //     email: payload.email,
-  //     password: payload.password,
-  //   });
-  //   return data;
-  // };
-
-  const passwordRef = useRef<string | null>(null);
-  passwordRef.current = watch("password");
-
-
-  const handleValid = (data: ISignUpForm) => {
-    console.log(data);
-    signUpApi(data);
-
-  };
-
+  const password = watch("password");
   const mailwatch = watch("email");
   console.log(mailwatch);
+  console.log(password);
+
+  const handleValid = async (data: ISignUpForm) => {
+    if (mailCK === false) return window.alert("중복확인을 다시 해주세요.");
+    try {
+      const response = await instance.post(`/users/signup`, {
+        email: data.email,
+        password: data.password,
+      });
+      console.log(data);
+      if (response.status === 201) {
+        window.alert(`${data?.email}님\n반갑습니다.`);
+        navigate("/login");
+      }
+    } catch (error) {
+      window.alert("가입에 실패했습니다.");
+    }
+  };
+
+  useEffect(() => {
+    if (mailwatch !== mailwatch) {
+      setMailCk((prev) => !prev);
+    }
+  }, [mailwatch]);
+
+  // validate: {
+  //   confirmPw: (value) =>
+  //     value === password || "비밀번호가 일치하지 않습니다.",
+  // },
+
+  const mailchecking = async () => {
+    await instance
+      .post(`users/signup/check`, { email: mailwatch })
+      .then(() => {
+        window.alert("사용가능한 메일입니다.");
+        setMailCk(true);
+      })
+      .catch(() => {
+        window.alert("중복된 메일입니다.");
+      });
+  };
 
   return (
     <LoginWrap>
@@ -50,7 +72,7 @@ export default function SignUp() {
         <div>
           <KeyboardArrowLeftIcon
             sx={{ fontSize: 40 }}
-            onClick={() => navigate(-1)}
+            onClick={() => navigate("-1")}
           />
         </div>
 
@@ -65,12 +87,21 @@ export default function SignUp() {
             required: "이메일을 입력해주세요.",
             pattern: {
               value: /^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w+[.]?\w{2,3}/,
-              //
-              // /^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w+[.]?\w{2,3}/,
               message: "올바른 이메일 형식을 입력해주세요.",
             },
+            validate: {},
           })}
         />
+        {mailCK ? (
+          <button type="button">
+            <CheckIcon />
+            <span>&nbsp;중복확인</span>
+          </button>
+        ) : (
+          <button type="button" onClick={mailchecking}>
+            중복확인
+          </button>
+        )}
         <ErrorMessage>{errors.email?.message}</ErrorMessage>
         <StInput
           unValid={Boolean(errors.password)}
@@ -89,22 +120,23 @@ export default function SignUp() {
             pattern: {
               value:
                 /^(?=.*[A-Z].*[a-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$/,
-
-              // /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$/,
-
               message:
-                "영어, 대문자, 특수기호(!@#$%&)가 포함된 8~20자리 입니다.",
+                "영어, 대문자, 숫자, 특수기호(!@#$%&)가 포함된 8~20자리 입니다.",
             },
           })}
         />
+
         <ErrorMessage> {errors.password?.message}</ErrorMessage>
         <StInput
           unValid={Boolean(errors.passwordcheck)}
           type="password"
-          placeholder="비밀번호 입력확인"
+          placeholder="비밀번호 확인"
           {...register("passwordcheck", {
-            required: "비밀번호 입력확인",
-            validate: (value) => value === passwordRef.current,
+            required: "다시 입력 해주세요.",
+            validate: {
+              confirmPw: (value) =>
+                value === password || "비밀번호가 일치하지 않습니다.",
+            },
           })}
         />
         <ErrorMessage>{errors.passwordcheck?.message}</ErrorMessage>
@@ -153,7 +185,7 @@ const StInput = styled.input<{ unValid: boolean }>`
   transition: all 0.5s linear;
   padding: 10px;
   &:focus {
-    border: 1px solid #024873;
+    border: 1px solid #5185a6;
     //outline: none;
   }
 `;

@@ -1,19 +1,43 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { useInView } from "react-intersection-observer";
+
+/* import {} from "../store/dateAtom"; */
+import { showLo, ExportLocation } from "../store/locationAtom";
+import { StrMonth, StrDay } from "../store/dateAtom";
+import Search from "../components/withSearch/Search";
+import { isModal } from "../store/searchAtom";
 import { Link, useNavigate, Outlet, useMatch } from "react-router-dom";
 import styled from "styled-components";
-import Datepicker from "../components/withSearch/Datepicker";
-import { BiSearchAlt } from "react-icons/bi";
-import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+import { FaChevronUp } from "react-icons/fa";
+import { useGetApi } from "../APIs/getApi";
 
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 //bookmark icon
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 
 function Result() {
   const nav = useNavigate();
+
+  /* data */
   const [isActive, setIsActive] = useState(false);
   const [isWeather, setIsWeather] = useState(false);
+  const [isSearch, setIsSearch] = useRecoilState(isModal);
+
+  const locationValue = useRecoilValue(showLo);
+  const Month = useRecoilValue(StrMonth);
+  const Day = useRecoilValue(StrDay);
+
+  const getWeather = useGetApi.useGetWeather().data;
+  const getCamp = useGetApi.useGetCampResult();
+  const [ref, inView] = useInView();
+
+  /*  const { fetchNextPage, isFetching, data, error } = useGetApi.useGetCampResult();
+
+  useEffect(() => {
+    if (inView) {
+      fetchNextPage();
+  }
+}, [inView]); */
 
   const ModalHandler = () => {
     setIsActive(!isActive);
@@ -23,83 +47,90 @@ function Result() {
     setIsWeather(!isWeather);
   };
 
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    /* const { selectInput, selectDate, selectLocation } = event.target;
-  setInputValue({event.target.value|); */
-  };
+  console.log(getWeather, getCamp);
 
   return (
     <>
-      <SearchModal style={{ transition: "all 0.5s ease-in" }}>
-        {isActive ? (
-          <Container>
-            <ModalBg>
-              <SearchModal
-                className="isActive"
-                style={{ transition: "all 0.5s ease-in-out" }}>
-                <SearchLabel htmlFor="search"></SearchLabel>
-                <SearchBox
-                  id="search"
-                  placeholder="Search"
-                  onChange={onChange}
-                />
-                <Datepicker />
-                <BtnContainer>
-                  <ResetBtn onClick={ModalHandler}> Reset </ResetBtn>
-                  <SearchBtn to="/Result" onClick={ModalHandler}>
-                    Search
-                  </SearchBtn>
-                </BtnContainer>
-              </SearchModal>
-            </ModalBg>
-          </Container>
-        ) : (
-          /* SearchModal - Inactive (default) */
-          <SearchModal className="isNotActive" onClick={ModalHandler}>
-            <div>지역 : 어디어디</div>
-            <div>날짜 : 날짜날짜</div>
-          </SearchModal>
-        )}
-      </SearchModal>
+      {isSearch == false ? null : <Search />}
+      <ReSearch>
+        <div
+          onClick={() => {
+            nav("/");
+          }}>
+          <img src="/images/back.svg" alt="back" />
+          검색조건
+        </div>
+        <div>
+          {Month}월 {Day}일 | {locationValue}
+        </div>
+      </ReSearch>
 
       {/* Weather modal */}
-      <WeatherModal>
-        {isWeather ? (
-          <WeatherModal
-            className="isActive"
-            style={{ transition: "all 0.5s ease-in-out" }}>
-            <div onClick={WeatherHandler}>
-              <FaChevronUp />
+
+      {isWeather == false ? (
+        <WeatherModal
+          className="isNotActive"
+          style={{ transition: "all 0.5s ease-in-out" }}
+          onClick={WeatherHandler}>
+          <img src="/images/sunRain.svg" alt="weather img" />
+          <div className="secondSeparate">
+            <div className="infoBox">
+              <div className="local">{locationValue}</div>
+              <div className="date">
+                {Month}월 {Day}일
+              </div>
             </div>
-          </WeatherModal>
-        ) : (
-          <WeatherModal
-            className="isNotActive"
-            style={{ transition: "all 0.5s ease-in-out" }}
-            onClick={WeatherHandler}>
-            <img src="../../public/ex.png" />
-            <div>오늘의 날씨는 ~~ 이러이러 하다~</div>
-            <FaChevronDown />
-          </WeatherModal>
-        )}
-      </WeatherModal>
+            <div className="tempBox">
+              <div className="tem">{getWeather?.weather[0].day}°</div>
+              <div className="temHL">
+                {getWeather?.weather[0].min}/{getWeather?.weather[0].max}°
+              </div>
+            </div>
+          </div>
+          <div className="thirdSeparate">
+            <img src="/images/pop.svg" alt="pop" />
+            <span>{getWeather?.weather[0].pop * 100}%</span>
+          </div>
+          <FaChevronUp />
+        </WeatherModal>
+      ) : (
+        <WeatherModal
+          className="isActive"
+          style={{ transition: "all 0.5s ease-in-out" }}
+          onClick={WeatherHandler}>
+          <img src="/images/sunRain.svg" alt="weather img" />
+          16°
+        </WeatherModal>
+      )}
 
       <ResultContainer>
         <ResultTop>
-          <div>검색결과 (000개)</div>
-          <div>인기순</div>
+          <div>
+            <span className="result"> 검색결과 </span>
+            <span className="total"> (000개)</span>
+          </div>
+          <div>
+            <span className="popular">인기순</span>
+          </div>
         </ResultTop>
         {DummyData.map((item, i) => (
           <ResultBox key={i}>
             <ResultItem onClick={() => nav(`/detail/:id`)}>
               <ResultImg src={item.ImgUrl} alt={item.name} />
-              <ResultSpan>리뷰({item.reviewNum})</ResultSpan>
+              <InnerBg>찜(20) 리뷰({item.reviewNum})</InnerBg>
             </ResultItem>
-            <ResultDetail>{item.location}</ResultDetail>
-            <ResultDetail>{item.address}</ResultDetail>
+            <CampSpan>
+              <span>{item.location}</span>
+              <span>일반야영장 | 글램핑</span>
+            </CampSpan>
+            <DetailAddress>
+              <img src="/images/location.svg" alt="location" />
+              <span>{item.address}</span>
+            </DetailAddress>
           </ResultBox>
         ))}
       </ResultContainer>
+      <div ref={ref} style={{ width: "inherit", height: "" }}></div>
     </>
   );
 }
@@ -183,19 +214,25 @@ const DummyData: Array<Dummy> = [
 
 /* result */
 
-const Container = styled.div`
-  width: 100%;
-  height: 100%;
-  z-index: 100;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  flex-direction: column;
-  align-items: center;
-  position: fixed;
+const ReSearch = styled.div`
+  width: ${(props) => props.theme.pixelToRem(335)};
+  height: ${(props) => props.theme.pixelToRem(54)};
+  margin: 15px auto;
+  padding: 15px 20px 15px 14px;
+  border-radius: 10px;
+  border: solid 1px ${(props) => props.theme.colorTheme.border};
+  background-color: #fff;
+  justify-content: space-between;
   display: flex;
-  transition: all 0.5s ease-in-out;
+
+  ${(props) => props.theme.fontTheme.Subtitle3};
+  font-family: Pretendard;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: right;
+  color: #222 !important;
 `;
 
 const ModalBg = styled.div`
@@ -207,7 +244,7 @@ const ModalBg = styled.div`
 
 const SearchModal = styled.div`
   margin: 10px auto;
-  width: 370px;
+  width: ${(props) => props.theme.pixelToRem(335)};
   background-color: #ebebeb;
   border-radius: 13px;
   justify-content: center;
@@ -237,109 +274,126 @@ const SearchModal = styled.div`
   }
 `;
 
-const SearchBox = styled.input`
-  width: inherit;
-  height: 35px;
-  font-size: 1rem;
-  background-color: transparent;
-  border: none;
-  justify-content: left;
-  display: flex;
-
-  &::placeholder {
-    font-size: 1rem;
-    color: #797979;
-  }
-
-  &:focus {
-    outline: none;
-  }
-`;
-
-const SearchLabel = styled.label`
-  width: inherit;
-  height: 35px;
-  justify-content: left;
-  display: flex;
-`;
-
-const BtnContainer = styled.button`
-  width: 90%;
-  height: 10%;
-  margin: 0 auto;
-  top: 102px;
-  background: transparent;
-  border: none;
-  justify-content: space-between;
-  position: relative;
-  display: flex;
-`;
-
-const ResetBtn = styled.button`
-  width: 130px;
-  height: 43px;
-  font-size: 1rem;
-  background-color: #8d8d8d;
-  border-radius: 13px;
-`;
-
-const SearchBtn = styled(Link)`
-  width: 130px;
-  height: 43px;
-  font-size: 1rem;
-  text-align: center;
-  background-color: #8d8d8d;
-  border-radius: 13px;
-
-  :active {
-    background-color: #3b3b3b;
-  }
-`;
-
 /* weather */
 
 const WeatherModal = styled.div`
-  margin: 10px auto;
-  width: 370px;
-  background-color: #ebebeb;
-  border-radius: 13px;
-  justify-content: center;
-  align-content: center;
+  width: ${(props) => props.theme.pixelToRem(335)};
+  flex-grow: 0;
+  margin: 0 auto;
+  padding: 14px 17px 9px 11px;
+  border-radius: ${(props) => props.theme.pixelToRem(10)};
+  border: solid 1px ${(props) => props.theme.colorTheme.border};
+  background-color: rgba(81, 133, 166, 0.13);
+  justify-content: space-around;
 
   transition: all 0.5s ease-out;
 
   z-index: 100;
 
   &.isNotActive {
-    height: 100px;
-    padding: 5px;
-    font-size: 1rem;
-    color: #797979;
-
+    height: ${(props) => props.theme.pixelToRem(90)};
+    flex-direction: row;
+    display: flex;
     span {
       margin-left: 10px;
       font-size: 1.4rem;
     }
 
     img {
+      width: ${(props) => props.theme.pixelToRem(62)};
+      height: ${(props) => props.theme.pixelToRem(62)};
+      flex-grow: 0;
+      margin: 0 13px 5px 0;
+
+      border-radius: ${(props) => props.theme.pixelToRem(10)};
       display: inline-block;
+    }
+
+    .secondSeparate {
+      width: 60%;
+      height: 100%;
+      flex-direction: column;
+      display: flex;
+      .infoBox {
+        color: #333 !important;
+        font-family: Pretendard;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: normal;
+        letter-spacing: normal;
+        text-align: left;
+        flex-direction: row;
+        display: flex;
+
+        .local {
+          ${(props) => props.theme.fontTheme.Subtitle3};
+        }
+
+        .date {
+          ${(props) => props.theme.fontTheme.Caption2};
+        }
+      }
+
+      .tempBox {
+        font-family: Pretendard;
+        font-weight: normal;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: normal;
+        letter-spacing: normal;
+        text-align: left;
+        color: #333;
+        flex-direction: row;
+        display: flex;
+        .tem {
+          font-size: 40px;
+        }
+
+        .temHL {
+          font-size: 14px;
+          margin-top: 30px;
+        }
+      }
+    }
+
+    .thirdSeparate {
+      width: 20%;
+      flex-direction: column;
+      display: flex;
+      img {
+        width: ${(props) => props.theme.pixelToRem(24)};
+        height: ${(props) => props.theme.pixelToRem(24)};
+        flex-grow: 0;
+        margin: 0 5px 6px;
+      }
+
+      span {
+        ${(props) => props.theme.fontTheme.Subtitle3};
+        font-family: Pretendard;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: normal;
+        letter-spacing: normal;
+        text-align: left;
+        color: #333 !important;
+      }
     }
   }
 
   &.isActive {
-    height: 367px;
-    padding: 10px;
+    height: ${(props) => props.theme.pixelToRem(217)};
   }
 `;
 
 const ResultContainer = styled.div`
-  margin: 0;
-  padding: 50px;
-  flex: 1 1 0%;
+  width: ${(props) => props.theme.pixelToRem(335)};
+  height: auto;
+  margin: 0 auto;
 `;
 
 const ResultTop = styled.div`
   width: inherit;
+  margin-top: 40px;
   padding: {
     top: 10px;
     left: 10px;
@@ -347,20 +401,57 @@ const ResultTop = styled.div`
   }
   justify-content: space-between;
   display: flex;
+
+  .result {
+    font-family: Pretendard;
+    font-size: 20px;
+    font-weight: 600;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: left;
+    color: #333;
+  }
+
+  .total {
+    font-family: Pretendard;
+    font-size: 14px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.29;
+    letter-spacing: normal;
+    text-align: left;
+    color: #797979;
+  }
+
+  .popular {
+    font-family: Pretendard;
+    font-size: 14px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.29;
+    letter-spacing: normal;
+    text-align: right;
+    color: #797979;
+    display: inline-block;
+  }
 `;
 
 const ResultBox = styled.div`
   margin: 0 auto;
-  height: auto;
+  height: inherit;
   flex-direction: column;
   display: flex;
 `;
 
 const ResultItem = styled.div`
-  width: 370px;
-  height: 140px;
-  margin: 20px auto;
-  border-radius: 10px;
+  width: ${(props) => props.theme.pixelToRem(335)};
+  height: ${(props) => props.theme.pixelToRem(190)};
+  margin: 20px 0 14px;
+  border-radius: 8px;
   position: relative;
 `;
 
@@ -372,23 +463,69 @@ const ResultImg = styled.img`
   object-fit: cover;
 `;
 
-const ResultSpan = styled.div`
-  top: 20%;
-  left: 50%;
-  transform: translate(75%, -200%);
-  color: white;
-  font-weight: bold;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.911);
-  font-size: 1rem;
+const InnerBg = styled.div`
+  width: 100px;
+  height: 24px;
+  flex-grow: 0;
+  margin-top: -34px;
+  margin-left: 220px;
+  padding: 4px;
+  font-family: Pretendard;
+  font-size: 12px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: right;
+  color: #fff;
+  opacity: 0.6;
+  border-radius: 4px;
+  background-color: #000;
   position: absoulte;
   z-index: 2;
 `;
 
-const ResultDetail = styled.div`
-  width: 370px;
-  height: 60px;
-  margin-bottom: -20px;
-  background-color: transparent;
-  font-size: 1rem;
-  color: black;
+const CampSpan = styled.div`
+  width: ${(props) => props.theme.pixelToRem(335)};
+  justify-content: space-between;
+  flex: display;
+
+  span {
+    font-family: Pretendard;
+    font-stretch: normal;
+    font-style: normal;
+    letter-spacing: normal;
+    ${(props) => props.theme.fontTheme.Subtitle4};
+
+    &:nth-child(1) {
+      line-height: 1.22;
+      text-align: left;
+    }
+
+    &:nth-child(2) {
+      font-size: 12px !important;
+      font-weight: normal;
+      text-align: right;
+      color: #666 !important;
+    }
+  }
+`;
+
+const DetailAddress = styled.div`
+  img {
+    width: ${(props) => props.theme.pixelToRem(20)};
+    height: ${(props) => props.theme.pixelToRem(20)};
+  }
+
+  span {
+    font-size: ${(props) => props.theme.pixelToRem(14)};
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.29;
+    letter-spacing: normal;
+    text-align: left;
+    color: #666;
+  }
 `;

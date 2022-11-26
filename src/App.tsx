@@ -2,20 +2,19 @@ import React, { useState } from "react";
 /* Switch가 react-router-dom ver 6 넘어가며 Switch를 지원 안하게 됨 -> Routes */
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { TransitionGroup, CSSTransition } from "react-transition-group";
+import "./style/transition.css";
 
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
-import Pop from "./pages/Homedetail/Pop";
-import Recommended from "./pages/Homedetail/Recommended";
-import Popular from "./pages/Homedetail/Popular";
-/* import Splash from "./pages/Splash"; */
+import Splash from "./pages/Splash";
 
-import CResult from "./pages/CResult";
+import Topic from "./pages/Topic";
 import Detail from "./pages/Detail";
-import Dannounce from "./components/DetailPage/Dannounce";
-import Ddetail from "./components/DetailPage/Ddetail";
-import Dreview from "./components/DetailPage/Dreview";
+import Dannounce from "./pages/DetailPage/Dannounce";
+import Ddetail from "./pages/DetailPage/Ddetail";
+import Dreview from "./pages/DetailPage/Dreview";
 
 import Mypage from "./pages/Mypage";
 import Result from "./pages/Result";
@@ -60,6 +59,13 @@ const GlobalStyle = createGlobalStyle`
     display: block;
   }
   /* HTML5 hidden-attribute fix for newer browsers */
+
+  @font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
   *{
     user-select: none;
   }
@@ -109,21 +115,16 @@ function App() {
       <ThemeProvider theme={theme}>
         <GlobalStyle />
         <ErrorBoundary FallbackComponent={Error}>
+          <Splash />
           <BrowserRouter>
             <Layout>
               <Routes>
+                <Route path="/" element={<Home />} />
 
-                {/* <Route path="/" element={<Splash />} /> */}
-                <Route path="home/" element={<Home />}>
-                  <Route path="home/popping" element={<Pop />} />
-                  <Route path="home/recommended" element={<Recommended />} />
-                  <Route path="home/popular" element={<Popular />} />
-
-                </Route>
                 <Route path="result" element={<Result />} />
-                <Route path="cresult" element={<CResult />} />
+                <Route path="topic" element={<Topic />} />
                 <Route path="login" element={<Login />} />
-                {/* <Route path="splash" element={<Splash />} /> */}
+
                 <Route path="signup" element={<SignUp />} />
 
                 {/* <Route path="detail" element={<Detail />} /> */}

@@ -1,131 +1,144 @@
 import React, { useEffect, useState } from "react";
+import { isModal } from "../store/searchAtom";
+import Search from "../components/withSearch/Search";
 import { Link, Outlet, useMatch, useNavigate } from "react-router-dom";
+
+import ProfileModal from "../components/ProfileModal";
+
+//Login
+import { LoginState } from "../store/loginAtom";
+import { removeAccessToken, removeRefreshToken } from "../instance/cookies";
+import { useMyPageApi } from "../APIs/myPageApi";
+import { useRecoilState } from "recoil";
+
+//css
 import styled from "styled-components";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 
-import ProfileModal from "../components/ProfileModal";
-import { useGetApi } from "../APIs/getApi";
-import axios from "axios";
-import { useQuery } from "@tanstack/react-query";
-
 function Mypage() {
-  const [LoggedIn, setLoggedIn] = useState(true);
+  const checkPf = useMyPageApi.useGetMyPage().data?.data[0];
+  const [toKen, setToken] = useRecoilState(LoginState);
+  const [isSearch, setIsSearch] = useRecoilState(isModal);
+
   const [isPopUp, setIsPopUp] = useState(false);
   const myReviewMatch = useMatch("/mypage/:id/myreview");
   const myPickMatch = useMatch("/mypage/:id/mypick");
   const myPlanMatch = useMatch("/mypage/:id/myplan");
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   const res = axios.get(
-  //     `https://campus99.shop/weathers?pardo=서울&dt=20221122`
-  //   );
-  //   console.log(res);
-  // });
-  // const weather = useQuery(["weatherinfo"], async () => {
-  //   const { data } = await instance.get<IGetWeather>(`${serverUrl}/weathers`);
-  //   console.log(data);
-  //   return data;
-  // });
+  const logOut = () => {
+    removeAccessToken();
+    removeRefreshToken();
+    setToken(null);
+    navigate("/");
+  };
 
-  const weatherk = useGetApi.useGetWeather();
   useEffect(() => {
-    console.log(weatherk.data);
-  }, []);
+    console.log(checkPf);
+  }, [checkPf]);
 
   return (
-    <Wrapper>
-      {LoggedIn ? (
-        <UserProfile>
-          <Profile>
-            <>
-              <ProfileCircle>
-                <img
-                  src="/images/kakaopf.jpeg"
-                  alt="PFP"
-                  height={"75px"}
-                  style={{ borderRadius: "125px" }}
-                />
-              </ProfileCircle>
-              <ProfileText>
-                <Welcome>반갑습니다, 인원님!</Welcome>
-                <Nickname>@nickName</Nickname>
-              </ProfileText>
-              <ProfileArrow>
-                <KeyboardArrowRightIcon
-                  sx={{ fontSize: 30, cursor: "pointer" }}
-                />
-              </ProfileArrow>
-              <ProfileModal isPopUp={isPopUp} setIsPopUp={setIsPopUp} />
-            </>
+    <>
+      {isSearch == false ? null : <Search />}
+      <Wrapper>
+        {toKen ? (
+          <UserProfile>
+            <Profile>
+              <>
+                <ProfileCircle>
+                  <img
+                    src={checkPf?.profileImg}
+                    alt="PFP"
+                    height={"75px"}
+                    width={"75px"}
+                    style={{ borderRadius: "125px", objectFit: "cover" }}
+                  />
+                </ProfileCircle>
+                <ProfileText>
+                  <Welcome>반갑습니다 {checkPf?.nickname} 님!</Welcome>
+                  <Nickname></Nickname>
+                </ProfileText>
+                <ProfileArrow>
+                  <KeyboardArrowRightIcon
+                    sx={{ fontSize: 30, cursor: "pointer" }}
+                  />
+                </ProfileArrow>
+                <ProfileModal isPopUp={isPopUp} setIsPopUp={setIsPopUp} />
+                <LogoutBtn onClick={logOut}>로그아웃</LogoutBtn>
+              </>
 
-            {/* <Alarmbell>
+              {/* <Alarmbell> 
               <NotificationsNoneIcon sx={{ marginLeft: "10px" }} />
             </Alarmbell> */}
-          </Profile>
+            </Profile>
 
-          <Tabs>
-            <Tab isActive={Boolean(myPickMatch)}>
-              <Link to="/mypage/:id/mypick">찜한 캠핑장</Link>
-            </Tab>
-            <Tab isActive={Boolean(myPlanMatch)}>
-              <Link to="/mypage/:id/myplan">여행일정</Link>
-            </Tab>
-            <Tab isActive={Boolean(myReviewMatch)}>
-              <Link to="/mypage/:id/myreview">내 리뷰</Link>
-            </Tab>
-          </Tabs>
-          <div
-            style={{
-              marginTop: "-120px",
-            }}>
-            <Outlet />
-          </div>
-        </UserProfile>
-      ) : (
-        <UserProfile>
-          <Profile>
-            <ProfileText>
-              <Welcome style={{ margin: "20px", fontSize: "1.1rem" }}>
-                로그인 하고 더 많은 <br></br>기능을 사용해 보세요!
-              </Welcome>
-            </ProfileText>
-          </Profile>
-          <LoginBox>
-            <LoginBtn
-              onClick={() => {
-                navigate("/login");
-              }}>
-              로그인
-            </LoginBtn>
-            <SignBtn
-              onClick={() => {
-                navigate("/signup");
-              }}>
-              회원가입
-            </SignBtn>
-          </LoginBox>
-          <Tabs style={{ marginTop: "200px" }}>
-            <Tab isActive={Boolean(myPickMatch)}>
-              <Link to="/mypage/:id/mypick">찜한 캠핑장</Link>
-            </Tab>
-            <Tab isActive={Boolean(myPlanMatch)}>
-              <Link to="/mypage/:id/myplan">여행일정</Link>
-            </Tab>
-            <Tab isActive={Boolean(myReviewMatch)}>
-              <Link to="/mypage/:id/myreview">내 리뷰</Link>
-            </Tab>
-          </Tabs>
-          <div
-            style={{
-              marginTop: "20px",
-            }}>
-            <Outlet />
-          </div>
-        </UserProfile>
-      )}
-    </Wrapper>
+            <Tabs>
+              <Tab isActive={Boolean(myPickMatch)}>
+                <Link to="/mypage/:id/mypick">찜한 캠핑장</Link>
+              </Tab>
+              <Tab isActive={Boolean(myPlanMatch)}>
+                <Link to="/mypage/:id/myplan">여행일정</Link>
+              </Tab>
+              <Tab isActive={Boolean(myReviewMatch)}>
+                <Link to="/mypage/:id/myreview">내 리뷰</Link>
+              </Tab>
+            </Tabs>
+            <div
+              style={{
+                marginTop: "-120px",
+              }}
+            >
+              <Outlet />
+            </div>
+          </UserProfile>
+        ) : (
+          <UserProfile>
+            <Profile>
+              <ProfileText>
+                <Welcome style={{ margin: "20px", fontSize: "1.1rem" }}>
+                  로그인 하고 더 많은 <br></br>기능을 사용해 보세요!
+                </Welcome>
+              </ProfileText>
+            </Profile>
+            <LoginBox>
+              <LoginBtn
+                onClick={() => {
+                  navigate("/login");
+                }}
+              >
+                로그인
+              </LoginBtn>
+              <SignBtn
+                onClick={() => {
+                  navigate("/signup");
+                }}
+              >
+                회원가입
+              </SignBtn>
+            </LoginBox>
+            <Tabs style={{ marginTop: "200px" }}>
+              <Tab isActive={Boolean(myPickMatch)}>
+                <Link to="/mypage/:id/mypick">찜한 캠핑장</Link>
+              </Tab>
+              <Tab isActive={Boolean(myPlanMatch)}>
+                <Link to="/mypage/:id/myplan">여행일정</Link>
+              </Tab>
+              <Tab isActive={Boolean(myReviewMatch)}>
+                <Link to="/mypage/:id/myreview">내 리뷰</Link>
+              </Tab>
+            </Tabs>
+            <div
+              style={{
+                marginTop: "20px",
+              }}
+            >
+              <Outlet />
+            </div>
+          </UserProfile>
+        )}
+      </Wrapper>
+    </>
   );
 }
 
@@ -163,6 +176,7 @@ const ProfileCircle = styled.div`
 const ProfileText = styled.div``;
 
 const Welcome = styled.div`
+  margin-top: 8px;
   font-weight: 500;
 `;
 
@@ -175,10 +189,9 @@ const ProfileArrow = styled.div`
   display: flex;
 `;
 
-const EditBtn = styled.button`
+const LogoutBtn = styled.button`
   border-radius: 8px;
   font-size: 0.9rem;
-  margin-left: 100px;
 `;
 
 const Alarmbell = styled.div``;

@@ -31,6 +31,7 @@ function Result() {
   const getCamp = useGetApi.useGetCampResult();
   const [ref, inView] = useInView();
 
+  /* 무한스크롤 테스트 */
   /*  const { fetchNextPage, isFetching, data, error } = useGetApi.useGetCampResult();
 
   useEffect(() => {
@@ -48,6 +49,8 @@ function Result() {
   };
 
   console.log(getWeather, getCamp);
+
+  console.log("깃 테스트");
 
   return (
     <>

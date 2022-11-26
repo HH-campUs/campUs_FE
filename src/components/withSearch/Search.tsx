@@ -159,7 +159,6 @@ const Container = styled.div`
   align-items: center;
   position: fixed;
   display: flex;
-  transition: all 0.5s ease-in-out;
 `;
 
 /* Modal Background */
@@ -168,8 +167,8 @@ const ModalBg = styled.div<{ isSearch: boolean }>`
   height: 100%;
   background-color: rgba(0, 0, 0, 0.55);
   backdrop-filter: blur(6px);
-  animation-name: ${(props) => (props.isSearch ? fadeOut : fadeIn)};
-  animation-duration: 0.4s;
+  animation-name: ${(props) => (props.isSearch == false ? fadeOut : fadeIn)};
+  animation-duration: 0.3s;
 `;
 
 /* Search bar */

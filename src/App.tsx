@@ -2,6 +2,8 @@ import React, { useState } from "react";
 /* Switch가 react-router-dom ver 6 넘어가며 Switch를 지원 안하게 됨 -> Routes */
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { TransitionGroup, CSSTransition } from "react-transition-group";
+import "./style/transition.css";
 
 import Home from "./pages/Home";
 import Login from "./pages/Login";

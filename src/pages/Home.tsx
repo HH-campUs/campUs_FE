@@ -66,6 +66,8 @@ const SearchModal = styled.div<{ isSearch: Boolean }>`
 
 const HeadText = styled.div`
   margin: 20px;
+  font-family: "Pretendard-Regular";
+  font-weight: bold;
   font-size: 2rem;
   line-height: 1.4;
 `;

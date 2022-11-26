@@ -59,7 +59,7 @@ const GlobalStyle = createGlobalStyle`
     display: block;
   }
   /* HTML5 hidden-attribute fix for newer browsers */
-  /* ex */
+
 
   @font-face {
     font-family: 'Pretendard-Regular';

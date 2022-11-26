@@ -28,7 +28,7 @@ function Result() {
   const Day = useRecoilValue(StrDay);
 
   const getWeather = useGetApi.useGetWeather().data;
-
+  const getCamp = useGetApi.useGetCampResult();
   const [ref, inView] = useInView();
 
   /*  const { fetchNextPage, isFetching, data, error } = useGetApi.useGetCampResult();
@@ -47,7 +47,7 @@ function Result() {
     setIsWeather(!isWeather);
   };
 
-  console.log(getWeather);
+  console.log(getWeather, getCamp);
 
   return (
     <>

@@ -17,7 +17,6 @@ import { selectLo, showLo } from "../../store/locationAtom";
 import { isModal } from "../../store/searchAtom";
 import { Link } from "react-router-dom";
 import styled, { keyframes, css } from "styled-components";
-import { BiSearchAlt } from "react-icons/bi";
 import Datepicker from "./Datepicker";
 import Location from "./Location";
 import { isProps, searchData } from "../../interfaces/inSearch";
@@ -55,11 +54,6 @@ function Search() {
     setOpenDate(!openDate);
   };
 
-  const searchHandler = () => {
-    setIsSearch(false);
-    console.log(selectDate);
-  };
-
   const resetHandler = () => {
     return setLocationValue(""), setSendLocation(""), setStartDate(new Date());
   };
@@ -78,10 +72,10 @@ function Search() {
       window.scrollTo(0, parseInt(sY || "0", 10) * -1);
     };
   }, []); */
-
-  useEffect(() => {
+  console.log(isSearch);
+  /*     useEffect(() => {
     console.log(isSearch);
-  }, []);
+  }, []); */
 
   return (
     <Container>
@@ -116,7 +110,7 @@ function Search() {
           <ResetBtn onClick={resetHandler}>
             <img src="/images/reset.svg" alt="reset" />
           </ResetBtn>
-          <SearchBtn to="/result" onClick={searchHandler}>
+          <SearchBtn to="/result" onClick={closeModal}>
             검색하기
           </SearchBtn>
         </BtnContainer>

@@ -19,7 +19,7 @@ export default function Subject() {
     <>
       <WeatherModal>
         <WeatherModal>
-          <img src="/images/tempweather.svg" alt="weather" />
+          <img src="/images/mainSunRain.svg" alt="weather" />
           <ContentText>이번주 날씨 가장 좋은 곳 어디지? </ContentText>
           <KeyboardArrowRightIcon
             sx={{ color: "white", cursor: "pointer" }}

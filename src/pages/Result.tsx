@@ -28,11 +28,11 @@ function Result() {
   const Day = useRecoilValue(StrDay);
 
   const getWeather = useGetApi.useGetWeather().data;
-  const getCamp = useGetApi.useGetCampResult();
+  /*  const getCamp = useGetApi.useGetCampResult(); */
   const [ref, inView] = useInView();
 
   /* 무한스크롤 테스트 */
-  /*  const { fetchNextPage, isFetching, data, error } = useGetApi.useGetCampResult();
+  /* const { fetchNextPage, isFetching, data, error } = useGetApi.useGetCampResult();
 
   useEffect(() => {
     if (inView) {
@@ -48,10 +48,6 @@ function Result() {
     setIsWeather(!isWeather);
   };
 
-  console.log(getWeather, getCamp);
-
-  console.log("깃 테스트");
-
   return (
     <>
       {isSearch == false ? null : <Search />}
@@ -60,11 +56,15 @@ function Result() {
           onClick={() => {
             nav("/");
           }}>
-          <img src="/images/back.svg" alt="back" />
-          검색조건
+          <div style={{ position: "relative" }}>
+            <img src="/images/back.svg" alt="back" />
+            <span style={{ width: "60px" }}>검색조건</span>
+          </div>
         </div>
         <div>
-          {Month}월 {Day}일 | {locationValue}
+          <span style={{ width: "160px", marginLeft: "-150px" }}>
+            {Month}월 {Day}일 &nbsp; | &nbsp; {locationValue}
+          </span>
         </div>
       </ReSearch>
 
@@ -226,16 +226,21 @@ const ReSearch = styled.div`
   border: solid 1px ${(props) => props.theme.colorTheme.border};
   background-color: #fff;
   justify-content: space-between;
+  position: relative;
   display: flex;
 
   ${(props) => props.theme.fontTheme.Subtitle3};
-  font-family: Pretendard;
   font-stretch: normal;
   font-style: normal;
   line-height: normal;
   letter-spacing: normal;
   text-align: right;
   color: #222 !important;
+
+  span {
+    margin-top: 2px;
+    position: absolute;
+  }
 `;
 
 const ModalBg = styled.div`

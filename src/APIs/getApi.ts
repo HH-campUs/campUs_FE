@@ -30,20 +30,27 @@ export const useGetApi = {
   // ** 캠핑장 결과 조회 - search (Infinite) / get ** //
   useGetCampResult: () => {
     const location = useRecoilValue(selectLo);
-    const { fetchNextPage, isFetching, data, error } = useInfiniteQuery(
-      ["campResult"],
-      async ({ pageParam = 1 }) => {
-        const res = await instance.get<IGetCampResult>(
-          `/camps?address=${location}&numOfRows=${10}&pageNo=${pageParam}`
-          /* {
-          getNextPageParam : (cur:any) => cur.nextPage,
-        } */
-        );
-        console.log(res);
-        return res;
-      }
-    );
+    const pageParam = 1;
+    return useQuery(["campResult"], async () => {
+      const { data } = await instance.get<IGetCampResult>(
+        `/camps?address=${location}&numOfRows=${10}&pageNo=${pageParam}`
+      );
+      console.log(data);
+      return data;
+    });
   },
+  /* const location = useRecoilValue(selectLo);
+const { fetchNextPage, isFetching, data, error } = useInfiniteQuery(
+  ["campResult"],
+  async ({ pageParam = 1 }) => {
+    const res = await instance.get<IGetCampResult>(
+      `/camps?address=${location}&numOfRows=${10}&pageNo=${pageParam}`
+    
+    );
+    console.log(res);
+    return res;
+  }
+); */
 
   // ** 캠핑장 리뷰 조회 / get ** //
   useGetCampReview: () => {
@@ -59,12 +66,19 @@ export const useGetApi = {
   useGetWeather: () => {
     const date = useRecoilValue(DateState);
     const location = useRecoilValue(selectLo);
-    return useQuery(["weatherinfo"], async () => {
-      const { data } = await instance.get<IGetWeather>(
-        `/weathers?pardo=${location}&dt=${date}`
-      );
-      console.log(date, location);
-      return data;
-    });
+    return useQuery(
+      ["weatherinfo"],
+      async () => {
+        const { data } = await instance.get<IGetWeather>(
+          `/weathers?pardo=${location}&dt=${date}`
+        );
+        console.log(data);
+        return data;
+      },
+      {
+        /* refetchOnMount: false, */
+        refetchOnWindowFocus: false,
+      }
+    );
   },
 };

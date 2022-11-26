@@ -62,7 +62,7 @@ function Login() {
       setToken(response.data.Tokens.AccessToken);
 
       setIsLoggedIn(true);
-      navigate("/");
+      window.location.replace("/");
     }
     console.log(response.data);
   };

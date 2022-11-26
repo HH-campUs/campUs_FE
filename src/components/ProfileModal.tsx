@@ -3,11 +3,14 @@ import { useForm } from "react-hook-form";
 import { isPop } from "../interfaces/Modal";
 import { IEditPfForm } from "../interfaces/MyPage";
 import { useMyPageApi } from "../APIs/myPageApi";
+import { useNavigate } from "react-router-dom";
 //css
 import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 import styled, { keyframes } from "styled-components";
 
 export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
+  const navigate = useNavigate();
+  const checkPf = useMyPageApi.useGetMyPage().data?.data[0];
   const {
     register,
     handleSubmit,
@@ -24,18 +27,27 @@ export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
       setImagePreview(URL.createObjectURL(file));
     }
   }, [image]);
-
+  // 유사배열확인
   const profileEdit = useMyPageApi.useEditProfile();
+
   const handleValid = (data: IEditPfForm) => {
-    profileEdit.mutate(data);
+    const body = { nickname: data.nickname, profileImg: data.profileImg[0] };
+    profileEdit.mutate(body);
     console.log(data);
   };
 
+  // window.location.replace("/mypage");
   const modalPop = () => {
     setIsPopUp((prev) => !prev);
   };
 
-  const checkPf = useMyPageApi.useGetMyPage().data?.data[0];
+  const kmodalPop = () => {
+    setIsPopUp((prev) => !prev);
+  };
+
+  const gmodalPop = () => {
+    setIsPopUp((prev) => !prev);
+  };
 
   return (
     <>
@@ -71,6 +83,7 @@ export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
                       <input
                         type="file"
                         accept="image/*"
+                        Content-Type="multipart/form-data"
                         style={{ display: "none" }}
                         {...register("profileImg")}
                       />

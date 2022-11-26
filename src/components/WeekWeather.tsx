@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 
 //css
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
-// #5185a6; #9ed3f5;
 
 export default function Subject() {
   const navigate = useNavigate();
@@ -269,6 +268,7 @@ const TempInfo = styled.div`
 
 const MinMax = styled.div`
   flex-direction: column;
+  text-align: center;
 `;
 
 const Regular = styled.div`

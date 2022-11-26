@@ -16,7 +16,7 @@ import {
 import { selectLo, showLo } from "../../store/locationAtom";
 import { isModal } from "../../store/searchAtom";
 import { Link } from "react-router-dom";
-import styled, { keyframes } from "styled-components";
+import styled, { keyframes, css } from "styled-components";
 import { BiSearchAlt } from "react-icons/bi";
 import Datepicker from "./Datepicker";
 import Location from "./Location";
@@ -145,6 +145,12 @@ const fadeIn = keyframes`
 const fadeOut = keyframes`
   from {opacity: 1} 
     to {opacity: 0}
+`;
+
+const ModalSettings = (isSearch: boolean) => css`
+  visibility: ${isSearch == true ? "visible" : "hidden"};
+  animation: ${isSearch == true ? fadeIn : fadeOut} 0.4s ease-out;
+  transition: visibility 0.15s ease-out;
 `;
 
 const Container = styled.div`

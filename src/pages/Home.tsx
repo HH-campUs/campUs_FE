@@ -50,6 +50,7 @@ const SearchModal = styled.div<{ isSearch: Boolean }>`
   margin: 10px auto;
   width: 23.438rem;
   background-color: #ffffff;
+  font-family: "Pretendard-Regular";
   border-radius: 13px;
   justify-content: center;
   align-content: center;

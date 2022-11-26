@@ -36,7 +36,7 @@ export default function SignUp() {
       console.log(data);
       if (response.status === 201) {
         window.alert(`${data?.email}님\n반갑습니다.`);
-        navigate("/");
+        navigate("/login");
       }
     } catch (error) {
       window.alert("가입에 실패했습니다.");

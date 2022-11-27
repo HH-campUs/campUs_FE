@@ -106,6 +106,8 @@ function Result() {
         </WeatherModal>
       )}
 
+      {/* Camp results */}
+
       <ResultContainer>
         <ResultTop>
           <div>

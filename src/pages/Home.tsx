@@ -19,6 +19,22 @@ function Home() {
     setIsSearch(true);
   };
 
+
+  const closeModal = (event: MouseEvent) => {
+    event.stopPropagation();
+    setIsSearch(false);
+  };
+
+  const backgroundArr = [
+    "꿀보이스 김지원",
+    "문공 어찌하여 목만오셨소",
+    "꿀벌대소동",
+    "이상원말고 김상원",
+    "재주많은 제주도민 최원선",
+  ];
+  const randomIndex = Math.floor(Math.random() * backgroundArr.length);
+  const backgroundPhrase = backgroundArr[randomIndex];
+  
   return (
     <>
       {isSearch == false ? null : <Search />}
@@ -28,7 +44,7 @@ function Home() {
       </SearchModal>
 
       <HeadText>
-        즐거운 겨울캠핑은 <br></br> 캠프어스에서
+        {backgroundPhrase} <br></br> 캠프어스에서
       </HeadText>
       {/* <Search isActive={isActive} setIsActive={setIsActive} /> */}
       <TextBox>

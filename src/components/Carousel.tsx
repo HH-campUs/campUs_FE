@@ -119,7 +119,6 @@ const CarouselViewer = styled.div`
 
 const CarouselSlider = styled.div`
   display: flex;
-
 `;
 
 const CarouselSlide = styled.div`

@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import KaKaomap from "./KaKaomap";
 import { ImgBox } from "./MytravelPlan";
 
 export default function Nearby() {
@@ -7,7 +8,9 @@ export default function Nearby() {
     <Wrapper>
       <TextBox>가장 가까운 캠핑장</TextBox>
       <PlanBox>
-        <ImgBox />
+        <MapBox>
+          <KaKaomap height={80} />
+        </MapBox>
         <Distance>
           <DistanceText>10km | 20분</DistanceText>
           <LocationName>캠핑장 이름 적는곳</LocationName>
@@ -37,10 +40,20 @@ const PlanBox = styled.div`
   margin: 15px auto;
   font-size: 13px;
   display: flex;
+  position: relative;
+`;
+
+const MapBox = styled.div`
+  position: relative;
+  width: 120px;
+  height: 120px;
+  border-radius: 10px;
+  background-color: grey;
+  /* margin: 20px 10px; */
 `;
 
 const Distance = styled.div`
-  margin: 20px 10px;
+  margin: 20px 20px;
   padding: 5px;
 `;
 

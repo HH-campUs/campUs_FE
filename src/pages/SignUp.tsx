@@ -9,6 +9,7 @@ import styled from "styled-components";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import CheckIcon from "@mui/icons-material/Check";
 
+// #024873(회원가입), #5185A6(중복검사)
 export default function SignUp() {
   const navigate = useNavigate();
 
@@ -16,7 +17,7 @@ export default function SignUp() {
     register,
     handleSubmit,
     watch,
-    formState: { errors },
+    formState: { errors, isSubmitted },
   } = useForm<ISignUpForm>();
 
   const [mailCK, setMailCk] = useState(false);
@@ -43,16 +44,15 @@ export default function SignUp() {
     }
   };
 
-  useEffect(() => {
-    if (mailwatch !== mailwatch) {
+  const btnEffect = () => {
+    if (mailCK === false) {
       setMailCk((prev) => !prev);
     }
-  }, [mailwatch]);
+  };
 
-  // validate: {
-  //   confirmPw: (value) =>
-  //     value === password || "비밀번호가 일치하지 않습니다.",
-  // },
+  // useEffect(() => {
+  //   setMailCk((prev) => !prev);
+  // }, [mailCK]);
 
   const mailchecking = async () => {
     await instance
@@ -71,42 +71,49 @@ export default function SignUp() {
       <LoginTitle>
         <div>
           <KeyboardArrowLeftIcon
-            sx={{ fontSize: 40 }}
+            sx={{ fontSize: 40, marginLeft: "10px" }}
             onClick={() => navigate("-1")}
           />
         </div>
 
         <LoginText>회원가입</LoginText>
       </LoginTitle>
+      <HeadText>campUs</HeadText>
       {/* Form Start */}
       <LoginForm onSubmit={handleSubmit(handleValid)}>
-        <StInput
-          unValid={Boolean(errors.email)}
-          placeholder="이메일"
-          {...register("email", {
-            required: "이메일을 입력해주세요.",
-            pattern: {
-              value: /^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w+[.]?\w{2,3}/,
-              message: "올바른 이메일 형식을 입력해주세요.",
-            },
-            validate: {},
-          })}
-        />
-        {mailCK ? (
-          <button type="button">
-            <CheckIcon />
-            <span>&nbsp;중복확인</span>
-          </button>
-        ) : (
-          <button type="button" onClick={mailchecking}>
-            중복확인
-          </button>
-        )}
+        <EmailText>이메일</EmailText>
+        <EmailInputBox>
+          <StInputMail
+            unValid={Boolean(errors.email)}
+            placeholder="이메일"
+            {...register("email", {
+              required: "이메일을 입력해주세요.",
+              pattern: {
+                value: /^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w+[.]?\w{2,3}/,
+                message: "올바른 이메일 형식을 입력해주세요.",
+              },
+              validate: {},
+            })}
+          />
+
+          {mailCK ? (
+            <button type="button">
+              <CheckIcon />
+              <span>&nbsp;중복검사</span>
+            </button>
+          ) : (
+            <DubckBtn type="button" onClick={mailchecking}>
+              중복검사
+            </DubckBtn>
+          )}
+        </EmailInputBox>
+
         <ErrorMessage>{errors.email?.message}</ErrorMessage>
+        <PasswordText>비밀번호</PasswordText>
         <StInput
           unValid={Boolean(errors.password)}
           type="password"
-          placeholder="비밀번호"
+          placeholder="숫자, 영어, 대문자, 특수기호, 8-20자리"
           {...register("password", {
             required: "비밀번호를 입력해주세요.",
             maxLength: {
@@ -167,18 +174,63 @@ const LoginForm = styled.form`
   position: relative;
   display: flex;
   flex-direction: column;
-  align-items: center;
   align-content: center;
   gap: 20px;
   margin-top: 95px;
+  margin-left: 52.5px;
   span {
     color: var(--point-color);
   }
+  /* background-color: red; */
+  /* align-items: center; */
+`;
+
+const HeadText = styled.div`
+  /* text-align: left; */
+  position: absolute;
+  font-size: 2rem;
+  margin-left: 42.5px;
+  /* background-color: aliceblue; */
+  margin-top: 20px;
+`;
+
+const EmailText = styled.div``;
+
+const PasswordText = styled.div``;
+
+const EmailInputBox = styled.div`
+  display: flex;
+`;
+
+const StInputMail = styled.input<{ unValid: boolean }>`
+  width: 285px;
+  height: 60px;
+  font-size: 16px;
+  border: 1px solid ${(props) => (props.unValid ? "red" : "grey")};
+  border-radius: 8px;
+  transition: all 0.5s linear;
+  margin-top: 5px;
+  padding: 10px;
+  &:focus {
+    border: 1px solid #5185a6;
+  }
+`;
+
+const DubckBtn = styled.button`
+  width: 75px;
+  height: 60px;
+  margin-top: 5px;
+  font-size: 13px;
+  margin-left: 10px;
+  border-radius: 10px;
+  background-color: #5185a6;
+  border: 1px solid #5185a6;
+  color: whitesmoke;
 `;
 
 const StInput = styled.input<{ unValid: boolean }>`
-  width: 350px;
-  height: 61px;
+  width: 370px;
+  height: 60px;
   font-size: 16px;
   border: 1px solid ${(props) => (props.unValid ? "red" : "grey")};
   border-radius: 8px;
@@ -186,7 +238,6 @@ const StInput = styled.input<{ unValid: boolean }>`
   padding: 10px;
   &:focus {
     border: 1px solid #5185a6;
-    //outline: none;
   }
 `;
 
@@ -208,7 +259,7 @@ const FindUserInfo = styled.p`
 `;
 
 const StBtn = styled.button`
-  width: 350px;
+  width: 370px;
   height: 61px;
   font-size: 16px;
   border: 0.5px none grey;

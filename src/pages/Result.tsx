@@ -56,7 +56,8 @@ function Result() {
         <div
           onClick={() => {
             nav("/");
-          }}>
+          }}
+        >
           <img src="/images/back.svg" alt="back" />
           검색조건
         </div>
@@ -71,7 +72,8 @@ function Result() {
         <WeatherModal
           className="isNotActive"
           style={{ transition: "all 0.5s ease-in-out" }}
-          onClick={WeatherHandler}>
+          onClick={WeatherHandler}
+        >
           <img src="/images/sunRain.svg" alt="weather img" />
           <div className="secondSeparate">
             <div className="infoBox">
@@ -97,7 +99,8 @@ function Result() {
         <WeatherModal
           className="isActive"
           style={{ transition: "all 0.5s ease-in-out" }}
-          onClick={WeatherHandler}>
+          onClick={WeatherHandler}
+        >
           <img src="/images/sunRain.svg" alt="weather img" />
           16°
         </WeatherModal>

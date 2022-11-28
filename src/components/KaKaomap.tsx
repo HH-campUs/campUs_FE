@@ -1,3 +1,4 @@
+import { height } from "@mui/system";
 import React, { useEffect } from "react";
 import styled from "styled-components";
 
@@ -22,7 +23,7 @@ var marker = new kakao.maps.Marker({
 var markerPosition = new kakao.maps.LatLng(X, Y);
 var marker = new kakao.maps.Marker({ position: markerPosition });
 
-export default function KaKaomap() {
+export default function KaKaomap({ height }: { height: number }) {
   useEffect(() => {
     //지도 담을 영역 지정.
     const container = document.getElementById("map");
@@ -35,12 +36,12 @@ export default function KaKaomap() {
     marker.setMap(map);
   }, []);
 
-  return <Wrapper id="map"></Wrapper>;
+  return <Wrapper height={height} id="map"></Wrapper>;
 }
 
 const Wrapper = styled.div`
   width: 100%;
-  height: 300px;
+  height: ${height};
   border-radius: 8px;
 `;
 

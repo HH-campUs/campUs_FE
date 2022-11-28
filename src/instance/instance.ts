@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from "axios";
+import axios from "axios";
 
 /* 쿠키 토큰 넣어 주는 곳 */
 import { getCamperToken } from "./cookies";

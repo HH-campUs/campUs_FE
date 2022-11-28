@@ -18,7 +18,6 @@ function Home() {
     setIsSearch(true);
   };
 
-
   const closeModal = (event: MouseEvent) => {
     event.stopPropagation();
     setIsSearch(false);
@@ -33,16 +32,16 @@ function Home() {
   ];
   const randomIndex = Math.floor(Math.random() * backgroundArr.length);
   const backgroundPhrase = backgroundArr[randomIndex];
-  
-   <SearchBar isSearch={isSearch} onClick={openModal}>
+
+  return (
+    <>
+      <HeadText>
+        {backgroundPhrase} <br></br> 캠프어스에서
+      </HeadText>
+      <SearchBar isSearch={isSearch} onClick={openModal}>
         <img src="/images/search.svg" alt="Search" />
         <span>캠핑 어디로 가시나요?</span>
       </SearchBar>
-  
-  return (
-    <>
-      {isSearch == false ? null : <Search />}
-
 
       <TextBox>
         <CampText>요즘 많이 찾는 캠핑장</CampText>

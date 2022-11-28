@@ -8,6 +8,7 @@ import styled from "styled-components";
 import Datepicker from "../components/withSearch/Datepicker";
 import { BiChevronDown } from "react-icons/bi";
 import Bg from "../static/testpic.jpg";
+import { useGetApi } from "../APIs/getApi";
 
 //bookmark icon
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
@@ -18,6 +19,8 @@ function Topic() {
   const [isWeather, setIsWeather] = useState(false);
   const [isSearch, setIsSearch] = useRecoilState(isModal);
   const [topic, isTopic] = useState(false);
+
+  const getCamp = useGetApi.useGetTopicResult();
 
   const ModalHandler = () => {
     setIsActive(!isActive);

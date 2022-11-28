@@ -57,7 +57,6 @@ const fontTheme = {
  color: ${colorTheme.text};
 `,
   Subtitle2: `
-  font-family: 'Pretendard-Regular';
  font-size: ${pixelToRem(18)};
  font-weight: 600;
  color: ${colorTheme.text};
@@ -76,8 +75,6 @@ const fontTheme = {
 `,
   /* Body */
   Body1: `
-  font-family: 'Pretendard-Regular';
-  font-family: 'Pretendard-Regular';
  font-size: ${pixelToRem(16)};
  font-weight: 500;
  color: ${colorTheme.text};
@@ -111,7 +108,7 @@ const fontTheme = {
   font-family: 'Pretendard-Regular';
  font-size: ${pixelToRem(12)};
  font-weight: normal;
- color: ${colorTheme.text};
+ color: ${colorTheme.text3};
 `,
 };
 

@@ -10,7 +10,6 @@ import { useRecoilState } from "recoil";
 import { isModal } from "../store/searchAtom";
 //Css
 import styled from "styled-components";
-import { BiSearchAlt } from "react-icons/bi";
 
 function Home() {
   const [isSearch, setIsSearch] = useRecoilState(isModal);
@@ -35,18 +34,16 @@ function Home() {
   const randomIndex = Math.floor(Math.random() * backgroundArr.length);
   const backgroundPhrase = backgroundArr[randomIndex];
   
+   <SearchBar isSearch={isSearch} onClick={openModal}>
+        <img src="/images/search.svg" alt="Search" />
+        <span>캠핑 어디로 가시나요?</span>
+      </SearchBar>
+  
   return (
     <>
       {isSearch == false ? null : <Search />}
-      <SearchModal isSearch={isSearch} onClick={openModal}>
-        <BiSearchAlt size="20" style={{ display: "inline-block" }} />
-        <span>search</span>
-      </SearchModal>
 
-      <HeadText>
-        {backgroundPhrase} <br></br> 캠프어스에서
-      </HeadText>
-      {/* <Search isActive={isActive} setIsActive={setIsActive} /> */}
+
       <TextBox>
         <CampText>요즘 많이 찾는 캠핑장</CampText>
         <AllList>전체보기</AllList>
@@ -62,30 +59,43 @@ function Home() {
 
 export default Home;
 
-const SearchModal = styled.div<{ isSearch: Boolean }>`
-  margin: 10px auto;
-  width: 23.438rem;
-  background-color: #ffffff;
-  border-radius: 13px;
-  justify-content: center;
-  align-content: center;
-  z-index: 100;
-  height: 35px;
-  padding: 5px;
-  font-size: 1rem;
-  color: #797979;
-  span {
-    margin-left: 10px;
-    font-size: 1.4rem;
-  }
+const HeadText = styled.div`
+  width: ${(props) => props.theme.pixelToRem(225)};
+  height: ${(props) => props.theme.pixelToRem(80)};
+  margin: 40px 71px 20px 20px;
+  font-size: ${(props) => props.theme.pixelToRem(30)};
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.33;
+  letter-spacing: normal;
+  text-align: left;
+  color: ${(props) => props.theme.colorTheme.text};
 `;
 
-const HeadText = styled.div`
-  margin: 20px;
-  font-family: "Pretendard-Regular";
-  font-weight: bold;
-  font-size: 2rem;
-  line-height: 1.4;
+const SearchBar = styled.div<{ isSearch: Boolean }>`
+  width: ${(props) => props.theme.pixelToRem(335)};
+  height: ${(props) => props.theme.pixelToRem(54)};
+  margin: 20px 20px 40px;
+  padding: 16px 32px 16px 20px;
+  border-radius: 10px;
+  border: solid 1px #eee;
+  background-color: #f5f5f5;
+
+  span {
+    width: ${(props) => props.theme.pixelToRem(249)};
+    height: ${(props) => props.theme.pixelToRem(20)};
+    margin: -22px 30px;
+    font-size: ${(props) => props.theme.pixelToRem(16)};
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: left;
+    color: ${(props) => props.theme.colorTheme.text3};
+    display: flex;
+  }
 `;
 
 const TextBox = styled.div`

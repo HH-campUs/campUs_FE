@@ -16,8 +16,7 @@ import {
 import { selectLo, showLo } from "../../store/locationAtom";
 import { isModal } from "../../store/searchAtom";
 import { Link } from "react-router-dom";
-import styled, { keyframes } from "styled-components";
-import { BiSearchAlt } from "react-icons/bi";
+import styled, { keyframes, css } from "styled-components";
 import Datepicker from "./Datepicker";
 import Location from "./Location";
 import { isProps, searchData } from "../../interfaces/inSearch";
@@ -55,11 +54,6 @@ function Search() {
     setOpenDate(!openDate);
   };
 
-  const searchHandler = () => {
-    setIsSearch(false);
-    console.log(selectDate);
-  };
-
   const resetHandler = () => {
     return setLocationValue(""), setSendLocation(""), setStartDate(new Date());
   };
@@ -78,10 +72,10 @@ function Search() {
       window.scrollTo(0, parseInt(sY || "0", 10) * -1);
     };
   }, []); */
-
-  useEffect(() => {
+  console.log(isSearch);
+  /*     useEffect(() => {
     console.log(isSearch);
-  }, []);
+  }, []); */
 
   return (
     <Container>
@@ -116,7 +110,7 @@ function Search() {
           <ResetBtn onClick={resetHandler}>
             <img src="/images/reset.svg" alt="reset" />
           </ResetBtn>
-          <SearchBtn to="/result" onClick={searchHandler}>
+          <SearchBtn to="/result" onClick={closeModal}>
             검색하기
           </SearchBtn>
         </BtnContainer>
@@ -145,6 +139,12 @@ const fadeIn = keyframes`
 const fadeOut = keyframes`
   from {opacity: 1} 
     to {opacity: 0}
+`;
+
+const ModalSettings = (isSearch: boolean) => css`
+  visibility: ${isSearch == true ? "visible" : "hidden"};
+  animation: ${isSearch == true ? fadeIn : fadeOut} 0.4s ease-out;
+  transition: visibility 0.15s ease-out;
 `;
 
 const Container = styled.div`

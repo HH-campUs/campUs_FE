@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import Carousel from "../components/Carousel";
 
 import MytravelPlan from "../components/MytravelPlan";
@@ -14,14 +13,12 @@ import styled from "styled-components";
 import { BiSearchAlt } from "react-icons/bi";
 
 function Home() {
-  const [isActive, setIsActive] = useState(false);
-
   const [isSearch, setIsSearch] = useRecoilState(isModal);
 
-  const openModal = (event: any) => {
-    event.stopPropagation();
+  const openModal = () => {
     setIsSearch(true);
   };
+
 
   const closeModal = (event: MouseEvent) => {
     event.stopPropagation();
@@ -37,11 +34,11 @@ function Home() {
   ];
   const randomIndex = Math.floor(Math.random() * backgroundArr.length);
   const backgroundPhrase = backgroundArr[randomIndex];
-
+  
   return (
     <>
       {isSearch == false ? null : <Search />}
-      <SearchModal className="isNotActive" onClick={openModal}>
+      <SearchModal isSearch={isSearch} onClick={openModal}>
         <BiSearchAlt size="20" style={{ display: "inline-block" }} />
         <span>search</span>
       </SearchModal>
@@ -65,7 +62,7 @@ function Home() {
 
 export default Home;
 
-const SearchModal = styled.div`
+const SearchModal = styled.div<{ isSearch: Boolean }>`
   margin: 10px auto;
   width: 23.438rem;
   background-color: #ffffff;
@@ -73,20 +70,20 @@ const SearchModal = styled.div`
   justify-content: center;
   align-content: center;
   z-index: 100;
-  &.isNotActive {
-    height: 35px;
-    padding: 5px;
-    font-size: 1rem;
-    color: #797979;
-    span {
-      margin-left: 10px;
-      font-size: 1.4rem;
-    }
+  height: 35px;
+  padding: 5px;
+  font-size: 1rem;
+  color: #797979;
+  span {
+    margin-left: 10px;
+    font-size: 1.4rem;
   }
 `;
 
 const HeadText = styled.div`
   margin: 20px;
+  font-family: "Pretendard-Regular";
+  font-weight: bold;
   font-size: 2rem;
   line-height: 1.4;
 `;

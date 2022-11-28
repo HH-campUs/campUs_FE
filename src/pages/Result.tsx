@@ -32,13 +32,14 @@ function Result() {
   const [ref, inView] = useInView();
 
   /* 무한스크롤 테스트 */
-  /* const { fetchNextPage, isFetching, data, error } = useGetApi.useGetCampResult();
+  /*   const { fetchNextPage, isSuccess, campData, error } =
+    useGetApi.useGetCampResult();
 
   useEffect(() => {
     if (inView) {
       fetchNextPage();
-  }
-}, [inView]); */
+    }
+  }, [inView]); */
 
   const ModalHandler = () => {
     setIsActive(!isActive);
@@ -87,7 +88,7 @@ function Result() {
           </div>
           <div className="thirdSeparate">
             <div className="temBox">
-              <span>{getWeather?.weather[0].day}</span>
+              <span>{(getWeather?.weather[0].day).toFixed()}</span>
               <b>°</b>
             </div>
             <span>

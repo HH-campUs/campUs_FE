@@ -59,3 +59,9 @@ export interface IGetCampResult {
   eqpmnLendCl: string;
   reviewCount: number;
 }
+
+export interface campArray {
+  regionCamp: IGetCampResult[];
+  nextPage: number;
+  lastPage: boolean;
+}

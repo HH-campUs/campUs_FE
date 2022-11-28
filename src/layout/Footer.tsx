@@ -9,6 +9,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import SearchIcon from "@mui/icons-material/Search";
 import PermIdentityIcon from "@mui/icons-material/PermIdentity";
 import { useNavigate } from "react-router";
+import BookmarkIcon from "@mui/icons-material/Bookmark"; //filled
 
 export default function Footer() {
   const [value, setValue] = React.useState(0);
@@ -22,7 +23,8 @@ export default function Footer() {
         value={value}
         onChange={(event, newValue) => {
           setValue(newValue);
-        }}>
+        }}
+      >
         <BottomNavigationAction
           label="Home"
           onClick={() => {
@@ -30,6 +32,14 @@ export default function Footer() {
           }}
           icon={<HomeIcon />}
         />
+        <BottomNavigationAction
+          label="찜목록"
+          onClick={() => {
+            navigate("/mypage/:id/mypick");
+          }}
+          icon={<BookmarkIcon />}
+        />
+
         <BottomNavigationAction
           label="검색"
           onClick={() => {

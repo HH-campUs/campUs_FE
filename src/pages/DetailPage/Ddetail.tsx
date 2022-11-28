@@ -59,7 +59,7 @@ function Ddetail() {
       </InfoBox>
       <MapWrapper>
         <MapTitle>지도</MapTitle>
-        <KaKaomap />
+        <KaKaomap height={300} />
       </MapWrapper>
     </Wrapper>
   );

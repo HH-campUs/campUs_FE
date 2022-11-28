@@ -1,8 +1,6 @@
 import { atom } from "recoil";
 import { recoilPersist } from "recoil-persist";
 
-import { IUser } from "../interfaces/inLogin";
-
 const { persistAtom } = recoilPersist();
 
 export const LoginState = atom({

@@ -23,6 +23,7 @@ export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
   const image = watch("profileImg");
   useEffect(() => {
     if (image && image.length > 0) {
+      //any type check
       const file: any = image[0];
       setImagePreview(URL.createObjectURL(file));
     }

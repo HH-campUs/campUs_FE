@@ -200,7 +200,8 @@ const Dday = styled.div`
   margin-top: 5px;
   margin-left: 30px;
   border-radius: 1rem;
-  background-color: grey;
+  background-color: #5185a6;
+  color: whitesmoke;
   display: flex;
   align-items: center;
   justify-content: center;

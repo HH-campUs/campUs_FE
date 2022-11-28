@@ -38,7 +38,7 @@ export const useGetApi = {
   useGetCampResult: () => {
     const location = useRecoilValue(showLo);
     const pageParam = 1;
-    return useQuery(["campResult"], async () => {
+    return useInfiniteQuery(["campResult"], async () => {
       const { data } = await instance.get<IGetCampResult>(
         `/camps?doNm=${location}&numOfRows=40&pageNo=${pageParam}`
       );

@@ -1,6 +1,8 @@
 export interface myModal {
   profileImg: string;
   ninckName: string;
+  file: Blob | MediaSource;
+  img: Blob | MediaSource;
 }
 
 export interface isPop {

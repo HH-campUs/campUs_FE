@@ -1,18 +1,18 @@
 import React from "react";
 import styled from "styled-components";
-import Carousel from "./Carousel";
+import CarouselSub from "../Hook/CarouselSub";
 
 export default function Subject() {
   return (
     <Wrapper>
-      <span>주제별</span>
-      {/* 캐루셀 별로 사이즈가 필요한 것 같은데 조정안되나? */}
-      <Carousel />
+      <span>캠핑 제대로 즐기기</span>
+
+      <CarouselSub />
     </Wrapper>
   );
 }
 
 const Wrapper = styled.div`
   margin-top: 40px;
-  font-weight: 500; //temporary
+  font-weight: 500;
 `;

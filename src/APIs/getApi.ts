@@ -4,7 +4,7 @@ import { useInView } from "react-intersection-observer";
 import { instance } from "../instance/instance";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { ExportDate, DateState } from "../store/dateAtom";
-import { ExportLocation, selectLo } from "../store/locationAtom";
+import { showLo, selectLo } from "../store/locationAtom";
 
 import {
   IGetCampCatInfo,
@@ -21,19 +21,38 @@ const serverUrl = process.env.REACT_APP_API;
 
 export const useGetApi = {
   useGetCampCatInfo: () => {
-    return useQuery(["campcatinfo"], async () => {
-      const { data } = await instance.get<IGetCampCatInfo>(`${serverUrl}`);
-      return data;
-    });
+    return useQuery(
+      ["campcatinfo"],
+      async () => {
+        const { data } = await instance.get<IGetCampCatInfo>(`${serverUrl}`);
+        return data;
+      },
+      {
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
+      }
+    );
   },
 
   // ** 캠핑장 결과 조회 - search (Infinite) / get ** //
   useGetCampResult: () => {
-    const location = useRecoilValue(selectLo);
+    const location = useRecoilValue(showLo);
     const pageParam = 1;
     return useQuery(["campResult"], async () => {
       const { data } = await instance.get<IGetCampResult>(
-        `/camps?address=${location}&numOfRows=${10}&pageNo=${pageParam}`
+        `/camps?doNm=${location}&numOfRows=40&pageNo=${pageParam}`
+      );
+      console.log(data);
+      return data;
+    });
+  },
+
+  /* topic 별 캠핑장 결과 조회 */
+  useGetTopicResult: () => {
+    const params = 1;
+    return useQuery(["topicResult"], async () => {
+      const { data } = await instance.get<IGetCampResult>(
+        `/camps/${params}?numOfRows=20&pageNo=1`
       );
       console.log(data);
       return data;

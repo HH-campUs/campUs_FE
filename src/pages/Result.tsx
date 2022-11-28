@@ -28,7 +28,7 @@ function Result() {
   const Day = useRecoilValue(StrDay);
 
   const getWeather = useGetApi.useGetWeather().data;
-  /*  const getCamp = useGetApi.useGetCampResult(); */
+  const getCamp = useGetApi.useGetCampResult();
   const [ref, inView] = useInView();
 
   /* 무한스크롤 테스트 */
@@ -51,6 +51,8 @@ function Result() {
   return (
     <>
       {isSearch == false ? null : <Search />}
+
+      {/*  */}
       <ReSearch>
         <div
           onClick={() => {
@@ -70,41 +72,38 @@ function Result() {
 
       {/* Weather modal */}
 
-      {isWeather == false ? (
-        <WeatherModal
-          className="isNotActive"
-          style={{ transition: "all 0.5s ease-in-out" }}
-          onClick={WeatherHandler}>
-          <img src="/images/sunRain.svg" alt="weather img" />
+      <WeatherModal>
+        <div className="top">
+          <span>날씨</span>
+          <span>펼치기</span>
+        </div>
+        <div className="isNotActive" onClick={WeatherHandler}>
           <div className="secondSeparate">
+            <img src="/images/sunRain.svg" alt="weather-img" />
             <div className="infoBox">
-              <div className="local">{locationValue}</div>
-              <div className="date">
-                {Month}월 {Day}일
-              </div>
-            </div>
-            <div className="tempBox">
-              <div className="tem">{getWeather?.weather[0].day}°</div>
-              <div className="temHL">
-                {getWeather?.weather[0].min}/{getWeather?.weather[0].max}°
-              </div>
+              <span>{locationValue}</span>
+              <span>비올확률 {getWeather?.weather[0].pop * 100}%</span>
             </div>
           </div>
           <div className="thirdSeparate">
-            <img src="/images/pop.svg" alt="pop" />
-            <span>{getWeather?.weather[0].pop * 100}%</span>
+            <div className="temBox">
+              <span>{getWeather?.weather[0].day}</span>
+              <b>°</b>
+            </div>
+            <span>
+              {Month}월 {Day}일 낮 기준
+            </span>
           </div>
-          <FaChevronUp />
-        </WeatherModal>
-      ) : (
-        <WeatherModal
-          className="isActive"
-          style={{ transition: "all 0.5s ease-in-out" }}
-          onClick={WeatherHandler}>
-          <img src="/images/sunRain.svg" alt="weather img" />
-          16°
-        </WeatherModal>
-      )}
+        </div>
+      </WeatherModal>
+
+      {/* <WeatherModal
+        className="isActive"
+        style={{ transition: "all 0.5s ease-in-out" }}
+        onClick={WeatherHandler}>
+        <img src="/images/sunRain.svg" alt="weather img" />
+        16°
+      </WeatherModal> */}
 
       {/* Camp results */}
 
@@ -122,7 +121,9 @@ function Result() {
           <ResultBox key={i}>
             <ResultItem onClick={() => nav(`/detail/:id`)}>
               <ResultImg src={item.ImgUrl} alt={item.name} />
-              <InnerBg>찜(20) 리뷰({item.reviewNum})</InnerBg>
+              <InnerBg>
+                <span>찜(20) 리뷰({item.reviewNum})</span>
+              </InnerBg>
             </ResultItem>
             <CampSpan>
               <span>{item.location}</span>
@@ -132,6 +133,12 @@ function Result() {
               <img src="/images/location.svg" alt="location" />
               <span>{item.address}</span>
             </DetailAddress>
+            <TagContainer>
+              <div className="tag"> 운동시설 </div>
+              <div className="tag"> 장작판매 </div>
+              <div className="tag"> 물놀이장 </div>
+              <div className="tag"> 마트/편의점 </div>
+            </TagContainer>
           </ResultBox>
         ))}
       </ResultContainer>
@@ -155,7 +162,7 @@ interface Dummy {
 const DummyData: Array<Dummy> = [
   {
     ImgUrl: "https://img.sbs.co.kr/newimg/news/20170117/201015461_1280.jpg",
-    reviewNum: 50,
+    reviewNum: 5,
     name: "모여봐요 동물의 숲",
     location: "닌텐도 뀨뀨",
     address: "대한민국 어딘가 ~",
@@ -163,7 +170,7 @@ const DummyData: Array<Dummy> = [
   {
     ImgUrl:
       "http://economychosun.com/query/upload/344/20200419231455_gltgzjsu.jpg",
-    reviewNum: 240,
+    reviewNum: 24,
     name: "강원도로 갈까유",
     location: "닌텐도 어딘가에 있겠지 임마",
     address: "대한민국 어딘가 ~",
@@ -179,14 +186,14 @@ const DummyData: Array<Dummy> = [
   {
     ImgUrl:
       "http://newsimg.hankookilbo.com/2019/10/30/201910301882016576_6.jpg",
-    reviewNum: 342,
+    reviewNum: 34,
     name: "모홍홍 숲",
     location: "닌텐도 어딘가에 있겠지 임마",
     address: "대한민국 어딘가 ~",
   },
   {
     ImgUrl: "https://pbs.twimg.com/media/EbXmXe2VAAUKd_B.jpg",
-    reviewNum: 231,
+    reviewNum: 23,
     name: "롤하고 싶당",
     location: "닌텐도 어딘가에 있겠지 임마",
     address: "대한민국 어딘가 ~",
@@ -194,7 +201,7 @@ const DummyData: Array<Dummy> = [
   {
     ImgUrl:
       "https://image-cdn.hypb.st/https%3A%2F%2Fkr.hypebeast.com%2Ffiles%2F2021%2F08%2Fblackpink-animal-crossing-new-horrizsons-island-info-2.jpg?q=75&w=800&cbr=1&fit=max",
-    reviewNum: 30,
+    reviewNum: 3,
     name: "동물의 숲",
     location: "닌텐도 어딘가에 있겠지 임마",
     address: "대한민국 어딘가 ~",
@@ -202,7 +209,7 @@ const DummyData: Array<Dummy> = [
   {
     ImgUrl:
       "https://m.nongmin.com/upload/bbs/202207/20220712165858408/20220712165858408.jpg",
-    reviewNum: 42,
+    reviewNum: 2,
     name: "모 숲",
     location: "닌텐도 어딘가에 있겠지 임마",
     address: "대한민국 어딘가 ~",
@@ -210,7 +217,7 @@ const DummyData: Array<Dummy> = [
   {
     ImgUrl:
       "https://cdn.eyesmag.com/content/uploads/posts/2020/03/31/animal-crossing-new-horizons-instagram-fashion-09-9d86eeb1-c87b-414d-849d-45431d21561c.jpg",
-    reviewNum: 341,
+    reviewNum: 41,
     name: "부잉",
     location: "닌텐도 어딘가에 있겠지 임마",
     address: "대한민국 어딘가 ~",
@@ -286,23 +293,52 @@ const SearchModal = styled.div`
 
 /* weather */
 
+const WeatherContainer = styled.div`
+  width: ${(props) => props.theme.pixelToRem(335)};
+  height: ${(props) => props.theme.pixelToRem(35)};
+  border-top-left-radius: ${(props) => props.theme.pixelToRem(10)};
+  border-top-right-radius: ${(props) => props.theme.pixelToRem(10)};
+  border-bottom: solid 1px ${(props) => props.theme.colorTheme.border};
+  justify-content: space-between;
+`;
+
 const WeatherModal = styled.div`
   width: ${(props) => props.theme.pixelToRem(335)};
+  height: ${(props) => props.theme.pixelToRem(116)};
   flex-grow: 0;
   margin: 0 auto;
-  padding: 14px 17px 9px 11px;
   border-radius: ${(props) => props.theme.pixelToRem(10)};
   border: solid 1px ${(props) => props.theme.colorTheme.border};
   background-color: rgba(81, 133, 166, 0.13);
-  justify-content: space-around;
-
   transition: all 0.5s ease-out;
-
   z-index: 100;
 
-  &.isNotActive {
-    height: ${(props) => props.theme.pixelToRem(90)};
-    flex-direction: row;
+  .top {
+    width: ${(props) => props.theme.pixelToRem(335)};
+    height: ${(props) => props.theme.pixelToRem(35)};
+    border-top-left-radius: ${(props) => props.theme.pixelToRem(10)};
+    border-top-right-radius: ${(props) => props.theme.pixelToRem(10)};
+    border-bottom: solid 1px ${(props) => props.theme.colorTheme.border};
+    justify-content: space-between;
+    display: flex;
+
+    span {
+      margin: 11px;
+      ${(props) => props.theme.fontTheme.Caption4};
+      font-stretch: normal;
+      font-style: normal;
+      line-height: normal;
+      letter-spacing: normal;
+      text-align: left;
+    }
+  }
+
+  .isNotActive {
+    width: inherit;
+    margin: 0 auto;
+    padding: 10px;
+    height: ${(props) => props.theme.pixelToRem(81)};
+    justify-content: space-between;
     display: flex;
     span {
       margin-left: 10px;
@@ -314,78 +350,60 @@ const WeatherModal = styled.div`
       height: ${(props) => props.theme.pixelToRem(62)};
       flex-grow: 0;
       margin: 0 13px 5px 0;
-
       border-radius: ${(props) => props.theme.pixelToRem(10)};
-      display: inline-block;
     }
 
     .secondSeparate {
       width: 60%;
       height: 100%;
-      flex-direction: column;
+      flex-direction: row;
       display: flex;
+
       .infoBox {
-        color: #333 !important;
-        font-family: Pretendard;
-        font-stretch: normal;
-        font-style: normal;
-        line-height: normal;
-        letter-spacing: normal;
+        margin-left: -12px;
         text-align: left;
-        flex-direction: row;
+        flex-direction: column;
         display: flex;
 
-        .local {
-          ${(props) => props.theme.fontTheme.Subtitle3};
+        span:nth-child(1) {
+          ${(props) => props.theme.fontTheme.Subtitle4};
         }
 
-        .date {
+        span:nth-child(2) {
+          margin-top: 5px;
           ${(props) => props.theme.fontTheme.Caption2};
-        }
-      }
-
-      .tempBox {
-        font-family: Pretendard;
-        font-weight: normal;
-        font-stretch: normal;
-        font-style: normal;
-        line-height: normal;
-        letter-spacing: normal;
-        text-align: left;
-        color: #333;
-        flex-direction: row;
-        display: flex;
-        .tem {
-          font-size: 40px;
-        }
-
-        .temHL {
-          font-size: 14px;
-          margin-top: 30px;
+          color: ${(props) => props.theme.colorTheme.text2} !important;
         }
       }
     }
 
     .thirdSeparate {
-      width: 20%;
+      width: 50%;
       flex-direction: column;
-      display: flex;
-      img {
-        width: ${(props) => props.theme.pixelToRem(24)};
-        height: ${(props) => props.theme.pixelToRem(24)};
-        flex-grow: 0;
-        margin: 0 5px 6px;
+      text-align: right;
+
+      .temBox {
+        padding-right: 8px;
+        span:nth-child(1) {
+          ${(props) => props.theme.fontTheme.Subtitle3};
+          font-size: ${(props) => props.theme.pixelToRem(40)};
+          line-height: normal;
+          letter-spacing: normal;
+          display: inline-block;
+          position: relative;
+        }
+        b {
+          ${(props) => props.theme.fontTheme.Subtitle3};
+          font-size: ${(props) => props.theme.pixelToRem(20)} !important;
+          display: inline-block;
+          position: absolute;
+        }
       }
 
-      span {
-        ${(props) => props.theme.fontTheme.Subtitle3};
-        font-family: Pretendard;
-        font-stretch: normal;
-        font-style: normal;
+      span:nth-child(2) {
+        ${(props) => props.theme.fontTheme.Caption4};
         line-height: normal;
         letter-spacing: normal;
-        text-align: left;
-        color: #333 !important;
       }
     }
   }
@@ -437,6 +455,7 @@ const ResultTop = styled.div`
   }
 
   .popular {
+    margin-top: 4px;
     font-family: Pretendard;
     font-size: 14px;
     font-weight: 500;
@@ -446,7 +465,7 @@ const ResultTop = styled.div`
     letter-spacing: normal;
     text-align: right;
     color: #797979;
-    display: inline-block;
+    display: flex;
   }
 `;
 
@@ -474,41 +493,45 @@ const ResultImg = styled.img`
 `;
 
 const InnerBg = styled.div`
-  width: 100px;
-  height: 24px;
-  flex-grow: 0;
+  width: ${(props) => props.theme.pixelToRem(90)};
+  height: ${(props) => props.theme.pixelToRem(24)};
   margin-top: -34px;
-  margin-left: 220px;
-  padding: 4px;
-  font-family: Pretendard;
-  font-size: 12px;
-  font-weight: 500;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: normal;
-  letter-spacing: normal;
-  text-align: right;
-  color: #fff;
-  opacity: 0.6;
+  margin-left: 230px;
   border-radius: 4px;
-  background-color: #000;
-  position: absoulte;
-  z-index: 2;
+  background-color: #0000005e;
+  position: relative;
+
+  span {
+    margin-top: 3px;
+    margin-left: 6px;
+    font-family: Pretendard;
+    font-size: 12px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: right;
+    color: #fff;
+    position: absolute;
+    display: flex;
+  }
 `;
 
 const CampSpan = styled.div`
   width: ${(props) => props.theme.pixelToRem(335)};
   justify-content: space-between;
-  flex: display;
+  display: flex;
 
   span {
-    font-family: Pretendard;
     font-stretch: normal;
     font-style: normal;
     letter-spacing: normal;
-    ${(props) => props.theme.fontTheme.Subtitle4};
+    ${(props) => props.theme.fontTheme.Subtitle2};
 
     &:nth-child(1) {
+      margin-top: -4px;
+      margin-left: 1px;
       line-height: 1.22;
       text-align: left;
     }
@@ -523,12 +546,18 @@ const CampSpan = styled.div`
 `;
 
 const DetailAddress = styled.div`
+  margin-left: 1px;
+  display: flex;
+
   img {
     width: ${(props) => props.theme.pixelToRem(20)};
     height: ${(props) => props.theme.pixelToRem(20)};
+    margin-top: 8px;
   }
 
   span {
+    margin-top: 10px;
+    margin-left: 3px;
     font-size: ${(props) => props.theme.pixelToRem(14)};
     font-weight: normal;
     font-stretch: normal;
@@ -537,5 +566,38 @@ const DetailAddress = styled.div`
     letter-spacing: normal;
     text-align: left;
     color: #666;
+  }
+`;
+const TagContainer = styled.div`
+  width: ${(props) => props.theme.pixelToRem(331)};
+  height: ${(props) => props.theme.pixelToRem(24)};
+  margin: 12px 0 0 4px;
+  padding: 0;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  gap: ${(props) => props.theme.pixelToRem(4)};
+  display: flex;
+
+  .tag {
+    width: ${(props) => props.theme.pixelToRem(66)};
+    height: ${(props) => props.theme.pixelToRem(24)};
+    flex-grow: 0;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+
+    border-radius: 20px;
+    border: solid 1px #dbdbdb;
+    display: flex;
+
+    font-size: 12px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: left;
+    color: #222;
   }
 `;

@@ -31,10 +31,10 @@ const localData: Array<local> = [
 function Location() {
   const [openLocation, setOpenLocation] = useState(false);
 
-  /* 화면상에 나올 지역명 */
+  /* 화면상에 나올 지역명 & 캠프장 doNm Request value */
   const [locationValue, setLocationValue] = useRecoilState(showLo);
 
-  /* backend에 보내줄 request 형태의 지역명 */
+  /* backend에 보내줄 request 형태의 지역명 (Weather / pardo) */
   const [sendLocation, setSendLocation] = useRecoilState(selectLo);
 
   /* recoil의 비동기적인 요소에 대해서 조사해보자 */

@@ -29,8 +29,14 @@ export default function MytravelPlan() {
             </PlaceBox>
             <Location>
               {/* component화. */}
-              <LocationOnIcon /> <span>강원도 어디?</span>
-              <img src="/images/Calendar.svg" alt="Calendar" />
+              <LocationOnIcon />
+              {/* Elipse적용 해야 함. */}
+              <span>강원도 어디?</span>
+              <img
+                src="/images/Calendar.svg"
+                alt="Calendar"
+                style={{ marginLeft: "20px" }}
+              />
               <span>2022.12.28(달력)</span>
             </Location>
           </PlaceName>
@@ -55,7 +61,18 @@ export default function MytravelPlan() {
             <ImgBox />
             <PlaceName>
               <PlaceBox>
-                <Campname></Campname>
+                <Campname>
+                  <div
+                    style={{
+                      backgroundColor: "grey",
+                      width: "150px",
+                      height: "20px",
+                      color: "grey",
+                    }}
+                  >
+                    skeleton
+                  </div>
+                </Campname>
                 <Dday>D-16</Dday>
               </PlaceBox>
               <Location>
@@ -131,7 +148,7 @@ const CloseBox = styled.div`
   margin-left: 48px;
   font-size: 13px;
   display: flex;
-  z-index: 1;
+  z-index: 3;
   position: absolute;
 `;
 

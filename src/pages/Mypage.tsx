@@ -7,13 +7,11 @@ import ProfileModal from "../components/ProfileModal";
 
 //Login
 import { LoginState } from "../store/loginAtom";
-import { removeAccessToken, removeRefreshToken } from "../instance/cookies";
 import { useMyPageApi } from "../APIs/myPageApi";
 import { useRecoilState } from "recoil";
 
 //css
 import styled from "styled-components";
-import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 
 function Mypage() {
@@ -27,13 +25,6 @@ function Mypage() {
   const myPlanMatch = useMatch("/mypage/:id/myplan");
   const navigate = useNavigate();
 
-  const logOut = () => {
-    removeAccessToken();
-    removeRefreshToken();
-    setToken(null);
-    navigate("/");
-  };
-
   useEffect(() => {
     console.log(checkPf);
   }, [checkPf]);
@@ -43,60 +34,62 @@ function Mypage() {
       {isSearch == false ? null : <Search />}
       <Wrapper>
         {toKen ? (
-          <UserProfile>
-            <Profile>
-              <>
-                <ProfileCircle>
-                  <img
-                    src={checkPf?.profileImg}
-                    alt="PFP"
-                    height={"75px"}
-                    width={"75px"}
-                    style={{ borderRadius: "125px", objectFit: "cover" }}
-                  />
-                </ProfileCircle>
-                <ProfileText>
-                  <Welcome>반갑습니다 {checkPf?.nickname} 님!</Welcome>
-                  <Nickname></Nickname>
-                </ProfileText>
-                <ProfileArrow>
-                  <KeyboardArrowRightIcon
-                    sx={{ fontSize: 30, cursor: "pointer" }}
-                  />
-                </ProfileArrow>
-                <ProfileModal isPopUp={isPopUp} setIsPopUp={setIsPopUp} />
-                <LogoutBtn onClick={logOut}>로그아웃</LogoutBtn>
-              </>
+          <>
+            <HeadText>campUs</HeadText>
+            <UserProfile>
+              <Profile>
+                <>
+                  <ProfileCircle>
+                    <img
+                      src={checkPf?.profileImg}
+                      alt="PFP"
+                      height={"75px"}
+                      width={"75px"}
+                      style={{ borderRadius: "125px", objectFit: "cover" }}
+                    />
+                  </ProfileCircle>
+                  <ProfileText>
+                    <Welcome>반갑습니다 {checkPf?.nickname} 님!</Welcome>
+                    <Nickname>@email주소</Nickname>
+                  </ProfileText>
+                  <ProfileArrow>
+                    {/* <KeyboardArrowRightIcon
+                      sx={{ fontSize: 30, cursor: "pointer" }}
+                    /> */}
+                  </ProfileArrow>
+                  <ProfileModal isPopUp={isPopUp} setIsPopUp={setIsPopUp} />
+                </>
 
-              {/* <Alarmbell> 
+                {/* <Alarmbell> 
               <NotificationsNoneIcon sx={{ marginLeft: "10px" }} />
             </Alarmbell> */}
-            </Profile>
+              </Profile>
 
-            <Tabs>
-              <Tab isActive={Boolean(myPickMatch)}>
-                <Link to="/mypage/:id/mypick">찜한 캠핑장</Link>
-              </Tab>
-              <Tab isActive={Boolean(myPlanMatch)}>
-                <Link to="/mypage/:id/myplan">여행일정</Link>
-              </Tab>
-              <Tab isActive={Boolean(myReviewMatch)}>
-                <Link to="/mypage/:id/myreview">내 리뷰</Link>
-              </Tab>
-            </Tabs>
-            <div
-              style={{
-                marginTop: "-120px",
-              }}
-            >
-              <Outlet />
-            </div>
-          </UserProfile>
+              <Tabs>
+                <Tab isActive={Boolean(myPickMatch)}>
+                  <Link to="/mypage/:id/mypick">찜한 캠핑장</Link>
+                </Tab>
+                <Tab isActive={Boolean(myPlanMatch)}>
+                  <Link to="/mypage/:id/myplan">여행일정</Link>
+                </Tab>
+                <Tab isActive={Boolean(myReviewMatch)}>
+                  <Link to="/mypage/:id/myreview">내 리뷰</Link>
+                </Tab>
+              </Tabs>
+              <div
+                style={{
+                  marginTop: "-120px",
+                }}
+              >
+                <Outlet />
+              </div>
+            </UserProfile>
+          </>
         ) : (
           <UserProfile>
             <Profile>
               <ProfileText>
-                <Welcome style={{ margin: "20px", fontSize: "1.1rem" }}>
+                <Welcome style={{ margin: "50px", fontSize: "1.1rem" }}>
                   로그인 하고 더 많은 <br></br>기능을 사용해 보세요!
                 </Welcome>
               </ProfileText>
@@ -150,12 +143,18 @@ const Wrapper = styled.div`
   height: 95vh;
 `;
 
+const HeadText = styled.div`
+  font-size: 1.3rem;
+  margin-left: 25px;
+  margin-top: 20px;
+`;
+
 const UserProfile = styled.div`
   height: 200px;
   display: flex;
   flex-direction: column;
   position: relative;
-  background-color: lightgray;
+  /* background-color: lightgray; */
 `;
 
 const Profile = styled.div`
@@ -187,11 +186,6 @@ const Nickname = styled.div`
 const ProfileArrow = styled.div`
   align-items: center;
   display: flex;
-`;
-
-const LogoutBtn = styled.button`
-  border-radius: 8px;
-  font-size: 0.9rem;
 `;
 
 const Alarmbell = styled.div``;

@@ -17,7 +17,7 @@ export default function Footer() {
 
   const navigate = useNavigate();
   return (
-    <Box sx={{ width: 475, position: "fixed", bottom: 0 }}>
+    <Box sx={{ width: 475, position: "fixed", bottom: 0, zIndex: 5 }}>
       <BottomNavigation
         showLabels
         value={value}

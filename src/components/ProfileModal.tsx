@@ -4,11 +4,18 @@ import { isPop } from "../interfaces/Modal";
 import { IEditPfForm } from "../interfaces/MyPage";
 import { useMyPageApi } from "../APIs/myPageApi";
 import { useNavigate } from "react-router-dom";
+
+//Login
+import { LoginState } from "../store/loginAtom";
+import { removeAccessToken, removeRefreshToken } from "../instance/cookies";
+import { useRecoilState } from "recoil";
+
 //css
 import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 import styled, { keyframes } from "styled-components";
 
 export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
+  const [toKen, setToken] = useRecoilState(LoginState);
   const navigate = useNavigate();
   const checkPf = useMyPageApi.useGetMyPage().data?.data[0];
   const {
@@ -35,6 +42,7 @@ export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
     const body = { nickname: data.nickname, profileImg: data.profileImg[0] };
     profileEdit.mutate(body);
     console.log(data);
+    closeModal();
   };
 
   // window.location.replace("/mypage");
@@ -42,12 +50,15 @@ export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
     setIsPopUp((prev) => !prev);
   };
 
-  const kmodalPop = () => {
-    setIsPopUp((prev) => !prev);
+  const closeModal = () => {
+    setIsPopUp(false);
   };
 
-  const gmodalPop = () => {
-    setIsPopUp((prev) => !prev);
+  const logOut = () => {
+    removeAccessToken();
+    removeRefreshToken();
+    setToken(null);
+    navigate("/");
   };
 
   return (
@@ -59,10 +70,15 @@ export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
       {isPopUp && (
         <Container>
           <ModalBg onClick={modalPop} />
+
           <PfModalWrap className="isPopUp">
+            <HeadText>
+              <PfText>프로필 수정</PfText>
+              <CloseBtn src="/images/closeBtn.svg" onClick={closeModal} />
+            </HeadText>
+
             <NickForm onSubmit={handleSubmit(handleValid)}>
               <PfBox>
-                <PfText>기본 프로필 편집</PfText>
                 <PfCircle>
                   {imagePreview && (
                     <ImgPreview
@@ -74,8 +90,8 @@ export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
                     src="/images/kakaopf.jpeg"
                     alt="PFP"
                     style={{
-                      height: "75px",
-                      borderRadius: "125px",
+                      height: "100px",
+                      borderRadius: "100px",
                       objectFit: "contain",
                     }}
                   />
@@ -90,16 +106,15 @@ export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
                       />
                       <PhotoCameraIcon
                         sx={{
-                          marginLeft: "4px",
-                          marginTop: "3px",
-                          position: "absolute",
+                          marginLeft: "1px",
+                          marginTop: "3.5px",
                         }}
                       />
                     </label>
                   </CameraCircle>
                 </PfCircle>
               </PfBox>
-
+              <InputHead>닉네임</InputHead>
               <NickInput
                 placeholder="닉네임"
                 {...register("nickname", {
@@ -111,7 +126,9 @@ export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
                 })}
               />
               <ErrorNick>{errors.nickname?.message}</ErrorNick>
+              <NickBtn>수정완료</NickBtn>
             </NickForm>
+            <LogoutBtn onClick={logOut}>로그아웃</LogoutBtn>
           </PfModalWrap>
         </Container>
       )}
@@ -128,27 +145,25 @@ const ModalBg = styled.div`
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(6px);
+  /* backdrop-filter: blur(1px); */
   animation-name: ${fadeIn};
   animation-duration: 0.2s;
 `;
 
-const PfModalWrap = styled.div`
+const PfModalWrap = styled.button`
   margin: 10px auto;
-  height: 35px;
-  width: 50px;
-  border-radius: 13px;
+  width: 160px;
+  border-radius: 1rem;
   border: 1px solid grey;
-  justify-content: center;
-  align-content: center;
+  background-color: white;
+  color: black;
   z-index: 1;
 
   &.setIsPopUp {
-    width: 65px;
-    height: 35px;
-    padding: 10px;
+    width: 60px;
+    height: 30px;
     font-size: 1rem;
-    text-align: center;
+    margin-top: 20px;
 
     span {
       margin-left: 10px;
@@ -157,21 +172,20 @@ const PfModalWrap = styled.div`
   }
 
   &.isPopUp {
-    height: 300px;
+    height: 400px;
     width: 300px;
     left: 10;
-    bottom: 100;
+    bottom: 200;
     padding: 10px;
     position: fixed;
     z-index: 100;
     overflow: auto;
-    background-color: lightgray;
-
-    /* animation-duration: 0.7s; */
+    margin-top: 170px;
   }
 `;
 
 const Container = styled.div`
+  /* background-color: red; */
   width: 100%;
   height: 100%;
   z-index: 10;
@@ -186,24 +200,45 @@ const Container = styled.div`
   transition: all 0.5s ease-in-out;
 `;
 
-const PfBox = styled.div``;
+const HeadText = styled.div`
+  height: 150px;
+  text-align: left;
+  justify-content: flex-end;
+  position: relative;
+  margin-left: 10px;
+  bottom: 10px;
+`;
+const PfBox = styled.div`
+  position: absolute;
+  margin-left: 90px;
+  width: 100%;
+  top: 70px;
+`;
 
 const PfText = styled.span`
   font-weight: 500;
-  font-size: 0.9rem;
+  font-size: 1rem;
+`;
+
+const CloseBtn = styled.img`
+  width: ${(props) => props.theme.pixelToRem(20)};
+  height: ${(props) => props.theme.pixelToRem(20)};
+  align-items: center;
+  margin-left: 165px;
+  /* background-color: red; */
+  /* display: inline-block; */
 `;
 
 const PfCircle = styled.div`
-  width: 75px;
-  height: 75px;
-  border-radius: 75px;
-  margin: 10px auto;
+  width: 100px;
+  height: 100px;
+  border-radius: 100px;
   position: relative;
 `;
 const ImgPreview = styled.img`
-  width: 75px;
-  height: 75px;
-  border-radius: 75px;
+  width: 100px;
+  height: 100px;
+  border-radius: 100px;
   position: absolute;
 `;
 
@@ -212,29 +247,52 @@ const CameraCircle = styled.div`
   height: 30px;
   background-color: white;
   border-radius: 30px;
-  position: absolute;
+  position: relative;
   margin-top: -35px;
-  margin-left: 42px;
+  margin-left: 70px;
+  border: 0.5px solid black;
 `;
 
 const NickForm = styled.form`
-  justify-content: center;
-  align-items: center;
-  display: flex;
+  /* justify-content: center; */
+  /* align-items: center; */
+  /* display: flex; */
   flex-direction: column;
+`;
+
+const InputHead = styled.div`
+  text-align: left;
+  margin-left: 15px;
+  color: grey;
 `;
 
 const NickInput = styled.input`
   margin-top: 15px;
-  background-color: transparent;
-  border: none;
-  border-bottom: 1px solid black;
-  color: #555;
-  box-sizing: border-box;
+  border-radius: 0.8rem;
+  border: 1px solid grey;
+  width: 250px;
+  height: 50px;
+  /* box-sizing: border-box; */
+`;
 
-  &:focus {
-    border-bottom: 1px solid white;
-  }
+const NickBtn = styled.button`
+  margin-top: 5px;
+  border-radius: 0.8rem;
+  border: 1px solid grey;
+  width: 250px;
+  height: 50px;
+  background-color: #024873;
+  color: whitesmoke;
+  cursor: pointer;
+`;
+
+const LogoutBtn = styled.div`
+  margin-top: 10px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  text-decoration: underline;
+  color: grey;
+  cursor: pointer;
 `;
 
 const ErrorNick = styled.div`

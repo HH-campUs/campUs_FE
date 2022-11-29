@@ -40,6 +40,8 @@ function Home() {
 
   return (
     <>
+      {isSearch == false ? null : <Search />}
+
       <HeadText>
         {backgroundPhrase} <br></br> 캠프어스에서
       </HeadText>

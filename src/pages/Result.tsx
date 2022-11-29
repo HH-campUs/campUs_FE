@@ -7,10 +7,9 @@ import { showLo, ExportLocation } from "../store/locationAtom";
 import { StrMonth, StrDay } from "../store/dateAtom";
 import Search from "../components/withSearch/Search";
 import { isModal } from "../store/searchAtom";
-import { Link, useNavigate, Outlet, useMatch } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { FaChevronUp } from "react-icons/fa";
-import { useGetApi } from "../APIs/getApi";
+import { useGetApi /* useGetCamp */ } from "../APIs/getApi";
 
 //bookmark icon
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
@@ -23,23 +22,17 @@ function Result() {
   const [isWeather, setIsWeather] = useState(false);
   const [isSearch, setIsSearch] = useRecoilState(isModal);
 
-  const locationValue = useRecoilValue(showLo);
+  const doNm = useRecoilValue(showLo);
   const Month = useRecoilValue(StrMonth);
   const Day = useRecoilValue(StrDay);
 
   const getWeather = useGetApi.useGetWeather().data;
-  const getCamp = useGetApi.useGetCampResult();
+  const getCamp = useGetApi.useGetCampResult().data;
   const [ref, inView] = useInView();
 
-  /* 무한스크롤 테스트 */
-  /*   const { fetchNextPage, isSuccess, campData, error } =
-    useGetApi.useGetCampResult();
-
-  useEffect(() => {
-    if (inView) {
-      fetchNextPage();
-    }
-  }, [inView]); */
+  console.log(getCamp?.regionCamp);
+  /* const { regionCamp, fetchNextPage, isSuccess, hasNextPage, refetch } =
+    useGetCamp(doNm); */
 
   const ModalHandler = () => {
     setIsActive(!isActive);
@@ -48,6 +41,12 @@ function Result() {
   const WeatherHandler = () => {
     setIsWeather(!isWeather);
   };
+
+  /* useEffect(() => {
+    if (inView && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [inView]); */
 
   return (
     <>
@@ -66,7 +65,7 @@ function Result() {
         </div>
         <div>
           <span style={{ width: "160px", marginLeft: "-150px" }}>
-            {Month}월 {Day}일 &nbsp; | &nbsp; {locationValue}
+            {Month}월 {Day}일 &nbsp; | &nbsp; {doNm}
           </span>
         </div>
       </ReSearch>
@@ -82,13 +81,13 @@ function Result() {
           <div className="secondSeparate">
             <img src="/images/sunRain.svg" alt="weather-img" />
             <div className="infoBox">
-              <span>{locationValue}</span>
+              <span>{doNm}</span>
               <span>비올확률 {getWeather?.weather[0].pop * 100}%</span>
             </div>
           </div>
           <div className="thirdSeparate">
             <div className="temBox">
-              <span>{(getWeather?.weather[0].day).toFixed()}</span>
+              <span>{getWeather?.weather[0].day.toFixed(0)}</span>
               <b>°</b>
             </div>
             <span>
@@ -98,13 +97,13 @@ function Result() {
         </div>
       </WeatherModal>
 
-      {/* <WeatherModal
+      <WeatherModal
         className="isActive"
         style={{ transition: "all 0.5s ease-in-out" }}
         onClick={WeatherHandler}>
         <img src="/images/sunRain.svg" alt="weather img" />
         16°
-      </WeatherModal> */}
+      </WeatherModal>
 
       {/* Camp results */}
 
@@ -112,14 +111,15 @@ function Result() {
         <ResultTop>
           <div>
             <span className="result"> 검색결과 </span>
-            <span className="total"> (000개)</span>
+            <span className="total"> ({getCamp?.total}개)</span>
           </div>
           <div>
             <span className="popular">인기순</span>
           </div>
         </ResultTop>
-        {DummyData.map((item, i) => (
-          <ResultBox key={i}>
+        {/* {isSuccess && regionCamp?.regionCamp ?
+          regionCamp?.regionCamp.map((item: any) => (
+          <ResultBox key={item.campId}>
             <ResultItem onClick={() => nav(`/detail/:id`)}>
               <ResultImg src={item.ImgUrl} alt={item.name} />
               <InnerBg>
@@ -141,89 +141,40 @@ function Result() {
               <div className="tag"> 마트/편의점 </div>
             </TagContainer>
           </ResultBox>
+        )): null} */}
+        {getCamp?.regionCamp.map((item) => (
+          <ResultBox key={item.campId}>
+            <ResultItem onClick={() => nav(`/detail/:id`)}>
+              <ResultImg src={item.ImageUrl} alt={item.ImageUrl} />
+              <InnerBg>
+                <span>
+                  찜({item.pickCount}) 리뷰({item.reviewCount}){" "}
+                </span>
+              </InnerBg>
+            </ResultItem>
+            <CampSpan>
+              <span>{item.campName}</span>
+              <span>{item.induty}</span>
+            </CampSpan>
+            <DetailAddress>
+              <img src="/images/location.svg" alt="location" />
+              <span>{item.address}</span>
+            </DetailAddress>
+            <TagContainer>
+              <div className="tag"> 운동시설 </div>
+              <div className="tag"> 장작판매 </div>
+              <div className="tag"> 물놀이장 </div>
+              <div className="tag"> 마트/편의점 </div>
+            </TagContainer>
+          </ResultBox>
         ))}
       </ResultContainer>
-      <div ref={ref} style={{ width: "inherit", height: "" }}></div>
+      <div ref={ref} style={{ width: "inherit", height: "auto" }}></div>
     </>
   );
 }
 
 export default Result;
-
-/* dummy data */
-
-interface Dummy {
-  ImgUrl?: string;
-  reviewNum: number;
-  name: string;
-  location: string;
-  address: string;
-}
-
-const DummyData: Array<Dummy> = [
-  {
-    ImgUrl: "https://img.sbs.co.kr/newimg/news/20170117/201015461_1280.jpg",
-    reviewNum: 5,
-    name: "모여봐요 동물의 숲",
-    location: "닌텐도 뀨뀨",
-    address: "대한민국 어딘가 ~",
-  },
-  {
-    ImgUrl:
-      "http://economychosun.com/query/upload/344/20200419231455_gltgzjsu.jpg",
-    reviewNum: 24,
-    name: "강원도로 갈까유",
-    location: "닌텐도 어딘가에 있겠지 임마",
-    address: "대한민국 어딘가 ~",
-  },
-  {
-    ImgUrl:
-      "https://image-cdn.hypb.st/https%3A%2F%2Fkr.hypebeast.com%2Ffiles%2F2022%2F04%2Fmakoto-shinkai-new-anime-movie-suzume-no-tojimari-first-video-visual-teaser-ft.jpg?w=960&cbr=1&q=90&fit=max",
-    reviewNum: 53,
-    name: "모이자",
-    location: "닌텐도 어딘가에 있겠지 임마",
-    address: "대한민국 어딘가 ~",
-  },
-  {
-    ImgUrl:
-      "http://newsimg.hankookilbo.com/2019/10/30/201910301882016576_6.jpg",
-    reviewNum: 34,
-    name: "모홍홍 숲",
-    location: "닌텐도 어딘가에 있겠지 임마",
-    address: "대한민국 어딘가 ~",
-  },
-  {
-    ImgUrl: "https://pbs.twimg.com/media/EbXmXe2VAAUKd_B.jpg",
-    reviewNum: 23,
-    name: "롤하고 싶당",
-    location: "닌텐도 어딘가에 있겠지 임마",
-    address: "대한민국 어딘가 ~",
-  },
-  {
-    ImgUrl:
-      "https://image-cdn.hypb.st/https%3A%2F%2Fkr.hypebeast.com%2Ffiles%2F2021%2F08%2Fblackpink-animal-crossing-new-horrizsons-island-info-2.jpg?q=75&w=800&cbr=1&fit=max",
-    reviewNum: 3,
-    name: "동물의 숲",
-    location: "닌텐도 어딘가에 있겠지 임마",
-    address: "대한민국 어딘가 ~",
-  },
-  {
-    ImgUrl:
-      "https://m.nongmin.com/upload/bbs/202207/20220712165858408/20220712165858408.jpg",
-    reviewNum: 2,
-    name: "모 숲",
-    location: "닌텐도 어딘가에 있겠지 임마",
-    address: "대한민국 어딘가 ~",
-  },
-  {
-    ImgUrl:
-      "https://cdn.eyesmag.com/content/uploads/posts/2020/03/31/animal-crossing-new-horizons-instagram-fashion-09-9d86eeb1-c87b-414d-849d-45431d21561c.jpg",
-    reviewNum: 41,
-    name: "부잉",
-    location: "닌텐도 어딘가에 있겠지 임마",
-    address: "대한민국 어딘가 ~",
-  },
-];
 
 /* result */
 
@@ -334,6 +285,7 @@ const WeatherModal = styled.div`
     }
   }
 
+  /* 접혔을 떄의 날씨 정보 (simple) */
   .isNotActive {
     width: inherit;
     margin: 0 auto;
@@ -385,6 +337,21 @@ const WeatherModal = styled.div`
 
       .temBox {
         padding-right: 8px;
+
+        .lowHigh {
+          width: ${(props) => props.theme.pixelToRem(15)};
+          height: ${(props) => props.theme.pixelToRem(34)};
+          flex-direction: row;
+          span:nth-child(1) {
+            /* ${(props) => props.theme.font}; */
+            color: ${(props) => props.theme.colorTheme.cold};
+          }
+
+          span:nth-child(2) {
+            color: ${(props) => props.theme.colorTheme.hot};
+          }
+        }
+
         span:nth-child(1) {
           ${(props) => props.theme.fontTheme.Subtitle3};
           font-size: ${(props) => props.theme.pixelToRem(40)};
@@ -409,11 +376,13 @@ const WeatherModal = styled.div`
     }
   }
 
+  /* 펼쳤을 때의 날씨 정보 (detail) */
   &.isActive {
     height: ${(props) => props.theme.pixelToRem(217)};
   }
 `;
 
+/* 결과 창 */
 const ResultContainer = styled.div`
   width: ${(props) => props.theme.pixelToRem(335)};
   height: auto;

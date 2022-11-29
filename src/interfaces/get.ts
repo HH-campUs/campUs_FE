@@ -86,6 +86,20 @@ export interface IGetCampResult {
   sigunguNm: string;
   swrmCo: string;
   themaEnvrnCl: string;
+}
+
+export interface campArray extends IGetCampResult {
+  currentPage?: number;
+  total: number;
+  regionCamp: IGetCampResult[];
+  nextPage?: number;
+  lastPage?: boolean;
+  isLast?: boolean;
+  pageParam?: number;
+}
+
+export interface campResult extends campArray {
+  data: campArray[];
   toiletCo: string;
   wtrplCo: string;
 
@@ -99,6 +113,10 @@ export interface campArray extends IGetCampResult {
   total: number;
   nextPage: number;
   lastPage: boolean;
+}
+
+export interface campResult extends campArray {
+  data: campArray[];
 }
 
 export interface pickedCamp extends campArray {

@@ -32,36 +32,75 @@ export interface IGetWeather {
   snow?: number;
 }
 
+// export interface IGetCampResult {
+//   campId: number;
+//   campName: string;
+//   /* 야영장 종류 */
+//   induty: string;
+//   doNm: string;
+//   sigunguNm: string;
+//   address: string;
+//   X: string | number;
+//   Y: string | number;
+//   oerPdcl: string;
+//   operDecl: string;
+//   animal: string;
+//   ImageUrl: string;
+//   homepage: string;
+//   sbrsCl: string;
+//   posblFcltyCl: string;
+//   wtrplCo: string;
+//   swrmCo: string;
+//   toiletCo: string;
+//   manageSttus: string;
+//   themaEnvrnCl: string;
+//   lookup: string;
+//   createdtime: string;
+//   eqpmnLendCl: string;
+//   reviewCount: number;
+// }
+
 export interface IGetCampResult {
+  ImageUrl: string;
+  X: string;
+  Y: string;
+  address: string;
+  animal: string;
   campId: number;
   campName: string;
-  /* 야영장 종류 */
-  induty: string;
-  doNm: string;
-  sigunguNm: string;
-  address: string;
-  X: string | number;
-  Y: string | number;
-  oerPdcl: string;
-  operDecl: string;
-  animal: string;
-  ImageUrl: string;
-  homepage: string;
-  sbrsCl: string;
-  posblFcltyCl: string;
-  wtrplCo: string;
-  swrmCo: string;
-  toiletCo: string;
-  manageSttus: string;
-  themaEnvrnCl: string;
-  lookup: string;
+  clturEvent: string;
   createdtime: string;
+  doNm: string;
   eqpmnLendCl: string;
+  featureNm: string;
+  homePage: string;
+  induty: string;
+  lookUp: number;
+  manageSttus: string;
+  operDeCl: string;
+  operPdCl: string;
+  pickCount: number;
+  posblFcltyCl: string;
   reviewCount: number;
+  sbrsCl: string;
+  sigunguNm: string;
+  swrmCo: string;
+  themaEnvrnCl: string;
+  toiletCo: string;
+  wtrplCo: string;
+
+  // topicCamp: string[];
+  // total: number;
 }
 
-export interface campArray {
+export interface campArray extends IGetCampResult {
+  topicCamp: IGetCampResult[];
   regionCamp: IGetCampResult[];
+  total: number;
   nextPage: number;
   lastPage: boolean;
+}
+
+export interface pickedCamp extends campArray {
+  data: campArray[];
 }

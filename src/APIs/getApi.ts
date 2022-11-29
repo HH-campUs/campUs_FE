@@ -12,6 +12,7 @@ import {
   IGetCampResult,
   IGetWeather,
   campArray,
+  pickedCamp,
 } from "../interfaces/get";
 
 const serverUrl = process.env.REACT_APP_API;
@@ -75,13 +76,13 @@ export const useGetApi = {
 
   /* topic 별 캠핑장 결과 조회 */
   useGetTopicResult: () => {
-    const params = 1;
+    const params = 2;
     return useQuery(["topicResult"], async () => {
-      const { data } = await instance.get<IGetCampResult>(
+      const { data } = await instance.get<pickedCamp[]>(
         `/camps/${params}?numOfRows=20&pageNo=1`
       );
-      console.log(data);
-      return data;
+      console.log(data[0]);
+      return data[0];
     });
   },
 

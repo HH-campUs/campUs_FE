@@ -44,15 +44,15 @@ export default function SignUp() {
     }
   };
 
-  const btnEffect = () => {
-    if (mailCK === false) {
-      setMailCk((prev) => !prev);
-    }
-  };
+  // 1.정규식(errors.email?) 에러발생하면 중복검사 버튼 돌아감.
+  // 2. 이 함수는 useEffect로 mailCK가 트루가 되었을때 사용.
+  // 3.useEffect사용으로 구현.
 
-  // useEffect(() => {
-  //   setMailCk((prev) => !prev);
-  // }, [mailCK]);
+  useEffect(() => {
+    if (errors.email) {
+      setMailCk(false);
+    }
+  }, [errors.email]);
 
   const mailchecking = async () => {
     await instance
@@ -97,10 +97,10 @@ export default function SignUp() {
           />
 
           {mailCK ? (
-            <button type="button">
+            <DubckBtn type="button">
               <CheckIcon />
-              <span>&nbsp;중복검사</span>
-            </button>
+              <span>&nbsp;확인</span>
+            </DubckBtn>
           ) : (
             <DubckBtn type="button" onClick={mailchecking}>
               중복검사

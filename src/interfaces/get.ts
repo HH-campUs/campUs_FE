@@ -58,10 +58,19 @@ export interface IGetCampResult {
   createdtime: string;
   eqpmnLendCl: string;
   reviewCount: number;
+  pickCount: number;
 }
 
-export interface campArray {
+export interface campArray extends IGetCampResult {
+  currentPage?: number;
+  total: number;
   regionCamp: IGetCampResult[];
-  nextPage: number;
-  lastPage: boolean;
+  nextPage?: number;
+  lastPage?: boolean;
+  isLast?: boolean;
+  pageParam?: number;
+}
+
+export interface campResult extends campArray {
+  data: campArray[];
 }

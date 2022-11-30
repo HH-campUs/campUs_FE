@@ -91,32 +91,38 @@ export interface IGetCampResult {
 export interface campArray extends IGetCampResult {
   currentPage?: number;
   total: number;
+  topicCamp: IGetCampResult[];
   regionCamp: IGetCampResult[];
+  camps: IGetCampResult[];
   nextPage?: number;
   lastPage?: boolean;
   isLast?: boolean;
   pageParam?: number;
+  fetchNextPage: boolean;
+  isSuccess: boolean;
+  hasNextPage: boolean;
+  refetch: boolean;
 }
 
+export interface ICampingPicked {
+  campId: number | string;
+}
+
+export interface campArray extends IGetCampResult {
+  currentPage?: number;
+  total: number;
+  regionCamp: IGetCampResult[];
+  // nextPage?: number;
+  // lastPage?: boolean;
+  isLast?: boolean;
+  pageParam?: number;
+}
 export interface campResult extends campArray {
   data: campArray[];
   toiletCo: string;
   wtrplCo: string;
-
   // topicCamp: string[];
   // total: number;
-}
-
-export interface campArray extends IGetCampResult {
-  topicCamp: IGetCampResult[];
-  regionCamp: IGetCampResult[];
-  total: number;
-  nextPage: number;
-  lastPage: boolean;
-}
-
-export interface campResult extends campArray {
-  data: campArray[];
 }
 
 export interface pickedCamp extends campArray {

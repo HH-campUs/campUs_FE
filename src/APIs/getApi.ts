@@ -117,6 +117,8 @@ export const useGetApi = {
     });
   },
 
+  //1.일몰 2.낚시 3.반려동물 4.장비대여
+
   // ** 캠핑장 리뷰 조회 / get ** //
   useGetCampReview: () => {
     return useQuery(["reviewinfo"], async () => {

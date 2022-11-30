@@ -2,30 +2,14 @@ import registDragEvent from "../utils/registDragEvent";
 import { useState } from "react";
 import useCarouselSize from "./useCarouselSizeHook";
 import styled from "styled-components";
-import Bookmark from "@mui/icons-material/Bookmark";
-import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
-import { ImgBox } from "../components/MytravelPlan";
-import { Navigate, useNavigate } from "react-router-dom";
 
-const imageList = [
-  "https://blog.kakaocdn.net/dn/dpxiAT/btqUBv6Fvpn/E8xUMncq7AVuDeOim0LrMk/img.jpg",
-  "https://blog.kakaocdn.net/dn/BGT7X/btqUzvTqi5h/flp39GdJH0GU6mo7cTbbhk/img.jpg",
-  "https://blog.kakaocdn.net/dn/bWnmfv/btqUBwqZvwA/3CiXGt3SR0TXoOveRJxV91/img.jpg",
-  "https://blog.kakaocdn.net/dn/XsLCO/btqUL8PQLwp/NZWCU2jAYKkKSXwcohBKTK/img.jpg",
-  "https://blog.kakaocdn.net/dn/bG3iVL/btqUvCZPaRL/ofIjkNWJP1mj2bOG9fie51/img.jpg",
-];
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 
 export default function CarouselSub() {
   const navigate = useNavigate();
   const [hide, setHide] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [transX, setTransX] = useState(0);
-  const [bookmarking, setBookMarking] = useState(false);
-
-  // const picking = () => {
-  //   setBookMarking((prev) => !prev);
-  //   console.log("asdfads");
-  // };
 
   const { ref, width, height } = useCarouselSize();
 
@@ -35,11 +19,35 @@ export default function CarouselSub() {
     return v;
   };
 
+  const { id } = useParams();
   // /camps/:topicId?
   //첫번째 인자- 동적변경되는부분
-  const handleClick = (id: string) => () => {
-    navigate(`/camps/${id}`);
+  const handleClick = (id: number) => () => {
+    navigate(`/topic/${id}`);
   };
+
+  const imageList = [
+    {
+      text: "일몰명소",
+      img: "/images/subject/image6.jpg",
+      id: 1,
+    },
+    {
+      text: "애견동반",
+      img: "/images/subject/image4.jpg",
+      id: 2,
+    },
+    {
+      text: "장비대여",
+      img: "/images/subject/image2.jpg",
+      id: 3,
+    },
+    {
+      text: "겨울낚시",
+      img: "/images/subject/image1.jpg",
+      id: 4,
+    },
+  ];
 
   return (
     <>
@@ -82,6 +90,7 @@ export default function CarouselSub() {
                 alt="img"
                 width={width}
                 draggable={false}
+                onClick={handleClick(1)}
               />
             </BoxEx>
 
@@ -92,6 +101,7 @@ export default function CarouselSub() {
                 src={"/images/subject/image4.jpg"}
                 alt="img"
                 width={width}
+                onClick={handleClick(2)}
               />
             </BoxEx>
 
@@ -102,6 +112,7 @@ export default function CarouselSub() {
                 src={"/images/subject/image2.jpg"}
                 alt="img"
                 width={width}
+                onClick={handleClick(3)}
               />
             </BoxEx>
             <BoxEx>
@@ -111,6 +122,7 @@ export default function CarouselSub() {
                 src={"/images/subject/image1.jpg"}
                 alt="img"
                 width={width}
+                onClick={handleClick(4)}
               />
             </BoxEx>
           </CaroImgBox>
@@ -197,3 +209,16 @@ const CaroText = styled.div`
             width={width}
           /> */
 }
+
+//  {imageList.map((imageLists,i)=>{
+//           <BoxEx ket={i}>
+//           <CaroText>{imageLists.text}</CaroText>
+//           <CarouselImg
+//             draggable={false}
+//             src={imageLists.img}
+//             alt="img"
+//             width={width}
+//             onClick={handleClick(imageLists.id)}
+//           />
+//         </BoxEx>
+//       })}

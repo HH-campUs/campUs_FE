@@ -123,7 +123,7 @@ function App() {
                 <Route path="/" element={<Home />} />
 
                 <Route path="result" element={<Result />} />
-                <Route path="topic" element={<Topic />} />
+                <Route path="topic/:id" element={<Topic />} />
                 <Route path="login" element={<Login />} />
 
                 <Route path="signup" element={<SignUp />} />
@@ -136,10 +136,10 @@ function App() {
                 </Route>
 
                 <Route path="mypage" element={<Mypage />} />
-                <Route path="/mypage/:id" element={<Mypage />}>
-                  <Route path="/mypage/:id/myreview" element={<MyReview />} />
-                  <Route path="/mypage/:id/mypick" element={<MyPick />} />
-                  <Route path="/mypage/:id/myplan" element={<MyPlan />} />
+                <Route path="/mypage/" element={<Mypage />}>
+                  <Route path="/mypage/myreview" element={<MyReview />} />
+                  <Route path="/mypage/mypick" element={<MyPick />} />
+                  <Route path="/mypage/myplan" element={<MyPlan />} />
                 </Route>
 
                 <Route path="/*" element={<NotFound />} />

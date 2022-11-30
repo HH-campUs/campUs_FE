@@ -13,7 +13,6 @@ export interface IDeleteReviewPosts {
   //id값 필요할텐데 명세서에 아무것도 없음.
 }
 
-
 export interface IPostTravelPlan {
   userId: number;
   campId: number;
@@ -22,5 +21,7 @@ export interface IPostTravelPlan {
 }
 
 export interface ICampingPicked {
-  campId: number;
+  campId: number | string;
 }
+
+// campId: string;

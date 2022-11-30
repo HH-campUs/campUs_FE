@@ -3,7 +3,7 @@ import styled from "styled-components";
 import KaKaomap from "../../components/KaKaomap";
 
 const Wrapper = styled.div`
-  margin-bottom: 40px;
+  margin-bottom: 80px;
 `;
 
 const InfoBox = styled.div`
@@ -37,7 +37,9 @@ const InfoDetail = styled.div`
 const MapWrapper = styled.div`
   margin-left: 10px;
   width: 455px;
+  height: 300px;
   justify-content: center;
+  /* background-color: red; */
 `;
 
 const MapTitle = styled.div`
@@ -59,7 +61,7 @@ function Ddetail() {
       </InfoBox>
       <MapWrapper>
         <MapTitle>지도</MapTitle>
-        <KaKaomap height={300} />
+        <KaKaomap />
       </MapWrapper>
     </Wrapper>
   );

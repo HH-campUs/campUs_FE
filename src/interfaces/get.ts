@@ -93,9 +93,11 @@ export interface campArray extends IGetCampResult {
   total: number;
   topicCamp: IGetCampResult[];
   regionCamp: IGetCampResult[];
+
   camps: IGetCampResult[];
   nextPage?: number;
   lastPage?: boolean;
+
   isLast?: boolean;
   pageParam?: number;
   fetchNextPage: boolean;
@@ -117,6 +119,7 @@ export interface campArray extends IGetCampResult {
   isLast?: boolean;
   pageParam?: number;
 }
+
 export interface campResult extends campArray {
   data: campArray[];
   toiletCo: string;

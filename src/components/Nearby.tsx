@@ -1,3 +1,4 @@
+import { height } from "@mui/system";
 import React from "react";
 import styled from "styled-components";
 import KaKaomap from "./KaKaomap";
@@ -9,7 +10,7 @@ export default function Nearby() {
       <TextBox>가장 가까운 캠핑장</TextBox>
       <PlanBox>
         <MapBox>
-          <KaKaomap height={80} />
+          <KaKaomap />
         </MapBox>
         <Distance>
           <DistanceText>10km | 20분</DistanceText>
@@ -46,7 +47,7 @@ const PlanBox = styled.div`
 const MapBox = styled.div`
   position: relative;
   width: 120px;
-  height: 120px;
+  height: 100% !important;
   border-radius: 10px;
   background-color: grey;
   /* margin: 20px 10px; */

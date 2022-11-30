@@ -106,7 +106,7 @@ function Search() {
 
         <Location />
 
-        <BtnContainer>
+        <BtnContainer isSearch={isSearch}>
           <ResetBtn onClick={resetHandler}>
             <img src="/images/reset.svg" alt="reset" />
           </ResetBtn>
@@ -316,7 +316,7 @@ const LocationText = styled(DateText)`
   }
 `;
 
-const BtnContainer = styled.button`
+const BtnContainer = styled.button<{ isSearch: boolean }>`
   width: ${(props) => props.theme.pixelToRem(337)};
   height: ${(props) => props.theme.pixelToRem(54)};
   margin: 0 auto;
@@ -326,6 +326,7 @@ const BtnContainer = styled.button`
   justify-content: space-between;
   position: fixed;
   display: flex;
+  animation: ${(props) => (props.isSearch == false ? slideOut : slideIn)};
 `;
 
 const ResetBtn = styled.button`

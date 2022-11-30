@@ -32,38 +32,66 @@ export interface IGetWeather {
   snow?: number;
 }
 
+// export interface IGetCampResult {
+//   campId: number;
+//   campName: string;
+//   /* 야영장 종류 */
+//   induty: string;
+//   doNm: string;
+//   sigunguNm: string;
+//   address: string;
+//   X: string | number;
+//   Y: string | number;
+//   oerPdcl: string;
+//   operDecl: string;
+//   animal: string;
+//   ImageUrl: string;
+//   homepage: string;
+//   sbrsCl: string;
+//   posblFcltyCl: string;
+//   wtrplCo: string;
+//   swrmCo: string;
+//   toiletCo: string;
+//   manageSttus: string;
+//   themaEnvrnCl: string;
+//   lookup: string;
+//   createdtime: string;
+//   eqpmnLendCl: string;
+//   reviewCount: number;
+// }
+
 export interface IGetCampResult {
+  ImageUrl: string;
+  X: string;
+  Y: string;
+  address: string;
+  animal: string;
   campId: number;
   campName: string;
-  /* 야영장 종류 */
-  induty: string;
-  doNm: string;
-  sigunguNm: string;
-  address: string;
-  X: string | number;
-  Y: string | number;
-  oerPdcl: string;
-  operDecl: string;
-  animal: string;
-  ImageUrl: string;
-  homepage: string;
-  sbrsCl: string;
-  posblFcltyCl: string;
-  wtrplCo: string;
-  swrmCo: string;
-  toiletCo: string;
-  manageSttus: string;
-  themaEnvrnCl: string;
-  lookup: string;
+  clturEvent: string;
   createdtime: string;
+  doNm: string;
   eqpmnLendCl: string;
-  reviewCount: number;
+  featureNm: string;
+  homePage: string;
+  induty: string;
+  lookUp: number;
+  manageSttus: string;
+  operDeCl: string;
+  operPdCl: string;
   pickCount: number;
+  posblFcltyCl: string;
+  reviewCount: number;
+  sbrsCl: string;
+  sigunguNm: string;
+  swrmCo: string;
+  themaEnvrnCl: string;
 }
 
 export interface campArray extends IGetCampResult {
   currentPage?: number;
   total: number;
+  topicCamp: IGetCampResult[];
   regionCamp: IGetCampResult[];
   camps: IGetCampResult[];
   nextPage?: number;
@@ -74,4 +102,29 @@ export interface campArray extends IGetCampResult {
   isSuccess: boolean;
   hasNextPage: boolean;
   refetch: boolean;
+}
+
+export interface ICampingPicked {
+  campId: number | string;
+}
+
+export interface campArray extends IGetCampResult {
+  currentPage?: number;
+  total: number;
+  regionCamp: IGetCampResult[];
+  // nextPage?: number;
+  // lastPage?: boolean;
+  isLast?: boolean;
+  pageParam?: number;
+}
+export interface campResult extends campArray {
+  data: campArray[];
+  toiletCo: string;
+  wtrplCo: string;
+  // topicCamp: string[];
+  // total: number;
+}
+
+export interface pickedCamp extends campArray {
+  data: campArray[];
 }

@@ -65,12 +65,13 @@ export interface campArray extends IGetCampResult {
   currentPage?: number;
   total: number;
   regionCamp: IGetCampResult[];
+  camps: IGetCampResult[];
   nextPage?: number;
   lastPage?: boolean;
   isLast?: boolean;
   pageParam?: number;
-}
-
-export interface campResult extends campArray {
-  data: campArray[];
+  fetchNextPage: boolean;
+  isSuccess: boolean;
+  hasNextPage: boolean;
+  refetch: boolean;
 }

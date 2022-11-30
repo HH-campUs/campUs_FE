@@ -9,10 +9,10 @@ import Search from "../components/withSearch/Search";
 import { isModal } from "../store/searchAtom";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { useGetApi /* useGetCamp */ } from "../APIs/getApi";
+import { useGetApi, useGetCamp } from "../APIs/getApi";
+import { campArray } from "../interfaces/get";
 
 //bookmark icon
-import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 
 function Result() {
   const nav = useNavigate();
@@ -21,6 +21,7 @@ function Result() {
   const [isActive, setIsActive] = useState(false);
   const [isWeather, setIsWeather] = useState(false);
   const [isSearch, setIsSearch] = useRecoilState(isModal);
+  const [bookmarking, setBookMarking] = useState(false);
 
   const doNm = useRecoilValue(showLo);
   const Month = useRecoilValue(StrMonth);
@@ -28,25 +29,29 @@ function Result() {
 
   const getWeather = useGetApi.useGetWeather().data;
   const getCamp = useGetApi.useGetCampResult().data;
-  const [ref, inView] = useInView();
+  const { ref, inView } = useInView();
 
   console.log(getCamp?.regionCamp);
-  /* const { regionCamp, fetchNextPage, isSuccess, hasNextPage, refetch } =
-    useGetCamp(doNm); */
 
-  const ModalHandler = () => {
-    setIsActive(!isActive);
-  };
+  const { campData, fetchNextPage, isSuccess, hasNextPage, refetch } =
+    useGetCamp(doNm);
+
+  console.log(campData);
 
   const WeatherHandler = () => {
     setIsWeather(!isWeather);
   };
 
-  /* useEffect(() => {
+  const picking = () => {
+    setBookMarking((prev) => !prev);
+    console.log("asdfads");
+  };
+
+  useEffect(() => {
     if (inView && hasNextPage) {
       fetchNextPage();
     }
-  }, [inView]); */
+  }, [inView]);
 
   return (
     <>
@@ -82,11 +87,17 @@ function Result() {
             <img src="/images/sunRain.svg" alt="weather-img" />
             <div className="infoBox">
               <span>{doNm}</span>
-              <span>비올확률 {getWeather?.weather[0].pop * 100}%</span>
+              <span>
+                비올확률 {getWeather?.weather[0].pop.toFixed(1) * 100}%
+              </span>
             </div>
           </div>
           <div className="thirdSeparate">
             <div className="temBox">
+              <div className="lowHigh">
+                <p>{getWeather?.weather[0].min.toFixed(0)}</p>
+                <p>{getWeather?.weather[0].max.toFixed(0)}</p>
+              </div>
               <span>{getWeather?.weather[0].day.toFixed(0)}</span>
               <b>°</b>
             </div>
@@ -101,8 +112,26 @@ function Result() {
         className="isActive"
         style={{ transition: "all 0.5s ease-in-out" }}
         onClick={WeatherHandler}>
-        <img src="/images/sunRain.svg" alt="weather img" />
-        16°
+        <div className="secondSeparate">
+          <img src="/images/sunRain.svg" alt="weather-img" />
+          <div className="infoBox">
+            <span>{doNm}</span>
+            <span>비올확률 {getWeather?.weather[0].pop * 100}%</span>
+          </div>
+        </div>
+        <div className="thirdSeparate">
+          <div className="temBox">
+            <div className="lowHigh">
+              <p>{getWeather?.weather[0].min.toFixed(0)}</p>
+              <p>{getWeather?.weather[0].max.toFixed(0)}</p>
+            </div>
+            <span>{getWeather?.weather[0].day.toFixed(0)}</span>
+            <b>°</b>
+          </div>
+          <span>
+            {Month}월 {Day}일 낮 기준
+          </span>
+        </div>
       </WeatherModal>
 
       {/* Camp results */}
@@ -117,32 +146,50 @@ function Result() {
             <span className="popular">인기순</span>
           </div>
         </ResultTop>
-        {/* {isSuccess && regionCamp?.regionCamp ?
-          regionCamp?.regionCamp.map((item: any) => (
-          <ResultBox key={item.campId}>
-            <ResultItem onClick={() => nav(`/detail/:id`)}>
-              <ResultImg src={item.ImgUrl} alt={item.name} />
-              <InnerBg>
-                <span>찜(20) 리뷰({item.reviewNum})</span>
-              </InnerBg>
-            </ResultItem>
-            <CampSpan>
-              <span>{item.location}</span>
-              <span>일반야영장 | 글램핑</span>
-            </CampSpan>
-            <DetailAddress>
-              <img src="/images/location.svg" alt="location" />
-              <span>{item.address}</span>
-            </DetailAddress>
-            <TagContainer>
-              <div className="tag"> 운동시설 </div>
-              <div className="tag"> 장작판매 </div>
-              <div className="tag"> 물놀이장 </div>
-              <div className="tag"> 마트/편의점 </div>
-            </TagContainer>
-          </ResultBox>
-        )): null} */}
-        {getCamp?.regionCamp.map((item) => (
+        {/* {isSuccess && campData?.pages ? (
+          campData?.pages.map((item: campResult) => (
+            <ResultBox key={item.campId}>
+              <ResultItem onClick={() => nav(`/detail/:id`)}>
+                <ResultImg src={item.ImageUrl} alt={item.ImageUrl} />
+                <InnerBg>
+                  <span>
+                    찜({item.pickCount}) 리뷰({item.reviewCount}){" "}
+                  </span>
+                </InnerBg>
+              </ResultItem>
+              <CampSpan>
+                <span>{item.campName}</span>
+                <span>{item.induty}</span>
+              </CampSpan>
+              <DetailAddress>
+                <img src="/images/location.svg" alt="location" />
+                <span>{item.address}</span>
+              </DetailAddress>
+              <TagContainer>
+                <div className="tag"> 운동시설 </div>
+                <div className="tag"> 장작판매 </div>
+                <div className="tag"> 물놀이장 </div>
+                <div className="tag"> 마트/편의점 </div>
+              </TagContainer>
+            </ResultBox>
+          ))
+        ) : (
+          <div> </div>
+        )}
+ */}
+        {/* 북마크 재료 */}
+
+        {/* {bookmarking ? (
+          <BookmarkBorderIcon onClick={picking}>
+            <img src="/images/picked2.svg" alt="Bookmarked" />
+          </BookmarkBorderIcon>
+        ) : (
+          <Bookmark onClick={picking}>
+            <img src="/images/pick1.svg" alt="Bookmark" />
+          </Bookmark>
+        )} */}
+
+        {getCamp?.regionCamp.map((item: any) => (
           <ResultBox key={item.campId}>
             <ResultItem onClick={() => nav(`/detail/:id`)}>
               <ResultImg src={item.ImageUrl} alt={item.ImageUrl} />
@@ -341,20 +388,29 @@ const WeatherModal = styled.div`
         .lowHigh {
           width: ${(props) => props.theme.pixelToRem(15)};
           height: ${(props) => props.theme.pixelToRem(34)};
+          margin-top: 8px;
+          margin-left: 70px;
           flex-direction: row;
-          span:nth-child(1) {
-            /* ${(props) => props.theme.font}; */
+          position: absolute;
+          p:nth-child(1) {
+            display: flex;
+            ${(props) => props.theme.fontTheme.Caption2};
             color: ${(props) => props.theme.colorTheme.cold};
           }
 
-          span:nth-child(2) {
+          p:nth-child(2) {
+            display: flex;
+            position: absolute;
+            margin-top: 2px;
+            margin-left: 4px;
+            ${(props) => props.theme.fontTheme.Caption2};
             color: ${(props) => props.theme.colorTheme.hot};
           }
         }
 
-        span:nth-child(1) {
+        span:nth-child(2) {
           ${(props) => props.theme.fontTheme.Subtitle3};
-          font-size: ${(props) => props.theme.pixelToRem(40)};
+          font-size: ${(props) => props.theme.pixelToRem(40)} !important;
           line-height: normal;
           letter-spacing: normal;
           display: inline-block;
@@ -372,12 +428,15 @@ const WeatherModal = styled.div`
         ${(props) => props.theme.fontTheme.Caption4};
         line-height: normal;
         letter-spacing: normal;
+        display: inline-block;
+        position: relative;
       }
     }
   }
 
   /* 펼쳤을 때의 날씨 정보 (detail) */
-  &.isActive {
+  .isActive {
+    width: inherit;
     height: ${(props) => props.theme.pixelToRem(217)};
   }
 `;
@@ -460,6 +519,17 @@ const ResultImg = styled.img`
   border-radius: 13px;
   display: block;
   object-fit: cover;
+`;
+
+const Bookmark = styled.div`
+  position: absolute;
+  margin-left: 150px;
+  margin-top: 10px;
+`;
+const BookmarkBorderIcon = styled.div`
+  position: absolute;
+  margin-left: 150px;
+  margin-top: 10px;
 `;
 
 const InnerBg = styled.div`

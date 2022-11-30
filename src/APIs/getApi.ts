@@ -11,7 +11,7 @@ import {
   IGetCampResult,
   IGetWeather,
   campArray,
-  pickedCamp
+  pickedCamp,
 } from "../interfaces/get";
 
 const serverUrl = process.env.REACT_APP_API;
@@ -20,15 +20,17 @@ const serverUrl = process.env.REACT_APP_API;
 
 // ** 캠핑장 카테고리 정보 조회 / get ** //
 
-/* test 1 */
+/* 리얼 인피니티 스크롤 - 캠프 result*/
 export const useGetCamp = (doNm: string) => {
   const useData = async ({ pageParam = 0 }) => {
     const { data } = await instance.get<campArray>(
       `/camps?doNm=${doNm}&numOfRows=20&pageNo=${pageParam}`
     );
+    console.log(data);
     return {
+      total: data.total,
       camps: data.regionCamp,
-      nextPage: pageParam + 1,
+      currentPage: pageParam,
     };
   };
 
@@ -39,50 +41,17 @@ export const useGetCamp = (doNm: string) => {
     hasNextPage,
     refetch,
   } = useInfiniteQuery(["getCamp", doNm], useData, {
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
     getNextPageParam: (lastPage, pages) => {
-      return lastPage.camps ? lastPage.nextPage : undefined;
+      return lastPage.camps[0] ? lastPage.currentPage + 1 : undefined;
     },
   });
-
   console.log(campData);
   return { campData, fetchNextPage, isSuccess, hasNextPage, refetch };
 };
 
 export const useGetApi = {
-  /* test2 */
-  // ** 캠핑장 결과 조회 - search (Infinite) / get ** //
-  /* promise 타입의 비동기로 처음에 받고 -> InfiniteQuery를 적용해야된다..! */
-
-  /* const useGetcampResult = async ({ pageParam = 0 }) => {
-    const doNm = useRecoilValue(showLo);
-    const { data } = await instance.get(
-      `/camps?doNm=${doNm}&numOfRows=20&pageNo=${pageParam}`
-    );
-    return {
-      camps: data[0].regionCamp,
-      nextPage: pageParam + 1
-    };
-  },
-
-  useGetCampResult2: () => {
-    const {
-      data: campData,
-      fetchNextPage,
-      isSuccess,
-      hasNextPage,
-      refetch,
-    } = useInfiniteQuery<any>(
-      ["campInfiniteResult"],
-      useGetApi.useGetCampResult,
-      {
-        getNextPageParam: (lastPage, pages) => {
-          return lastPage.camps ? lastPage.nextPage : undefined;
-        },
-      }
-    );
-    return { campData, fetchNextPage, isSuccess, hasNextPage, refetch };
-  }, */
-
   useGetCampResult: () => {
     const doNm = useRecoilValue(showLo);
     return useQuery<campArray>(
@@ -96,6 +65,21 @@ export const useGetApi = {
       },
       {
         retry: true,
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
+      }
+    );
+  },
+
+  useGetCampDetail: (campId: number) => {
+    return useQuery<IGetCampResult>(
+      ["campDetail"],
+      async () => {
+        const { data } = await instance.get(`/camps/detail/${campId}`);
+        console.log(data);
+        return data;
+      },
+      {
         refetchOnMount: false,
         refetchOnWindowFocus: false,
       }

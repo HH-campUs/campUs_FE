@@ -25,6 +25,9 @@ const colorTheme = {
   primary2: "#5185A6",
   primary3: "#9DD3F5",
   primary30: "#ADC2CE",
+  warning: "fc9701",
+  danger: "#eb4343",
+  good: "#27a80c",
 };
 
 /* convert px to rem */

@@ -2,15 +2,14 @@ import React, { useState, useEffect } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { useInView } from "react-intersection-observer";
 
-/* import {} from "../store/dateAtom"; */
 import { showLo, ExportLocation } from "../store/locationAtom";
 import { StrMonth, StrDay } from "../store/dateAtom";
 import Search from "../components/withSearch/Search";
 import { isModal } from "../store/searchAtom";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import styled from "styled-components";
 import { useGetApi, useGetCamp } from "../APIs/getApi";
-import { campArray } from "../interfaces/get";
+import { IGetCampResult } from "../interfaces/get";
 
 //bookmark icon
 
@@ -30,8 +29,6 @@ function Result() {
   const getWeather = useGetApi.useGetWeather().data;
   const getCamp = useGetApi.useGetCampResult().data;
   const { ref, inView } = useInView();
-
-  console.log(getCamp?.regionCamp);
 
   const { campData, fetchNextPage, isSuccess, hasNextPage, refetch } =
     useGetCamp(doNm);
@@ -57,7 +54,6 @@ function Result() {
     <>
       {isSearch == false ? null : <Search />}
 
-      {/*  */}
       <ReSearch>
         <div
           onClick={() => {
@@ -77,12 +73,16 @@ function Result() {
 
       {/* Weather modal */}
 
-      <WeatherModal>
+      <WeatherModal
+        isWeather={isWeather}
+        onClick={WeatherHandler}
+        style={{ transition: "all 0.5 ease-in-out" }}>
         <div className="top">
           <span>날씨</span>
-          <span>펼치기</span>
+          <span>{isWeather ? "펼치기" : "접기"}</span>
         </div>
-        <div className="isNotActive" onClick={WeatherHandler}>
+        {/* 펼치기 전 */}
+        <div className="isNotActive">
           <div className="secondSeparate">
             <img src="/images/sunRain.svg" alt="weather-img" />
             <div className="infoBox">
@@ -106,31 +106,46 @@ function Result() {
             </span>
           </div>
         </div>
-      </WeatherModal>
 
-      <WeatherModal
-        className="isActive"
-        style={{ transition: "all 0.5s ease-in-out" }}
-        onClick={WeatherHandler}>
-        <div className="secondSeparate">
-          <img src="/images/sunRain.svg" alt="weather-img" />
-          <div className="infoBox">
-            <span>{doNm}</span>
-            <span>비올확률 {getWeather?.weather[0].pop * 100}%</span>
-          </div>
-        </div>
-        <div className="thirdSeparate">
-          <div className="temBox">
-            <div className="lowHigh">
-              <p>{getWeather?.weather[0].min.toFixed(0)}</p>
-              <p>{getWeather?.weather[0].max.toFixed(0)}</p>
+        {/* 펼치기 후 */}
+        <div className="isActive">
+          {/* 1층 */}
+          <div className="firstFloor">
+            <hr />
+            <div className="infoBox">
+              <div className="left">
+                <div className="climate">
+                  <p>바람</p>
+                  <p>습도</p>
+                  <p>자외선지수</p>
+                </div>
+                <div className="climateNum">
+                  <div>
+                    <p>{getWeather?.weather[0].wind_speed}</p>
+                    <p>{getWeather?.weather[0].humidity}%</p>
+                    <p>{getWeather?.weather[0].uvi}</p>
+                  </div>
+                </div>
+              </div>
+              <div className="right">
+                <p>
+                  <b>·</b> 강풍으로 체감온도가 낮아요
+                </p>
+                <p>
+                  <b>·</b> 캠프파이어 하기 좋아요
+                </p>
+                <p>
+                  <b>·</b> 그늘이 많아요
+                </p>
+              </div>
             </div>
-            <span>{getWeather?.weather[0].day.toFixed(0)}</span>
-            <b>°</b>
           </div>
-          <span>
-            {Month}월 {Day}일 낮 기준
-          </span>
+          {/* 2층 */}
+          <div className="secondFloor">
+            <hr />
+            <img src="/images/sunrise.svg" alt="sunrise" />
+            <img src="/images/Sunset.svg" alt="sunset" />
+          </div>
         </div>
       </WeatherModal>
 
@@ -140,81 +155,52 @@ function Result() {
         <ResultTop>
           <div>
             <span className="result"> 검색결과 </span>
-            <span className="total"> ({getCamp?.total}개)</span>
+            <span className="total"> ({}개)</span>
           </div>
           <div>
             <span className="popular">인기순</span>
           </div>
         </ResultTop>
-        {/* {isSuccess && campData?.pages ? (
-          campData?.pages.map((item: campResult) => (
-            <ResultBox key={item.campId}>
-              <ResultItem onClick={() => nav(`/detail/:id`)}>
-                <ResultImg src={item.ImageUrl} alt={item.ImageUrl} />
-                <InnerBg>
-                  <span>
-                    찜({item.pickCount}) 리뷰({item.reviewCount}){" "}
-                  </span>
-                </InnerBg>
-              </ResultItem>
-              <CampSpan>
-                <span>{item.campName}</span>
-                <span>{item.induty}</span>
-              </CampSpan>
-              <DetailAddress>
-                <img src="/images/location.svg" alt="location" />
-                <span>{item.address}</span>
-              </DetailAddress>
-              <TagContainer>
-                <div className="tag"> 운동시설 </div>
-                <div className="tag"> 장작판매 </div>
-                <div className="tag"> 물놀이장 </div>
-                <div className="tag"> 마트/편의점 </div>
-              </TagContainer>
-            </ResultBox>
+        {isSuccess && campData?.pages ? (
+          /* page별로 map을 한 번 돌려서 2차원배열 구조로 되어있는~ */
+          campData?.pages.map((page) => (
+            <React.Fragment key={page.currentPage}>
+              {page?.camps.map((item: IGetCampResult) => (
+                <ResultBox key={item.campId}>
+                  <ResultItem
+                    onClick={() =>
+                      nav(`/detail/:${item.campId}`, {
+                        state: { campId: `${item.campId}` },
+                      })
+                    }>
+                    <ResultImg src={item.ImageUrl} alt={item.ImageUrl} />
+                    <InnerBg>
+                      <span>
+                        찜({item.pickCount}) 리뷰({item.reviewCount}){" "}
+                      </span>
+                    </InnerBg>
+                  </ResultItem>
+                  <CampSpan>
+                    <span>{item.campName}</span>
+                    <span>{item.induty}</span>
+                  </CampSpan>
+                  <DetailAddress>
+                    <img src="/images/location.svg" alt="location" />
+                    <span>{item.address}</span>
+                  </DetailAddress>
+                  <TagContainer>
+                    <div className="tag"> 운동시설 </div>
+                    <div className="tag"> 장작판매 </div>
+                    <div className="tag"> 물놀이장 </div>
+                    <div className="tag"> 마트/편의점 </div>
+                  </TagContainer>
+                </ResultBox>
+              ))}
+            </React.Fragment>
           ))
         ) : (
-          <div> </div>
+          <div>데이터가 없습니다</div>
         )}
- */}
-        {/* 북마크 재료 */}
-
-        {/* {bookmarking ? (
-          <BookmarkBorderIcon onClick={picking}>
-            <img src="/images/picked2.svg" alt="Bookmarked" />
-          </BookmarkBorderIcon>
-        ) : (
-          <Bookmark onClick={picking}>
-            <img src="/images/pick1.svg" alt="Bookmark" />
-          </Bookmark>
-        )} */}
-
-        {getCamp?.regionCamp.map((item: any) => (
-          <ResultBox key={item.campId}>
-            <ResultItem onClick={() => nav(`/detail/:id`)}>
-              <ResultImg src={item.ImageUrl} alt={item.ImageUrl} />
-              <InnerBg>
-                <span>
-                  찜({item.pickCount}) 리뷰({item.reviewCount}){" "}
-                </span>
-              </InnerBg>
-            </ResultItem>
-            <CampSpan>
-              <span>{item.campName}</span>
-              <span>{item.induty}</span>
-            </CampSpan>
-            <DetailAddress>
-              <img src="/images/location.svg" alt="location" />
-              <span>{item.address}</span>
-            </DetailAddress>
-            <TagContainer>
-              <div className="tag"> 운동시설 </div>
-              <div className="tag"> 장작판매 </div>
-              <div className="tag"> 물놀이장 </div>
-              <div className="tag"> 마트/편의점 </div>
-            </TagContainer>
-          </ResultBox>
-        ))}
       </ResultContainer>
       <div ref={ref} style={{ width: "inherit", height: "auto" }}></div>
     </>
@@ -301,9 +287,12 @@ const WeatherContainer = styled.div`
   justify-content: space-between;
 `;
 
-const WeatherModal = styled.div`
+const WeatherModal = styled.div<{ isWeather: boolean }>`
   width: ${(props) => props.theme.pixelToRem(335)};
-  height: ${(props) => props.theme.pixelToRem(116)};
+  height: ${(props) =>
+    props.isWeather == true
+      ? props.theme.pixelToRem(116)
+      : props.theme.pixelToRem(342)};
   flex-grow: 0;
   margin: 0 auto;
   border-radius: ${(props) => props.theme.pixelToRem(10)};
@@ -335,9 +324,9 @@ const WeatherModal = styled.div`
   /* 접혔을 떄의 날씨 정보 (simple) */
   .isNotActive {
     width: inherit;
+    height: ${(props) => props.theme.pixelToRem(81)};
     margin: 0 auto;
     padding: 10px;
-    height: ${(props) => props.theme.pixelToRem(81)};
     justify-content: space-between;
     display: flex;
     span {
@@ -438,6 +427,91 @@ const WeatherModal = styled.div`
   .isActive {
     width: inherit;
     height: ${(props) => props.theme.pixelToRem(217)};
+    margin: 0 auto;
+    padding: 10px;
+    visibility: ${(props) => (props.isWeather == false ? "visible" : "hidden")};
+
+    hr {
+      width: ${(props) => props.theme.pixelToRem(295)};
+      height: ${(props) => props.theme.pixelToRem(1)};
+      margin: -10px 10px;
+      border: 0;
+      background: ${(props) => props.theme.colorTheme.border} !important;
+    }
+    .firstFloor {
+      .infoBox {
+        width: inherit;
+        height: ${(props) => props.theme.pixelToRem(117)};
+        padding: 10px;
+        justify-content: space-between;
+        display: flex;
+
+        .left {
+          width: 45%;
+          justify-content: space-between;
+
+          .climate {
+            width: ${(props) => props.theme.pixelToRem(62)};
+            height: auto;
+            ${(props) => props.theme.fontTheme.Caption2};
+            flex-grow: 0;
+            margin: 4px 0px 6px -5px;
+            line-height: 1.29;
+            letter-spacing: normal;
+            text-align: left;
+            flex-direction: column;
+            display: flex;
+
+            p {
+              margin-top: 6px;
+              display: flex;
+            }
+          }
+
+          .climateNum {
+            width: ${(props) => props.theme.pixelToRem(62)};
+            height: auto;
+            margin: -78px 52px 0px 81px;
+            ${(props) => props.theme.fontTheme.Caption2};
+            flex-grow: 0;
+            color: ${(props) => props.theme.colorTheme.text2} !important;
+            line-height: 1.29;
+            letter-spacing: normal;
+            text-align: right;
+            flex-direction: column;
+            display: flex;
+
+            p {
+              margin-top: 6px;
+              display: flex;
+            }
+          }
+        }
+
+        .right {
+          width: 55%;
+          height: auto;
+          margin: 4px -6px 6px -10px;
+          ${(props) => props.theme.fontTheme.Caption1};
+          flex-grow: 0;
+          line-height: 1.29;
+          letter-spacing: normal;
+          text-align: right;
+          display: inline;
+          b {
+            margin-top: -12px;
+            margin-left: -15px;
+            font-size: ${(props) => props.theme.pixelToRem(32)};
+            position: absolute;
+          }
+          p {
+            margin-top: 6px;
+          }
+        }
+      }
+    }
+    .secondFloor {
+    }
   }
 `;
 

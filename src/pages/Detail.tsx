@@ -3,12 +3,12 @@ import { useRecoilState } from "recoil";
 
 import styled from "styled-components";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import { Link, Outlet, useMatch } from "react-router-dom";
+import { Link, Outlet, useMatch, useLocation } from "react-router-dom";
 import Search from "../components/withSearch/Search";
 import { isModal } from "../store/searchAtom";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder"; //empty
 import BookmarkIcon from "@mui/icons-material/Bookmark"; //filled
-import { fontSize } from "@mui/system";
+import { useGetApi } from "../APIs/getApi";
 
 function Detail() {
   const [isSearch, setIsSearch] = useRecoilState(isModal);
@@ -17,6 +17,12 @@ function Detail() {
   const detailMatch = useMatch("/detail/:id/detail");
   const reviewMatch = useMatch("/detail/:id/review");
 
+  const loca = useLocation();
+  const state = loca.state as { campId: number };
+
+  console.log(state.campId);
+
+  const campDetail = useGetApi.useGetCampDetail(state.campId);
   //recoil?
   const [bookmark, setBookMark] = useState(true);
   const marking = () => {

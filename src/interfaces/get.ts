@@ -32,34 +32,6 @@ export interface IGetWeather {
   snow?: number;
 }
 
-// export interface IGetCampResult {
-//   campId: number;
-//   campName: string;
-//   /* 야영장 종류 */
-//   induty: string;
-//   doNm: string;
-//   sigunguNm: string;
-//   address: string;
-//   X: string | number;
-//   Y: string | number;
-//   oerPdcl: string;
-//   operDecl: string;
-//   animal: string;
-//   ImageUrl: string;
-//   homepage: string;
-//   sbrsCl: string;
-//   posblFcltyCl: string;
-//   wtrplCo: string;
-//   swrmCo: string;
-//   toiletCo: string;
-//   manageSttus: string;
-//   themaEnvrnCl: string;
-//   lookup: string;
-//   createdtime: string;
-//   eqpmnLendCl: string;
-//   reviewCount: number;
-// }
-
 export interface IGetCampResult {
   ImageUrl: string;
   X: string;
@@ -108,15 +80,6 @@ export interface ICampingPicked {
   campId: number | string;
 }
 
-export interface campArray extends IGetCampResult {
-  currentPage?: number;
-  total: number;
-  regionCamp: IGetCampResult[];
-  // nextPage?: number;
-  // lastPage?: boolean;
-  isLast?: boolean;
-  pageParam?: number;
-}
 export interface campResult extends campArray {
   data: campArray[];
   toiletCo: string;

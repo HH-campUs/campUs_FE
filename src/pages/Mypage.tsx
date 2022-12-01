@@ -20,9 +20,9 @@ function Mypage() {
   const [isSearch, setIsSearch] = useRecoilState(isModal);
 
   const [isPopUp, setIsPopUp] = useState(false);
-  const myReviewMatch = useMatch("/mypage/:id/myreview");
-  const myPickMatch = useMatch("/mypage/:id/mypick");
-  const myPlanMatch = useMatch("/mypage/:id/myplan");
+  const myReviewMatch = useMatch("/mypage/myreview");
+  const myPickMatch = useMatch("/mypage/mypick");
+  const myPlanMatch = useMatch("/mypage/myplan");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -67,13 +67,13 @@ function Mypage() {
 
               <Tabs>
                 <Tab isActive={Boolean(myPickMatch)}>
-                  <Link to="/mypage/:id/mypick">찜한 캠핑장</Link>
+                  <Link to="/mypage/mypick">찜한 캠핑장</Link>
                 </Tab>
                 <Tab isActive={Boolean(myPlanMatch)}>
-                  <Link to="/mypage/:id/myplan">여행일정</Link>
+                  <Link to="/mypage/myplan">여행일정</Link>
                 </Tab>
                 <Tab isActive={Boolean(myReviewMatch)}>
-                  <Link to="/mypage/:id/myreview">내 리뷰</Link>
+                  <Link to="/mypage/myreview">내 리뷰</Link>
                 </Tab>
               </Tabs>
               <div
@@ -112,13 +112,13 @@ function Mypage() {
             </LoginBox>
             <Tabs style={{ marginTop: "200px" }}>
               <Tab isActive={Boolean(myPickMatch)}>
-                <Link to="/mypage/:id/mypick">찜한 캠핑장</Link>
+                <Link to="/mypage/mypick">찜한 캠핑장</Link>
               </Tab>
               <Tab isActive={Boolean(myPlanMatch)}>
-                <Link to="/mypage/:id/myplan">여행일정</Link>
+                <Link to="/mypage/myplan">여행일정</Link>
               </Tab>
               <Tab isActive={Boolean(myReviewMatch)}>
-                <Link to="/mypage/:id/myreview">내 리뷰</Link>
+                <Link to="/mypage/myreview">내 리뷰</Link>
               </Tab>
             </Tabs>
             <div

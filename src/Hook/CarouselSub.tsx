@@ -20,8 +20,7 @@ export default function CarouselSub() {
   };
 
   const { id } = useParams();
-  // /camps/:topicId?
-  //첫번째 인자- 동적변경되는부분
+
   const handleClick = (id: number) => () => {
     navigate(`/topic/${id}`);
   };
@@ -135,7 +134,7 @@ export default function CarouselSub() {
 //carousel 한칸씩 되게는 할수가 없나?
 
 const CarouselViewer = styled.div`
-  width: 475px;
+  width: 375px;
   height: 200px !important;
   overflow: hidden;
   user-select: none;

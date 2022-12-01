@@ -123,7 +123,7 @@ function App() {
                 <Route path="/" element={<Home />} />
 
                 <Route path="result" element={<Result />} />
-                <Route path="topic/:id" element={<Topic />} />
+                <Route path="topic/:topicId" element={<Topic />} />
                 <Route path="login" element={<Login />} />
 
                 <Route path="signup" element={<SignUp />} />

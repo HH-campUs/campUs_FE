@@ -28,9 +28,7 @@ export default function MytravelPlan() {
               <Dday>D-16</Dday>
             </PlaceBox>
             <Location>
-              {/* component화. */}
               <LocationOnIcon />
-              {/* Elipse적용 해야 함. */}
               <span>강원도 어디?</span>
               <img
                 src="/images/Calendar.svg"
@@ -44,6 +42,9 @@ export default function MytravelPlan() {
       ) : (
         <>
           <CloseBox>
+            <Carlendar>
+              <img src="/images/travelplan/calendarplan.svg" alt="carlendar" />
+            </Carlendar>
             <CloseText>
               <p
                 onClick={() => {
@@ -53,52 +54,12 @@ export default function MytravelPlan() {
               >
                 로그인
               </p>
-              &nbsp;후 내 여행일정을 등록해 보세요
+              &nbsp;
+              <p>하고 내 여행일정을 등록해 보세요</p>
             </CloseText>
           </CloseBox>
 
-          <HiddenBox>
-            <ImgBox />
-            <PlaceName>
-              <PlaceBox>
-                <Campname>
-                  <div
-                    style={{
-                      backgroundColor: "grey",
-                      width: "150px",
-                      height: "20px",
-                      color: "grey",
-                    }}
-                  >
-                    skeleton
-                  </div>
-                </Campname>
-                <Dday>D-16</Dday>
-              </PlaceBox>
-              <Location>
-                <LocationOnIcon />
-                <div
-                  style={{
-                    backgroundColor: "grey",
-                    width: "70px",
-                    color: "grey",
-                  }}
-                >
-                  skeleton
-                </div>
-                <img src="/images/Calendar.svg" alt="Calendar" />
-                <div
-                  style={{
-                    backgroundColor: "grey",
-                    width: "70px",
-                    color: "grey",
-                  }}
-                >
-                  skeleton
-                </div>
-              </Location>
-            </PlaceName>
-          </HiddenBox>
+          <HiddenBox></HiddenBox>
         </>
       )}
     </Wrapper>
@@ -107,6 +68,7 @@ export default function MytravelPlan() {
 
 const Wrapper = styled.div`
   margin-top: 40px;
+  width: 375px;
   /* margin: 20px 10px 20px 10px; */
 `;
 
@@ -128,46 +90,50 @@ const AllList = styled.div`
 `;
 
 const PlanBox = styled.div`
-  width: 380px;
+  width: 375;
   height: 120px;
   border-radius: 15px;
   box-shadow: 15px;
   background-color: whitesmoke;
-  margin: 15px auto;
   font-size: 13px;
   display: flex;
 `;
 
 const CloseBox = styled.div`
-  width: 380px;
+  width: 375px;
   height: 120px;
   border-radius: 15px;
   box-shadow: 15px;
   /* background-color: whitesmoke; */
   background-color: rgba(150, 150, 150, 0.8);
-  margin-left: 48px;
   font-size: 13px;
   display: flex;
   z-index: 3;
   position: absolute;
 `;
 
+const Carlendar = styled.div`
+  margin: auto;
+`;
+
 const CloseText = styled.div`
   display: flex;
   justify-content: center;
-  margin: auto;
+  margin-right: 30px;
+  margin-top: 54px;
+  /* margin: auto; */
   font-size: 1rem;
   color: whitesmoke;
   font-weight: 550;
 `;
 
 const HiddenBox = styled.div`
-  width: 380px;
+  width: 375px;
   height: 120px;
   border-radius: 15px;
   box-shadow: 15px;
   /* background-color: whitesmoke; */
-  background-color: rgba(100, 100, 100, 0.4);
+  background-color: rgba(100, 100, 100, 0.1);
   margin: 15px auto;
   font-size: 13px;
   display: flex;

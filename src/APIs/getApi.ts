@@ -8,9 +8,8 @@ import { showLo, selectLo } from "../store/locationAtom";
 
 import {
   IGetCampReview,
-  IGetCampResult,
   IGetWeather,
-  campResult,
+  campArray,
   pickedCamp,
 } from "../interfaces/get";
 
@@ -21,86 +20,82 @@ const serverUrl = process.env.REACT_APP_API;
 // ** 캠핑장 카테고리 정보 조회 / get ** //
 
 /* test 1 */
-/* export const useGetCamp = (doNm: string) => {
+export const useGetCamp = (doNm: string) => {
   const useData = async ({ pageParam = 0 }) => {
-    const { data } = await instance.get(
+    const { data } = await instance.get<campArray>(
       `/camps?doNm=${doNm}&numOfRows=20&pageNo=${pageParam}`
     );
+
     return {
-      camps: data[0],
+      camps: data.regionCamp,
       nextPage: pageParam + 1,
     };
   };
 
   const {
-    data: regionCamp,
+    data: campData,
     fetchNextPage,
     isSuccess,
     hasNextPage,
     refetch,
-  } = useInfiniteQuery<campResult>(["getCamp", doNm], useData, {
-    getNextPageParam: (lastPage) => {
+  } = useInfiniteQuery(["getCamp", doNm], useData, {
+    getNextPageParam: (lastPage, pages) => {
       return lastPage.camps ? lastPage.nextPage : undefined;
     },
   });
 
-  return { regionCamp, fetchNextPage, isSuccess, hasNextPage, refetch };
-}; */
+  console.log(campData);
+  return { campData, fetchNextPage, isSuccess, hasNextPage, refetch };
+};
+
+//infiniteQuery for Topic
+
+export const useGetTopicInfinite = (topicId: string) => {
+  const topicData = async ({ pageParam = 0 }) => {
+    const { data } = await instance.get<pickedCamp>(
+      `/camps/${topicId}?numOfRows=10&pageNo=${pageParam}`
+    );
+    console.log(data.topicCamp);
+    return {
+      campTopic: data.topicCamp,
+      nextPage: pageParam + 1,
+    };
+  };
+  // [{{},1},{{},1},{{},1},{{},1},{{},1}]
+
+  const {
+    data: campTopic,
+    fetchNextPage,
+    isSuccess,
+    hasNextPage,
+    refetch,
+  } = useInfiniteQuery(["getCampTopic"], topicData, {
+    getNextPageParam: (lastPage, pages) => {
+      return lastPage.campTopic ? lastPage.nextPage : undefined;
+    },
+  });
+
+  return { campTopic, fetchNextPage, isSuccess, hasNextPage, refetch };
+};
+
+//
 
 export const useGetApi = {
-  /* test2 */
-  // ** 캠핑장 결과 조회 - search (Infinite) / get ** //
   useGetCampResult: () => {
     const doNm = useRecoilValue(showLo);
-    return useQuery<campResult>(
-      ["campResult"],
+    return useQuery<campArray>(
+      ["campResult1"],
       async ({ pageParam = 1 }) => {
         const { data } = await instance.get(
           `/camps?doNm=${doNm}&numOfRows=20&pageNo=${pageParam}`
         );
-        console.log(data[0]);
-        return data[0];
+        console.log(data);
+        return data;
       },
       {
+        retry: true,
         refetchOnMount: false,
         refetchOnWindowFocus: false,
-      }
-    );
-  },
-
-  /* const doNm = useRecoilValue(showLo);
-    return useQuery<campArray[]>(["campResult"], 
-      async ({ pageParam = 0 }) => {
-        const { data } = await instance.get(
-          `/camps?doNm=${doNm}&numOfRows=20&pageNo=${pageParam}`
-        );
-        console.log(data);
-        return data[0];
-      },
-        {
-          refetchOnMount: false,
-          refetchOnWindowFocus: false,
-        }
-      ), */
-
-  useGetCampResult2: () => {
-    const doNm = useRecoilValue(showLo);
-    const { data: camps, fetchNextPage } = useInfiniteQuery(
-      ["campResult"],
-      async ({ pageParam = 0 }) => {
-        const { data } = await instance.get(
-          `/camps?doNm=${doNm}&numOfRows=20&pageNo=${pageParam}`
-        );
-        console.log(data);
-        return {
-          camps: data.regionCamp,
-          nextPage: pageParam + 1,
-        };
-      },
-      {
-        getNextPageParam: (lastPage) => {
-          return lastPage.camps[0] ? lastPage.nextPage : undefined;
-        },
       }
     );
   },
@@ -112,7 +107,7 @@ export const useGetApi = {
       const { data } = await instance.get<pickedCamp[]>(
         `/camps/${params}?numOfRows=20&pageNo=1`
       );
-      console.log(data[0]);
+      console.log(data);
       return data[0];
     });
   },

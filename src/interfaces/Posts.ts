@@ -20,8 +20,12 @@ export interface IPostTravelPlan {
   date: string;
 }
 
-export interface ICampingPicked {
-  campId: number | string;
+export interface IPickedCamp {
+  Camp: Object;
+  ImageUrl: string;
+  address: string;
+  campId: number;
+  campName: string;
 }
 
-// campId: string;
+export type ICampingPicked = number;

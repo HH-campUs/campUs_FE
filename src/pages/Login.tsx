@@ -27,23 +27,6 @@ function Login() {
     formState: { errors },
   } = useForm<ILoginForm>();
 
-  // export const signin = async (payload) => {
-  //   const data = await instance.post("users/login", payload);
-  //   return data;
-  // };
-
-  // export const instance = axios.create({
-  //   baseURL: process.env.REACT_APP_API,
-  //   headers: {
-  //     // "content-type": "application/json;charset=utf-8",
-  //     // accept: "application/json, ",
-  //     Authorization: `Bearer ${myToken}, ${refreshToken}`,
-  //     "Cache-Control": "no-cache",
-  //     "Access-Control-Allow-Origin": "*",
-  //   },
-  //   withCredentials: true,
-  // });
-
   const loginApi = async (payload: ILoginForm) => {
     const data = await instance.post("users/login", {
       email: payload.email,

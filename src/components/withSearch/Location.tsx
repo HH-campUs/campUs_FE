@@ -81,6 +81,7 @@ function Location() {
 export default Location;
 
 const Dropdown = styled.div`
+  top: ${(props) => props.theme.pixelToRem(-16)};
   position: relative;
   display: inline-block;
 `;

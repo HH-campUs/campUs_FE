@@ -36,30 +36,46 @@ function Datepicker() {
   setSendDay(useDate);
 
   return (
-    <DatePicker
-      selected={startDate}
-      dateFormat="yyyy-MM-dd"
-      onChange={(date: Date) => setStartDate(date)}
-      /* 한글 */
-      locale={ko}
-      /* 날씨 정보를 제공을 해주는 날들 오늘 + 7일 */
-      highlightDates={[
-        addDays(new Date(), 0),
-        addDays(new Date(), 1),
-        addDays(new Date(), 2),
-        addDays(new Date(), 3),
-        addDays(new Date(), 4),
-        addDays(new Date(), 5),
-        addDays(new Date(), 6),
-        addDays(new Date(), 7),
-      ]}
-      /* 선택 못하는 날들 (= 지난 날들) */
-      minDate={new Date()}
-      scrollableMonthYearDropdown={true}
-      /* inline : 바로 달력 나오게 */
-      inline
-    />
+    <>
+      <DatePicker
+        selected={startDate}
+        dateFormat="yyyy-MM-dd"
+        onChange={(date: Date) => setStartDate(date)}
+        /* 한글 */
+        locale={ko}
+        /* 날씨 정보를 제공을 해주는 날들 오늘 + 7일 */
+        highlightDates={[
+          addDays(new Date(), 0),
+          addDays(new Date(), 1),
+          addDays(new Date(), 2),
+          addDays(new Date(), 3),
+          addDays(new Date(), 4),
+          addDays(new Date(), 5),
+          addDays(new Date(), 6),
+          addDays(new Date(), 7),
+        ]}
+        /* 선택 못하는 날들 (= 지난 날들) */
+        minDate={new Date()}
+        scrollableMonthYearDropdown={true}
+        /* inline : 바로 달력 나오게 */
+        inline
+      />
+      <ValiInfo></ValiInfo>
+    </>
   );
 }
 
 export default Datepicker;
+
+const CustomDatepicker = styled(Datepicker)``;
+
+const ValiInfo = styled.div`
+  width: 200px;
+  height: 16px;
+  margin: 10px 12px 0 4px;
+  ${(props) => props.theme.fontTheme.Caption4};
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: left;
+  color: ${(props) => props.theme.colorTheme.text2} !important;
+`;

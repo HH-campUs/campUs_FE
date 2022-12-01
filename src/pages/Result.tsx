@@ -170,7 +170,9 @@ function Result() {
                   <ResultItem
                     onClick={() =>
                       nav(`/detail/:${item.campId}`, {
-                        state: { campId: `${item.campId}` },
+                        state: {
+                          campId: `${item.campId}`,
+                        },
                       })
                     }>
                     <ResultImg src={item.ImageUrl} alt={item.ImageUrl} />

@@ -97,16 +97,15 @@
 .react-datepicker {
   width: 17.625rem;
   height: 19rem;
-  margin: auto 1.25rem;
-  margin-bottom: 0px;
+  top: 50px;
+  /* margin: 200px 10px 0 0; */
   font-family: "Helvetica Neue", helvetica, arial, sans-serif;
   font-size: 0.8rem;
   background-color: #fff;
   color: #000;
-
   border-radius: 0.6rem;
   object-fit: contain;
-  display: inline-block;
+  display: flex;
   position: relative;
 }
 

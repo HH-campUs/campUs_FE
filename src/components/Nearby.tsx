@@ -23,9 +23,10 @@ export default function Nearby() {
 }
 
 const Wrapper = styled.div`
-  margin: 20px 10px 20px 10px;
+  margin: 40px 10px 20px 10px;
   font-weight: 500; //temporary
   height: 200px;
+  width: 375px;
 `;
 
 const TextBox = styled.div`
@@ -33,7 +34,7 @@ const TextBox = styled.div`
 `;
 
 const PlanBox = styled.div`
-  width: 380px;
+  width: 355px;
   height: 120px;
   border-radius: 10px;
   box-shadow: 15px;

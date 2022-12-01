@@ -49,7 +49,7 @@ export const usePostsApi = {
   //** 여행일정등록 / post */
   usePostTravelPlan: () => {
     return useMutation((payload: IPostTravelPlan) =>
-      instance.post(`${serverUrl}/users/:campId`, {
+      instance.post(`/users/:campId`, {
         userId: payload.userId,
         campId: payload.campId,
         address: payload.address,
@@ -61,6 +61,7 @@ export const usePostsApi = {
   // ** 캠핑장 찜하기 , payload값없이 header로 access/refresh토큰만보내면됨 / POST ** /
   useCampingPicked: () => {
     return useMutation((payload: ICampingPicked) =>
+      //배포후에 camps로 수정해야합니다.
       instance.put(`/camps/${payload}/pick`)
     );
   },

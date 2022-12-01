@@ -148,6 +148,7 @@ const WeatherModal = styled.div`
   justify-content: center;
   align-items: center;
   align-content: center;
+  width: 375px;
 
   &.isActive {
     height: 25rem;

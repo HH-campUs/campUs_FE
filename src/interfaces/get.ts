@@ -64,6 +64,7 @@ export interface campArray extends IGetCampResult {
   currentPage?: number;
   total: number;
   topicCamp: IGetCampResult[];
+  campTopic: IGetCampResult[];
   regionCamp: IGetCampResult[];
   camps: IGetCampResult[];
   nextPage?: number;
@@ -76,16 +77,10 @@ export interface campArray extends IGetCampResult {
   refetch: boolean;
 }
 
-export interface ICampingPicked {
-  campId: number | string;
-}
-
 export interface campResult extends campArray {
   data: campArray[];
   toiletCo: string;
   wtrplCo: string;
-  // topicCamp: string[];
-  // total: number;
 }
 
 export interface pickedCamp extends campArray {

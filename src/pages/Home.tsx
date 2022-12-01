@@ -52,7 +52,6 @@ function Home() {
 
       <TextBox>
         <CampText>요즘 많이 찾는 캠핑장</CampText>
-        <AllList>전체보기</AllList>
       </TextBox>
       <Carousel />
       <WeekWeather />
@@ -105,6 +104,7 @@ const SearchBar = styled.div<{ isSearch: Boolean }>`
 `;
 
 const TextBox = styled.div`
+  width: 375px;
   display: flex;
   justify-content: space-between;
   align-items: center;

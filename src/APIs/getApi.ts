@@ -8,10 +8,10 @@ import { showLo, selectLo } from "../store/locationAtom";
 
 import {
   IGetCampReview,
-  IGetCampResult,
   IGetWeather,
   campArray,
   pickedCamp,
+  IGetCampResult,
 } from "../interfaces/get";
 
 const serverUrl = process.env.REACT_APP_API;
@@ -50,6 +50,38 @@ export const useGetCamp = (doNm: string) => {
   console.log(campData);
   return { campData, fetchNextPage, isSuccess, hasNextPage, refetch };
 };
+
+//infiniteQuery for Topic
+
+export const useGetTopicInfinite = (topicId: string) => {
+  const topicData = async ({ pageParam = 0 }) => {
+    const { data } = await instance.get<pickedCamp>(
+      `/camps/${topicId}?numOfRows=10&pageNo=${pageParam}`
+    );
+    console.log(data.topicCamp);
+    return {
+      campTopic: data.topicCamp,
+      nextPage: pageParam + 1,
+    };
+  };
+  // [{{},1},{{},1},{{},1},{{},1},{{},1}]
+
+  const {
+    data: campTopic,
+    fetchNextPage,
+    isSuccess,
+    hasNextPage,
+    refetch,
+  } = useInfiniteQuery(["getCampTopic"], topicData, {
+    getNextPageParam: (lastPage, pages) => {
+      return lastPage.campTopic ? lastPage.nextPage : undefined;
+    },
+  });
+
+  return { campTopic, fetchNextPage, isSuccess, hasNextPage, refetch };
+};
+
+//
 
 export const useGetApi = {
   useGetCampResult: () => {
@@ -93,7 +125,7 @@ export const useGetApi = {
       const { data } = await instance.get<pickedCamp[]>(
         `/camps/${params}?numOfRows=20&pageNo=1`
       );
-      console.log(data[0]);
+      console.log(data);
       return data[0];
     });
   },

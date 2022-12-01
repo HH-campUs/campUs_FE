@@ -58,7 +58,8 @@ function Result() {
         <div
           onClick={() => {
             nav("/");
-          }}>
+          }}
+        >
           <div style={{ position: "relative" }}>
             <img src="/images/back.svg" alt="back" />
             <span style={{ width: "60px" }}>검색조건</span>
@@ -76,7 +77,8 @@ function Result() {
       <WeatherModal
         isWeather={isWeather}
         onClick={WeatherHandler}
-        style={{ transition: "all 0.5 ease-in-out" }}>
+        style={{ transition: "all 0.5 ease-in-out" }}
+      >
         <div className="top">
           <span>날씨</span>
           <span>{isWeather ? "펼치기" : "접기"}</span>
@@ -174,7 +176,8 @@ function Result() {
                           campId: `${item.campId}`,
                         },
                       })
-                    }>
+                    }
+                  >
                     <ResultImg src={item.ImageUrl} alt={item.ImageUrl} />
                     <InnerBg>
                       <span>

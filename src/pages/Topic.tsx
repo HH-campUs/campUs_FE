@@ -9,71 +9,40 @@ import Datepicker from "../components/withSearch/Datepicker";
 import Bg from "../static/testpic.jpg";
 import { useGetApi } from "../APIs/getApi";
 import { usePostsApi } from "../APIs/postsApi";
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { useGetTopicResult2 } from "../APIs/infinite";
+import { useGetTopicInfinite } from "../APIs/getApi";
 import { useInView } from "react-intersection-observer";
 import { ICampingPicked } from "../interfaces/Posts";
+
+import TopicMap from "../components/TopicMap";
 //css
-import { BiChevronDown, BiUpArrow, BiUpArrowAlt } from "react-icons/bi";
+import { BiChevronDown } from "react-icons/bi";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+import { IGetCampResult, pickedCamp } from "../interfaces/get";
 
 function Topic() {
-  const [bookmarking, setBookMarking] = useState(false);
   const toZero = () => {
     window.scrollTo({ left: 0, top: 0, behavior: "smooth" });
   };
 
   const navigate = useNavigate();
-  const [isActive, setIsActive] = useState(false);
-  const [isWeather, setIsWeather] = useState(false);
   const [isSearch, setIsSearch] = useRecoilState(isModal);
-  const [topic, isTopic] = useState(false);
 
   const getCamp = useGetApi.useGetTopicResult().data;
-  const { id } = useParams();
-  console.log(id);
-
-  // const pick = (campId: number)  => {
-  //   usePostsApi.useCampingPicked();
-  // // };
-  // useCampingPicked: () => {
-  //   return useMutation((payload: ICampingPicked) =>
-  //     instance.put(`/camps/${payload}/pick`)
-  //   );
-  // },
-
-  const campick = usePostsApi.useCampingPicked();
-  // campick.mutate(id);
-
-  const picking = (id: any) => {
-    console.log("찜완료");
-  };
-
-  //modal
-  const ModalHandler = () => {
-    setIsActive(!isActive);
-  };
-  const WeatherHandler = () => {
-    setIsWeather(!isWeather);
-  };
+  const { topicId } = useParams<{ topicId?: string }>();
+  // console.log(topicId);
 
   //infiniteScroll
-  const { getCampTop, getNextPage, getCampIsSuccess, getNextPageIsPossible } =
-    useGetTopicResult2();
+  const { campTopic, fetchNextPage, isSuccess, hasNextPage, refetch } =
+    useGetTopicInfinite(topicId!);
+  console.log(campTopic);
+
   const [ref, isView] = useInView();
 
   useEffect(() => {
-    // 맨 마지막 요소를 보고있고 더이상 페이지가 존재하면
-    // 다음 페이지 데이터를 가져옴
-    if (isView && getNextPageIsPossible) {
-      getNextPage();
+    if (isView && hasNextPage) {
+      fetchNextPage();
     }
-  }, [isView, getCampTop]);
-
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    /* const { selectInput, selectDate, selectLocation } = event.target;
-  setInputValue({event.target.value|); */
-  };
+  }, [isView]);
 
   return (
     <>
@@ -89,37 +58,44 @@ function Topic() {
         <ResultTop>
           <div>
             <span className="result"> 검색결과 </span>
-            <span className="total"> ({getCamp?.total}개)</span>
+            <span className="total"> (개)</span>
           </div>
           <div style={{ display: "flex", alignItems: "center" }}>
             <span className="popular">인기순</span>
             <BiChevronDown size="30" style={{ paddingBottom: "5px" }} />
           </div>
         </ResultTop>
+
         <CampMap>
-          {getCamp?.topicCamp.map((Camp, campId) => (
-            <ResultBox key={campId}>
-              {bookmarking ? (
-                <BookmarkBorderIcon onClick={picking}>
-                  <img src="/images/picked2.svg" alt="Bookmarked" />
-                </BookmarkBorderIcon>
-              ) : (
-                <Bookmark onClick={picking}>
-                  <img src="/images/pick1.svg" alt="Bookmark" />
-                </Bookmark>
-              )}
-              <ResultItem onClick={() => navigate(`/detail`)}>
-                <CampImg src={Camp.ImageUrl} alt={Camp.campName} />
-                <CampName title={Camp.campName}>{Camp.campName}</CampName>
-              </ResultItem>
-              <ResultDetail>
-                <LocationOnIcon sx={{ height: "1.2rem" }} />
-                <AddressName title={Camp.address}>{Camp.address}</AddressName>
-              </ResultDetail>
-              <ResultDetail2>{Camp.featureNm}</ResultDetail2>
-            </ResultBox>
-          ))}
+          {isSuccess && campTopic?.pages ? (
+            campTopic?.pages.map((page) => (
+              <React.Fragment key={page.nextPage}>
+                {page?.campTopic.map((item: IGetCampResult) => (
+                  <ResultBox key={item.campId}>
+                    <TopicMap Camp={item} />
+
+                    <ResultItem
+                      onClick={() => navigate(`/detail/${item.campId}`)}
+                    >
+                      <CampImg src={item.ImageUrl} alt={item.campName} />
+                      <CampName title={item.campName}>{item.campName}</CampName>
+                    </ResultItem>
+                    <ResultDetail>
+                      <LocationOnIcon sx={{ height: "1.2rem" }} />
+                      <AddressName title={item.address}>
+                        {item.address}
+                      </AddressName>
+                    </ResultDetail>
+                    <ResultDetail2>{item.featureNm}</ResultDetail2>
+                  </ResultBox>
+                ))}
+              </React.Fragment>
+            ))
+          ) : (
+            <div>데이터가 없습니다.</div>
+          )}
         </CampMap>
+        <div ref={ref} style={{ width: "inherit", height: "auto" }}></div>
 
         <FloatingBtn onClick={toZero}>
           <UpArrow src="/images/uparrow.svg" />
@@ -128,6 +104,43 @@ function Topic() {
     </>
   );
 }
+
+// {isSuccess && campData?.pages ? (
+//   /* page별로 map을 한 번 돌려서 2차원배열 구조로 되어있는~ */
+//   campData?.pages.map((page) => (
+//     <React.Fragment key={page.currentPage}>
+//       {page?.camps.map((item: IGetCampResult) => (
+//         <ResultBox key={item.campId}>
+//           <ResultItem
+//             onClick={() =>
+//               nav(`/detail/:${item.campId}`, {
+//                 state: {
+//                   campId: `${item.campId}`,
+//                 },
+//               })
+//             }>
+//             <ResultImg src={item.ImageUrl} alt={item.ImageUrl} />
+//             <InnerBg>
+//               <span>
+//                 찜({item.pickCount}) 리뷰({item.reviewCount}){" "}
+//               </span>
+//             </InnerBg>
+//           </ResultItem>
+//           <CampSpan>
+//             <span>{item.campName}</span>
+//             <span>{item.induty}</span>
+//           </CampSpan>
+//           <DetailAddress>
+//             <img src="/images/location.svg" alt="location" />
+//             <span>{item.address}</span>
+//           </DetailAddress>
+//           <TagContainer>
+//             <div className="tag"> 운동시설 </div>
+//             <div className="tag"> 장작판매 </div>
+//             <div className="tag"> 물놀이장 </div>
+//             <div className="tag"> 마트/편의점 </div>
+//           </TagContainer>
+//         </ResultBox>
 
 export default Topic;
 

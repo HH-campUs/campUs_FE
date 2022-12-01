@@ -15,7 +15,7 @@ import styled from "styled-components";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 
 function Mypage() {
-  const checkPf = useMyPageApi.useGetMyPage().data?.data[0];
+  const checkPf = useMyPageApi.useGetMyPage().data?.data;
   const [toKen, setToken] = useRecoilState(LoginState);
   const [isSearch, setIsSearch] = useRecoilState(isModal);
 
@@ -25,9 +25,9 @@ function Mypage() {
   const myPlanMatch = useMatch("/mypage/myplan");
   const navigate = useNavigate();
 
-  useEffect(() => {
-    console.log(checkPf);
-  }, [checkPf]);
+  // useEffect(() => {
+  //   console.log(checkPf);
+  // }, [checkPf]);
 
   return (
     <>
@@ -52,11 +52,7 @@ function Mypage() {
                     <Welcome>반갑습니다 {checkPf?.nickname} 님!</Welcome>
                     <Nickname>@email주소</Nickname>
                   </ProfileText>
-                  <ProfileArrow>
-                    {/* <KeyboardArrowRightIcon
-                      sx={{ fontSize: 30, cursor: "pointer" }}
-                    /> */}
-                  </ProfileArrow>
+
                   <ProfileModal isPopUp={isPopUp} setIsPopUp={setIsPopUp} />
                 </>
 
@@ -86,49 +82,54 @@ function Mypage() {
             </UserProfile>
           </>
         ) : (
-          <UserProfile>
-            <Profile>
-              <ProfileText>
-                <Welcome style={{ margin: "50px", fontSize: "1.1rem" }}>
-                  로그인 하고 더 많은 <br></br>기능을 사용해 보세요!
-                </Welcome>
-              </ProfileText>
-            </Profile>
-            <LoginBox>
-              <LoginBtn
-                onClick={() => {
-                  navigate("/login");
+          <>
+            <HeadText>campUs</HeadText>
+            <UserProfile>
+              <Profile>
+                <ProfileText>
+                  <Welcome style={{ margin: "50px", fontSize: "1.1rem" }}>
+                    로그인 하고 더 많은 <br></br>기능을 사용해 보세요!
+                  </Welcome>
+                </ProfileText>
+              </Profile>
+              <LoginBox>
+                <LoginBtn
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigate("/login");
+                  }}
+                >
+                  로그인
+                </LoginBtn>
+                <SignBtn
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigate("/signup");
+                  }}
+                >
+                  회원가입
+                </SignBtn>
+              </LoginBox>
+              <Tabs style={{ marginTop: "200px" }}>
+                <Tab isActive={Boolean(myPickMatch)}>
+                  <Link to="/mypage/mypick">찜한 캠핑장</Link>
+                </Tab>
+                <Tab isActive={Boolean(myPlanMatch)}>
+                  <Link to="/mypage/myplan">여행일정</Link>
+                </Tab>
+                <Tab isActive={Boolean(myReviewMatch)}>
+                  <Link to="/mypage/myreview">내 리뷰</Link>
+                </Tab>
+              </Tabs>
+              <div
+                style={{
+                  marginTop: "20px",
                 }}
               >
-                로그인
-              </LoginBtn>
-              <SignBtn
-                onClick={() => {
-                  navigate("/signup");
-                }}
-              >
-                회원가입
-              </SignBtn>
-            </LoginBox>
-            <Tabs style={{ marginTop: "200px" }}>
-              <Tab isActive={Boolean(myPickMatch)}>
-                <Link to="/mypage/mypick">찜한 캠핑장</Link>
-              </Tab>
-              <Tab isActive={Boolean(myPlanMatch)}>
-                <Link to="/mypage/myplan">여행일정</Link>
-              </Tab>
-              <Tab isActive={Boolean(myReviewMatch)}>
-                <Link to="/mypage/myreview">내 리뷰</Link>
-              </Tab>
-            </Tabs>
-            <div
-              style={{
-                marginTop: "20px",
-              }}
-            >
-              <Outlet />
-            </div>
-          </UserProfile>
+                <Outlet />
+              </div>
+            </UserProfile>
+          </>
         )}
       </Wrapper>
     </>
@@ -144,9 +145,11 @@ const Wrapper = styled.div`
 `;
 
 const HeadText = styled.div`
-  font-size: 1.3rem;
-  margin-left: 25px;
+  font-size: ${(props) => props.theme.pixelToRem(20)};
   margin-top: 20px;
+  margin-left: 50px;
+  line-height: 1.5;
+  color: #222;
 `;
 
 const UserProfile = styled.div`
@@ -172,11 +175,16 @@ const ProfileCircle = styled.div`
   margin: 25px;
 `;
 
-const ProfileText = styled.div``;
+const ProfileText = styled.div`
+  /* margin-top: -40px; */
+`;
 
 const Welcome = styled.div`
   margin-top: 8px;
   font-weight: 500;
+  font-size: ${(props) => props.theme.pixelToRem(22)};
+  line-height: 1.27;
+  /* text-align: left; */
 `;
 
 const Nickname = styled.div`
@@ -193,7 +201,7 @@ const Alarmbell = styled.div``;
 const LoginBox = styled.div`
   display: flex;
   gap: 15px;
-  margin: 70px auto;
+  margin: 110px auto;
 `;
 
 const LoginBtn = styled.button`
@@ -201,7 +209,7 @@ const LoginBtn = styled.button`
   height: 48px;
   font-size: 1rem;
   border: 0.5px none grey;
-  margin-top: 50px;
+  /* margin-top: 40px; */
   border-radius: 8px;
   color: ${(props) => props.theme.textColor};
   cursor: pointer;
@@ -212,10 +220,10 @@ const SignBtn = styled.button`
   height: 48px;
   font-size: 1rem;
   border: 0.5px none grey;
-  margin-top: 50px;
+  /* margin-top: 40px; */
   border-radius: 8px;
   color: whitesmoke;
-  background-color: grey;
+  background-color: #024873;
   cursor: pointer;
 `;
 

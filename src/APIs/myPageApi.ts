@@ -18,7 +18,7 @@ export const useMyPageApi = {
   useGetMyPage: () => {
     return useQuery(["mypageinfo"], async () => {
       const data = await instance.get("/users/myPage");
-      console.log(data);
+      console.log(data.data);
       return data;
     });
   },

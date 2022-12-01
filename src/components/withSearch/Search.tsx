@@ -181,14 +181,17 @@ const ModalBg = styled.div<{ isSearch: boolean }>`
 
 /* Search bar */
 const SearchModal = styled.div<{ isSearch: boolean }>`
-  margin: 10px auto;
   width: 23.438rem;
   background-color: #ffffff;
-  border-radius: 13px;
+  border-top-left-radius: 13px;
+  border-top-right-radius: 13px;
   justify-content: center;
   align-content: center;
+  bottom: 0;
+  /* position없으면 위치속성 안먹음. */
+  /* transform -> 위치작용 */
+  position: relative;
   z-index: 100;
-
   &.isSearch {
     height: 43rem;
     left: 10;

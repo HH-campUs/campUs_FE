@@ -28,7 +28,6 @@ export const useGetCamp = (doNm: string) => {
     );
     console.log(data);
     return {
-      total: data.total,
       camps: data.regionCamp,
       currentPage: pageParam,
     };

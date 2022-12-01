@@ -50,8 +50,16 @@ function Search() {
     setIsSearch(false);
   };
 
-  const DateFolder = () => {
+  const dateFolder = () => {
     setOpenDate(!openDate);
+  };
+
+  const DateFolder_Open = () => {
+    setOpenDate(true);
+  };
+
+  const DateFolder_Close = () => {
+    setOpenDate(false);
   };
 
   const resetHandler = () => {
@@ -73,9 +81,6 @@ function Search() {
     };
   }, []); */
   console.log(isSearch);
-  /*     useEffect(() => {
-    console.log(isSearch);
-  }, []); */
 
   return (
     <Container>
@@ -94,15 +99,18 @@ function Search() {
           onChange={onChange}
         />
 
-        <DateInfo onClick={DateFolder}>
-          <SubTitle>떠나고 싶은 날</SubTitle>
-          <DateText>
+        <DateInfo openDate={openDate} onClick={dateFolder}>
+          <SubTitle onClick={dateFolder}>떠나고 싶은 날</SubTitle>
+          <DateText onClick={DateFolder_Open}>
             {selectMonth}월 {selectDay}일
           </DateText>
+          {/* 데이트 피커 */}
+          <DateContainer>
+            {openDate ? (
+              <Datepicker openDate={openDate} setOpenDate={setOpenDate} />
+            ) : null}
+          </DateContainer>
         </DateInfo>
-        {/* 데이트 피커 */}
-        {openDate ? <Datepicker /> : null}
-        {/* <DateContainer></DateContainer> */}
 
         <Location />
 
@@ -252,26 +260,20 @@ const SearchLabel = styled.label`
   display: flex;
 `;
 
-const DateContainer = styled.div`
-  width: ${(props) => props.theme.pixelToRem(335)};
-  height: auto;
-  margin: 16px 0 62px;
-  padding: 25px 0;
-  border-radius: 10px;
-  border: solid 1px #e3e3e3;
-  background-color: #fff;
-`;
-
 /* datepicker 열기전에 정보 보여주는 */
-const DateInfo = styled.div`
+const DateInfo = styled.div<{ openDate: boolean }>`
   width: ${(props) => props.theme.pixelToRem(335)};
-  height: ${(props) => props.theme.pixelToRem(70)};
+  height: ${(props) =>
+    props.openDate == false
+      ? props.theme.pixelToRem(70)
+      : props.theme.pixelToRem(414)};
   margin: 16px 0;
   padding: 25px 20px;
   border-radius: ${(props) => props.theme.pixelToRem(10)};
   border: solid ${(props) => props.theme.pixelToRem(1)} #e3e3e3;
   background-color: ${(props) => props.theme.colorTheme.textWhite};
   justify-content: space-between;
+  transition: all 0.4s ease;
   display: flex;
 `;
 
@@ -304,9 +306,10 @@ const DateText = styled.div`
   color: #333;
 `;
 
-const LocationInfo = styled(DateInfo)``;
-
-const SubLocation = styled(SubTitle)``;
+const DateContainer = styled.div`
+  margin-top: -8px;
+  position: absolute;
+`;
 
 const LocationText = styled(DateText)`
   width: auto !important;
@@ -338,10 +341,6 @@ const ResetBtn = styled.button`
   border-radius: 10px;
   background-color: ${(props) => props.theme.colorTheme.textWhite};
   border: solid 1px #e2e2e2;
-
-  /* :active {
-
-  } */
 `;
 
 const SearchBtn = styled(Link)`

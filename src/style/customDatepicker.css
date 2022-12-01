@@ -98,6 +98,7 @@
   width: 17.625rem;
   height: 19rem;
   top: 50px;
+  right: 8px;
   /* margin: 200px 10px 0 0; */
   font-family: "Helvetica Neue", helvetica, arial, sans-serif;
   font-size: 0.8rem;
@@ -187,7 +188,9 @@
 
 /* datepicker header */
 .react-datepicker__current-month {
+  margin-top: 10px;
   margin-left: 1rem;
+  margin-bottom: -10px;
   width: 5.375rem;
   height: 2.188rem;
   font-family: Pretendard-Regular;
@@ -229,7 +232,8 @@
   display: none;
 }
 .react-datepicker__navigation--next {
-  right: 10px;
+  margin-top: 10px;
+  right: -2px;
 }
 .react-datepicker__navigation--next--with-time:not(.react-datepicker__navigation--next--with-today-button) {
   right: 85px;

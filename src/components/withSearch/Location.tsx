@@ -53,27 +53,27 @@ function Location() {
 
   return (
     <Dropdown>
-      <LocationInfo onClick={LocationFolder}>
+      <LocationInfo openLocation={openLocation} onClick={LocationFolder}>
         <SubLocation>지역선택</SubLocation>
         <LocationText>
           {locationValue == "" ? "전체/도" : locationValue}
           <img src="/images/dropdown.svg" alt="dropdown" />
         </LocationText>
+        {openLocation == false ? null : (
+          <Dcontents>
+            {localData.map((item) => (
+              <Locations
+                key={item.name}
+                onClick={(event) => {
+                  LocationChange(event, item.name);
+                }}
+                id={item.value}>
+                {item.name}
+              </Locations>
+            ))}
+          </Dcontents>
+        )}
       </LocationInfo>
-      {openLocation == false ? null : (
-        <Dcontents>
-          {localData.map((item) => (
-            <Locations
-              key={item.name}
-              onClick={(event) => {
-                LocationChange(event, item.name);
-              }}
-              id={item.value}>
-              {item.name}
-            </Locations>
-          ))}
-        </Dcontents>
-      )}
     </Dropdown>
   );
 }
@@ -86,15 +86,19 @@ const Dropdown = styled.div`
   display: inline-block;
 `;
 
-const LocationInfo = styled.div`
+const LocationInfo = styled.div<{ openLocation: boolean }>`
   width: ${(props) => props.theme.pixelToRem(335)};
-  height: ${(props) => props.theme.pixelToRem(70)};
+  height: ${(props) =>
+    props.openLocation == false
+      ? props.theme.pixelToRem(70)
+      : props.theme.pixelToRem(328)};
   margin: 16px 0;
   padding: 25px 20px;
   border-radius: ${(props) => props.theme.pixelToRem(10)};
   border: solid ${(props) => props.theme.pixelToRem(1)} #e3e3e3;
   background-color: ${(props) => props.theme.colorTheme.textWhite};
   justify-content: space-between;
+  transition: all 0.4s ease;
   display: flex;
 `;
 
@@ -129,11 +133,12 @@ const LocationText = styled.div`
 /* After Dropdown -> contents */
 const Dcontents = styled.div`
   width: 95%;
-  height: ${(props) => props.theme.pixelToRem(190)};
-  margin: 0 auto;
+  height: ${(props) => props.theme.pixelToRem(261)};
+  margin: 40px 0 0 -10px;
   background-color: ${(props) => props.theme.colorTheme.textWhite};
   border-top: 1px solid ${(props) => props.theme.colorTheme.border};
   overflow: scroll;
+  position: absolute;
   //display: none;
 
   ::-webkit-scrollbar {

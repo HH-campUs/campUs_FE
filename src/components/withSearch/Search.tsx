@@ -50,8 +50,16 @@ function Search() {
     setIsSearch(false);
   };
 
-  const DateFolder = () => {
+  const dateFolder = () => {
     setOpenDate(!openDate);
+  };
+
+  const DateFolder_Open = () => {
+    setOpenDate(true);
+  };
+
+  const DateFolder_Close = () => {
+    setOpenDate(false);
   };
 
   const resetHandler = () => {
@@ -91,13 +99,17 @@ function Search() {
           onChange={onChange}
         />
 
-        <DateInfo openDate={openDate} onClick={DateFolder}>
-          <SubTitle>떠나고 싶은 날</SubTitle>
-          <DateText>
+        <DateInfo openDate={openDate} onClick={dateFolder}>
+          <SubTitle onClick={dateFolder}>떠나고 싶은 날</SubTitle>
+          <DateText onClick={DateFolder_Open}>
             {selectMonth}월 {selectDay}일
           </DateText>
           {/* 데이트 피커 */}
-          <DateContainer>{openDate ? <Datepicker /> : null}</DateContainer>
+          <DateContainer>
+            {openDate ? (
+              <Datepicker openDate={openDate} setOpenDate={setOpenDate} />
+            ) : null}
+          </DateContainer>
         </DateInfo>
 
         <Location />
@@ -254,14 +266,14 @@ const DateInfo = styled.div<{ openDate: boolean }>`
   height: ${(props) =>
     props.openDate == false
       ? props.theme.pixelToRem(70)
-      : props.theme.pixelToRem(399)};
+      : props.theme.pixelToRem(414)};
   margin: 16px 0;
   padding: 25px 20px;
   border-radius: ${(props) => props.theme.pixelToRem(10)};
   border: solid ${(props) => props.theme.pixelToRem(1)} #e3e3e3;
   background-color: ${(props) => props.theme.colorTheme.textWhite};
   justify-content: space-between;
-  transition: all 0.4s linear;
+  transition: all 0.4s ease;
   display: flex;
 `;
 

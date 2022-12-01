@@ -13,9 +13,10 @@ import {
   StrMonth,
   StrDay,
 } from "../../store/dateAtom";
+import { isDateProps } from "../../interfaces/Modal";
 import styled from "styled-components";
 
-function Datepicker() {
+function Datepicker({ openDate }: isDateProps) {
   /* 처음에 new Date()로 datepicker에게 인지 */
   const [startDate, setStartDate] = useRecoilState(StartDate);
   const [sendDate, setSendDate] = useRecoilState(DateState);
@@ -60,7 +61,10 @@ function Datepicker() {
         /* inline : 바로 달력 나오게 */
         inline
       />
-      <ValiInfo></ValiInfo>
+      <ValiInfo>
+        <b>·</b> <span>날씨정보 제공일</span>
+        <b>·</b> <span>선택 날짜</span>
+      </ValiInfo>
     </>
   );
 }
@@ -70,12 +74,33 @@ export default Datepicker;
 const CustomDatepicker = styled(Datepicker)``;
 
 const ValiInfo = styled.div`
-  width: 200px;
-  height: 16px;
-  margin: 10px 12px 0 4px;
+  width: ${(props) => props.theme.pixelToRem(200)};
+  height: ${(props) => props.theme.pixelToRem(16)};
+  margin: 66px 24px 0 18px;
   ${(props) => props.theme.fontTheme.Caption4};
   line-height: normal;
   letter-spacing: normal;
   text-align: left;
   color: ${(props) => props.theme.colorTheme.text2} !important;
+  position: absolute;
+  b {
+    margin-top: -31.5px;
+
+    ${(props) => props.theme.fontTheme.Subtitle3};
+    font-size: ${(props) => props.theme.pixelToRem(60)} !important;
+    display: inline-block;
+    position: absolute;
+
+    &:nth-child(1) {
+      margin-left: -15px;
+      color: ${(props) => props.theme.colorTheme.primary3};
+    }
+    &:nth-child(3) {
+      margin-left: -10px;
+      color: ${(props) => props.theme.colorTheme.primary1};
+    }
+  }
+  span {
+    margin-right: 15px;
+  }
 `;

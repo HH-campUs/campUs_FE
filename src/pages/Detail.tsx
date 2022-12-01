@@ -23,6 +23,7 @@ function Detail() {
   console.log(state.campId);
 
   const campDetail = useGetApi.useGetCampDetail(state.campId);
+
   //recoil?
   const [bookmark, setBookMark] = useState(true);
   const marking = () => {
@@ -33,7 +34,59 @@ function Detail() {
     <>
       {isSearch == false ? null : <Search />}
       <Wrapper>
-        <MainImage />
+        {/* 최상단 이미지 +  */}
+        <MainImage>
+          <TopNavContainer>
+            <div style={{ display: "flex" }}>
+              <div className="buttonBg">
+                <img
+                  src="/images/back.svg"
+                  alt="share"
+                  style={{
+                    marginTop: "2px",
+                  }}
+                />
+              </div>
+            </div>
+            <div style={{ display: "flex" }}>
+              <div className="buttonBg" style={{ marginRight: "14px" }}>
+                <img
+                  src="/images/icon-share.svg"
+                  alt="share"
+                  style={{
+                    marginLeft: "2px",
+                    marginTop: "1px",
+                  }}
+                />
+              </div>
+              <div className="buttonBg">
+                <PickImg onClick={marking}>
+                  {bookmark ? (
+                    <img
+                      src="/images/icons/unPicked.svg"
+                      alt="unPicked"
+                      style={{
+                        width: "17px",
+                        marginLeft: "5.5px",
+                        marginTop: "3px",
+                      }}
+                    />
+                  ) : (
+                    <img
+                      src="/images/icons/picked.svg"
+                      alt="Picked"
+                      style={{
+                        width: "17px",
+                        marginLeft: "5px",
+                        marginTop: "3px",
+                      }}
+                    />
+                  )}
+                </PickImg>
+              </div>
+            </div>
+          </TopNavContainer>
+        </MainImage>
         <MiddleContainer>
           <UpperWrapper>
             <Left>노을공원 가족캠핑장</Left>
@@ -41,7 +94,7 @@ function Detail() {
           </UpperWrapper>
           <DownWrapper>
             <div>
-              <LocationOnIcon />
+              <img src="/images/location.svg" alt="location" />
             </div>
             <p>서울 마포구 하늘공원로 108-1</p>
           </DownWrapper>
@@ -50,7 +103,7 @@ function Detail() {
           <Pick>찜(30)</Pick>
           <Review>리뷰(790)</Review>
         </PickBox>
-        {/* <AddtripBtn>내 여행일정 저장</AddtripBtn> */}
+        <AddtripBtn>내 여행일정 저장</AddtripBtn>
         <IconBox>
           <PickImg onClick={marking}>
             {bookmark ? (
@@ -123,15 +176,35 @@ const Wrapper = styled.div`
 
 const MainImage = styled.div`
   margin: 0 auto;
-  width: 83%;
-  height: 300px;
-  border-radius: 10px;
+  width: ${(props) => props.theme.pixelToRem(375)};
+  height: ${(props) => props.theme.pixelToRem(256)};
   background-image: url("http://economychosun.com/query/upload/344/20200419231455_gltgzjsu.jpg");
+  position: relative;
+`;
+
+const TopNavContainer = styled.div`
+  width: 100%;
+  height: ${(props) => props.theme.pixelToRem(50)};
+  margin: 44px 0 0;
+  padding: 9px 20px 9px 21px;
+  background-color: transparent;
+  justify-content: space-between;
+  position: absolute;
+  display: flex;
+
+  .buttonBg {
+    width: ${(props) => props.theme.pixelToRem(32)};
+    height: ${(props) => props.theme.pixelToRem(32)};
+    padding: 2px;
+    border-radius: 25px;
+    background-color: rgba(255, 255, 255, 0.7);
+  }
 `;
 
 const MiddleContainer = styled.div`
-  margin-top: 15px;
-  margin-left: 50px;
+  margin-top: 8px;
+  margin-left: 40px;
+  padding: 0 20px 0 20px;
   width: 95%;
   height: 120px;
   display: flex;
@@ -147,18 +220,21 @@ const UpperWrapper = styled.div`
 const Left = styled.div`
   margin-top: 5px;
   margin-left: 8px;
-  font-size: 1.5rem;
+  ${(props) => props.theme.fontTheme.Headerline1};
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: left;
 `;
 
 const Right = styled.div`
   margin-top: 10px;
-  margin-left: 65px;
+  margin-left: 72px;
   font-size: 13px;
   color: grey;
 `;
 
 const DownWrapper = styled.div`
-  margin: 30px 5px;
+  margin: 35px 5px;
   display: flex;
   text-align: center;
   align-items: center;
@@ -170,39 +246,41 @@ const DownWrapper = styled.div`
 `;
 
 const PickBox = styled.div`
-  display: flex;
-  gap: 5px;
-  height: 50px;
+  margin-top: -65px;
+  margin-left: -8px;
+  padding: 0 20px 0 20px;
+  height: 60px;
+  gap: 6px;
   text-align: center;
-  margin-top: -55px;
+  display: flex;
 `;
 
 const Pick = styled.p`
   margin-left: 60px;
-  margin-top: 15px;
-  color: grey;
-  font-size: 0.8rem;
+  margin-top: 13px;
+  ${(props) => props.theme.fontTheme.Caption3}
+  color:#595959
 `;
 
 const Review = styled.p`
-  font-size: 0.8rem;
+  margin-top: 13px;
   text-decoration: underline;
-  margin-top: 15px;
-  color: grey;
+  ${(props) => props.theme.fontTheme.Caption3}
+  color:#595959
 `;
 
-// const AddtripBtn = styled.button`
-//   width: 120px;
-//   height: 30px;
-//   margin-top: -40px;
-//   margin-left: 300px;
-//   font-size: 1rem;
-//   border: none;
-//   padding-top: 6px;
-//   display: flex;
-//   background-color: #024873;
-//   color: whitesmoke;
-// `;
+const AddtripBtn = styled.button`
+  width: ${(props) => props.theme.pixelToRem(124)};
+  height: ${(props) => props.theme.pixelToRem(38)};
+  margin-top: -50px;
+  margin-left: 290px;
+  font-size: ${(props) => props.theme.pixelToRem(14)};
+  border: none;
+  padding-top: 6px;
+  display: flex;
+  background-color: #024873;
+  color: whitesmoke;
+`;
 
 const IconBox = styled.div`
   width: 80%;
@@ -218,8 +296,6 @@ const IconBox = styled.div`
 const PickImg = styled.div`
   display: flex;
   flex-direction: column;
-  width: 30px;
-  height: 30px;
 `;
 
 const PlanImg = styled.div`

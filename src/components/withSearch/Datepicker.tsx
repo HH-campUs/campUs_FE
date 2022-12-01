@@ -13,9 +13,10 @@ import {
   StrMonth,
   StrDay,
 } from "../../store/dateAtom";
+import { isDateProps } from "../../interfaces/Modal";
 import styled from "styled-components";
 
-function Datepicker() {
+function Datepicker({ openDate }: isDateProps) {
   /* 처음에 new Date()로 datepicker에게 인지 */
   const [startDate, setStartDate] = useRecoilState(StartDate);
   const [sendDate, setSendDate] = useRecoilState(DateState);
@@ -36,30 +37,70 @@ function Datepicker() {
   setSendDay(useDate);
 
   return (
-    <DatePicker
-      selected={startDate}
-      dateFormat="yyyy-MM-dd"
-      onChange={(date: Date) => setStartDate(date)}
-      /* 한글 */
-      locale={ko}
-      /* 날씨 정보를 제공을 해주는 날들 오늘 + 7일 */
-      highlightDates={[
-        addDays(new Date(), 0),
-        addDays(new Date(), 1),
-        addDays(new Date(), 2),
-        addDays(new Date(), 3),
-        addDays(new Date(), 4),
-        addDays(new Date(), 5),
-        addDays(new Date(), 6),
-        addDays(new Date(), 7),
-      ]}
-      /* 선택 못하는 날들 (= 지난 날들) */
-      minDate={new Date()}
-      scrollableMonthYearDropdown={true}
-      /* inline : 바로 달력 나오게 */
-      inline
-    />
+    <>
+      <DatePicker
+        selected={startDate}
+        dateFormat="yyyy-MM-dd"
+        onChange={(date: Date) => setStartDate(date)}
+        /* 한글 */
+        locale={ko}
+        /* 날씨 정보를 제공을 해주는 날들 오늘 + 7일 */
+        highlightDates={[
+          addDays(new Date(), 0),
+          addDays(new Date(), 1),
+          addDays(new Date(), 2),
+          addDays(new Date(), 3),
+          addDays(new Date(), 4),
+          addDays(new Date(), 5),
+          addDays(new Date(), 6),
+          addDays(new Date(), 7),
+        ]}
+        /* 선택 못하는 날들 (= 지난 날들) */
+        minDate={new Date()}
+        scrollableMonthYearDropdown={true}
+        /* inline : 바로 달력 나오게 */
+        inline
+      />
+      <ValiInfo>
+        <b>·</b> <span>날씨정보 제공일</span>
+        <b>·</b> <span>선택 날짜</span>
+      </ValiInfo>
+    </>
   );
 }
 
 export default Datepicker;
+
+const CustomDatepicker = styled(Datepicker)``;
+
+const ValiInfo = styled.div`
+  width: ${(props) => props.theme.pixelToRem(200)};
+  height: ${(props) => props.theme.pixelToRem(16)};
+  margin: 66px 24px 0 18px;
+  ${(props) => props.theme.fontTheme.Caption4};
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: left;
+  color: ${(props) => props.theme.colorTheme.text2} !important;
+  position: absolute;
+  b {
+    margin-top: -31.5px;
+
+    ${(props) => props.theme.fontTheme.Subtitle3};
+    font-size: ${(props) => props.theme.pixelToRem(60)} !important;
+    display: inline-block;
+    position: absolute;
+
+    &:nth-child(1) {
+      margin-left: -15px;
+      color: ${(props) => props.theme.colorTheme.primary3};
+    }
+    &:nth-child(3) {
+      margin-left: -10px;
+      color: ${(props) => props.theme.colorTheme.primary1};
+    }
+  }
+  span {
+    margin-right: 15px;
+  }
+`;

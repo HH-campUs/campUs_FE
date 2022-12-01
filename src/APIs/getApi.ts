@@ -11,6 +11,7 @@ import {
   IGetWeather,
   campArray,
   pickedCamp,
+  IGetCampResult,
 } from "../interfaces/get";
 
 const serverUrl = process.env.REACT_APP_API;
@@ -19,16 +20,17 @@ const serverUrl = process.env.REACT_APP_API;
 
 // ** 캠핑장 카테고리 정보 조회 / get ** //
 
-/* test 1 */
+/* 리얼 인피니티 스크롤 - 캠프 result*/
 export const useGetCamp = (doNm: string) => {
   const useData = async ({ pageParam = 0 }) => {
     const { data } = await instance.get<campArray>(
       `/camps?doNm=${doNm}&numOfRows=20&pageNo=${pageParam}`
     );
-
+    console.log(data);
     return {
+      total: data.total,
       camps: data.regionCamp,
-      nextPage: pageParam + 1,
+      currentPage: pageParam,
     };
   };
 
@@ -39,11 +41,12 @@ export const useGetCamp = (doNm: string) => {
     hasNextPage,
     refetch,
   } = useInfiniteQuery(["getCamp", doNm], useData, {
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
     getNextPageParam: (lastPage, pages) => {
-      return lastPage.camps ? lastPage.nextPage : undefined;
+      return lastPage.camps[0] ? lastPage.currentPage + 1 : undefined;
     },
   });
-
   console.log(campData);
   return { campData, fetchNextPage, isSuccess, hasNextPage, refetch };
 };
@@ -94,6 +97,21 @@ export const useGetApi = {
       },
       {
         retry: true,
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
+      }
+    );
+  },
+
+  useGetCampDetail: (campId: number) => {
+    return useQuery<IGetCampResult>(
+      ["campDetail"],
+      async () => {
+        const { data } = await instance.get(`/camps/detail/${campId}`);
+        console.log(data);
+        return data;
+      },
+      {
         refetchOnMount: false,
         refetchOnWindowFocus: false,
       }

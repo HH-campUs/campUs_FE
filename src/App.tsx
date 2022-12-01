@@ -15,9 +15,8 @@ import Detail from "./pages/Detail";
 import Dannounce from "./pages/DetailPage/Dannounce";
 import Ddetail from "./pages/DetailPage/Ddetail";
 import Dreview from "./pages/DetailPage/Dreview";
-
-import Mypage from "./pages/Mypage";
 import Result from "./pages/Result";
+import Mypage from "./pages/Mypage";
 import Error from "./pages/Error";
 import NotFound from "./pages/NotFound";
 import { ErrorBoundary } from "react-error-boundary";

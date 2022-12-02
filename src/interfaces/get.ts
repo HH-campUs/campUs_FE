@@ -84,8 +84,6 @@ export interface campResult extends campArray {
   data: campArray[];
   toiletCo: string;
   wtrplCo: string;
-  // topicCamp: string[];
-  // total: number;
 }
 
 export interface pickedCamp extends campArray {

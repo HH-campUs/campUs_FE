@@ -28,7 +28,7 @@ const colorTheme = {
   warning: "fc9701",
   danger: "#eb4343",
   good: "#27a80c",
-  disabled: "#f3f3f3",
+  disabled: "#f5f5f5",
 };
 
 /* convert px to rem */

@@ -292,7 +292,7 @@ const WeatherContainer = styled.div`
 const WeatherModal = styled.div<{ isWeather: boolean }>`
   width: ${(props) => props.theme.pixelToRem(335)};
   height: ${(props) =>
-    props.isWeather == true
+    props.isWeather == false
       ? props.theme.pixelToRem(116)
       : props.theme.pixelToRem(342)};
   flex-grow: 0;
@@ -431,7 +431,7 @@ const WeatherModal = styled.div<{ isWeather: boolean }>`
     height: ${(props) => props.theme.pixelToRem(217)};
     margin: 0 auto;
     padding: 10px;
-    visibility: ${(props) => (props.isWeather == false ? "visible" : "hidden")};
+    visibility: ${(props) => (props.isWeather == true ? "visible" : "hidden")};
 
     hr {
       width: ${(props) => props.theme.pixelToRem(295)};

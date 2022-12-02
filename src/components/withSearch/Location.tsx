@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { selectLo, showLo } from "../../store/locationAtom";
+import { textValue } from "../../store/searchAtom";
 import styled from "styled-components";
+import { isTextProps } from "../../interfaces/inSearch";
 
 interface local {
   name: string;
@@ -28,7 +30,7 @@ const localData: Array<local> = [
   { name: "제주도", value: "제주" },
 ];
 
-function Location() {
+function Location({ inputValue, setInputValue }: isTextProps) {
   const [openLocation, setOpenLocation] = useState(false);
 
   /* 화면상에 나올 지역명 & 캠프장 doNm Request value */
@@ -53,27 +55,37 @@ function Location() {
 
   return (
     <Dropdown>
-      <LocationInfo openLocation={openLocation} onClick={LocationFolder}>
-        <SubLocation>지역선택</SubLocation>
-        <LocationText>
-          {locationValue == "" ? "전체/도" : locationValue}
-          <img src="/images/dropdown.svg" alt="dropdown" />
-        </LocationText>
-        {openLocation == false ? null : (
-          <Dcontents>
-            {localData.map((item) => (
-              <Locations
-                key={item.name}
-                onClick={(event) => {
-                  LocationChange(event, item.name);
-                }}
-                id={item.value}>
-                {item.name}
-              </Locations>
-            ))}
-          </Dcontents>
-        )}
-      </LocationInfo>
+      {inputValue == "" ? (
+        <LocationInfo openLocation={openLocation} onClick={LocationFolder}>
+          <SubLocation>지역선택</SubLocation>
+          <LocationText>
+            {locationValue == "" ? "전체/도" : locationValue}
+            <img src="/images/dropdown.svg" alt="dropdown" />
+          </LocationText>
+          {openLocation == false ? null : (
+            <Dcontents>
+              {localData.map((item) => (
+                <Locations
+                  key={item.name}
+                  onClick={(event) => {
+                    LocationChange(event, item.name);
+                  }}
+                  id={item.value}>
+                  {item.name}
+                </Locations>
+              ))}
+            </Dcontents>
+          )}
+        </LocationInfo>
+      ) : (
+        <DisabledLocationInfo>
+          <SubLocation>지역선택</SubLocation>
+          <LocationText>
+            전체/도
+            <img src="/images/dropdown.svg" alt="dropdown" />
+          </LocationText>
+        </DisabledLocationInfo>
+      )}
     </Dropdown>
   );
 }
@@ -102,6 +114,21 @@ const LocationInfo = styled.div<{ openLocation: boolean }>`
   display: flex;
 `;
 
+const DisabledLocationInfo = styled.div`
+  width: ${(props) => props.theme.pixelToRem(335)};
+  height: ${(props) => props.theme.pixelToRem(70)};
+  margin: 16px 0;
+  padding: 25px 20px;
+  border-radius: ${(props) => props.theme.pixelToRem(10)};
+  border: solid ${(props) => props.theme.pixelToRem(1)} #e3e3e3;
+  background-color: ${(props) => props.theme.colorTheme.disabled};
+  box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset,
+    rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
+  justify-content: space-between;
+  transition: all 0.4s ease;
+  display: flex;
+`;
+
 const SubLocation = styled.div`
   width: 116px;
   height: 20px;
@@ -117,7 +144,7 @@ const SubLocation = styled.div`
 const LocationText = styled.div`
   width: 124px;
   height: 20px;
-  margin-left: 40px !important;
+  margin-right: 15px !important;
   font-family: Pretendard;
   ${(props) => props.theme.fontTheme.Subtitle4};
   font-stretch: normal;
@@ -125,6 +152,7 @@ const LocationText = styled.div`
   line-height: normal;
   letter-spacing: ${(props) => props.theme.pixelToRem(-0.5)};
   text-align: right;
+  position: relative;
   img {
     position: absolute;
   }

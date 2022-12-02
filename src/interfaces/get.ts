@@ -85,5 +85,4 @@ export interface campResult extends campArray {
 
 export interface pickedCamp extends campArray {
   data: campArray[];
-  currentPage?: number;
 }

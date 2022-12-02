@@ -10,11 +10,11 @@ import Bg from "../static/testpic.jpg";
 import { useGetTopicInfinite } from "../APIs/getApi";
 import { useInView } from "react-intersection-observer";
 
-import TopicMap from "../components/TopicMap";
+import TopicBookmark from "../components/TopicBookmark";
 //css
 import { BiChevronDown } from "react-icons/bi";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import { IGetCampResult, pickedCamp } from "../interfaces/get";
+import { IGetCampResult } from "../interfaces/get";
 import { idState } from "../store/loginAtom";
 
 function Topic() {
@@ -25,7 +25,6 @@ function Topic() {
   const navigate = useNavigate();
   const [isSearch, setIsSearch] = useRecoilState(isModal);
 
-  // const getCamp = useGetApi.useGetTopicResult().data;
   const { topicId } = useParams<{ topicId?: string }>();
   const userId = useRecoilValue(idState);
   // console.log(topicId);
@@ -71,7 +70,7 @@ function Topic() {
               <React.Fragment key={page.currentPage}>
                 {page?.campTopic.map((item: IGetCampResult) => (
                   <ResultBox key={item.campId}>
-                    <TopicMap Camp={item} />
+                    <TopicBookmark Camp={item} />
 
                     <ResultItem
                       onClick={() => navigate(`/detail/${item.campId}`)}

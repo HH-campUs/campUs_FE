@@ -8,11 +8,34 @@ import Search from "../components/withSearch/Search";
 import WeekWeather from "../components/WeekWeather";
 import { useRecoilState } from "recoil";
 import { isModal } from "../store/searchAtom";
+
 //Css
 import styled from "styled-components";
+import { useGetApi } from "../APIs/getApi";
 
 function Home() {
   const [isSearch, setIsSearch] = useRecoilState(isModal);
+
+  const getCamp = useGetApi.useGetTopicResult().data;
+
+  const iconArr = [
+    "전기",
+    "무선인터넷",
+    "장작판매",
+    "온수",
+    "트렘폴린",
+    "물놀이장",
+    "놀이터",
+    "산책로",
+    "운동장",
+    "운동시설",
+    "마트.편의점",
+  ];
+
+  const IconPop = () => {
+    if (!getCamp) return;
+    getCamp.topicCamp[0].sbrsCl;
+  };
 
   const openModal = () => {
     setIsSearch(true);
@@ -36,7 +59,7 @@ function Home() {
     "김정현(박정현아님)",
   ];
 
-  sbrscl === 전기 ? 아이콘 : null;
+  // sbrscl === 전기 ? 아이콘 : null;
 
   const randomIndex = Math.floor(Math.random() * backgroundArr.length);
   const backgroundPhrase = backgroundArr[randomIndex];

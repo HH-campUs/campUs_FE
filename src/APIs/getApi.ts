@@ -118,16 +118,16 @@ export const useGetApi = {
   },
 
   /* topic 별 캠핑장 결과 조회 */
-  // useGetTopicResult: () => {
-  //   const params = 2;
-  //   return useQuery(["topicResult"], async () => {
-  //     const { data } = await instance.get<pickedCamp[]>(
-  //       `/camps/${params}?numOfRows=20&pageNo=1`
-  //     );
-  //     console.log(data);
-  //     return data[0];
-  //   });
-  // },
+  useGetTopicResult: () => {
+    const params = 2;
+    return useQuery(["topicResult"], async () => {
+      const { data } = await instance.get<pickedCamp[]>(
+        `/camps/${params}?numOfRows=20&pageNo=1`
+      );
+      console.log(data);
+      return data[0];
+    });
+  },
 
   //1.일몰 2.낚시 3.반려동물 4.장비대여
   // ** 캠핑장 리뷰 조회 / get ** //

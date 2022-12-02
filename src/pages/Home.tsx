@@ -35,6 +35,9 @@ function Home() {
     "10세 20세 1세준",
     "김정현(박정현아님)",
   ];
+
+  sbrscl === 전기 ? 아이콘 : null;
+
   const randomIndex = Math.floor(Math.random() * backgroundArr.length);
   const backgroundPhrase = backgroundArr[randomIndex];
 
@@ -109,6 +112,7 @@ const TextBox = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-top: 40px;
+  margin: auto;
 `;
 
 const CampText = styled.div`

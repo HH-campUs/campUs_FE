@@ -15,13 +15,10 @@ export const usePostsApi = {
   //** 리뷰작성 / post **//
   usePostReview: () => {
     return useMutation(async (payload: IReviewPosts) => {
-      const { data } = await postInstance.post(
-        `${serverUrl}camps/:campId/review`,
-        {
-          reviewImg: payload.reviewImg,
-          reviewComment: payload.reviewComment,
-        }
-      );
+      const { data } = await postInstance.post(`reviews/:campId/`, {
+        reviewImg: payload,
+        reviewComment: payload.reviewComment,
+      });
       return data;
     });
   },
@@ -61,7 +58,6 @@ export const usePostsApi = {
   // ** 캠핑장 찜하기 , payload값없이 header로 access/refresh토큰만보내면됨 / POST ** /
   useCampingPicked: () => {
     return useMutation((payload: ICampingPicked) =>
-      //배포후에 camps로 수정해야합니다.
       instance.put(`/camps/${payload}/pick`)
     );
   },

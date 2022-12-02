@@ -52,19 +52,18 @@ export const useGetCamp = (doNm: string) => {
 };
 
 //infiniteQuery for Topic
-
+// &userId=${userId}   userId: number
 export const useGetTopicInfinite = (topicId: string) => {
   const topicData = async ({ pageParam = 0 }) => {
     const { data } = await instance.get<pickedCamp>(
-      `/camps/${topicId}?numOfRows=10&pageNo=${pageParam}`
+      `/camps/${topicId}?&numOfRows=10&pageNo=${pageParam}`
     );
     console.log(data.topicCamp);
     return {
       campTopic: data.topicCamp,
-      nextPage: pageParam + 1,
+      currentPage: pageParam + 1,
     };
   };
-  // [{{},1},{{},1},{{},1},{{},1},{{},1}]
 
   const {
     data: campTopic,
@@ -74,7 +73,7 @@ export const useGetTopicInfinite = (topicId: string) => {
     refetch,
   } = useInfiniteQuery(["getCampTopic"], topicData, {
     getNextPageParam: (lastPage, pages) => {
-      return lastPage.campTopic ? lastPage.nextPage : undefined;
+      return lastPage.campTopic ? lastPage.currentPage : undefined;
     },
   });
 
@@ -119,19 +118,18 @@ export const useGetApi = {
   },
 
   /* topic 별 캠핑장 결과 조회 */
-  useGetTopicResult: () => {
-    const params = 2;
-    return useQuery(["topicResult"], async () => {
-      const { data } = await instance.get<pickedCamp[]>(
-        `/camps/${params}?numOfRows=20&pageNo=1`
-      );
-      console.log(data);
-      return data[0];
-    });
-  },
+  // useGetTopicResult: () => {
+  //   const params = 2;
+  //   return useQuery(["topicResult"], async () => {
+  //     const { data } = await instance.get<pickedCamp[]>(
+  //       `/camps/${params}?numOfRows=20&pageNo=1`
+  //     );
+  //     console.log(data);
+  //     return data[0];
+  //   });
+  // },
 
   //1.일몰 2.낚시 3.반려동물 4.장비대여
-
   // ** 캠핑장 리뷰 조회 / get ** //
   useGetCampReview: () => {
     return useQuery(["reviewinfo"], async () => {

@@ -16,9 +16,8 @@ import Detail from "./pages/Detail";
 import Dannounce from "./pages/DetailPage/Dannounce";
 import Ddetail from "./pages/DetailPage/Ddetail";
 import Dreview from "./pages/DetailPage/Dreview";
-
-import Mypage from "./pages/Mypage";
 import Result from "./pages/Result";
+import Mypage from "./pages/Mypage";
 import Error from "./pages/Error";
 import NotFound from "./pages/NotFound";
 import { ErrorBoundary } from "react-error-boundary";
@@ -124,7 +123,7 @@ function App() {
                 <Route path="/" element={<Home />} />
 
                 <Route path="result" element={<Result />} />
-                <Route path="topic" element={<Topic />} />
+                <Route path="topic/:topicId" element={<Topic />} />
                 <Route path="login" element={<Login />} />
 
                 <Route path="signup" element={<SignUp />} />
@@ -137,10 +136,10 @@ function App() {
                 </Route>
 
                 <Route path="mypage" element={<Mypage />} />
-                <Route path="/mypage/:id" element={<Mypage />}>
-                  <Route path="/mypage/:id/myreview" element={<MyReview />} />
-                  <Route path="/mypage/:id/mypick" element={<MyPick />} />
-                  <Route path="/mypage/:id/myplan" element={<MyPlan />} />
+                <Route path="/mypage/" element={<Mypage />}>
+                  <Route path="/mypage/myreview" element={<MyReview />} />
+                  <Route path="/mypage/mypick" element={<MyPick />} />
+                  <Route path="/mypage/myplan" element={<MyPlan />} />
                 </Route>
 
                 <Route path="/*" element={<NotFound />} />

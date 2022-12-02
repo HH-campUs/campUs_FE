@@ -213,8 +213,11 @@ function Result() {
                     <img src="/images/location.svg" alt="location" />
                     <span>{item.address}</span>
                   </DetailAddress>
+                  {/* 시설 태그들 (max: 4) */}
                   <TagContainer>
-                    <div className="tag"> 운동시설 </div>
+                    {item.sbrsCl.split(",").map((word, i) => (
+                      <div className="tag"> {word} </div>
+                    ))}
                     <div className="tag"> 장작판매 </div>
                     <div className="tag"> 물놀이장 </div>
                     <div className="tag"> 마트/편의점 </div>

@@ -8,10 +8,10 @@ import { showLo, selectLo } from "../store/locationAtom";
 
 import {
   IGetCampReview,
-  IGetCampResult,
   IGetWeather,
   campArray,
   pickedCamp,
+  IGetCampResult,
 } from "../interfaces/get";
 
 const serverUrl = process.env.REACT_APP_API;
@@ -49,6 +49,35 @@ export const useGetCamp = (doNm: string) => {
   });
   console.log(campData);
   return { campData, fetchNextPage, isSuccess, hasNextPage, refetch };
+};
+
+/* 주제 캠핑장 조회 */
+
+export const useGetTopicInfinite = (topicId: string) => {
+  const topicData = async ({ pageParam = 0 }) => {
+    const { data } = await instance.get<pickedCamp>(
+      `/camps/${topicId}?numOfRows=10&pageNo=${pageParam}`
+    );
+    console.log(data.topicCamp);
+    return {
+      campTopic: data.topicCamp,
+      currentPage: pageParam,
+    };
+  };
+
+  const {
+    data: campTopic,
+    fetchNextPage,
+    isSuccess,
+    hasNextPage,
+    refetch,
+  } = useInfiniteQuery(["getCampTopic"], topicData, {
+    getNextPageParam: (lastPage, pages) => {
+      return lastPage.campTopic ? lastPage.currentPage : undefined;
+    },
+  });
+
+  return { campTopic, fetchNextPage, isSuccess, hasNextPage, refetch };
 };
 
 /* 날씨 조회 */
@@ -95,17 +124,7 @@ export const useGetApi = {
     );
   },
 
-  /* topic 별 캠핑장 결과 조회 */
-  useGetTopicResult: () => {
-    const params = 2;
-    return useQuery(["topicResult"], async () => {
-      const { data } = await instance.get<pickedCamp[]>(
-        `/camps/${params}?numOfRows=20&pageNo=1`
-      );
-      console.log(data[0]);
-      return data[0];
-    });
-  },
+  //1.일몰 2.낚시 3.반려동물 4.장비대여
 
   // ** 캠핑장 리뷰 조회 / get ** //
   useGetCampReview: () => {

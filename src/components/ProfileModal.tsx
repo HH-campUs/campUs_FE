@@ -6,7 +6,7 @@ import { useMyPageApi } from "../APIs/myPageApi";
 import { useNavigate } from "react-router-dom";
 
 //Login
-import { LoginState } from "../store/loginAtom";
+import { idState, LoginState } from "../store/loginAtom";
 import { removeAccessToken, removeRefreshToken } from "../instance/cookies";
 import { useRecoilState } from "recoil";
 
@@ -16,6 +16,7 @@ import styled, { keyframes } from "styled-components";
 
 export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
   const [toKen, setToken] = useRecoilState(LoginState);
+  const [useId, setUseId] = useRecoilState(idState);
   const navigate = useNavigate();
   const checkPf = useMyPageApi.useGetMyPage().data?.data[0];
   const {
@@ -58,6 +59,7 @@ export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
     removeAccessToken();
     removeRefreshToken();
     setToken(null);
+    setUseId(null);
     navigate("/");
   };
 

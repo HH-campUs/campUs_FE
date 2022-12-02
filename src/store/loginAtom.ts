@@ -9,6 +9,12 @@ export const LoginState = atom({
   effects_UNSTABLE: [persistAtom],
 });
 
+export const idState = atom({
+  key: "idState",
+  default: null,
+  effects_UNSTABLE: [persistAtom],
+});
+
 export const userInfo = atom<boolean>({
   key: "user",
   default: false,

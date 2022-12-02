@@ -11,8 +11,6 @@ import styled from "styled-components";
 import { useGetApi, useGetCamp } from "../APIs/getApi";
 import { IGetCampResult } from "../interfaces/get";
 
-//bookmark icon
-
 function Result() {
   const nav = useNavigate();
 

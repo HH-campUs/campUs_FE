@@ -5,10 +5,9 @@ import { useNavigate } from "react-router";
 import { ILoginForm } from "../interfaces/inLogin";
 
 import { KAKAO_AUTH_URL } from "../components/KaKaoAuth";
-import { LoginState, userInfo } from "../store/loginAtom";
+import { idState, LoginState, userInfo } from "../store/loginAtom";
 import { instance } from "../instance/instance";
 import { setAccessToken, setRefreshToken } from "../instance/cookies";
-
 //css
 import styled from "styled-components";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
@@ -17,10 +16,10 @@ import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 function Login() {
   const serverUrl = process.env.REACT_APP_API;
   const navigate = useNavigate();
-  //로그인상태관리 - recoil-persist사용 -> localstorage토큰저장.
+
   const [toKen, setToken] = useRecoilState(LoginState);
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(userInfo);
-
+  const [useId, setUseId] = useRecoilState(idState);
   const {
     register,
     handleSubmit,
@@ -35,6 +34,8 @@ function Login() {
     return data;
   };
 
+  // window.location.replace("/");
+
   const handleValid = async (data: ILoginForm) => {
     const response = await loginApi(data);
 
@@ -45,9 +46,10 @@ function Login() {
       setToken(response.data.Tokens.AccessToken);
 
       setIsLoggedIn(true);
-      window.location.replace("/");
+      console.log(response.data.Tokens.userId);
+      setUseId(response.data.Tokens.userId);
+      navigate("/");
     }
-    console.log(response.data);
   };
 
   const KaKaoLogin = () => {

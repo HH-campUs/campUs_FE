@@ -5,6 +5,7 @@ import { Link, Outlet, useMatch, useNavigate } from "react-router-dom";
 
 import ProfileModal from "../components/ProfileModal";
 
+import { IPickedCamp } from "../interfaces/Posts";
 //Login
 import { LoginState } from "../store/loginAtom";
 import { useMyPageApi } from "../APIs/myPageApi";
@@ -123,6 +124,7 @@ function Mypage() {
               </Tabs>
               <div
                 style={{
+                  // height: "100vh",
                   marginTop: "20px",
                 }}
               >

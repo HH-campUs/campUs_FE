@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import Search from "../components/withSearch/Search";
 import { isModal } from "../store/searchAtom";
 import { useNavigate, useParams } from "react-router-dom";
@@ -7,17 +7,15 @@ import styled from "styled-components";
 import Datepicker from "../components/withSearch/Datepicker";
 
 import Bg from "../static/testpic.jpg";
-import { useGetApi } from "../APIs/getApi";
-import { usePostsApi } from "../APIs/postsApi";
 import { useGetTopicInfinite } from "../APIs/getApi";
 import { useInView } from "react-intersection-observer";
-import { ICampingPicked } from "../interfaces/Posts";
 
-import TopicMap from "../components/TopicMap";
+import TopicBookmark from "../components/TopicBookmark";
 //css
 import { BiChevronDown } from "react-icons/bi";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import { IGetCampResult, pickedCamp } from "../interfaces/get";
+import { IGetCampResult } from "../interfaces/get";
+import { idState } from "../store/loginAtom";
 
 function Topic() {
   const toZero = () => {
@@ -27,14 +25,14 @@ function Topic() {
   const navigate = useNavigate();
   const [isSearch, setIsSearch] = useRecoilState(isModal);
 
-  const getCamp = useGetApi.useGetTopicResult().data;
   const { topicId } = useParams<{ topicId?: string }>();
+  const userId = useRecoilValue(idState);
   // console.log(topicId);
 
   //infiniteScroll
   const { campTopic, fetchNextPage, isSuccess, hasNextPage, refetch } =
     useGetTopicInfinite(topicId!);
-  console.log(campTopic);
+  console.log(userId);
 
   const [ref, isView] = useInView();
 
@@ -69,10 +67,10 @@ function Topic() {
         <CampMap>
           {isSuccess && campTopic?.pages ? (
             campTopic?.pages.map((page) => (
-              <React.Fragment key={page.nextPage}>
+              <React.Fragment key={page.currentPage}>
                 {page?.campTopic.map((item: IGetCampResult) => (
                   <ResultBox key={item.campId}>
-                    <TopicMap Camp={item} />
+                    <TopicBookmark Camp={item} />
 
                     <ResultItem
                       onClick={() => navigate(`/detail/${item.campId}`)}
@@ -104,43 +102,6 @@ function Topic() {
     </>
   );
 }
-
-// {isSuccess && campData?.pages ? (
-//   /* page별로 map을 한 번 돌려서 2차원배열 구조로 되어있는~ */
-//   campData?.pages.map((page) => (
-//     <React.Fragment key={page.currentPage}>
-//       {page?.camps.map((item: IGetCampResult) => (
-//         <ResultBox key={item.campId}>
-//           <ResultItem
-//             onClick={() =>
-//               nav(`/detail/:${item.campId}`, {
-//                 state: {
-//                   campId: `${item.campId}`,
-//                 },
-//               })
-//             }>
-//             <ResultImg src={item.ImageUrl} alt={item.ImageUrl} />
-//             <InnerBg>
-//               <span>
-//                 찜({item.pickCount}) 리뷰({item.reviewCount}){" "}
-//               </span>
-//             </InnerBg>
-//           </ResultItem>
-//           <CampSpan>
-//             <span>{item.campName}</span>
-//             <span>{item.induty}</span>
-//           </CampSpan>
-//           <DetailAddress>
-//             <img src="/images/location.svg" alt="location" />
-//             <span>{item.address}</span>
-//           </DetailAddress>
-//           <TagContainer>
-//             <div className="tag"> 운동시설 </div>
-//             <div className="tag"> 장작판매 </div>
-//             <div className="tag"> 물놀이장 </div>
-//             <div className="tag"> 마트/편의점 </div>
-//           </TagContainer>
-//         </ResultBox>
 
 export default Topic;
 
@@ -317,97 +278,3 @@ const FloatingBtn = styled.button`
 `;
 
 const UpArrow = styled.img``;
-
-// const ScrollTop = () => {
-//   const [contentNo] = useRecoilState<number>(mainContent);
-//   const [getMainScrollRef] = useRecoilState<HTMLDivElement | null>(
-//   mainScrollRef
-//   );
-//   const handleClick = () => {
-//window.scrollTo({ left: 0, top: 0, behavior: "smooth" });//
-// };
-// return (
-// <Portal>
-// <icons.ArrowTurnUp
-// onClick={handleClick}
-// className={cls(
-// "fixed right-3 bottom-10 w-12 h-12 rounded-full shadow-lg flex justify-center items-center cursor-pointer",
-// contrastColorNos.includes(contentNo) ? "text-white" : "text-black"
-// )}
-// />
-// </Portal>
-// );
-// };
-
-// interface Dummy {
-//   ImgUrl?: string;
-//   reviewNum: number;
-//   name: string;
-//   location: string;
-//   address: string;
-// }
-
-// const DummyData: Array<Dummy> = [
-//   {
-//     ImgUrl: "https://img.sbs.co.kr/newimg/news/20170117/201015461_1280.jpg",
-//     reviewNum: 50,
-//     name: "모여봐요 동물의 숲",
-//     location: "닌텐도 뀨뀨",
-//     address: "대한민국 어딘가 ~",
-//   },
-//   {
-//     ImgUrl:
-//       "http://economychosun.com/query/upload/344/20200419231455_gltgzjsu.jpg",
-//     reviewNum: 240,
-//     name: "강원도로 갈까유",
-//     location: "닌텐도 어딘가에 있겠지 임마",
-//     address: "대한민국 어딘가 ~",
-//   },
-//   {
-//     ImgUrl:
-//       "https://image-cdn.hypb.st/https%3A%2F%2Fkr.hypebeast.com%2Ffiles%2F2022%2F04%2Fmakoto-shinkai-new-anime-movie-suzume-no-tojimari-first-video-visual-teaser-ft.jpg?w=960&cbr=1&q=90&fit=max",
-//     reviewNum: 53,
-//     name: "모이자",
-//     location: "닌텐도 어딘가에 있겠지 임마",
-//     address: "대한민국 어딘가 ~",
-//   },
-//   {
-//     ImgUrl:
-//       "http://newsimg.hankookilbo.com/2019/10/30/201910301882016576_6.jpg",
-//     reviewNum: 342,
-//     name: "모홍홍 숲",
-//     location: "닌텐도 어딘가에 있겠지 임마",
-//     address: "대한민국 어딘가 ~",
-//   },
-//   {
-//     ImgUrl: "https://pbs.twimg.com/media/EbXmXe2VAAUKd_B.jpg",
-//     reviewNum: 231,
-//     name: "롤하고 싶당",
-//     location: "닌텐도 어딘가에 있겠지 임마",
-//     address: "대한민국 어딘가 ~",
-//   },
-//   {
-//     ImgUrl:
-//       "https://image-cdn.hypb.st/https%3A%2F%2Fkr.hypebeast.com%2Ffiles%2F2021%2F08%2Fblackpink-animal-crossing-new-horrizsons-island-info-2.jpg?q=75&w=800&cbr=1&fit=max",
-//     reviewNum: 30,
-//     name: "동물의 숲",
-//     location: "닌텐도 어딘가에 있겠지 임마",
-//     address: "대한민국 어딘가 ~",
-//   },
-//   {
-//     ImgUrl:
-//       "https://m.nongmin.com/upload/bbs/202207/20220712165858408/20220712165858408.jpg",
-//     reviewNum: 42,
-//     name: "모 숲",
-//     location: "닌텐도 어딘가에 있겠지 임마",
-//     address: "대한민국 어딘가 ~",
-//   },
-//   {
-//     ImgUrl:
-//       "https://cdn.eyesmag.com/content/uploads/posts/2020/03/31/animal-crossing-new-horizons-instagram-fashion-09-9d86eeb1-c87b-414d-849d-45431d21561c.jpg",
-//     reviewNum: 341,
-//     name: "부잉",
-//     location: "닌텐도 어딘가에 있겠지 임마",
-//     address: "대한민국 어딘가 ~",
-//   },
-// ];

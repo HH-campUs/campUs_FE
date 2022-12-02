@@ -23,6 +23,15 @@ export const useMyPageApi = {
     });
   },
 
+  // ** myPick조회 ** //
+  useGetMyPick: () => {
+    return useQuery(["mypageinfo"], async () => {
+      const data = await instance.get("/users/myPage/myPick");
+      console.log(data.data);
+      return data;
+    });
+  },
+
   // ** 유저 정보 변경 ** //
   useEditProfile: () => {
     return useMutation(async (payload: IEditProfile) => {

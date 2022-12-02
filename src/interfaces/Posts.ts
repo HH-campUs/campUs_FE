@@ -1,6 +1,6 @@
 //url to image : string, image used as <img> ele : HTMLImageElement
 export interface IReviewPosts {
-  reviewImg?: File; //확인해야함,back은 url로받음.
+  reviewImg: string; //확인해야함,back은 url로받음.
   reviewComment: string;
 }
 
@@ -26,6 +26,8 @@ export interface IPickedCamp {
   address: string;
   campId: number;
   campName: string;
+  induty: string;
+  Pick: Object;
 }
 
 export type ICampingPicked = number;

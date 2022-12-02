@@ -10,8 +10,6 @@ import styled from "styled-components";
 import { useGetApi, useGetCamp, useGetWeather } from "../APIs/getApi";
 import { IGetCampResult } from "../interfaces/get";
 
-//bookmark icon
-
 function Result() {
   const nav = useNavigate();
 

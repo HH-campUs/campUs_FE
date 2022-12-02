@@ -10,26 +10,29 @@ import Bg from "../static/testpic.jpg";
 import { useGetTopicInfinite } from "../APIs/getApi";
 import { useInView } from "react-intersection-observer";
 
-import TopicMap from "../components/TopicMap";
+import TopicBookmark from "../components/TopicBookmark";
 //css
 import { BiChevronDown } from "react-icons/bi";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import { IGetCampResult, pickedCamp } from "../interfaces/get";
+import { IGetCampResult } from "../interfaces/get";
+import { idState } from "../store/loginAtom";
 
 function Topic() {
   const toZero = () => {
     window.scrollTo({ left: 0, top: 0, behavior: "smooth" });
   };
+
   const navigate = useNavigate();
   const [isSearch, setIsSearch] = useRecoilState(isModal);
 
-  // const getCamp = useGetApi.useGetTopicResult().data;
   const { topicId } = useParams<{ topicId?: string }>();
+  const userId = useRecoilValue(idState);
   // console.log(topicId);
 
   //infiniteScroll
   const { campTopic, fetchNextPage, isSuccess, hasNextPage, refetch } =
     useGetTopicInfinite(topicId!);
+  console.log(userId);
 
   const [ref, isView] = useInView();
 
@@ -67,10 +70,11 @@ function Topic() {
               <React.Fragment key={page.currentPage}>
                 {page?.campTopic.map((item: IGetCampResult) => (
                   <ResultBox key={item.campId}>
-                    <TopicMap Camp={item} />
+                    <TopicBookmark Camp={item} />
 
                     <ResultItem
-                      onClick={() => navigate(`/detail/${item.campId}`)}>
+                      onClick={() => navigate(`/detail/${item.campId}`)}
+                    >
                       <CampImg src={item.ImageUrl} alt={item.campName} />
                       <CampName title={item.campName}>{item.campName}</CampName>
                     </ResultItem>

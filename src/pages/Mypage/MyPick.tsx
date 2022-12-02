@@ -10,23 +10,32 @@ import { IPickedCamp } from "../../interfaces/Posts";
 export default function MyPick() {
   const isLogin = useRecoilValue(LoginState);
   const navigate = useNavigate();
-  const { Pick } = useMyPageApi.useGetMyPage().data?.data;
 
-  const picked = Pick?.map((picks: IPickedCamp) => picks.Camp);
+  const myPick = useMyPageApi.useGetMyPick().data?.data.Pick;
+  const picked = myPick?.map((picks: IPickedCamp) => picks.Camp);
+  console.log(picked);
+  console.log(myPick);
 
+  // const { Pick } = useMyPageApi.useGetMyPage().data?.data;
+  // console.log(Pick);
+  // const picked = Pick?.map((picks: IPickedCamp) => picks.Camp);
+  // console.log(picked);
   useEffect(() => {
     console.log(picked);
-    console.log(Pick);
-  }, [Pick]);
+  }, [picked]);
 
   return (
     <>
       {isLogin ? (
         <MapBox>
           {picked.map((pick: IPickedCamp, campId: IPickedCamp) => (
-            <Box>
+            <Box key={pick.campId}>
               <CampImg src={pick.ImageUrl} alt="" />
-              <CampName>{pick.campName}</CampName>
+              <NameBox>
+                <CampName>{pick.campName}</CampName>
+                <CampDuty>{pick.induty}</CampDuty>
+              </NameBox>
+
               <CampAddress>{pick.address}</CampAddress>
             </Box>
           ))}
@@ -54,13 +63,16 @@ export default function MyPick() {
 
 const MapBox = styled.div`
   margin-top: 350px;
-  min-height: 500px;
+  height: 60vh;
+  /* margin-bottom: 500px; */
+  /* min-height: 500px; */
+  overflow-y: scroll;
 `;
 const Box = styled.div`
   width: 335px;
   margin: 20px auto;
-  justify-content: center;
-  text-align: left;
+  /* justify-content: center; */
+  /* text-align: left; */
   flex-direction: column;
   display: flex;
 `;
@@ -72,10 +84,30 @@ const CampImg = styled.img`
   border-radius: ${(props) => props.theme.pixelToRem(8)};
 `;
 
+const NameBox = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
 const CampName = styled.div`
+  display: flex;
+  /* position: absolute; */
   margin-top: 15px;
   font-size: ${(props) => props.theme.pixelToRem(18)};
   color: #222222;
+  text-align: left;
+`;
+
+const CampDuty = styled.div`
+  /* position: absolute; */
+  display: flex;
+  justify-content: flex-end;
+  color: grey;
+  font-size: ${(props) => props.theme.pixelToRem(12)};
+  text-align: right;
+  padding-top: 15px;
 `;
 
 const CampAddress = styled.div`

@@ -30,6 +30,7 @@ import Layout from "./layout/Layout";
 import MyReview from "./pages/Mypage/MyReview";
 import MyPick from "./pages/Mypage/MyPick";
 import MyPlan from "./pages/Mypage/MyPlan";
+import Review from "./pages/Review";
 
 const GlobalStyle = createGlobalStyle`
 @import url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff');
@@ -52,6 +53,11 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'Pretendard-Regular';
     font-size: 100%;
     vertical-align: baseline;
+    -ms-overflow-style: none;
+    ::-webkit-scrollbar {
+    display: none;
+    /* font-family: 'Pretendard-Regular'; */
+   
   }
   /* HTML5 display-role reset for older browsers */
   article, aside, details, figcaption, figure,
@@ -95,7 +101,10 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
   }
   body{
-    font-family: 'Source Sans Pro', sans-serif;
+    font-family: 'Pretendard-Regular';
+   
+}
+
   }
   a{
     text-decoration: none;
@@ -134,6 +143,7 @@ function App() {
                   <Route path="/detail/:id/detail" element={<Ddetail />} />
                   <Route path="/detail/:id/review" element={<Dreview />} />
                 </Route>
+                <Route path="/review" element={<Review />} />
 
                 <Route path="mypage" element={<Mypage />} />
                 <Route path="/mypage/" element={<Mypage />}>

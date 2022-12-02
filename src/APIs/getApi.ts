@@ -51,17 +51,17 @@ export const useGetCamp = (doNm: string) => {
   return { campData, fetchNextPage, isSuccess, hasNextPage, refetch };
 };
 
-/* 주제 캠핑장 조회 */
-
+//infiniteQuery for Topic
+// &userId=${userId}   userId: number
 export const useGetTopicInfinite = (topicId: string) => {
   const topicData = async ({ pageParam = 0 }) => {
     const { data } = await instance.get<pickedCamp>(
-      `/camps/${topicId}?numOfRows=10&pageNo=${pageParam}`
+      `/camps/${topicId}?&numOfRows=10&pageNo=${pageParam}`
     );
     console.log(data.topicCamp);
     return {
       campTopic: data.topicCamp,
-      currentPage: pageParam,
+      currentPage: pageParam + 1,
     };
   };
 
@@ -125,7 +125,6 @@ export const useGetApi = {
   },
 
   //1.일몰 2.낚시 3.반려동물 4.장비대여
-
   // ** 캠핑장 리뷰 조회 / get ** //
   useGetCampReview: () => {
     return useQuery(["reviewinfo"], async () => {

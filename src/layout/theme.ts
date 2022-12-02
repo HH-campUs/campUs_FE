@@ -28,6 +28,7 @@ const colorTheme = {
   warning: "fc9701",
   danger: "#eb4343",
   good: "#27a80c",
+  disabled: "#f5f5f5",
 };
 
 /* convert px to rem */
@@ -56,7 +57,6 @@ const fontTheme = {
 `,
   /* Subtitle */
   Subtitle1: `
-  font-family: 'Pretendard-Regular';
  font-size: ${pixelToRem(18)};
  font-weight: 500;
  color: ${colorTheme.text};

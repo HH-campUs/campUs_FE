@@ -61,7 +61,7 @@ export interface IGetCampResult {
 }
 
 export interface campArray extends IGetCampResult {
-  currentPage?: number;
+  currentPage: number;
   total: number;
   topicCamp: IGetCampResult[];
   campTopic: IGetCampResult[];

@@ -20,10 +20,9 @@ function Detail() {
   const loca = useLocation();
   const state = loca.state as { campId: number };
 
-  console.log(state.campId);
-
   const campDetail = useGetApi.useGetCampDetail(state.campId);
 
+  /*   console.log(state.campId, campDetail.data?.detailCamp); */
   //recoil?
   const [bookmark, setBookMark] = useState(true);
   const marking = () => {
@@ -34,7 +33,7 @@ function Detail() {
     <>
       {isSearch == false ? null : <Search />}
       <Wrapper>
-        {/* 최상단 이미지 +  */}
+        {/* 최상단 이미지*/}
         <MainImage>
           <TopNavContainer>
             <div style={{ display: "flex" }}>
@@ -87,10 +86,14 @@ function Detail() {
             </div>
           </TopNavContainer>
         </MainImage>
+
+        {/* 중앙 : 정보 + 찜 리뷰 + 일정 저장 버튼 */}
         <MiddleContainer>
           <UpperWrapper>
             <Left>노을공원 가족캠핑장</Left>
-            <Right>일반야영장 | 글램핑</Right>
+            <Right>
+              <div>일반야영장</div> <div>글램핑</div>
+            </Right>
           </UpperWrapper>
           <DownWrapper>
             <div>
@@ -103,50 +106,50 @@ function Detail() {
           <Pick>찜(30)</Pick>
           <Review>리뷰(790)</Review>
         </PickBox>
-        <AddtripBtn>내 여행일정 저장</AddtripBtn>
-        <IconBox>
-          <PickImg onClick={marking}>
-            {bookmark ? (
-              <BookmarkBorderIcon sx={{ width: "35px", height: "35px" }} />
-            ) : (
-              <BookmarkIcon sx={{ width: "35px", height: "35px" }} />
-            )}
-            <IconText>찜하기</IconText>
-          </PickImg>
-          <PlanImg>
-            <img src="/images/icon-plan.svg" />
-            <IconText style={{ marginLeft: "-5.5px" }}>일정추가</IconText>
-          </PlanImg>
-          <ReviewImg>
-            <img src="/images/icon-review2.svg" />
-            <IconText style={{ marginLeft: "-3px" }}>리뷰작성</IconText>
-          </ReviewImg>
-          <ShareImg>
-            <img src="/images/icon-share.svg" />
-            <IconText style={{ marginLeft: "-3px" }}> 공유하기</IconText>
-          </ShareImg>
-        </IconBox>
+        <AddtripBtn>
+          <div className="leftInfo">
+            <img src="/images/Calendar.svg" alt="calendar" />
+            <p>12월 20일 </p>
+            <u>부산북구 날씨 상세</u>
+          </div>
+          <div className="rightBtn">여행일정 저장</div>
+        </AddtripBtn>
+
         <WFcBox>
-          <WeatherBox>
-            <Calendar>
-              <img
-                src="/images/Calendar.svg"
-                alt="calendar"
-                style={{ height: "20px" }}
-              />
-              <p>12월 20일~</p>
-            </Calendar>
-            <RecoWeather>캠핑 추천 날씨</RecoWeather>
-            <DetailWeather>부산북구 날씨 상세</DetailWeather>
-          </WeatherBox>
           <FcBox>
             <FcTextBox>
-              <FcLeft>시설요약</FcLeft>
-              <Right>전체보기</Right>
+              <FcLeft>시설 요약</FcLeft>
+              <FcRight>전체보기</FcRight>
             </FcTextBox>
-            <FcIconBox>ICon Will be added</FcIconBox>
+            <FcIconBox>
+              <TheIcon>
+                <img src="/images/faclIcon/icon-dog.svg" alt="dog" />
+                <span>애완동물</span>
+              </TheIcon>
+              <TheIcon>
+                <img src="/images/faclIcon/icon-dog.svg" alt="dog" />
+                <span>애완동물</span>
+              </TheIcon>
+              <TheIcon>
+                <img src="/images/faclIcon/icon-dog.svg" alt="dog" />
+                <span>애완동물</span>
+              </TheIcon>
+              <TheIcon>
+                <img src="/images/faclIcon/icon-dog.svg" alt="dog" />
+                <span>애완동물</span>
+              </TheIcon>
+              <TheIcon>
+                <img src="/images/faclIcon/icon-dog.svg" alt="dog" />
+                <span>애완동물</span>
+              </TheIcon>
+              <TheIcon>
+                <img src="/images/faclIcon/icon-dog.svg" alt="dog" />
+                <span>애완동물</span>
+              </TheIcon>
+            </FcIconBox>
           </FcBox>
         </WFcBox>
+        <GrayHr />
 
         <Tabs>
           <Tab isActive={Boolean(announceMatch)}>
@@ -228,9 +231,21 @@ const Left = styled.div`
 
 const Right = styled.div`
   margin-top: 10px;
-  margin-left: 72px;
-  font-size: 13px;
+  margin-left: 80px;
+  font-size: ${(props) => props.theme.pixelToRem(13)};
   color: grey;
+  justify-content: center;
+  display: flex;
+
+  div {
+    width: auto;
+    height: auto;
+    flex-grow: 0;
+    margin: 0 0 0 5px;
+    padding: 5px;
+    border-radius: 1px;
+    background-color: #f5f5f5;
+  }
 `;
 
 const DownWrapper = styled.div`
@@ -247,7 +262,7 @@ const DownWrapper = styled.div`
 
 const PickBox = styled.div`
   margin-top: -65px;
-  margin-left: -8px;
+  margin-left: -11px;
   padding: 0 20px 0 20px;
   height: 60px;
   gap: 6px;
@@ -270,59 +285,73 @@ const Review = styled.p`
 `;
 
 const AddtripBtn = styled.button`
-  width: ${(props) => props.theme.pixelToRem(124)};
-  height: ${(props) => props.theme.pixelToRem(38)};
-  margin-top: -50px;
-  margin-left: 290px;
-  font-size: ${(props) => props.theme.pixelToRem(14)};
-  border: none;
-  padding-top: 6px;
+  width: ${(props) => props.theme.pixelToRem(335)};
+  height: ${(props) => props.theme.pixelToRem(46)};
+  margin-top: -12px;
+  margin-left: 75px;
+  flex-grow: 0;
+  border-radius: 10px;
+  border: solid 1px ${(props) => props.theme.colorTheme.border};
+  background-color: ${(props) => props.theme.colorTheme.textWhite};
+  justify-content: space-between;
   display: flex;
-  background-color: #024873;
-  color: whitesmoke;
-`;
+  position: relative;
 
-const IconBox = styled.div`
-  width: 80%;
-  height: 100px;
-  margin-top: 10px;
-  margin-left: 50px;
-  padding-top: 20px;
-  display: flex;
-  justify-content: space-around;
-  border-top: 1px solid lightgray;
+  .leftInfo {
+    margin: 0 auto;
+    padding: 16px;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: left;
+    background-color: transparent;
+    ${(props) => props.theme.fontTheme.Caption3};
+    position: absolute;
+    display: flex;
+
+    img {
+      height: 20px;
+      margin-top: -4px;
+      margin-left: -6px;
+    }
+
+    p {
+      width: 60px;
+      height: auto;
+      padding-bottom: 3px;
+      margin-top: -2px;
+      margin-left: 6px;
+      border-right: 1px solid #000000;
+    }
+
+    u {
+      margin-top: -2px;
+      margin-left: 11px;
+      text-underline-position: under;
+    }
+  }
+
+  .rightBtn {
+    right: 0;
+    top: 0;
+    margin-top: -1px;
+    width: ${(props) => props.theme.pixelToRem(117)};
+    height: ${(props) => props.theme.pixelToRem(46)};
+    border-bottom-right-radius: 10px;
+    border-top-right-radius: 10px;
+    flex-grow: 0;
+    padding: 15px 20px 14px;
+    background-color: ${(props) => props.theme.colorTheme.main};
+    ${(props) => props.theme.fontTheme.Caption1};
+    color: ${(props) => props.theme.colorTheme.textWhite} !important;
+    line-height: normal;
+    letter-spacing: normal;
+    position: absolute;
+  }
 `;
 
 const PickImg = styled.div`
   display: flex;
   flex-direction: column;
-`;
-
-const PlanImg = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 35px;
-  height: 35px;
-`;
-
-const ReviewImg = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 35px;
-  height: 35px;
-`;
-
-const ShareImg = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 35px;
-  height: 35px;
-`;
-
-const IconText = styled.div`
-  width: 100px;
-  font-size: 0.8rem;
-  margin-top: 10px;
 `;
 
 const WFcBox = styled.div`
@@ -331,37 +360,12 @@ const WFcBox = styled.div`
   justify-content: space-around;
 `;
 
-const WeatherBox = styled.div`
-  display: flex;
-  /* background-color: lightgrey; */
-  height: 50px;
-  text-align: center;
-  justify-content: center;
-  align-items: center;
-  font-size: 0.9rem;
-  margin: auto;
-  padding: 10px; ;
-`;
-
-const Calendar = styled.div`
-  display: flex;
-  gap: 10px;
-  width: 33%;
-  align-items: center;
-  border-right: 1px solid black;
-  font-size: 0.8rem;
-`;
-
-const RecoWeather = styled.div`
-  width: 33%;
-  border-right: 1px solid black;
-  font-size: 0.8rem;
-`;
-
-const DetailWeather = styled.div`
-  width: 33%;
-  font-size: 0.8rem;
-  text-decoration: underline;
+const GrayHr = styled.hr`
+  width: ${(props) => props.theme.pixelToRem(375)};
+  height: ${(props) => props.theme.pixelToRem(8)};
+  margin: 0 auto;
+  border: none;
+  background-color: #f2f2f2;
 `;
 
 const FcBox = styled.div`
@@ -379,14 +383,50 @@ const FcTextBox = styled.div`
 
 const FcLeft = styled.div`
   margin-top: 5px;
-  margin-left: 8px;
-  font-size: 1.2rem;
-  font-weight: bolder;
+  margin-left: 13px;
+  ${(props) => props.theme.fontTheme.Subtitle2};
+  line-height: 1.22;
+  letter-spacing: normal;
+  text-align: left;
+`;
+
+const FcRight = styled.div`
+  margin-top: 5px;
+  margin-right: 23px;
+  ${(props) => props.theme.fontTheme.Caption2};
+  color: ${(props) => props.theme.colorTheme.text3} !important;
+  line-height: 1.29;
+  letter-spacing: normal;
+  text-align: right;
+  display: flex;
 `;
 
 const FcIconBox = styled.div`
+  width: 100%;
+  height: ${(props) => props.theme.pixelToRem(80)};
   margin-top: 20px;
   display: flex;
+`;
+
+const TheIcon = styled.div`
+  width: ${(props) => props.theme.pixelToRem(50)};
+  height: ${(props) => props.theme.pixelToRem(50)};
+  margin-top: -4px;
+  margin-right: 10px;
+  flex-direction: column;
+  display: flex;
+  img {
+    margin: 0 auto;
+    width: ${(props) => props.theme.pixelToRem(30)};
+  }
+  span {
+    margin-top: 7px;
+    ${(props) => props.theme.fontTheme.Caption3};
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: center;
+    color: ${(props) => props.theme.colorTheme.text2} !important;
+  }
 `;
 
 const Tabs = styled.div`

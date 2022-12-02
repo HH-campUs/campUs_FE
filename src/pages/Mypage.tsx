@@ -76,8 +76,7 @@ function Mypage() {
               <div
                 style={{
                   marginTop: "-120px",
-                }}
-              >
+                }}>
                 <Outlet />
               </div>
             </UserProfile>
@@ -98,16 +97,14 @@ function Mypage() {
                   onClick={(e) => {
                     e.preventDefault();
                     navigate("/login");
-                  }}
-                >
+                  }}>
                   로그인
                 </LoginBtn>
                 <SignBtn
                   onClick={(e) => {
                     e.preventDefault();
                     navigate("/signup");
-                  }}
-                >
+                  }}>
                   회원가입
                 </SignBtn>
               </LoginBox>
@@ -126,8 +123,7 @@ function Mypage() {
                 style={{
                   // height: "100vh",
                   marginTop: "20px",
-                }}
-              >
+                }}>
                 <Outlet />
               </div>
             </UserProfile>

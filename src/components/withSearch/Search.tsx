@@ -14,7 +14,7 @@ import {
   ExportDay,
 } from "../../store/dateAtom";
 import { selectLo, showLo } from "../../store/locationAtom";
-import { isModal } from "../../store/searchAtom";
+import { isModal, textValue } from "../../store/searchAtom";
 import { Link } from "react-router-dom";
 import styled, { keyframes, css } from "styled-components";
 import Datepicker from "./Datepicker";
@@ -22,11 +22,7 @@ import Location from "./Location";
 import { isProps, searchData } from "../../interfaces/inSearch";
 
 function Search() {
-  const [inputValue, setInputValue] = useState<searchData>({
-    selectInput: "",
-    selectDate: "",
-    selectLocation: "",
-  });
+  const [inputValue, setInputValue] = useState("");
 
   const [isSearch, setIsSearch] = useRecoilState(isModal);
   const [openDate, setOpenDate] = useState(false);
@@ -39,9 +35,9 @@ function Search() {
   const selectMonth = useRecoilValue(ExportMonth);
   const selectDay = useRecoilValue(ExportDay);
 
-  const { selectInput, selectLocation } = inputValue;
-
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {};
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(event.target.value);
+  };
 
   /* SearchModal 작동 boolean  default: false */
 
@@ -63,7 +59,10 @@ function Search() {
   };
 
   const resetHandler = () => {
-    return setLocationValue(""), setSendLocation(""), setStartDate(new Date());
+    setInputValue("");
+    setLocationValue("");
+    setSendLocation("");
+    setStartDate(new Date());
   };
 
   /* 추후에 모달 열리고 ModalBg에서 scroll x */
@@ -80,7 +79,6 @@ function Search() {
       window.scrollTo(0, parseInt(sY || "0", 10) * -1);
     };
   }, []); */
-  console.log(isSearch);
 
   return (
     <Container>
@@ -92,11 +90,15 @@ function Search() {
           <SearchTitle>어디로 가시나요?</SearchTitle>
           <CloseBtn src="/images/closeBtn.svg" onClick={closeModal} />
         </TopContainer>
+
+        {/* Input text */}
         <SearchLabel htmlFor="search"></SearchLabel>
         <SearchBox
           id="search"
-          placeholder="강원도 캠핑장"
+          value={inputValue}
+          placeholder="지역 선택 시 검색어는 추가할 수 없습니다."
           onChange={onChange}
+          disabled={sendLocation == "" ? false : true}
         />
 
         <DateInfo openDate={openDate} onClick={dateFolder}>
@@ -112,7 +114,7 @@ function Search() {
           </DateContainer>
         </DateInfo>
 
-        <Location />
+        <Location inputValue={inputValue} setInputValue={setInputValue} />
 
         <BtnContainer isSearch={isSearch}>
           <ResetBtn onClick={resetHandler}>
@@ -181,14 +183,17 @@ const ModalBg = styled.div<{ isSearch: boolean }>`
 
 /* Search bar */
 const SearchModal = styled.div<{ isSearch: boolean }>`
-  margin: 10px auto;
   width: 23.438rem;
   background-color: #ffffff;
-  border-radius: 13px;
+  border-top-left-radius: 13px;
+  border-top-right-radius: 13px;
   justify-content: center;
   align-content: center;
+  bottom: 0;
+  /* position없으면 위치속성 안먹음. */
+  /* transform -> 위치작용 */
+  position: relative;
   z-index: 100;
-
   &.isSearch {
     height: 43rem;
     left: 10;
@@ -242,14 +247,13 @@ const SearchBox = styled.input`
 
   ::placeholder {
     ${(props) => props.theme.fontTheme.Subtitle3};
+    font-size: ${(props) => props.theme.pixelToRem(13)} !important;
     color: #797979 !important;
     letter-spacing: normal;
     font-family: Pretendard;
     text-align: left;
-    font-stretch: normal;
     line-height: normal;
     letter-spacing: normal;
-    font-style: normal;
   }
 `;
 

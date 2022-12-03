@@ -127,9 +127,9 @@ function Result() {
                 <img src="/images/weatherIcon/icon-morning.svg" alt="morning" />
                 <img src="/images/weatherIcon/icon-lunch.svg" alt="lunch" />
                 <img src="/images/weatherIcon/icon-night.svg" alt="night" />
-                <span>{WeatherData?.weather[0].morn}°</span>
-                <span>{WeatherData?.weather[0].day}°</span>
-                <span>{WeatherData?.weather[0].night}°</span>
+                <span>{WeatherData?.weather[0].morn.toFixed(0)}°</span>
+                <span>{WeatherData?.weather[0].day.toFixed(0)}°</span>
+                <span>{WeatherData?.weather[0].night.toFixed(0)}°</span>
               </div>
               <div className="infoBox">
                 <div className="left">

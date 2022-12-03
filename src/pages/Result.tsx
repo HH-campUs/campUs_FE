@@ -5,7 +5,7 @@ import { showLo, selectLo } from "../store/locationAtom";
 import { StrMonth, StrDay, DateState } from "../store/dateAtom";
 import Search from "../components/withSearch/Search";
 import { isModal } from "../store/searchAtom";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useGetApi, useGetCamp, useGetWeather } from "../APIs/getApi";
 import { IGetCampResult } from "../interfaces/get";
@@ -95,17 +95,17 @@ function Result() {
               <div className="infoBox">
                 <span>{doNm}</span>
                 <span>
-                  비올확률 {WeatherData?.weather[0].pop.toFixed(1) * 100}%
+                  비올확률 {WeatherData?.weather[1].pop.toFixed(1) * 100}%
                 </span>
               </div>
             </div>
             <div className="thirdSeparate">
               <div className="temBox">
                 <div className="lowHigh">
-                  <p>{WeatherData?.weather[0].min.toFixed(0)}</p>
-                  <p>{WeatherData?.weather[0].max.toFixed(0)}</p>
+                  <p>{WeatherData?.weather[1].min.toFixed(0)}</p>
+                  <p>{WeatherData?.weather[1].max.toFixed(0)}</p>
                 </div>
-                <span>{WeatherData?.weather[0].day.toFixed(0)}</span>
+                <span>{WeatherData?.weather[1].day.toFixed(0)}</span>
                 <b>°</b>
               </div>
               <span>
@@ -128,9 +128,9 @@ function Result() {
                   </div>
                   <div className="climateNum">
                     <div>
-                      <p>{WeatherData?.weather[0].wind_speed}</p>
-                      <p>{WeatherData?.weather[0].humidity}%</p>
-                      <p>{WeatherData?.weather[0].uvi}</p>
+                      <p>{WeatherData?.weather[1].wind_speed}</p>
+                      <p>{WeatherData?.weather[1].humidity}%</p>
+                      <p>{WeatherData?.weather[1].uvi}</p>
                     </div>
                   </div>
                 </div>
@@ -213,12 +213,12 @@ function Result() {
                   </DetailAddress>
                   {/* 시설 태그들 (max: 4) */}
                   <TagContainer>
-                    {item.sbrsCl.split(",").map((word, i) => (
-                      <div className="tag"> {word} </div>
-                    ))}
-                    <div className="tag"> 장작판매 </div>
-                    <div className="tag"> 물놀이장 </div>
-                    <div className="tag"> 마트/편의점 </div>
+                    {item.sbrsCl
+                      .split(",")
+                      .slice(0, 4)
+                      .map((word) => (
+                        <div className="tag"> {word} </div>
+                      ))}
                   </TagContainer>
                 </ResultBox>
               ))}
@@ -668,7 +668,7 @@ const ResultBox = styled.div`
 const ResultItem = styled.div`
   width: ${(props) => props.theme.pixelToRem(335)};
   height: ${(props) => props.theme.pixelToRem(190)};
-  margin: 20px 0 14px;
+  margin: 27px 0 14px;
   border-radius: 8px;
   position: relative;
 `;
@@ -771,7 +771,7 @@ const DetailAddress = styled.div`
 const TagContainer = styled.div`
   width: ${(props) => props.theme.pixelToRem(331)};
   height: ${(props) => props.theme.pixelToRem(24)};
-  margin: 12px 0 0 4px;
+  margin: 12px 0 5px 4px;
   padding: 0;
   flex-direction: row;
   justify-content: flex-end;
@@ -780,8 +780,9 @@ const TagContainer = styled.div`
   display: flex;
 
   .tag {
-    width: ${(props) => props.theme.pixelToRem(66)};
+    width: auto;
     height: ${(props) => props.theme.pixelToRem(24)};
+    padding: 4px 10px;
     flex-grow: 0;
     justify-content: center;
     align-items: center;

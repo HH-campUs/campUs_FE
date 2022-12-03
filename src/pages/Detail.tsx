@@ -22,7 +22,7 @@ function Detail() {
 
   const campDetail = useGetApi.useGetCampDetail(state.campId);
 
-  /*   console.log(state.campId, campDetail.data?.detailCamp); */
+  console.log(state.campId, campDetail);
   //recoil?
   const [bookmark, setBookMark] = useState(true);
   const marking = () => {

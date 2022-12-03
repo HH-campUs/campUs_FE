@@ -120,10 +120,8 @@ const DisabledLocationInfo = styled.div`
   margin: 16px 0;
   padding: 25px 20px;
   border-radius: ${(props) => props.theme.pixelToRem(10)};
-  border: solid ${(props) => props.theme.pixelToRem(1)} #e3e3e3;
+  border: solid 1px ${(props) => props.theme.colorTheme.border};
   background-color: ${(props) => props.theme.colorTheme.disabled};
-  box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset,
-    rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
   justify-content: space-between;
   transition: all 0.4s ease;
   display: flex;

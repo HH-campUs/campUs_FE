@@ -18,7 +18,7 @@ function Home() {
 
   const getCamp = useGetApi.useGetTopicResult().data;
 
-  const iconArr = [
+  /* const iconArr = [
     "전기",
     "무선인터넷",
     "장작판매",
@@ -35,7 +35,7 @@ function Home() {
   const IconPop = () => {
     if (!getCamp) return;
     getCamp.topicCamp[0].sbrsCl;
-  };
+  }; */
 
   const openModal = () => {
     setIsSearch(true);

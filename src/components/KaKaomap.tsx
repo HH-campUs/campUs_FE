@@ -59,6 +59,18 @@ export default function KaKaomap() {
         var locPosition = new kakao.maps.LatLng(lat, lon), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
           message = "내 위치";
 
+        var coord = new kakao.maps.LatLng(lat, lon);
+        var callback = function (result: any, status: any) {
+          if (status === kakao.maps.services.Status.OK) {
+            console.log(
+              "그런 너를 마주칠까 " + result[0].address.address_name + "을 못가"
+            );
+          }
+        };
+
+        var geocoder = new kakao.maps.services.Geocoder();
+        geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);
+
         // 마커와 인포윈도우를 표시합니다
         displayMarker(locPosition, message);
       });

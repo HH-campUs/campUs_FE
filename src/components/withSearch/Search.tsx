@@ -12,6 +12,9 @@ import {
   ExportYear,
   ExportMonth,
   ExportDay,
+  StrDay,
+  StrMonth,
+  StrYear,
 } from "../../store/dateAtom";
 import { selectLo, showLo } from "../../store/locationAtom";
 import { isModal, textValue } from "../../store/searchAtom";
@@ -31,9 +34,9 @@ function Search() {
   const [sendLocation, setSendLocation] = useRecoilState(selectLo);
 
   const selectDate = useRecoilValue(ExportDate);
-  const selectYear = useRecoilValue(ExportYear);
-  const selectMonth = useRecoilValue(ExportMonth);
-  const selectDay = useRecoilValue(ExportDay);
+  const selectYear = useRecoilValue(StrYear);
+  const selectMonth = useRecoilValue(StrMonth);
+  const selectDay = useRecoilValue(StrDay);
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
@@ -99,6 +102,7 @@ function Search() {
           placeholder="지역 선택 시 검색어는 추가할 수 없습니다."
           onChange={onChange}
           disabled={sendLocation == "" ? false : true}
+          sendLocation={sendLocation}
         />
 
         <DateInfo openDate={openDate} onClick={dateFolder}>
@@ -229,14 +233,17 @@ const CloseBtn = styled.img`
   display: inline-block;
 `;
 
-const SearchBox = styled.input`
+const SearchBox = styled.input<{ sendLocation: string }>`
   width: ${(props) => props.theme.pixelToRem(335)};
   height: ${(props) => props.theme.pixelToRem(54)};
   margin-top: -13px;
   padding: 15px 20px 15px 55px;
   border-radius: 10px;
-  border: solid 1px #eee;
-  background-color: #f5f5f5;
+  border: solid 1px ${(props) => props.theme.colorTheme.border};
+  background-color: ${(props) =>
+    props.sendLocation == ""
+      ? props.theme.colorTheme.textWhite
+      : props.theme.colorTheme.disabled};
   background-image: url("/images/search.svg");
   background-repeat: no-repeat;
   background-position: ${(props) => props.theme.pixelToRem(23)} center;

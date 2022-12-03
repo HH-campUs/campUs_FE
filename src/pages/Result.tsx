@@ -95,17 +95,17 @@ function Result() {
               <div className="infoBox">
                 <span>{doNm}</span>
                 <span>
-                  비올확률 {WeatherData?.weather[1].pop.toFixed(1) * 100}%
+                  비올확률 {WeatherData?.weather[0].pop.toFixed(1) * 100}%
                 </span>
               </div>
             </div>
             <div className="thirdSeparate">
               <div className="temBox">
                 <div className="lowHigh">
-                  <p>{WeatherData?.weather[1].min.toFixed(0)}</p>
-                  <p>{WeatherData?.weather[1].max.toFixed(0)}</p>
+                  <p>{WeatherData?.weather[0].min.toFixed(0)}</p>
+                  <p>{WeatherData?.weather[0].max.toFixed(0)}</p>
                 </div>
-                <span>{WeatherData?.weather[1].day.toFixed(0)}</span>
+                <span>{WeatherData?.weather[0].day.toFixed(0)}</span>
                 <b>°</b>
               </div>
               <span>
@@ -119,6 +119,18 @@ function Result() {
             {/* 1층 */}
             <div className="firstFloor">
               <hr />
+              <div className="tempGraph">
+                <img
+                  src="/images/weatherIcon/icon-circleline.svg"
+                  alt="circleline"
+                />
+                <img src="/images/weatherIcon/icon-morning.svg" alt="morning" />
+                <img src="/images/weatherIcon/icon-lunch.svg" alt="lunch" />
+                <img src="/images/weatherIcon/icon-night.svg" alt="night" />
+                <span>{WeatherData?.weather[0].morn}°</span>
+                <span>{WeatherData?.weather[0].day}°</span>
+                <span>{WeatherData?.weather[0].night}°</span>
+              </div>
               <div className="infoBox">
                 <div className="left">
                   <div className="climate">
@@ -128,30 +140,86 @@ function Result() {
                   </div>
                   <div className="climateNum">
                     <div>
-                      <p>{WeatherData?.weather[1].wind_speed}</p>
-                      <p>{WeatherData?.weather[1].humidity}%</p>
-                      <p>{WeatherData?.weather[1].uvi}</p>
+                      <p>{WeatherData?.weather[0].wind_speed.toFixed(0)}m/s</p>
+                      <p>{WeatherData?.weather[0].humidity}%</p>
+                      <p>{WeatherData?.weather[0].uvi}</p>
                     </div>
                   </div>
                 </div>
                 <div className="right">
-                  <p>
-                    <b>·</b> 강풍으로 체감온도가 낮아요
-                  </p>
-                  <p>
-                    <b>·</b> 캠프파이어 하기 좋아요
-                  </p>
-                  <p>
-                    <b>·</b> 그늘이 많아요
-                  </p>
+                  {/* wind_speed */}
+                  {WeatherData?.weather[0].wind_speed.toFixed(0) > 5 ? (
+                    <p style={{ color: "#eb4343" }}>
+                      <b>·</b> 강풍으로 체감온도가 낮아요
+                    </p>
+                  ) : WeatherData?.weather[0].wind_speed.toFixed(0) < 5 &&
+                    WeatherData?.weather[0].wind_speed.toFixed(0) > 2.9 ? (
+                    <p style={{ color: "#fc9701" }}>
+                      <b>·</b> 다소 선선한 바람이 불어요
+                    </p>
+                  ) : (
+                    <p style={{ color: "#27a80c" }}>
+                      <b>·</b> 바람이 거의 불지 않아요
+                    </p>
+                  )}
+
+                  {/* humidity */}
+                  {WeatherData?.weather[0].humidity > 60 ? (
+                    <p style={{ color: "#eb4343" }}>
+                      <b>·</b> 많이 습해서 불쾌지수가 올라가요
+                    </p>
+                  ) : WeatherData?.weather[0].humidity < 60 &&
+                    WeatherData?.weather[0].humidity > 30 ? (
+                    <p style={{ color: "#27a80c" }}>
+                      <b>·</b> 캠프파이어 하기 딱 좋아요
+                    </p>
+                  ) : (
+                    <p style={{ color: "#fc9701" }}>
+                      <b>·</b> 수분크림을 꼭 챙기세요
+                    </p>
+                  )}
+
+                  {/* uvi */}
+                  {WeatherData?.weather[0].uvi > 4.9 ? (
+                    <p style={{ color: "#eb4343" }}>
+                      <b>·</b> 야외활동을 추천하지 않아요
+                    </p>
+                  ) : WeatherData?.weather[0].uvi < 5 &&
+                    WeatherData?.weather[0].uvi == 3 ? (
+                    <p style={{ color: "#fc9701" }}>
+                      <b>·</b> 썬크림은 꼭 발라주세요
+                    </p>
+                  ) : (
+                    <p style={{ color: "#27a80c" }}>
+                      <b>·</b> 활동하기 좋은 햇볕이에요
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
             {/* 2층 */}
+            <hr />
             <div className="secondFloor">
-              <hr />
-              <img src="/images/sunrise.svg" alt="sunrise" />
-              <img src="/images/Sunset.svg" alt="sunset" />
+              <div className="iconBox">
+                <img src="/images/weatherIcon/icon-sunrise.svg" alt="sunrise" />
+                <span>{WeatherData?.weather[0].sunrise.slice(-7, -3)}am</span>
+                <span>일출</span>
+              </div>
+              <div className="iconBox">
+                <img src="/images/weatherIcon/icon-sunset.svg" alt="sunset" />
+                <span>{WeatherData?.weather[0].sunset.slice(-7, -3)}pm</span>
+                <span>일몰</span>
+              </div>
+              <div className="iconBox">
+                <img src="/images/weatherIcon/icon-snow.svg" alt="snow" />
+                <span>{WeatherData?.weather[0].rain}mm</span>
+                <span>강수량</span>
+              </div>
+              <div className="iconBox">
+                <img src="/images/weatherIcon/icon-cloud.svg" alt="cloud" />
+                <span>{WeatherData?.weather[0].clouds}%</span>
+                <span>구름</span>
+              </div>
             </div>
           </div>
         </WeatherModal>
@@ -309,7 +377,7 @@ const WeatherModal = styled.div<{ isWeather: boolean }>`
   height: ${(props) =>
     props.isWeather == false
       ? props.theme.pixelToRem(116)
-      : props.theme.pixelToRem(342)};
+      : props.theme.pixelToRem(414)};
   flex-grow: 0;
   margin: 0 auto;
   border-radius: ${(props) => props.theme.pixelToRem(10)};
@@ -443,7 +511,7 @@ const WeatherModal = styled.div<{ isWeather: boolean }>`
   /* 펼쳤을 때의 날씨 정보 (detail) */
   .isActive {
     width: inherit;
-    height: ${(props) => props.theme.pixelToRem(217)};
+    height: ${(props) => props.theme.pixelToRem(298)};
     margin: 0 auto;
     padding: 10px;
     visibility: ${(props) => (props.isWeather == true ? "visible" : "hidden")};
@@ -456,9 +524,73 @@ const WeatherModal = styled.div<{ isWeather: boolean }>`
       background: ${(props) => props.theme.colorTheme.border} !important;
     }
     .firstFloor {
+      height: ${(props) => props.theme.pixelToRem(193)};
+
+      .tempGraph {
+        width: inherit;
+        height: ${(props) => props.theme.pixelToRem(97)};
+        margin-top: 15px;
+        margin-bottom: 5px;
+        padding: 20px;
+
+        img {
+          display: flex;
+
+          &:first-child {
+            width: ${(props) => props.theme.pixelToRem(247)};
+            margin: 0 auto;
+            position: relative;
+          }
+          &:nth-child(2) {
+            width: ${(props) => props.theme.pixelToRem(24)};
+            margin-top: -12px;
+            margin-left: -5px;
+            position: absoulte;
+          }
+          &:nth-child(3) {
+            width: ${(props) => props.theme.pixelToRem(24)};
+            margin-top: -70px;
+            margin-left: 125px;
+            position: absoulte;
+          }
+          &:nth-child(4) {
+            width: ${(props) => props.theme.pixelToRem(24)};
+            margin-top: 20px;
+            margin-left: 255px;
+            position: absoulte;
+          }
+        }
+
+        span {
+          ${(props) => props.theme.fontTheme.Caption1};
+          line-height: 1.29;
+          letter-spacing: normal;
+          text-align: center;
+          position: absolute;
+          display: flex;
+
+          &:nth-child(5) {
+            width: ${(props) => props.theme.pixelToRem(30)};
+            margin-top: 3px;
+            margin-left: -6px;
+          }
+          &:nth-child(6) {
+            width: ${(props) => props.theme.pixelToRem(30)};
+            margin-top: -44px;
+            margin-left: 123px;
+          }
+          &:nth-child(7) {
+            width: ${(props) => props.theme.pixelToRem(30)};
+            margin-top: -1px;
+            margin-left: 255px;
+          }
+        }
+      }
+
       .infoBox {
         width: inherit;
-        height: ${(props) => props.theme.pixelToRem(117)};
+        height: ${(props) => props.theme.pixelToRem(67)};
+        margin-top: -14px;
         padding: 10px;
         justify-content: space-between;
         display: flex;
@@ -491,7 +623,6 @@ const WeatherModal = styled.div<{ isWeather: boolean }>`
             margin: -78px 52px 0px 81px;
             ${(props) => props.theme.fontTheme.Caption2};
             flex-grow: 0;
-            color: ${(props) => props.theme.colorTheme.text2} !important;
             line-height: 1.29;
             letter-spacing: normal;
             text-align: right;
@@ -501,6 +632,7 @@ const WeatherModal = styled.div<{ isWeather: boolean }>`
             p {
               margin-top: 6px;
               display: flex;
+              color: ${(props) => props.theme.colorTheme.text2} !important;
             }
           }
         }
@@ -528,6 +660,42 @@ const WeatherModal = styled.div<{ isWeather: boolean }>`
       }
     }
     .secondFloor {
+      height: ${(props) => props.theme.pixelToRem(102)};
+      padding: 25px;
+      justify-content: space-around;
+      gap: 20px;
+      display: flex;
+      .iconBox {
+        width: ${(props) => props.theme.pixelToRem(60)};
+        height: ${(props) => props.theme.pixelToRem(75)};
+        flex-direction: column;
+        text-align: center;
+
+        img {
+          width: ${(props) => props.theme.pixelToRem(26)};
+        }
+
+        span {
+          margin: 0 auto;
+          ${(props) => props.theme.fontTheme.Body2};
+          font-style: normal;
+          line-height: normal;
+          letter-spacing: normal;
+          text-align: center;
+          display: inline-block;
+
+          &:first-child {
+            font-size: ${(props) => props.theme.pixelToRem(16)};
+            color: #333;
+            position: relative;
+          }
+          &:last-child {
+            margin-top: 3px;
+            font-size: ${(props) => props.theme.pixelToRem(14)};
+            color: #797979;
+          }
+        }
+      }
     }
   }
 `;

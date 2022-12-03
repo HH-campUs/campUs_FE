@@ -106,6 +106,31 @@ export const useGetWeather = (pardo: string, date: string) => {
   return { WeatherData, isLoading, isError };
 };
 
+/* 추천 날씨 정보 조회 */
+
+export const useRecommendWeather = () => {
+  const useData = async () => {
+    const { data } = await instance.get<IGetWeather>(`/weathers/recommend`);
+    return data;
+  };
+
+  const {
+    data: RecommendData,
+    isLoading,
+    isError,
+  } = useQuery(["getRecommendWeather"], useData, {
+    onError: () => {
+      console.error("에러가 났습니다.");
+    },
+
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+  });
+  console.log(RecommendData);
+
+  return { RecommendData, isLoading, isError };
+};
+
 /* 정보 get Api 모음 */
 
 export const useGetApi = {

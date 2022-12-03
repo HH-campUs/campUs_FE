@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useRecommendWeather } from "../APIs/getApi";
 import styled, { keyframes } from "styled-components";
 
 import { useNavigate } from "react-router-dom";
@@ -9,6 +10,10 @@ import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 export default function Subject() {
   const navigate = useNavigate();
   const [isWeather, setIsWeather] = useState(false);
+
+  const { RecommendData, isLoading, isError } = useRecommendWeather();
+
+  console.log(RecommendData);
 
   const isModal = () => {
     setIsWeather((prev) => !prev);

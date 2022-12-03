@@ -5,9 +5,9 @@ import { showLo, selectLo } from "../store/locationAtom";
 import { StrMonth, StrDay, DateState } from "../store/dateAtom";
 import Search from "../components/withSearch/Search";
 import { isModal } from "../store/searchAtom";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { useGetApi, useGetCamp, useGetWeather } from "../APIs/getApi";
+import { useGetCamp, useGetWeather } from "../APIs/getApi";
 import { IGetCampResult } from "../interfaces/get";
 
 function Result() {
@@ -64,7 +64,8 @@ function Result() {
         <div
           onClick={() => {
             nav("/");
-          }}>
+          }}
+        >
           <div style={{ position: "relative" }}>
             <img src="/images/back.svg" alt="back" />
             <span style={{ width: "60px" }}>검색조건</span>
@@ -83,7 +84,8 @@ function Result() {
         <WeatherModal
           isWeather={isWeather}
           onClick={WeatherHandler}
-          style={{ transition: "all 0.5 ease-in-out" }}>
+          style={{ transition: "all 0.5 ease-in-out" }}
+        >
           <div className="top">
             <span>날씨</span>
             <span>{isWeather ? "펼치기" : "접기"}</span>
@@ -195,7 +197,8 @@ function Result() {
                           campId: `${item.campId}`,
                         },
                       })
-                    }>
+                    }
+                  >
                     <ResultImg src={item.ImageUrl} alt={item.ImageUrl} />
                     <InnerBg>
                       <span>

@@ -3,7 +3,7 @@ import { useMyPageApi } from "../../APIs/myPageApi";
 import { LoginState } from "../../store/loginAtom";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { IPickedCamp } from "../../interfaces/Posts";
 
@@ -11,11 +11,12 @@ export default function MyPick() {
   const isLogin = useRecoilValue(LoginState);
   const navigate = useNavigate();
 
+  //백엔드 로직 자체가 userId를 주는 거라서, 예외처리해서 찜 못하게 막아야 할 듯..?
   const myPick = useMyPageApi.useGetMyPick().data?.data.Pick;
-  const picked = myPick?.map((picks: IPickedCamp) => picks.Camp);
+  const picked = myPick?.map((picks: IPickedCamp) => picks.Camp) || [];
   console.log(picked);
   console.log(myPick);
-
+  // const picke = mypick?.~~~~~ || [];
   // const { Pick } = useMyPageApi.useGetMyPage().data?.data;
   // console.log(Pick);
   // const picked = Pick?.map((picks: IPickedCamp) => picks.Camp);
@@ -139,4 +140,5 @@ const PickBtn = styled.button`
   border: solid 1px #222;
   background-color: #fff;
   border-radius: 50px;
+  cursor: pointer;
 `;

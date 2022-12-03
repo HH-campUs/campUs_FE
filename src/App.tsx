@@ -13,7 +13,6 @@ import Splash from "./pages/Splash";
 
 import Topic from "./pages/Topic";
 import Detail from "./pages/Detail";
-import Dannounce from "./pages/DetailPage/Dannounce";
 import Ddetail from "./pages/DetailPage/Ddetail";
 import Dreview from "./pages/DetailPage/Dreview";
 import Result from "./pages/Result";
@@ -138,12 +137,11 @@ function App() {
                 <Route path="signup" element={<SignUp />} />
 
                 {/* <Route path="detail" element={<Detail />} /> */}
-                <Route path="/detail/:id" element={<Detail />}>
-                  <Route path="/detail/:id/announce" element={<Dannounce />} />
-                  <Route path="/detail/:id/detail" element={<Ddetail />} />
-                  <Route path="/detail/:id/review" element={<Dreview />} />
+                <Route path="/detail/:campId" element={<Detail />}>
+                  <Route path="/detail/:campId/detail" element={<Ddetail />} />
+                  <Route path="/detail/:campId/review" element={<Dreview />} />
                 </Route>
-                <Route path="/review" element={<Review />} />
+                <Route path="/review/:campId" element={<Review />} />
 
                 <Route path="mypage" element={<Mypage />} />
                 <Route path="/mypage/" element={<Mypage />}>

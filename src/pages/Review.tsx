@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 import styled from "styled-components";
 import { usePostsApi } from "../APIs/postsApi";
 import { IReviewPosts } from "../interfaces/Posts";
 
 export default function Review() {
+  const navigate = useNavigate();
   const reviewPost = usePostsApi.usePostReview();
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<IReviewPosts>();
 
@@ -34,7 +35,6 @@ export default function Review() {
   };
   console.log(imagePreview);
 
-  // e: React.ChangeEvent<HTMLInputElement>
   const handleValid = (data: IReviewPosts) => {
     const body = {
       reviewComment: data.reviewComment,
@@ -48,7 +48,14 @@ export default function Review() {
   return (
     <Wrapper>
       <Head>
-        <img src="/images/back.svg" alt="back" style={{ marginLeft: "20px" }} />
+        <img
+          src="/images/back.svg"
+          alt="back"
+          style={{ marginLeft: "20px" }}
+          onClick={() => {
+            navigate(-1);
+          }}
+        />
         <HeadText>리뷰쓰기</HeadText>
       </Head>
       <ReviewImgBox>
@@ -67,7 +74,7 @@ export default function Review() {
       </VisitDay>
       <Line />
       <RecoBox>
-        <Best>
+        <RecoBtn>
           <ImgDiv>
             <img
               src="/images/review/best.svg"
@@ -81,8 +88,8 @@ export default function Review() {
             />
           </ImgDiv>
           <p>최고!추천해요!</p>
-        </Best>
-        <Best>
+        </RecoBtn>
+        <RecoBtn>
           <ImgDiv>
             <img
               src="/images/review/Bethumbsup.svg"
@@ -92,14 +99,14 @@ export default function Review() {
           </ImgDiv>
 
           <p>좋았어요!</p>
-        </Best>
-        <Best>
+        </RecoBtn>
+        <RecoBtn>
           <ImgDiv>
             <img src="/images/review/thumbdown.svg" alt="best" />
           </ImgDiv>
 
           <p>추천하지 않아요</p>
-        </Best>
+        </RecoBtn>
       </RecoBox>
       <ReviewTip>
         <HeadLine>
@@ -140,7 +147,7 @@ export default function Review() {
             />
           </Upload>
           {imagePreview.map((image, id) => (
-            <img src={image} alt={`${image}-${id}`} key={id} />
+            <img src={image} alt="reviewImg" key={id} />
           ))}
         </ImgList>
         <StBtn>리뷰 남기기</StBtn>
@@ -225,7 +232,7 @@ const RecoBox = styled.div`
   display: flex;
 `;
 
-const Best = styled.button`
+const RecoBtn = styled.button`
   width: 120px;
   height: 100px;
   border: 0;

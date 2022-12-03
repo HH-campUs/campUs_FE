@@ -2,7 +2,29 @@ import React from "react";
 import styled from "styled-components";
 import KaKaomap from "../../components/KaKaomap";
 
+// 1rem 16px <
+
+function Ddetail() {
+  return (
+    <Wrapper>
+      <InfoBox>
+        <Title>기본 정보</Title>
+        <BasicInfo>화장실 1개, 개수대 1개, 샤워실 1개</BasicInfo>
+        <InfoTitle>정보 제목</InfoTitle>
+        <InfoDetail>정보내용적는곳 / img</InfoDetail>
+      </InfoBox>
+      <MapWrapper>
+        <MapTitle>지도</MapTitle>
+        <KaKaomap />
+      </MapWrapper>
+    </Wrapper>
+  );
+}
+
+export default Ddetail;
+
 const Wrapper = styled.div`
+  margin-top: 20px;
   margin-bottom: 80px;
 `;
 
@@ -35,11 +57,10 @@ const InfoDetail = styled.div`
 `;
 
 const MapWrapper = styled.div`
-  margin-left: 10px;
-  width: 455px;
+  margin: 0 auto;
+  width: ${(props) => props.theme.pixelToRem(355)};
   height: 300px;
   justify-content: center;
-  /* background-color: red; */
 `;
 
 const MapTitle = styled.div`
@@ -47,24 +68,3 @@ const MapTitle = styled.div`
   font-size: 1.3rem;
   margin-bottom: 1rem;
 `;
-
-// 1rem 16px <
-
-function Ddetail() {
-  return (
-    <Wrapper>
-      <InfoBox>
-        <Title>기본 정보</Title>
-        <BasicInfo>화장실 1개, 개수대 1개, 샤워실 1개</BasicInfo>
-        <InfoTitle>정보 제목</InfoTitle>
-        <InfoDetail>정보내용적는곳 / img</InfoDetail>
-      </InfoBox>
-      <MapWrapper>
-        <MapTitle>지도</MapTitle>
-        <KaKaomap />
-      </MapWrapper>
-    </Wrapper>
-  );
-}
-
-export default Ddetail;

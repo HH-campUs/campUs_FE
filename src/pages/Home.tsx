@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from "react";
 import Carousel from "../components/Carousel";
 
 import MytravelPlan from "../components/MytravelPlan";
@@ -8,34 +7,13 @@ import Search from "../components/withSearch/Search";
 import WeekWeather from "../components/WeekWeather";
 import { useRecoilState } from "recoil";
 import { isModal } from "../store/searchAtom";
-
+import BsPlug from "react-icons";
 //Css
 import styled from "styled-components";
 import { useGetApi } from "../APIs/getApi";
 
 function Home() {
   const [isSearch, setIsSearch] = useRecoilState(isModal);
-
-  const getCamp = useGetApi.useGetTopicResult().data;
-
-  const iconArr = [
-    "전기",
-    "무선인터넷",
-    "장작판매",
-    "온수",
-    "트렘폴린",
-    "물놀이장",
-    "놀이터",
-    "산책로",
-    "운동장",
-    "운동시설",
-    "마트.편의점",
-  ];
-
-  const IconPop = () => {
-    if (!getCamp) return;
-    getCamp.topicCamp[0].sbrsCl;
-  };
 
   const openModal = () => {
     setIsSearch(true);

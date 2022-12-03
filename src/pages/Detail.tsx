@@ -1,9 +1,9 @@
-import React, { useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 
 import styled from "styled-components";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import { Link, Outlet, useMatch, useLocation } from "react-router-dom";
+import { Outlet, useMatch, useLocation, useNavigate } from "react-router-dom";
 import Search from "../components/withSearch/Search";
 import { isModal } from "../store/searchAtom";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder"; //empty
@@ -11,9 +11,9 @@ import BookmarkIcon from "@mui/icons-material/Bookmark"; //filled
 import { useGetApi } from "../APIs/getApi";
 
 function Detail() {
+  const navigate = useNavigate();
   const [isSearch, setIsSearch] = useRecoilState(isModal);
 
-  const announceMatch = useMatch("/detail/:id/announce");
   const detailMatch = useMatch("/detail/:id/detail");
   const reviewMatch = useMatch("/detail/:id/review");
 
@@ -28,6 +28,27 @@ function Detail() {
   const marking = () => {
     setBookMark((prev) => !prev);
   };
+
+  useEffect(() => {
+    if (!campDetail) return;
+    console.log(campDetail.data);
+  }, []);
+
+  // [{전기,"/images/back.svg"}].map((qwer) => {<img src="{adsf}"></img>})
+  // 진기 ? 아이콘 : null
+  const iconArr = [
+    "전기",
+    "무선인터넷",
+    "장작판매",
+    "온수",
+    "트렘폴린",
+    "물놀이장",
+    "놀이터",
+    "산책로",
+    "운동장",
+    "운동시설",
+    "마트.편의점",
+  ];
 
   return (
     <>
@@ -152,14 +173,31 @@ function Detail() {
         <GrayHr />
 
         <Tabs>
-          <Tab isActive={Boolean(announceMatch)}>
-            <Link to="/detail/:id/announce"> 공지사항 </Link>
-          </Tab>
           <Tab isActive={Boolean(detailMatch)}>
-            <Link to="/detail/:id/detail"> 상세정보</Link>
+            <TabClick
+              onClick={() =>
+                navigate(`/detail/:${state.campId}/detail`, {
+                  state: {
+                    campId: `${state.campId}`,
+                  },
+                })
+              }
+            >
+              상세정보
+            </TabClick>
           </Tab>
           <Tab isActive={Boolean(reviewMatch)}>
-            <Link to="/detail/:id/review"> 리뷰</Link>
+            <TabClick
+              onClick={() =>
+                navigate(`/detail/:${state.campId}/review`, {
+                  state: {
+                    campId: `${state.campId}`,
+                  },
+                })
+              }
+            >
+              리뷰
+            </TabClick>
           </Tab>
         </Tabs>
         <div>
@@ -175,6 +213,7 @@ export default Detail;
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
+  width: ${(props) => props.theme.pixelToRem(375)};
 `;
 
 const MainImage = styled.div`
@@ -205,9 +244,6 @@ const TopNavContainer = styled.div`
 `;
 
 const MiddleContainer = styled.div`
-  margin-top: 8px;
-  margin-left: 40px;
-  padding: 0 20px 0 20px;
   width: 95%;
   height: 120px;
   display: flex;
@@ -261,9 +297,10 @@ const DownWrapper = styled.div`
 `;
 
 const PickBox = styled.div`
+  background-color: red;
   margin-top: -65px;
-  margin-left: -11px;
-  padding: 0 20px 0 20px;
+  /* margin-left: -11px; */
+  /* padding: 0 20px 0 20px; */
   height: 60px;
   gap: 6px;
   text-align: center;
@@ -430,16 +467,15 @@ const TheIcon = styled.div`
 `;
 
 const Tabs = styled.div`
-  width: 380px;
+  width: ${(props) => props.theme.pixelToRem(375)};
   display: flex;
   justify-content: center;
   align-content: center;
-  margin: 30px 45px;
-  gap: 10px;
+  margin: 5px;
 `;
 
 const Tab = styled.span<{ isActive: boolean }>`
-  width: 33%;
+  width: 50%;
   text-align: center;
   font-size: 15px;
   font-weight: 500;
@@ -448,4 +484,8 @@ const Tab = styled.span<{ isActive: boolean }>`
   border-bottom: ${(props) => (props.isActive ? "3px solid black" : "none")};
   color: ${(props) =>
     props.isActive ? props.theme.accentColor : props.theme.textColor};
+`;
+
+const TabClick = styled.div`
+  cursor: pointer;
 `;

@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { isModal } from "../store/searchAtom";
 import Search from "../components/withSearch/Search";
 import { Link, Outlet, useMatch, useNavigate } from "react-router-dom";
 
 import ProfileModal from "../components/ProfileModal";
 
-import { IPickedCamp } from "../interfaces/Posts";
 //Login
 import { LoginState } from "../store/loginAtom";
 import { useMyPageApi } from "../APIs/myPageApi";
@@ -76,7 +75,8 @@ function Mypage() {
               <div
                 style={{
                   marginTop: "-120px",
-                }}>
+                }}
+              >
                 <Outlet />
               </div>
             </UserProfile>
@@ -97,14 +97,16 @@ function Mypage() {
                   onClick={(e) => {
                     e.preventDefault();
                     navigate("/login");
-                  }}>
+                  }}
+                >
                   로그인
                 </LoginBtn>
                 <SignBtn
                   onClick={(e) => {
                     e.preventDefault();
                     navigate("/signup");
-                  }}>
+                  }}
+                >
                   회원가입
                 </SignBtn>
               </LoginBox>
@@ -123,7 +125,8 @@ function Mypage() {
                 style={{
                   // height: "100vh",
                   marginTop: "20px",
-                }}>
+                }}
+              >
                 <Outlet />
               </div>
             </UserProfile>

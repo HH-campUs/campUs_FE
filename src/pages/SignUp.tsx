@@ -17,7 +17,7 @@ export default function SignUp() {
     register,
     handleSubmit,
     watch,
-    formState: { errors, isSubmitted },
+    formState: { errors },
   } = useForm<ISignUpForm>();
 
   const [mailCK, setMailCk] = useState(false);
@@ -72,7 +72,7 @@ export default function SignUp() {
         <div>
           <KeyboardArrowLeftIcon
             sx={{ fontSize: 40, marginLeft: "10px" }}
-            onClick={() => navigate("-1")}
+            onClick={() => navigate(-1)}
           />
         </div>
 

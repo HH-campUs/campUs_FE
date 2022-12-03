@@ -32,7 +32,11 @@ export default function TopicMap({ Camp }: { Camp: IGetCampResult }) {
               unpick(Camp.campId);
             }}
           >
-            <img src="/images/picked2.svg" alt="Bookmarked" />
+            <img
+              src="/images/picked2.svg"
+              alt="Bookmarked"
+              style={{ width: "36px", height: "36px" }}
+            />
           </BookmarkBorderIcon>
         </CampImgBox>
       ) : (
@@ -42,7 +46,11 @@ export default function TopicMap({ Camp }: { Camp: IGetCampResult }) {
               pick(Camp.campId);
             }}
           >
-            <img src="/images/pick1.svg" alt="Bookmark" />
+            <img
+              src="/images/pick1.svg"
+              alt="Bookmark"
+              style={{ width: "36px", height: "36px" }}
+            />
           </Bookmark>
         </CampImgBox>
       )}
@@ -52,28 +60,13 @@ export default function TopicMap({ Camp }: { Camp: IGetCampResult }) {
 
 const Bookmark = styled.div`
   position: absolute;
-  top: 5px;
-  right: 15px;
+  top: 10px;
+  right: 10px;
 `;
 const BookmarkBorderIcon = styled.div`
   position: absolute;
-  top: 5px;
-  right: 15px;
-`;
-
-const ResultItem = styled.div`
-  width: ${(props) => props.theme.pixelToRem(160)};
-  height: ${(props) => props.theme.pixelToRem(139)};
-  /* font-size: ${(props) => props.theme.pixelToRem(16)}; */
-  border-radius: 10px;
+  top: 10px;
+  right: 10px;
 `;
 
 const CampImgBox = styled.div``;
-
-const CampImg = styled.img`
-  width: 100%;
-  height: 100%;
-  border-radius: 10px;
-  /* display: block; */
-  object-fit: cover;
-`;

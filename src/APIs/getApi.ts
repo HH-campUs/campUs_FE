@@ -58,6 +58,7 @@ export const useGetTopicInfinite = (topicId: string) => {
     const { data } = await instance.get<pickedCamp>(
       `/camps/${topicId}?&numOfRows=10&pageNo=${pageParam}`
     );
+
     console.log(data.topicCamp);
     return {
       campTopic: data.topicCamp,

@@ -1,13 +1,26 @@
 import React from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 function Dreview() {
+  const navigate = useNavigate();
+  const loca = useLocation();
+  const state = loca.state as { campId: number };
+
   return (
     <Wrapper>
       <ReviewBox>
         <ReviewText>전체리뷰</ReviewText>
         <ReviewNum>123</ReviewNum>
-        <ReviewIcon>
+        <ReviewIcon
+          onClick={() =>
+            navigate(`/review/:${state.campId}/`, {
+              state: {
+                campId: `${state.campId}`,
+              },
+            })
+          }
+        >
           <img src="/images/icon-review2.svg" />
         </ReviewIcon>
       </ReviewBox>
@@ -18,6 +31,7 @@ function Dreview() {
 export default Dreview;
 
 const Wrapper = styled.div`
+  margin-top: 20px;
   display: flex;
   flex-direction: column;
   position: relative;

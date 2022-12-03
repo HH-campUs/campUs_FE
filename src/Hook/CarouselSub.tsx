@@ -19,7 +19,7 @@ export default function CarouselSub() {
     return v;
   };
 
-  const { id } = useParams();
+  // const { id } = useParams();
 
   const handleClick = (id: number) => () => {
     navigate(`/topic/${id}`);

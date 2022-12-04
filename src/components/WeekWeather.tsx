@@ -142,20 +142,18 @@ const Wrapper = styled.div`
 `;
 
 const WeatherModal = styled.div`
-  height: 60px;
+  width: ${(props) => props.theme.pixelToRem(375)};
+  height: ${(props) => props.theme.pixelToRem(60)};
   background-color: #85a8e6;
   display: flex;
   justify-content: center;
   align-items: center;
   align-content: center;
-  width: 375px;
 
   &.isActive {
     height: 25rem;
-    width: 475px;
+    width: ${(props) => props.theme.pixelToRem(475)};
     bottom: 0;
-    /* position없으면 위치속성 안먹음. */
-    /* transform -> 위치작용 */
     position: relative;
     z-index: 100;
     animation: ${slideIn};
@@ -203,18 +201,9 @@ const Container = styled.div`
   }
 `;
 
-// const ModalBg = styled.div`
-//   width: 100%;
-//   height: 100%;
-//   background-color: rgba(0, 0, 0, 0.55);
-//   backdrop-filter: blur(6px);
-//   animation-name: ${fadeIn};
-//   animation-duration: 0.2s;
-// `;
-
 const ModalBox = styled.div`
-  height: 100px;
-  width: 475px;
+  height: 100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
 `;

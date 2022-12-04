@@ -18,7 +18,7 @@ function Mypage() {
   const checkPf = useMyPageApi.useGetMyPage().data?.data;
   const [toKen, setToken] = useRecoilState(LoginState);
   const [isSearch, setIsSearch] = useRecoilState(isModal);
-
+  console.log();
   const [isPopUp, setIsPopUp] = useState(false);
   const myReviewMatch = useMatch("/mypage/myreview");
   const myPickMatch = useMatch("/mypage/mypick");
@@ -35,31 +35,27 @@ function Mypage() {
       <Wrapper>
         {toKen ? (
           <>
-            <HeadText>campUs</HeadText>
             <UserProfile>
-              <Profile>
-                <>
+              <LoginProfile>
+                <HeadText>campUs</HeadText>
+                <ProfileBox>
                   <ProfileCircle>
                     <img
                       src={checkPf?.profileImg}
                       alt="PFP"
-                      height={"75px"}
-                      width={"75px"}
-                      style={{ borderRadius: "125px", objectFit: "cover" }}
+                      height={"48px"}
+                      width={"48px"}
+                      style={{ borderRadius: "48px", objectFit: "cover" }}
                     />
                   </ProfileCircle>
-                  <ProfileText>
-                    <Welcome>반갑습니다 {checkPf?.nickname} 님!</Welcome>
-                    <Nickname>@email주소</Nickname>
-                  </ProfileText>
-
+                  <LoginPfText>
+                    <Nickname>{checkPf?.nickname} 님!</Nickname>
+                    <EmailAddress>{checkPf?.email}</EmailAddress>
+                  </LoginPfText>
                   <ProfileModal isPopUp={isPopUp} setIsPopUp={setIsPopUp} />
-                </>
-
-                {/* <Alarmbell> 
-              <NotificationsNoneIcon sx={{ marginLeft: "10px" }} />
-            </Alarmbell> */}
-              </Profile>
+                </ProfileBox>
+                <Line></Line>
+              </LoginProfile>
 
               <Tabs>
                 <Tab isActive={Boolean(myPickMatch)}>
@@ -83,34 +79,35 @@ function Mypage() {
           </>
         ) : (
           <>
-            <HeadText>campUs</HeadText>
             <UserProfile>
               <Profile>
+                <HeadText>campUs</HeadText>
                 <ProfileText>
-                  <Welcome style={{ margin: "50px", fontSize: "1.1rem" }}>
+                  <Welcome>
                     로그인 하고 더 많은 <br></br>기능을 사용해 보세요!
                   </Welcome>
                 </ProfileText>
+                <LoginBox>
+                  <LoginBtn
+                    onClick={(e) => {
+                      e.preventDefault();
+                      navigate("/login");
+                    }}
+                  >
+                    로그인
+                  </LoginBtn>
+                  <SignBtn
+                    onClick={(e) => {
+                      e.preventDefault();
+                      navigate("/signup");
+                    }}
+                  >
+                    회원가입
+                  </SignBtn>
+                </LoginBox>
               </Profile>
-              <LoginBox>
-                <LoginBtn
-                  onClick={(e) => {
-                    e.preventDefault();
-                    navigate("/login");
-                  }}
-                >
-                  로그인
-                </LoginBtn>
-                <SignBtn
-                  onClick={(e) => {
-                    e.preventDefault();
-                    navigate("/signup");
-                  }}
-                >
-                  회원가입
-                </SignBtn>
-              </LoginBox>
-              <Tabs style={{ marginTop: "200px" }}>
+
+              <Tabs>
                 <Tab isActive={Boolean(myPickMatch)}>
                   <Link to="/mypage/mypick">찜한 캠핑장</Link>
                 </Tab>
@@ -140,169 +137,122 @@ function Mypage() {
 export default Mypage;
 
 const Wrapper = styled.div`
+  width: ${(props) => props.theme.pixelToRem(375)};
   display: flex;
   flex-direction: column;
-  height: 95vh;
+  height: 100vh;
 `;
 
 const HeadText = styled.div`
   font-size: ${(props) => props.theme.pixelToRem(20)};
   margin-top: 20px;
-  margin-left: 50px;
+  margin-left: 20px;
   line-height: 1.5;
   color: #222;
 `;
 
 const UserProfile = styled.div`
-  height: 200px;
   display: flex;
   flex-direction: column;
   position: relative;
-  /* background-color: lightgray; */
 `;
 
 const Profile = styled.div`
-  width: 100%;
-  height: 70%;
-  position: absolute;
+  width: ${(props) => props.theme.pixelToRem(375)};
+  height: ${(props) => props.theme.pixelToRem(286)};
+  background-color: #f5f5f5;
+  /* background-color: blue; */
+`;
+
+const LoginProfile = styled.div``;
+
+const ProfileBox = styled.div`
   display: flex;
-  align-items: center;
 `;
 
 const ProfileCircle = styled.div`
-  width: 75px;
-  height: 75px;
-  border-radius: 75px;
-  margin: 25px;
+  width: ${(props) => props.theme.pixelToRem(48)};
+  height: ${(props) => props.theme.pixelToRem(48)};
+  border-radius: ${(props) => props.theme.pixelToRem(48)};
+  margin: 24px 14px 17px 20px;
 `;
 
-const ProfileText = styled.div`
-  /* margin-top: -40px; */
-`;
-
-const Welcome = styled.div`
-  margin-top: 8px;
-  font-weight: 500;
-  font-size: ${(props) => props.theme.pixelToRem(22)};
-  line-height: 1.27;
-  /* text-align: left; */
-`;
+const LoginPfText = styled.div``;
 
 const Nickname = styled.div`
+  margin-top: 27px;
+  font-size: ${(props) => props.theme.pixelToRem(18)};
+  font-weight: 500;
+  color: #222;
+`;
+
+const EmailAddress = styled.div`
+  font-size: ${(props) => props.theme.pixelToRem(14)};
+  color: #666;
   margin-top: 5px;
 `;
 
-const ProfileArrow = styled.div`
-  align-items: center;
+const ProfileText = styled.div`
   display: flex;
 `;
 
-const Alarmbell = styled.div``;
+const Welcome = styled.div`
+  margin-top: 48px;
+  margin-left: 20px;
+  font-weight: 500;
+  font-size: ${(props) => props.theme.pixelToRem(18)};
+  line-height: 1.27;
+  color: #666;
+`;
 
 const LoginBox = styled.div`
   display: flex;
-  gap: 15px;
-  margin: 110px auto;
+  margin-top: 30px;
+  margin-left: 20px;
+  gap: ${(props) => props.theme.pixelToRem(11)};
 `;
 
 const LoginBtn = styled.button`
-  width: 180px;
-  height: 48px;
-  font-size: 1rem;
-  border: 0.5px none grey;
-  /* margin-top: 40px; */
-  border-radius: 8px;
-  color: ${(props) => props.theme.textColor};
+  width: ${(props) => props.theme.pixelToRem(162)};
+  height: ${(props) => props.theme.pixelToRem(48)};
+  font-size: ${(props) => props.theme.pixelToRem(16)};
+  border: 1px solid #024873;
+  border-radius: ${(props) => props.theme.pixelToRem(10)};
+  background-color: #fff;
+  color: #024873;
   cursor: pointer;
 `;
 
 const SignBtn = styled.button`
-  width: 180px;
-  height: 48px;
-  font-size: 1rem;
-  border: 0.5px none grey;
-  /* margin-top: 40px; */
-  border-radius: 8px;
-  color: whitesmoke;
+  width: ${(props) => props.theme.pixelToRem(162)};
+  height: ${(props) => props.theme.pixelToRem(48)};
+  font-size: ${(props) => props.theme.pixelToRem(16)};
+  border: 1px solid #024873;
+  border-radius: ${(props) => props.theme.pixelToRem(10)};
+  color: #fff;
   background-color: #024873;
   cursor: pointer;
 `;
 
 const Tabs = styled.div`
-  width: 380px;
+  width: ${(props) => props.theme.pixelToRem(375)};
+  height: ${(props) => props.theme.pixelToRem(25)};
+  margin-top: 40px;
+  margin-left: 20px;
   display: flex;
-  margin: 170px 45px;
-  gap: 10px;
-  position: absolute;
+  gap: ${(props) => props.theme.pixelToRem(16)};
 `;
 
 const Tab = styled.span<{ isActive: boolean }>`
-  width: 33%;
-  text-align: center;
-  font-size: 1rem;
-  font-weight: 500;
-
+  font-size: ${(props) => props.theme.pixelToRem(20)};
+  font-weight: 600;
   background-color: ${(props) => props.theme.bgColor};
-  padding: 7px 0px;
-  /* border-bottom padding webkit */
-  border-bottom: ${(props) => (props.isActive ? "3px solid black" : "none")};
-  color: ${(props) =>
-    props.isActive ? props.theme.accentColor : props.theme.textColor};
+  border-bottom: ${(props) => (props.isActive ? "2px solid black" : "none")};
+  color: ${(props) => (props.isActive ? "#222" : "#ccc")};
 `;
 
-//useForm사용해야 할 것 같다.
-//userProfile변경위함.
-
-//const { register, handleSubmit, watch, setValue } = useForm();
-//watch = getter. , setValue = setter.
-// const photo = watch("photo");
-// console.log(photo);
-
-// const onValid = async (data) => {
-//   const title = data.title;
-//   const content = data.content;
-//   const image = data.photo[0];
-//   const formData = new FormData();
-
-//   formData.append("title", title);
-//   formData.append("content", content);
-//   formData.append("image", image);
-
-//   const serverUrl = process.env.REACT_APP_API;
-
-//   await axios({
-//     method: "POST",
-//     url: `${serverUrl}/posts`,
-//     mode: "cors",
-//     headers: {
-//       "Content-Type": "multipart/form-data",
-//       accessToken: `${getCookie("accessToken")}`,
-//       refreshToken: `${getCookie("refreshToken")}`,
-//     },
-//     data: formData,
-//   });
-
-//   navigate("/posts");
-// };
-
-// useEffect(() => {
-//   setValue("photo", []);
-// }, []);
-
-// useEffect(() => {
-//   if (photo && photo.length > 0) {
-//     const file = photo[0];
-//     setPreviewImg(URL.createObjectURL(file));
-//   }
-// }, [photo]);
-
-//img 미리보기.
-// const encodeFileToBase64 = (fileBlob) => {
-//   const reader = new FileReader();
-//   reader.readAsDataURL(fileBlob);
-//   return new Promise(() => {
-//     reader.onload = () => {
-//       setPreviewImg(reader.result);
-//     };
-//   });
-// };
+const Line = styled.div`
+  border-bottom: 1px solid #eee;
+  width: 355px;
+  margin: 0 auto;
+`;

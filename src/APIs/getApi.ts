@@ -52,7 +52,6 @@ export const useGetCamp = (doNm: string) => {
 };
 
 //infiniteQuery for Topic
-// &userId=${userId}   userId: number
 export const useGetTopicInfinite = (topicId: string) => {
   const topicData = async ({ pageParam = 0 }) => {
     const { data } = await instance.get<pickedCamp>(
@@ -111,7 +110,7 @@ export const useGetWeather = (pardo: string, date: string) => {
 
 export const useGetApi = {
   useGetCampDetail: (campId: number) => {
-    return useQuery<IGetCampResult>(
+    return useQuery<campArray>(
       ["campDetail"],
       async () => {
         const { data } = await instance.get(`/camps/detail/${campId}`);
@@ -134,6 +133,14 @@ export const useGetApi = {
       );
       console.log(data);
       return data[0];
+    });
+  },
+
+  useGetSort: () => {
+    return useQuery(["topicSort"], async () => {
+      const { data } = await instance.get<IGetCampResult>(`/camps/sort`);
+      console.log(data);
+      return data;
     });
   },
 

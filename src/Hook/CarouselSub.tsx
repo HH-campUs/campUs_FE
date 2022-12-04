@@ -131,83 +131,56 @@ export default function CarouselSub() {
   );
 }
 
-//carousel 한칸씩 되게는 할수가 없나?
-
 const CarouselViewer = styled.div`
-  width: 375px;
-  height: 200px !important;
+  width: ${(props) => props.theme.pixelToRem(355)};
+  height: ${(props) => props.theme.pixelToRem(210)} !important;
   overflow: hidden;
   user-select: none;
-  margin-top: 15px;
+  margin-top: 18px; ;
 `;
 
 const CarouselSlider = styled.div`
   display: flex;
-  position: relative;
 `;
-
-// const CarouselSlide = styled.div`
-//   flex-shrink: 0;
-//   display: block;
-//   position: relative;
-// `;
 
 const CaroImgBox = styled.div`
   display: flex;
-  gap: 1.2rem;
-  /* filter: blur(0.5px); */
 `;
 
 const CarouselImg = styled.img`
-  width: 160px;
-  height: 200px;
-  margin: auto;
-  /* border: 1px solid red; */
-  border-radius: 1rem;
+  width: ${(props) => props.theme.pixelToRem(140)};
+  height: ${(props) => props.theme.pixelToRem(202)};
+  border-radius: ${(props) => props.theme.pixelToRem(10)};
   object-fit: cover;
-  margin: auto;
   transition: all 0.3s ease;
   flex: none;
 `;
 
 const BoxEx = styled.div`
   position: relative;
-  width: 160px;
-  /* background-color: red; */
+  width: ${(props) => props.theme.pixelToRem(156)};
 `;
 
 const New = styled.div`
-  font-size: 1rem;
+  width: ${(props) => props.theme.pixelToRem(40)};
+  height: ${(props) => props.theme.pixelToRem(16)};
+  font-size: 0.8rem;
+  padding-left: 6px;
   position: absolute;
   color: black;
-  padding: 3px;
-  border-radius: 13px;
-  border: 1px solid whitesmoke;
-  background-color: whitesmoke;
+  border-radius: ${(props) => props.theme.pixelToRem(14)};
+  background-color: #fff;
   margin: 10px;
 `;
 
 const CaroText = styled.div`
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: 10px;
+  right: 40%;
+  bottom: ${(props) => props.theme.pixelToRem(14)};
   position: absolute;
-  color: whitesmoke;
-  font-weight: 400;
-  font-size: 1rem;
-  /* justify-content: center;
-  align-items: center;
-  text-align: center; */
+  color: #fff;
+  font-weight: 500;
+  font-size: ${(props) => props.theme.pixelToRem(14)};
 `;
-
-{
-  /* <CarouselImg
-            draggable={false}
-            src={"/images/subject/image5.jpg"}
-            alt="img"
-            width={width}
-          /> */
-}
 
 //  {imageList.map((imageLists,i)=>{
 //           <BoxEx ket={i}>

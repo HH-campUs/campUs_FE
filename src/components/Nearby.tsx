@@ -9,33 +9,41 @@ export default function Nearby() {
     <Wrapper>
       <TextBox>가장 가까운 캠핑장</TextBox>
       <PlanBox>
-        <MapBox>
-          <KaKaomap />
-        </MapBox>
-        <Distance>
-          <DistanceText>10km | 20분</DistanceText>
-          <LocationName>캠핑장 이름 적는곳</LocationName>
-          <HashTag>반려동물</HashTag>
-        </Distance>
+        <PlanWrapper>
+          <MapBox>
+            <KaKaomap />
+            {/* <KaKaomap /> */}
+          </MapBox>
+
+          <RightBox>
+            <DistanceText>10km | 20분</DistanceText>
+            <LocationName>캠핑장 이름 적는곳</LocationName>
+            <HashTag>운동시설</HashTag>
+          </RightBox>
+        </PlanWrapper>
       </PlanBox>
+      {/* <CenterLine></CenterLine> */}
     </Wrapper>
   );
 }
 
 const Wrapper = styled.div`
-  margin: 40px 10px 20px 10px;
+  margin: 40px 20px;
   font-weight: 500; //temporary
-  height: 200px;
-  width: 375px;
+  width: 100%;
+  /* width: ${(props) => props.theme.pixelToRem(375)}; */
+  flex-direction: column;
 `;
 
 const TextBox = styled.div`
   margin-bottom: 10px;
+  font-size: ${(props) => props.theme.pixelToRem(20)};
+  font-weight: 600;
 `;
 
 const PlanBox = styled.div`
-  width: 355px;
-  height: 120px;
+  width: ${(props) => props.theme.pixelToRem(336)};
+  height: ${(props) => props.theme.pixelToRem(264)};
   border-radius: 10px;
   box-shadow: 15px;
   background-color: whitesmoke;
@@ -45,18 +53,22 @@ const PlanBox = styled.div`
   position: relative;
 `;
 
+const PlanWrapper = styled.div`
+  margin: 18px 16px;
+  display: flex;
+`;
+
 const MapBox = styled.div`
   position: relative;
-  width: 120px;
-  height: 100% !important;
-  border-radius: 10px;
+  width: ${(props) => props.theme.pixelToRem(100)};
+  height: ${(props) => props.theme.pixelToRem(100)} !important;
+  border-radius: ${(props) => props.theme.pixelToRem(10)};
   background-color: grey;
   /* margin: 20px 10px; */
 `;
 
-const Distance = styled.div`
-  margin: 20px 20px;
-  padding: 5px;
+const RightBox = styled.div`
+  margin-left: 16px;
 `;
 
 const DistanceText = styled.div``;
@@ -75,3 +87,9 @@ const HashTag = styled.div`
   text-align: center;
   padding: 2px;
 `;
+
+// const CenterLine = styled.div`
+//   width: ${(props) => props.theme.pixelToRem(300)};
+//   height: ${(props) => props.theme.pixelToRem(1)};
+//   background-color: red;
+// `;

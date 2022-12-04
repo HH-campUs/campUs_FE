@@ -7,10 +7,10 @@ import Search from "../components/withSearch/Search";
 import WeekWeather from "../components/WeekWeather";
 import { useRecoilState } from "recoil";
 import { isModal } from "../store/searchAtom";
-import BsPlug from "react-icons";
+import NewReview from "../components/NewReview";
+
 //Css
 import styled from "styled-components";
-import { useGetApi } from "../APIs/getApi";
 
 function Home() {
   const [isSearch, setIsSearch] = useRecoilState(isModal);
@@ -43,7 +43,7 @@ function Home() {
   const backgroundPhrase = backgroundArr[randomIndex];
 
   return (
-    <>
+    <Wrapper>
       {isSearch == false ? null : <Search />}
 
       <HeadText>
@@ -62,16 +62,24 @@ function Home() {
       <MytravelPlan />
       <Subject />
       <Nearby />
-    </>
+      <NewReview />
+    </Wrapper>
   );
 }
 
 export default Home;
 
+const Wrapper = styled.div`
+  height: 200vh;
+  min-height: 1800px;
+  width: ${(props) => props.theme.pixelToRem(375)};
+  flex-direction: column;
+`;
+
 const HeadText = styled.div`
   width: ${(props) => props.theme.pixelToRem(350)};
   height: ${(props) => props.theme.pixelToRem(80)};
-  margin: 40px 71px 20px 20px;
+  margin: 84px 20px 20px;
   font-size: ${(props) => props.theme.pixelToRem(30)};
   font-weight: 600;
   font-stretch: normal;
@@ -85,9 +93,9 @@ const HeadText = styled.div`
 const SearchBar = styled.div<{ isSearch: Boolean }>`
   width: ${(props) => props.theme.pixelToRem(335)};
   height: ${(props) => props.theme.pixelToRem(54)};
-  margin: 20px 20px 40px;
+  margin: 20px 20px 0 20px;
   padding: 16px 32px 16px 20px;
-  border-radius: 10px;
+  border-radius: ${(props) => props.theme.pixelToRem(10)};
   border: solid 1px #eee;
   background-color: #f5f5f5;
 
@@ -108,19 +116,17 @@ const SearchBar = styled.div<{ isSearch: Boolean }>`
 `;
 
 const TextBox = styled.div`
-  width: 375px;
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 40px;
-  margin: auto;
+  margin-top: ${(props) => props.theme.pixelToRem(40)};
+  margin-left: ${(props) => props.theme.pixelToRem(20)};
+  font-size: ${(props) => props.theme.pixelToRem(20)};
+  color: #333;
+  font-weight: 600;
 `;
 
 const CampText = styled.div`
   font-weight: 500;
-`;
-
-const AllList = styled.div`
-  font-size: 0.8rem;
-  color: grey;
 `;

@@ -7,7 +7,7 @@ import styled from "styled-components";
 import Datepicker from "../components/withSearch/Datepicker";
 
 import Bg from "../static/testpic.jpg";
-import { useGetTopicInfinite } from "../APIs/getApi";
+import { useGetApi, useGetTopicInfinite } from "../APIs/getApi";
 import { useInView } from "react-intersection-observer";
 
 import { IGetCampResult } from "../interfaces/get";
@@ -23,6 +23,9 @@ function Topic() {
   const { topicId } = useParams();
   // const userId = useRecoilValue(idState);
   // console.log(userId);
+
+  const campSort = useGetApi.useGetSort();
+  console.log(campSort);
 
   //infiniteScroll
   const { campTopic, fetchNextPage, isSuccess, hasNextPage, refetch } =
@@ -77,7 +80,9 @@ function Topic() {
                       <CampImg>
                         <img src={item.ImageUrl} alt={item.campName} />
                         <ReviewInfo>
-                          <div>찜(12) 리뷰(257)</div>
+                          <div>
+                            찜({item.pickCount}) 리뷰({item.reviewCount})
+                          </div>
                         </ReviewInfo>
                       </CampImg>
                       <CampName title={item.campName}>{item.campName}</CampName>
@@ -238,7 +243,7 @@ const ReviewInfo = styled.div`
   position: absolute;
   width: ${(props) => props.theme.pixelToRem(97)};
   height: ${(props) => props.theme.pixelToRem(24)};
-  padding: 5px 6px;
+  padding: 5px 15px;
   opacity: 0.5;
   border-radius: ${(props) => props.theme.pixelToRem(4)};
   background-color: #000;

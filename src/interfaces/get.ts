@@ -58,6 +58,8 @@ export interface IGetCampResult {
   sigunguNm: string;
   swrmCo: string;
   themaEnvrnCl: string;
+  toiletCo: string;
+  wtrplCo: string;
 }
 
 export interface campArray extends IGetCampResult {
@@ -66,6 +68,7 @@ export interface campArray extends IGetCampResult {
   topicCamp: IGetCampResult[];
   campTopic: IGetCampResult[];
   regionCamp: IGetCampResult[];
+  detailCamp?: IGetCampResult[];
   camps: IGetCampResult[];
   nextPage?: number;
   lastPage?: boolean;
@@ -79,8 +82,6 @@ export interface campArray extends IGetCampResult {
 
 export interface campResult extends campArray {
   data: campArray[];
-  toiletCo: string;
-  wtrplCo: string;
 }
 
 export interface pickedCamp extends campArray {

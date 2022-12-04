@@ -21,7 +21,7 @@ function Dreview() {
             })
           }
         >
-          <img src="/images/icon-review2.svg" />
+          <img src="/images/review/icon-review2.svg" />
         </ReviewIcon>
       </ReviewBox>
     </Wrapper>
@@ -31,17 +31,15 @@ function Dreview() {
 export default Dreview;
 
 const Wrapper = styled.div`
-  margin-top: 20px;
+  margin-top: ${(props) => props.theme.pixelToRem(31)};
   display: flex;
   flex-direction: column;
   position: relative;
-  margin-left: 50px;
   height: 500px;
 `;
 
 const ReviewBox = styled.div`
   display: flex;
-  gap: 5px;
   align-items: center;
   font-weight: bolder;
   justify-content: space-between;
@@ -49,17 +47,19 @@ const ReviewBox = styled.div`
 `;
 
 const ReviewText = styled.div`
-  font-size: 1.3rem;
+  margin-left: ${(props) => props.theme.pixelToRem(20)};
+  font-size: ${(props) => props.theme.pixelToRem(18)};
 `;
 
 const ReviewNum = styled.div`
   color: #024873;
-  font-size: 1rem;
+  font-size: ${(props) => props.theme.pixelToRem(18)};
   position: absolute;
-  margin-left: 75px;
+  margin-left: ${(props) => props.theme.pixelToRem(90)};
 `;
 
 const ReviewIcon = styled.div`
-  margin-right: 30px;
+  margin-right: ${(props) => props.theme.pixelToRem(20)};
+  margin-top: ${(props) => props.theme.pixelToRem(2)};
   /* background-color: aliceblue; */
 `;

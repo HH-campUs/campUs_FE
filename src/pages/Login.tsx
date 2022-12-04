@@ -58,14 +58,14 @@ function Login() {
 
   return (
     <LoginWrap>
+      {/* component화 할수잇음. */}
       <LoginTitle>
         <div>
           <KeyboardArrowLeftIcon
-            sx={{ fontSize: 40 }}
+            sx={{ fontSize: 32 }}
             onClick={() => navigate("/")}
           />
         </div>
-
         <LoginText>로그인</LoginText>
       </LoginTitle>
 
@@ -80,6 +80,7 @@ function Login() {
           })}
           placeholder="이메일"
         />
+        <ErrorMessage> {errors.email?.message}</ErrorMessage>
         <StInput
           {...register("password", {
             required: "비밀번호를 입력해주세요.",
@@ -101,7 +102,7 @@ function Login() {
           placeholder="비밀번호"
           type="password"
         />
-
+        <ErrorMessage> {errors.password?.message}</ErrorMessage>
         <TextBox>
           <FindUserInfo>
             <span>아이디 / 비밀번호 찾기</span>
@@ -123,7 +124,7 @@ function Login() {
         <SignUpTextBox>
           <SignUpText>아직 회원이 아니신가요?</SignUpText>
           <SignUpLink onClick={() => navigate("/signup")}>회원가입</SignUpLink>
-          <KeyboardArrowRightIcon sx={{ marginTop: "-6.5px" }} />
+          <KeyboardArrowRightIcon sx={{ marginTop: "-5px" }} />
         </SignUpTextBox>
       </SocialBox>
     </LoginWrap>
@@ -133,17 +134,24 @@ function Login() {
 export default Login;
 
 const LoginWrap = styled.div`
-  height: 95vh;
+  width: ${(props) => props.theme.pixelToRem(375)};
+  height: 105vh;
 `;
 
 const LoginTitle = styled.div`
   display: flex;
   align-items: center;
+  margin-top: 44px;
+
+  div {
+    margin-left: 20px;
+    margin-right: 95px;
+  }
 `;
 
 const LoginText = styled.div`
-  justify-content: center;
-  padding-left: 170px;
+  font-size: ${(props) => props.theme.pixelToRem(18)};
+  color: #222;
 `;
 
 const LoginForm = styled.form`
@@ -152,7 +160,7 @@ const LoginForm = styled.form`
   flex-direction: column;
   align-items: center;
   align-content: center;
-  gap: 20px;
+  gap: ${(props) => props.theme.pixelToRem(14)};
   margin-top: 95px;
   span {
     color: var(--point-color);
@@ -160,29 +168,33 @@ const LoginForm = styled.form`
 `;
 
 const StInput = styled.input`
-  width: 350px;
-  height: 61px;
-  font-size: 16px;
-  border: 1px solid grey;
-  border-radius: 8px;
+  width: ${(props) => props.theme.pixelToRem(327)};
+  height: ${(props) => props.theme.pixelToRem(68)};
+  font-size: ${(props) => props.theme.pixelToRem(18)};
+  border: 1px solid #dbdbdb;
+  border-radius: ${(props) => props.theme.pixelToRem(10)};
   transition: all 0.5s linear;
-
-  padding: 10px;
+  padding: 20px;
   &:focus {
     border: 1px solid #5185a6;
   }
+`;
+
+const ErrorMessage = styled.p`
+  font-size: ${(props) => props.theme.pixelToRem(12)};
+  color: red;
 `;
 
 //  #5185A6 #024873;
 
 const TextBox = styled.div`
   display: flex;
-  font-size: 13px;
-  position: absolute;
-
-  margin-top: 155px;
-  margin-left: 230px;
-
+  font-size: ${(props) => props.theme.pixelToRem(14)};
+  position: relative;
+  margin-top: 12px;
+  left: ${(props) => props.theme.pixelToRem(100)};
+  /* text-align: right; */
+  color: #909090;
   span {
     cursor: pointer;
   }
@@ -191,31 +203,32 @@ const TextBox = styled.div`
 const FindUserInfo = styled.p`
   color: ${(props) => props.theme.textColor};
 `;
-
+//로그인버튼색변경?
 const StBtn = styled.button`
-  width: 350px;
-  height: 61px;
-  font-size: 16px;
+  width: ${(props) => props.theme.pixelToRem(327)};
+  height: ${(props) => props.theme.pixelToRem(60)};
+  font-size: ${(props) => props.theme.pixelToRem(18)};
   border: 0.5px none grey;
-  margin-top: 50px;
-  border-radius: 8px;
+  margin-top: 44px;
+  border-radius: ${(props) => props.theme.pixelToRem(10)};
   padding: 10px;
-  color: ${(props) => props.theme.textColor};
+  background-color: #adc2ce;
+  color: #fff;
   cursor: pointer;
 `;
 
 const SocialBox = styled.div`
   position: relative;
   text-align: center;
-  margin: 25px 0;
+  margin: 38px 0;
   padding: 10px;
   flex-direction: column;
   display: flex;
 `;
 
 const SocialText = styled.p`
-  color: ${(props) => props.theme.textColor};
-  font-size: 0.75rem;
+  color: #767676;
+  font-size: ${(props) => props.theme.pixelToRem(14)};
 `;
 
 const SocialBtnBox = styled.div`
@@ -236,16 +249,17 @@ const GoogleBtn = styled.div`
 const SignUpTextBox = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 25px;
+  margin-top: 48px;
   color: ${(props) => props.theme.textColor};
-  font-size: 0.75rem;
+  font-size: ${(props) => props.theme.pixelToRem(14)};
 `;
 
 const SignUpText = styled.p`
   margin-right: 10px;
-  color: gray;
+  color: #767676;
 `;
 
 const SignUpLink = styled.p`
+  color: #191919;
   cursor: pointer;
 `;

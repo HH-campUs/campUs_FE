@@ -19,10 +19,12 @@ import styled from "styled-components";
 function Datepicker({ openDate }: isDateProps) {
   /* 처음에 new Date()로 datepicker에게 인지 */
   const [startDate, setStartDate] = useRecoilState(StartDate);
-  const [sendDate, setSendDate] = useRecoilState(DateState);
   const [sendYear, setSendYear] = useRecoilState(StrYear);
   const [sendMonth, setSendMonth] = useRecoilState(StrMonth);
   const [sendDay, setSendDay] = useRecoilState(StrDay);
+
+  /* weather api 에 사용될 dt값 */
+  const [sendDate, setSendDate] = useRecoilState(DateState);
 
   /* weather 로 넘길 string으로 */
   const useYear = startDate.getFullYear().toString();

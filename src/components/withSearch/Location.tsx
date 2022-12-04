@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { selectLo, showLo } from "../../store/locationAtom";
 import { textValue } from "../../store/searchAtom";
 import styled from "styled-components";

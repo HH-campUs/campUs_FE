@@ -8,6 +8,7 @@ import React, {
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
   StartDate,
+  DateState,
   ExportDate,
   ExportYear,
   ExportMonth,
@@ -18,25 +19,31 @@ import {
 } from "../../store/dateAtom";
 import { selectLo, showLo } from "../../store/locationAtom";
 import { isModal, textValue } from "../../store/searchAtom";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled, { keyframes, css } from "styled-components";
 import Datepicker from "./Datepicker";
 import Location from "./Location";
 import { isProps, searchData } from "../../interfaces/inSearch";
 
 function Search() {
-  const [inputValue, setInputValue] = useState("");
-
   const [isSearch, setIsSearch] = useRecoilState(isModal);
   const [openDate, setOpenDate] = useState(false);
   const [startDate, setStartDate] = useRecoilState(StartDate);
+
+  /* search api 에 사용될  keyword */
+  const [inputValue, setInputValue] = useState("");
+  /* camp api 에 사용될 address */
   const [locationValue, setLocationValue] = useRecoilState(showLo);
+  /* weather api에 사용될 pardo & dt */
   const [sendLocation, setSendLocation] = useRecoilState(selectLo);
+  const [sendDate, setSendDate] = useRecoilState(DateState);
 
   const selectDate = useRecoilValue(ExportDate);
   const selectYear = useRecoilValue(StrYear);
   const selectMonth = useRecoilValue(StrMonth);
   const selectDay = useRecoilValue(StrDay);
+
+  const nav = useNavigate();
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
@@ -67,6 +74,11 @@ function Search() {
     setSendLocation("");
     setStartDate(new Date());
   };
+
+  /* 이거 nav랑 setState랑 같이 못쓰나봄 */
+  /*  const searchHandler = () => {
+    nav("/result"), setIsSearch(false);
+  }; */
 
   /* 추후에 모달 열리고 ModalBg에서 scroll x */
   /*   useEffect(() => {
@@ -124,9 +136,14 @@ function Search() {
           <ResetBtn onClick={resetHandler}>
             <img src="/images/reset.svg" alt="reset" />
           </ResetBtn>
-          <SearchBtn to="/result" onClick={closeModal}>
-            검색하기
-          </SearchBtn>
+
+          {inputValue == "" && sendLocation == "" ? (
+            <DisabledBtn disabled> 검색하기 </DisabledBtn>
+          ) : (
+            <SearchBtn to="/result" onClick={closeModal}>
+              검색하기
+            </SearchBtn>
+          )}
         </BtnContainer>
       </SearchModal>
     </Container>
@@ -369,8 +386,31 @@ const SearchBtn = styled(Link)`
   line-height: normal;
   letter-spacing: normal;
   text-align: center;
+  outline: 0;
+  border: none;
   color: #fff !important;
-  /* :active {
-    background-color: #3b3b3b;
-  } */
+`;
+
+const DisabledBtn = styled.button`
+  width: ${(props) => props.theme.pixelToRem(251)};
+  height: 100%;
+  padding: 14px 0;
+  font-size: ${(props) => props.theme.pixelToRem(16)};
+  color: ${(props) => props.theme.colorTheme.textWhite};
+  flex-grow: 0;
+  border-radius: ${(props) => props.theme.pixelToRem(10)};
+  background-color: ${(props) => props.theme.colorTheme.primary1};
+  font-family: Pretendard;
+  ${(props) => props.theme.fontTheme.Body2};
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: center;
+  outline: 0;
+  border: none;
+  color: #fff !important;
+
+  &:disabled {
+    background-color: ${(props) => props.theme.colorTheme.primary30};
+  }
 `;

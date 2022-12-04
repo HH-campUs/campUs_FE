@@ -6,12 +6,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Datepicker from "../components/withSearch/Datepicker";
 
-import Bg from "../static/testpic.jpg";
 import { useGetTopicInfinite } from "../APIs/getApi";
 import { useInView } from "react-intersection-observer";
 
 import TopicBookmark from "../components/TopicBookmark";
 //css
+import { useLocation } from "react-router-dom";
 import { BiChevronDown } from "react-icons/bi";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { IGetCampResult } from "../interfaces/get";
@@ -28,6 +28,11 @@ function Topic() {
   const { topicId } = useParams<{ topicId?: string }>();
   const userId = useRecoilValue(idState);
   // console.log(topicId);
+
+  const loca = useLocation();
+  const state = loca.state as { topicImg: string; id: number };
+
+  console.log(state.topicImg);
 
   //infiniteScroll
   const { campTopic, fetchNextPage, isSuccess, hasNextPage, refetch } =
@@ -55,7 +60,7 @@ function Topic() {
       <ResultContainer>
         <ResultTop>
           <div>
-            <span className="result"> 검색결과 </span>
+            <span className="result"> 전체 </span>
             <span className="total"> (개)</span>
           </div>
           <div style={{ display: "flex", alignItems: "center" }}>
@@ -73,8 +78,7 @@ function Topic() {
                     <TopicBookmark Camp={item} />
 
                     <ResultItem
-                      onClick={() => navigate(`/detail/${item.campId}`)}
-                    >
+                      onClick={() => navigate(`/detail/${item.campId}`)}>
                       <CampImg src={item.ImageUrl} alt={item.campName} />
                       <CampName title={item.campName}>{item.campName}</CampName>
                     </ResultItem>
@@ -114,9 +118,8 @@ const TopContainer = styled.div`
   margin: 0 auto;
   border-bottom-left-radius: ${(props) => props.theme.pixelToRem(12)};
   border-bottom-right-radius: ${(props) => props.theme.pixelToRem(12)};
-  background-image: url(${Bg});
+  background-image: url("{state.topicImg}");
   background-size: cover;
-  /* object-fit: contain; */
 `;
 
 const BackBtn = styled.div`

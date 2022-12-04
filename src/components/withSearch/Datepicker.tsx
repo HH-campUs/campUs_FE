@@ -14,7 +14,7 @@ import {
   StrDay,
 } from "../../store/dateAtom";
 import { isDateProps } from "../../interfaces/Modal";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
 function Datepicker({ openDate }: isDateProps) {
   /* 처음에 new Date()로 datepicker에게 인지 */
@@ -39,7 +39,7 @@ function Datepicker({ openDate }: isDateProps) {
   setSendDay(useDate);
 
   return (
-    <>
+    <CustomDatepicker openDate={openDate}>
       <DatePicker
         selected={startDate}
         dateFormat="yyyy-MM-dd"
@@ -67,13 +67,27 @@ function Datepicker({ openDate }: isDateProps) {
         <b>·</b> <span>날씨정보 제공일</span>
         <b>·</b> <span>선택 날짜</span>
       </ValiInfo>
-    </>
+    </CustomDatepicker>
   );
 }
 
 export default Datepicker;
 
-const CustomDatepicker = styled(Datepicker)``;
+const fadeIn = keyframes`
+  from {opacity: 0} 
+    to {opacity: 1}
+
+`;
+
+const fadeOut = keyframes`
+  from {opacity: 1} 
+    to {opacity: 0}
+`;
+
+const CustomDatepicker = styled.div<{ openDate: boolean }>`
+  animation-name: ${(props) => (props.openDate == false ? fadeOut : fadeIn)};
+  animation-duration: 1.2s;
+`;
 
 const ValiInfo = styled.div`
   width: ${(props) => props.theme.pixelToRem(200)};

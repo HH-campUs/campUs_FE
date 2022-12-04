@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { selectLo, showLo } from "../../store/locationAtom";
 import { textValue } from "../../store/searchAtom";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { isTextProps } from "../../interfaces/inSearch";
 
 interface local {
@@ -30,7 +30,7 @@ const localData: Array<local> = [
   { name: "제주도", value: "제주" },
 ];
 
-function Location({ inputValue, setInputValue }: isTextProps) {
+function Location({ inputValue }: isTextProps) {
   const [openLocation, setOpenLocation] = useState(false);
 
   /* 화면상에 나올 지역명 & 캠프장 doNm Request value */
@@ -63,7 +63,7 @@ function Location({ inputValue, setInputValue }: isTextProps) {
             <img src="/images/dropdown.svg" alt="dropdown" />
           </LocationText>
           {openLocation == false ? null : (
-            <Dcontents>
+            <Dcontents openLocation={openLocation}>
               {localData.map((item) => (
                 <Locations
                   key={item.name}
@@ -92,6 +92,16 @@ function Location({ inputValue, setInputValue }: isTextProps) {
 
 export default Location;
 
+const fadeIn = keyframes`
+  from {opacity: 0} 
+    to {opacity: 1}
+`;
+
+const fadeOut = keyframes`
+  from {opacity: 1} 
+    to {opacity: 0}
+`;
+
 const Dropdown = styled.div`
   top: ${(props) => props.theme.pixelToRem(-16)};
   position: relative;
@@ -110,7 +120,7 @@ const LocationInfo = styled.div<{ openLocation: boolean }>`
   border: solid ${(props) => props.theme.pixelToRem(1)} #e3e3e3;
   background-color: ${(props) => props.theme.colorTheme.textWhite};
   justify-content: space-between;
-  transition: all 0.4s ease;
+  transition: all 0.37s ease;
   display: flex;
 `;
 
@@ -157,7 +167,7 @@ const LocationText = styled.div`
 `;
 
 /* After Dropdown -> contents */
-const Dcontents = styled.div`
+const Dcontents = styled.div<{ openLocation: boolean }>`
   width: 95%;
   height: ${(props) => props.theme.pixelToRem(261)};
   margin: 40px 0 0 -10px;
@@ -165,7 +175,10 @@ const Dcontents = styled.div`
   border-top: 1px solid ${(props) => props.theme.colorTheme.border};
   overflow: scroll;
   position: absolute;
-  //display: none;
+
+  animation-name: ${(props) =>
+    props.openLocation == false ? fadeOut : fadeIn};
+  animation-duration: 1.3s;
 
   ::-webkit-scrollbar {
     width: 5px;

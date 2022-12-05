@@ -1,5 +1,7 @@
 import { atom, selector } from "recoil";
-/* import { originDate } from "../interfaces/inSearch"; */
+import { recoilPersist } from "recoil-persist";
+
+const { persistAtom } = recoilPersist();
 
 /* react-datepicker startDate */
 export const StartDate = atom<Date>({
@@ -14,6 +16,7 @@ export const DateState = atom<string>({
     [new Date().getFullYear().toString()] +
     ["0" + (new Date().getMonth() + 1)].toString().slice(-2) +
     ["0" + new Date().getDate()].toString().slice(-2),
+  effects_UNSTABLE: [persistAtom],
 });
 
 /* 연 */
@@ -26,12 +29,14 @@ export const StrYear = atom<string>({
 export const StrMonth = atom<string>({
   key: "StrMonth",
   default: ["0" + (new Date().getMonth() + 1)].toString().slice(-2),
+  effects_UNSTABLE: [persistAtom],
 });
 
 /* 일 */
 export const StrDay = atom<string>({
   key: "StrDay",
   default: ["0" + new Date().getDate()].toString().slice(-2),
+  effects_UNSTABLE: [persistAtom],
 });
 
 /* 변경된 year 반환 */

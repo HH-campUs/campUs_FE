@@ -15,6 +15,7 @@ import styled from "styled-components";
 function Home() {
   const [isSearch, setIsSearch] = useRecoilState(isModal);
 
+
   const openModal = () => {
     setIsSearch(true);
   };

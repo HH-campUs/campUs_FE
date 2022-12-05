@@ -8,32 +8,52 @@ import React, {
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
   StartDate,
+  DateState,
   ExportDate,
   ExportYear,
   ExportMonth,
   ExportDay,
+  StrDay,
+  StrMonth,
+  StrYear,
 } from "../../store/dateAtom";
 import { selectLo, showLo } from "../../store/locationAtom";
 import { isModal, textValue } from "../../store/searchAtom";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled, { keyframes, css } from "styled-components";
 import Datepicker from "./Datepicker";
 import Location from "./Location";
 import { isProps, searchData } from "../../interfaces/inSearch";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Search() {
-  const [inputValue, setInputValue] = useState("");
+  const notify = () => {
+    toast.success("This is a test success", {
+      position: toast.POSITION.BOTTOM_CENTER,
+      autoClose: 2000,
+      hideProgressBar: true,
+    });
+  };
 
   const [isSearch, setIsSearch] = useRecoilState(isModal);
   const [openDate, setOpenDate] = useState(false);
   const [startDate, setStartDate] = useRecoilState(StartDate);
+
+  /* search api 에 사용될  keyword */
+  const [inputValue, setInputValue] = useState("");
+  /* camp api 에 사용될 address */
   const [locationValue, setLocationValue] = useRecoilState(showLo);
+  /* weather api에 사용될 pardo & dt */
   const [sendLocation, setSendLocation] = useRecoilState(selectLo);
+  const [sendDate, setSendDate] = useRecoilState(DateState);
 
   const selectDate = useRecoilValue(ExportDate);
-  const selectYear = useRecoilValue(ExportYear);
-  const selectMonth = useRecoilValue(ExportMonth);
-  const selectDay = useRecoilValue(ExportDay);
+  const selectYear = useRecoilValue(StrYear);
+  const selectMonth = useRecoilValue(StrMonth);
+  const selectDay = useRecoilValue(StrDay);
+
+  const nav = useNavigate();
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
@@ -46,7 +66,8 @@ function Search() {
     setIsSearch(false);
   };
 
-  const dateFolder = () => {
+  const dateFolder = (event: MouseEvent) => {
+    event.stopPropagation();
     setOpenDate(!openDate);
   };
 
@@ -65,6 +86,11 @@ function Search() {
     setStartDate(new Date());
   };
 
+  /* 이거 nav랑 setState랑 같이 못쓰나봄 */
+  /*  const searchHandler = () => {
+    nav("/result"), setIsSearch(false);
+  }; */
+
   /* 추후에 모달 열리고 ModalBg에서 scroll x */
   /*   useEffect(() => {
     document.body.style.cssText = `
@@ -81,51 +107,65 @@ function Search() {
   }, []); */
 
   return (
-    <Container>
-      <ModalBg isSearch={isSearch} onClick={closeModal} />
-      {/* 모달창 밖 blur background 토글 기능 부여 (event bubbling 해결) */}
-      <SearchModal isSearch={isSearch} className="isSearch">
-        {/* Headline + close btn */}
-        <TopContainer>
-          <SearchTitle>어디로 가시나요?</SearchTitle>
-          <CloseBtn src="/images/closeBtn.svg" onClick={closeModal} />
-        </TopContainer>
+    <>
+      <Container>
+        <ModalBg isSearch={isSearch} onClick={closeModal} />
+        {/* 모달창 밖 blur background 토글 기능 부여 (event bubbling 해결) */}
+        <SearchModal isSearch={isSearch} className="isSearch">
+          <ToastContainer />
+          {/* Headline + close btn */}
+          <TopContainer>
+            <SearchTitle>어디로 가시나요?</SearchTitle>
+            <CloseBtn src="/images/closeBtn.svg" onClick={closeModal} />
+          </TopContainer>
 
-        {/* Input text */}
-        <SearchLabel htmlFor="search"></SearchLabel>
-        <SearchBox
-          id="search"
-          value={inputValue}
-          placeholder="지역 선택 시 검색어는 추가할 수 없습니다."
-          onChange={onChange}
-          disabled={sendLocation == "" ? false : true}
-        />
+          {/* Input text */}
+          <SearchLabel htmlFor="search"></SearchLabel>
+          <SearchBox
+            id="search"
+            value={inputValue}
+            placeholder={
+              sendLocation == ""
+                ? "예) 가평"
+                : "지역 선택 시 검색어는 추가할 수 없습니다."
+            }
+            onChange={onChange}
+            disabled={sendLocation == "" ? false : true}
+            sendLocation={sendLocation}
+          />
+          <DropContainer>
+            <DateInfo openDate={openDate}>
+              <InfoBox onClick={dateFolder} />
+              <SubTitle onClick={dateFolder}>떠나고 싶은 날</SubTitle>
+              <DateText onClick={dateFolder}>
+                {selectMonth}월 {selectDay}일
+              </DateText>
 
-        <DateInfo openDate={openDate} onClick={dateFolder}>
-          <SubTitle onClick={dateFolder}>떠나고 싶은 날</SubTitle>
-          <DateText onClick={DateFolder_Open}>
-            {selectMonth}월 {selectDay}일
-          </DateText>
-          {/* 데이트 피커 */}
-          <DateContainer>
-            {openDate ? (
-              <Datepicker openDate={openDate} setOpenDate={setOpenDate} />
-            ) : null}
-          </DateContainer>
-        </DateInfo>
+              {/* 데이트 피커 */}
+              <DateContainer>
+                {openDate ? (
+                  <Datepicker openDate={openDate} setOpenDate={setOpenDate} />
+                ) : null}
+              </DateContainer>
+            </DateInfo>
 
-        <Location inputValue={inputValue} setInputValue={setInputValue} />
-
-        <BtnContainer isSearch={isSearch}>
-          <ResetBtn onClick={resetHandler}>
-            <img src="/images/reset.svg" alt="reset" />
-          </ResetBtn>
-          <SearchBtn to="/result" onClick={closeModal}>
-            검색하기
-          </SearchBtn>
-        </BtnContainer>
-      </SearchModal>
-    </Container>
+            <Location inputValue={inputValue} setInputValue={setInputValue} />
+          </DropContainer>
+          <BtnContainer isSearch={isSearch}>
+            <ResetBtn onClick={resetHandler}>
+              <img src="/images/reset.svg" alt="reset" />
+            </ResetBtn>
+            {inputValue == "" && sendLocation == "" ? (
+              <DisabledBtn onClick={notify}> 검색하기 </DisabledBtn>
+            ) : (
+              <SearchBtn to="/result" onClick={closeModal}>
+                검색하기
+              </SearchBtn>
+            )}
+          </BtnContainer>
+        </SearchModal>
+      </Container>
+    </>
   );
 }
 
@@ -229,14 +269,17 @@ const CloseBtn = styled.img`
   display: inline-block;
 `;
 
-const SearchBox = styled.input`
+const SearchBox = styled.input<{ sendLocation: string }>`
   width: ${(props) => props.theme.pixelToRem(335)};
   height: ${(props) => props.theme.pixelToRem(54)};
   margin-top: -13px;
   padding: 15px 20px 15px 55px;
   border-radius: 10px;
-  border: solid 1px #eee;
-  background-color: #f5f5f5;
+  border: solid 1px ${(props) => props.theme.colorTheme.border};
+  background-color: ${(props) =>
+    props.sendLocation == ""
+      ? props.theme.colorTheme.textWhite
+      : props.theme.colorTheme.disabled};
   background-image: url("/images/search.svg");
   background-repeat: no-repeat;
   background-position: ${(props) => props.theme.pixelToRem(23)} center;
@@ -264,6 +307,14 @@ const SearchLabel = styled.label`
   display: flex;
 `;
 
+const DropContainer = styled.div`
+  width: 90%;
+  height: ${(props) => props.theme.pixelToRem(443)};
+  margin: 0 auto;
+  overflow: hidden;
+  position: absolute;
+`;
+
 /* datepicker 열기전에 정보 보여주는 */
 const DateInfo = styled.div<{ openDate: boolean }>`
   width: ${(props) => props.theme.pixelToRem(335)};
@@ -279,6 +330,18 @@ const DateInfo = styled.div<{ openDate: boolean }>`
   justify-content: space-between;
   transition: all 0.4s ease;
   display: flex;
+`;
+
+const InfoBox = styled.div`
+  width: ${(props) => props.theme.pixelToRem(330)};
+  height: ${(props) => props.theme.pixelToRem(68)};
+  border-radius: ${(props) => props.theme.pixelToRem(10)};
+  margin-top: -25px;
+  margin-left: -18px;
+  position: fixed;
+  display: flex;
+  background-color: transparent;
+  z-index: 100;
 `;
 
 const SubTitle = styled.div`
@@ -362,8 +425,31 @@ const SearchBtn = styled(Link)`
   line-height: normal;
   letter-spacing: normal;
   text-align: center;
+  outline: 0;
+  border: none;
   color: #fff !important;
-  /* :active {
-    background-color: #3b3b3b;
-  } */
+`;
+
+const DisabledBtn = styled.button`
+  width: ${(props) => props.theme.pixelToRem(251)};
+  height: 100%;
+  padding: 14px 0;
+  font-size: ${(props) => props.theme.pixelToRem(16)};
+  color: ${(props) => props.theme.colorTheme.textWhite};
+  flex-grow: 0;
+  border-radius: ${(props) => props.theme.pixelToRem(10)};
+  background-color: ${(props) => props.theme.colorTheme.primary30};
+  font-family: Pretendard;
+  ${(props) => props.theme.fontTheme.Body2};
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: center;
+  outline: 0;
+  border: none;
+  color: #fff !important;
+
+  &:disabled {
+    background-color: ${(props) => props.theme.colorTheme.primary30};
+  }
 `;

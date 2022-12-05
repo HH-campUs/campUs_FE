@@ -71,6 +71,10 @@ function Detail() {
 
   // console.log(kim);
 
+
+  console.log(state.campId, campDetail);
+  //recoil?
+
   const [bookmark, setBookMark] = useState(true);
   const marking = () => {
     setBookMark((prev) => !prev);

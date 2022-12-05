@@ -107,6 +107,31 @@ export const useGetWeather = (pardo: string, date: string) => {
   return { WeatherData, isLoading, isError };
 };
 
+/* 추천 날씨 정보 조회 */
+
+export const useRecommendWeather = () => {
+  const useData = async () => {
+    const { data } = await instance.get<IGetWeather>(`/weathers/recommend`);
+    return data;
+  };
+
+  const {
+    data: RecommendData,
+    isLoading,
+    isError,
+  } = useQuery(["getRecommendWeather"], useData, {
+    onError: () => {
+      console.error("에러가 났습니다.");
+    },
+
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+  });
+  console.log(RecommendData);
+
+  return { RecommendData, isLoading, isError };
+};
+
 /* 정보 get Api 모음 */
 
 export const useGetApi = {
@@ -123,6 +148,17 @@ export const useGetApi = {
         refetchOnWindowFocus: false,
       }
     );
+  },
+  /* topic 별 캠핑장 결과 조회 */
+  useGetTopicResult: () => {
+    const params = 2;
+    return useQuery(["topicResult"], async () => {
+      const { data } = await instance.get<pickedCamp[]>(
+        `/camps/${params}?numOfRows=20&pageNo=1`
+      );
+      console.log(data);
+      return data[0];
+    });
   },
 
   /* topic 별 캠핑장 결과 조회 */

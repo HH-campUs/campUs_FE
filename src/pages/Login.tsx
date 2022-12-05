@@ -3,8 +3,9 @@ import { useForm } from "react-hook-form";
 import { useRecoilState } from "recoil";
 import { useNavigate } from "react-router";
 import { ILoginForm } from "../interfaces/inLogin";
+import axios from "axios";
 
-import { KAKAO_AUTH_URL } from "../components/KaKaoAuth";
+/* import { KAKAO_AUTH_URL } from "../components/KaKaoAuth"; */
 import { idState, LoginState, userInfo } from "../store/loginAtom";
 import { instance } from "../instance/instance";
 import { setAccessToken, setRefreshToken } from "../instance/cookies";
@@ -52,8 +53,11 @@ function Login() {
     }
   };
 
-  const KaKaoLogin = () => {
-    window.location.href = KAKAO_AUTH_URL;
+  const KaKaoLogin = async () => {
+    window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${"7aa957f9a1bc0790d8e39735b92eee63"}&redirect_uri=${"http://localhost:3000/kakao/callback"}&response_type=code`;
+    /* const res = await instance.get("/kakao");
+    console.log(res);
+    return res; */
   };
 
   return (

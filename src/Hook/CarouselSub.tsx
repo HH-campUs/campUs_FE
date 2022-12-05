@@ -21,10 +21,6 @@ export default function CarouselSub() {
 
   // const { id } = useParams();
 
-  const handleClick = (id: number) => () => {
-    navigate(`/topic/${id}`);
-  };
-
   const imageList = [
     {
       text: "일몰명소",
@@ -48,6 +44,15 @@ export default function CarouselSub() {
     },
   ];
 
+  const handleClick = (id: number) => () => {
+    navigate(`/topic/${id}`, {
+      state: {
+        topicImg: `${imageList[id - 1].img}`,
+        id: `${imageList[id - 1].id}`,
+      },
+    });
+  };
+
   return (
     <>
       <CarouselViewer
@@ -56,8 +61,7 @@ export default function CarouselSub() {
         style={{
           height,
           overflow: hide ? "hidden" : "visible",
-        }}
-      >
+        }}>
         <CarouselSlider
           className="flex"
           style={{
@@ -78,8 +82,7 @@ export default function CarouselSub() {
 
               setTransX(0);
             },
-          })}
-        >
+          })}>
           <CaroImgBox>
             <BoxEx>
               <New>NEW</New>

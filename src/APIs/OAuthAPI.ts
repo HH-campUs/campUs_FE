@@ -9,7 +9,7 @@ import { setAccessToken } from "../instance/cookies";
 
 export const OAuthAPI = {
   /* kakao */
-  /*   KakaoLogin: async (kakaoToken: string) => {
+  /* KakaoLogin: async (kakaoToken: string) => {
     return await instance
       .get('백엔드 API~~ =${}')
       .then(data => {

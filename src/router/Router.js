@@ -9,6 +9,7 @@ import Home from "../pages/Home";
 import Login from "../pages/Login";
 import SignUp from "../pages/SignUp";
 import Splash from "../pages/Splash";
+import KaKaoAuth from "../pages/OAuth/KaKaoAuth";
 
 import Topic from "../pages/Topic";
 import Detail from "../pages/Detail";
@@ -43,7 +44,7 @@ function Router() {
           <Route path="result" element={<Result />} />
           <Route path="topic/:topicId" element={<Topic />} />
           <Route path="login" element={<Login />} />
-
+          <Route path="/kakao/callback" element={<KaKaoAuth />} />
           <Route path="signup" element={<SignUp />} />
 
           {/* <Route path="detail" element={<Detail />} /> */}

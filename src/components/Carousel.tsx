@@ -25,6 +25,12 @@ export default function Carousel() {
     console.log("asdfads");
   };
 
+  // const detailItem = useGetApi.useGetCampDetail(state.campId).data;
+  // const checkItem = detailItem?.detailCamp![0];
+
+  // const campSort = useGetApi.useGetSort().data?.look();
+  // const sortItem = campSort?.lo;
+  // console.log(sortItem);
   // {bookmarking ? (
   //   <BookmarkBorderIcon onClick={picking}>
   //     <img src="/images/picked2.svg" alt="Bookmarked" />
@@ -100,11 +106,10 @@ export default function Carousel() {
 }
 
 const CarouselViewer = styled.div`
-  width: 375px;
-  height: 355px !important;
+  width: ${(props) => props.theme.pixelToRem(375)};
+  height: ${(props) => props.theme.pixelToRem(318)} !important;
   overflow: hidden;
   user-select: none;
-  /* background-color: aquamarine; */
 `;
 
 const CarouselSlider = styled.div`
@@ -118,34 +123,21 @@ const CarouselSlide = styled.div`
 `;
 
 const Outline = styled.div`
-  width: 214px;
-  height: 260px;
+  width: ${(props) => props.theme.pixelToRem(214)};
+  height: ${(props) => props.theme.pixelToRem(260)};
   position: relative;
-  margin-top: 20px;
-  margin-left: 20px;
+  margin-top: ${(props) => props.theme.pixelToRem(18)};
+  margin-left: ${(props) => props.theme.pixelToRem(20)};
 `;
 
 const CarouselImg = styled.img`
-  width: 214px;
-  height: 260px;
-  /* padding-left: 10px; */
-  padding: auto;
-  border-radius: 15px;
+  width: 100%;
+  height: 100%;
+  border-radius: ${(props) => props.theme.pixelToRem(15)};
   object-fit: cover;
   transition: all 0.3s ease;
   flex: none;
-  filter: contrast(45%);
-`;
-
-const Bookmark = styled.div`
-  position: absolute;
-  margin-left: 150px;
-  margin-top: 10px;
-`;
-const BookmarkBorderIcon = styled.div`
-  position: absolute;
-  margin-left: 150px;
-  margin-top: 10px;
+  filter: contrast(60%);
 `;
 
 const CrTextBox = styled.div`
@@ -165,28 +157,13 @@ const CampName = styled.div`
 const ReviewInfo = styled.div`
   font-size: 1rem;
   position: absolute;
-  /* background-color: rgba(100, 100, 100, 0.5); */
-  /* padding: 6px; */
   border-radius: 0.4rem;
   margin-top: -35px;
   margin-left: 17px;
 `;
 
 const NumText = styled.div`
-  /* transform: translate(50%, -200%); */
-  /* text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.9); */
   color: #ffffff;
   font-size: 0.9rem;
   position: absoulte;
 `;
-
-// const CampLoca = styled.div`
-//   margin-top: 5px;
-//   display: flex;
-//   align-items: center;
-//   font-size: 0.75rem;
-// `;
-
-// <CampLoca>
-// <LocationOnIcon /> <p>경기 가평군 조종면</p>
-// </CampLoca>

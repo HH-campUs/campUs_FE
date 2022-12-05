@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 import styled from "styled-components";
 import { usePostsApi } from "../APIs/postsApi";
 import { IReviewPosts } from "../interfaces/Posts";
 
 export default function Review() {
+  const navigate = useNavigate();
   const reviewPost = usePostsApi.usePostReview();
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<IReviewPosts>();
 
@@ -19,8 +20,6 @@ export default function Review() {
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const imageLists = e.target.files;
-    //유사배열 -> 배열
-    // (prev) => [...prev, ...Array.from(imageLists)]
     if (!imageLists) return;
     setImageFiles(imageLists);
     for (let i = 0; i < imageLists?.length; i++) {
@@ -28,13 +27,13 @@ export default function Review() {
       setImagePreview((prev) => [...prev, blobImage]);
     }
     if (imagePreview.length > 3) {
+      console.log("30", imagePreview);
       window.alert("이미지는 3장까지 첨부가능합니다.");
       setImagePreview((prev) => prev.slice(0, 3));
     }
   };
   console.log(imagePreview);
 
-  // e: React.ChangeEvent<HTMLInputElement>
   const handleValid = (data: IReviewPosts) => {
     const body = {
       reviewComment: data.reviewComment,
@@ -48,7 +47,14 @@ export default function Review() {
   return (
     <Wrapper>
       <Head>
-        <img src="/images/back.svg" alt="back" style={{ marginLeft: "20px" }} />
+        <img
+          src="/images/back.svg"
+          alt="back"
+          style={{ marginLeft: "20px" }}
+          onClick={() => {
+            navigate(-1);
+          }}
+        />
         <HeadText>리뷰쓰기</HeadText>
       </Head>
       <ReviewImgBox>
@@ -67,39 +73,49 @@ export default function Review() {
       </VisitDay>
       <Line />
       <RecoBox>
-        <Best>
+        <RecoBtn>
           <ImgDiv>
-            <img
-              src="/images/review/best.svg"
-              alt="best"
-              style={{ marginRight: "-15px" }}
-            />
             <img
               src="/images/review/emptybest.svg"
               alt="best"
-              style={{ position: "relative", top: "-5px" }}
+              style={{
+                top: "50%",
+                transform: "translateY(calc(-50% - 3px)) translateX(3px)",
+              }}
+            />
+            <img
+              src="/images/review/best.svg"
+              alt="best"
+              style={{
+                top: "50%",
+                transform: "translateY(calc(-50% + 3px)) translateX(-6px)",
+              }}
             />
           </ImgDiv>
-          <p>최고!추천해요!</p>
-        </Best>
-        <Best>
+          <div>최고!추천해요!</div>
+        </RecoBtn>
+        <RecoBtn>
           <ImgDiv>
             <img
               src="/images/review/Bethumbsup.svg"
               alt="best"
-              style={{ position: "relative", top: "-5px" }}
+              style={{ top: "50%", transform: "translateY(-50%)" }}
             />
           </ImgDiv>
 
-          <p>좋았어요!</p>
-        </Best>
-        <Best>
+          <div>좋았어요!</div>
+        </RecoBtn>
+        <RecoBtn>
           <ImgDiv>
-            <img src="/images/review/thumbdown.svg" alt="best" />
+            <img
+              src="/images/review/thumbdown.svg"
+              alt="best"
+              style={{ top: "50%", transform: "translateY(-50%)" }}
+            />
           </ImgDiv>
 
-          <p>추천하지 않아요</p>
-        </Best>
+          <div>추천하지 않아요</div>
+        </RecoBtn>
       </RecoBox>
       <ReviewTip>
         <HeadLine>
@@ -140,7 +156,7 @@ export default function Review() {
             />
           </Upload>
           {imagePreview.map((image, id) => (
-            <img src={image} alt={`${image}-${id}`} key={id} />
+            <img src={image} alt="reviewImg" key={id} />
           ))}
         </ImgList>
         <StBtn>리뷰 남기기</StBtn>
@@ -153,6 +169,7 @@ export default function Review() {
 }
 
 const Wrapper = styled.div`
+  width: ${(props) => props.theme.pixelToRem(375)};
   flex-direction: column;
   height: 100vh;
   overflow-y: scroll;
@@ -218,54 +235,50 @@ const Line = styled.div`
 
 const RecoBox = styled.div`
   display: flex;
-  margin-left: 17.5px;
-  margin-top: 40px;
-  /* background-color: red; */
+  margin: auto;
+  margin-top: 30px;
   height: 100px;
-  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* background-color: blue; */
 `;
 
-const Best = styled.button`
+const RecoBtn = styled.button`
   width: 120px;
   height: 100px;
   border: 0;
   background: none;
-  /* background-color: red; */
+  display: flex;
   flex-direction: column;
+  cursor: pointer;
+  :active {
+    /* border: none !important; */
+    box-shadow: none !important;
+  }
 
-  p {
+  div {
     margin: 10px auto;
-    /* padding: auto; */
     font-size: ${(props) => props.theme.pixelToRem(14)};
     color: grey;
-    /* margin: auto; */
-    /* background-color: red; */
-    /* position: relative; */
   }
 `;
 
 const ImgDiv = styled.div`
-  width: 62px;
-  height: 62px;
-  border-radius: 62px;
+  min-width: ${(props) => props.theme.pixelToRem(62)};
+  min-height: ${(props) => props.theme.pixelToRem(62)};
+  width: ${(props) => props.theme.pixelToRem(62)};
+  height: ${(props) => props.theme.pixelToRem(62)};
+  border-radius: ${(props) => props.theme.pixelToRem(62)};
   background-color: lightgray;
   align-items: center;
   justify-content: center;
   display: flex;
-  margin-left: 9px;
+  position: relative;
+
+  img {
+    position: absolute;
+  }
 `;
-
-// const Good = styled.button`
-//   width: 100px;
-//   height: 100px;
-//   border: 1px solid red;
-// `;
-
-// const Bad = styled.button`
-//   width: 100px;
-//   height: 100px;
-//   border: 1px solid red;
-// `;
 
 const ReviewTip = styled.div`
   width: 335px;

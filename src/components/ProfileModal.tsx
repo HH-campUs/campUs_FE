@@ -92,8 +92,8 @@ export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
                     src="/images/kakaopf.jpeg"
                     alt="PFP"
                     style={{
-                      height: "100px",
-                      borderRadius: "100px",
+                      height: "90px",
+                      borderRadius: "90px",
                       objectFit: "contain",
                     }}
                   />
@@ -153,19 +153,18 @@ const ModalBg = styled.div`
 `;
 
 const PfModalWrap = styled.button`
-  margin: 10px auto;
-  width: 160px;
-  border-radius: 1rem;
-  border: 1px solid grey;
+  border: 1px solid #bdbdbd;
   background-color: white;
-  color: black;
+  color: #474747;
   z-index: 1;
 
   &.setIsPopUp {
-    width: 60px;
-    height: 30px;
-    font-size: 1rem;
-    margin-top: 20px;
+    width: ${(props) => props.theme.pixelToRem(53)};
+    height: ${(props) => props.theme.pixelToRem(30)};
+    border-radius: ${(props) => props.theme.pixelToRem(40)};
+    font-size: ${(props) => props.theme.pixelToRem(12)};
+    margin-left: 80px;
+    margin-top: 30px;
 
     span {
       margin-left: 10px;
@@ -174,15 +173,16 @@ const PfModalWrap = styled.button`
   }
 
   &.isPopUp {
-    height: 400px;
-    width: 300px;
+    width: ${(props) => props.theme.pixelToRem(335)};
+    height: ${(props) => props.theme.pixelToRem(375)};
+    border-radius: ${(props) => props.theme.pixelToRem(10)};
     left: 10;
     bottom: 200;
     padding: 10px;
     position: fixed;
     z-index: 100;
     overflow: auto;
-    margin-top: 170px;
+    margin-top: 130px;
   }
 `;
 
@@ -203,56 +203,50 @@ const Container = styled.div`
 `;
 
 const HeadText = styled.div`
-  height: 150px;
   text-align: left;
-  justify-content: flex-end;
-  position: relative;
-  margin-left: 10px;
-  bottom: 10px;
+  font-size: ${(props) => props.theme.pixelToRem(20)};
+  margin-left: 20px;
 `;
-const PfBox = styled.div`
-  position: absolute;
-  margin-left: 90px;
-  width: 100%;
-  top: 70px;
-`;
+const PfBox = styled.div``;
 
 const PfText = styled.span`
   font-weight: 500;
-  font-size: 1rem;
+  font-size: ${(props) => props.theme.pixelToRem(20)};
+  color: #222;
 `;
 
 const CloseBtn = styled.img`
   width: ${(props) => props.theme.pixelToRem(20)};
   height: ${(props) => props.theme.pixelToRem(20)};
-  align-items: center;
-  margin-left: 165px;
+  margin-left: 160px;
   /* background-color: red; */
   /* display: inline-block; */
 `;
 
 const PfCircle = styled.div`
-  width: 100px;
-  height: 100px;
-  border-radius: 100px;
+  width: ${(props) => props.theme.pixelToRem(90)};
+  height: ${(props) => props.theme.pixelToRem(90)};
+  border-radius: ${(props) => props.theme.pixelToRem(100)};
+  margin-top: 17px;
+  margin-left: 113px;
   position: relative;
 `;
 const ImgPreview = styled.img`
-  width: 100px;
-  height: 100px;
-  border-radius: 100px;
+  width: ${(props) => props.theme.pixelToRem(90)};
+  height: ${(props) => props.theme.pixelToRem(90)};
+  border-radius: ${(props) => props.theme.pixelToRem(100)};
   position: absolute;
 `;
 
 const CameraCircle = styled.div`
-  width: 30px;
-  height: 30px;
-  background-color: white;
-  border-radius: 30px;
+  width: ${(props) => props.theme.pixelToRem(36)};
+  height: ${(props) => props.theme.pixelToRem(36)};
+  background-color: #fff;
+  border-radius: ${(props) => props.theme.pixelToRem(40)};
   position: relative;
-  margin-top: -35px;
-  margin-left: 70px;
-  border: 0.5px solid black;
+  margin-top: -39px;
+  margin-left: 55px;
+  border: 1px solid #bdbdbd;
 `;
 
 const NickForm = styled.form`
@@ -264,25 +258,26 @@ const NickForm = styled.form`
 
 const InputHead = styled.div`
   text-align: left;
-  margin-left: 15px;
-  color: grey;
+  margin-left: 10px;
+  color: #909090;
 `;
 
 const NickInput = styled.input`
-  margin-top: 15px;
-  border-radius: 0.8rem;
-  border: 1px solid grey;
-  width: 250px;
-  height: 50px;
+  margin-top: 9px;
+  border-radius: ${(props) => props.theme.pixelToRem(10)};
+  border: 1px solid #bdbdbd;
+  width: ${(props) => props.theme.pixelToRem(295)};
+  height: ${(props) => props.theme.pixelToRem(54)};
   /* box-sizing: border-box; */
 `;
 
+// #adc2e;
 const NickBtn = styled.button`
-  margin-top: 5px;
+  margin-top: 18px;
   border-radius: 0.8rem;
   border: 1px solid grey;
-  width: 250px;
-  height: 50px;
+  width: ${(props) => props.theme.pixelToRem(295)};
+  height: ${(props) => props.theme.pixelToRem(52)};
   background-color: #024873;
   color: whitesmoke;
   cursor: pointer;

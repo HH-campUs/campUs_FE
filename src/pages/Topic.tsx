@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import React, { useEffect } from "react";
+import { useRecoilState } from "recoil";
 import Search from "../components/withSearch/Search";
 import { isModal } from "../store/searchAtom";
 import { useNavigate, useParams } from "react-router-dom";
@@ -9,26 +9,26 @@ import Datepicker from "../components/withSearch/Datepicker";
 import { useGetTopicInfinite } from "../APIs/getApi";
 import { useInView } from "react-intersection-observer";
 
-import TopicBookmark from "../components/TopicBookmark";
+
+
 //css
 import { useLocation } from "react-router-dom";
 import { BiChevronDown } from "react-icons/bi";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+
 import { IGetCampResult } from "../interfaces/get";
-import { topicProps } from "../interfaces/props";
+import TopicBookmark from "../components/TopicBookmark";
 import { idState } from "../store/loginAtom";
 
 function Topic(topicImg: topicProps) {
   const toZero = () => {
     window.scrollTo({ left: 0, top: 0, behavior: "smooth" });
   };
-
   const navigate = useNavigate();
   const [isSearch, setIsSearch] = useRecoilState(isModal);
-
-  const { topicId } = useParams<{ topicId?: string }>();
-  const userId = useRecoilValue(idState);
-  // console.log(topicId);
+  const { topicId } = useParams();
+  // const userId = useRecoilValue(idState);
+  // console.log(userId);
 
   const loca = useLocation();
   const state = loca.state as { topicImg: string; id: number };
@@ -38,7 +38,6 @@ function Topic(topicImg: topicProps) {
   //infiniteScroll
   const { campTopic, fetchNextPage, isSuccess, hasNextPage, refetch } =
     useGetTopicInfinite(topicId!);
-  console.log(userId);
 
   const [ref, isView] = useInView();
 
@@ -66,7 +65,7 @@ function Topic(topicImg: topicProps) {
           </div>
           <div style={{ display: "flex", alignItems: "center" }}>
             <span className="popular">인기순</span>
-            <BiChevronDown size="30" style={{ paddingBottom: "5px" }} />
+            <img src="/images/topic/openclose.svg" alt="downArrow" />
           </div>
         </ResultTop>
 
@@ -77,19 +76,30 @@ function Topic(topicImg: topicProps) {
                 {page?.campTopic.map((item: IGetCampResult) => (
                   <ResultBox key={item.campId}>
                     <TopicBookmark Camp={item} />
-
                     <ResultItem
-                      onClick={() => navigate(`/detail/${item.campId}`)}>
-                      <CampImg src={item.ImageUrl} alt={item.campName} />
+                      onClick={() =>
+                        navigate(`/detail/:${item.campId}`, {
+                          state: {
+                            campId: `${item.campId}`,
+                          },
+                        })
+                      }
+                    >
+                      <CampImg>
+                        <img src={item.ImageUrl} alt={item.campName} />
+                        <ReviewInfo>
+                          <div>
+                            찜({item.pickCount}) 리뷰({item.reviewCount})
+                          </div>
+                        </ReviewInfo>
+                      </CampImg>
                       <CampName title={item.campName}>{item.campName}</CampName>
-                    </ResultItem>
-                    <ResultDetail>
-                      <LocationOnIcon sx={{ height: "1.2rem" }} />
                       <AddressName title={item.address}>
                         {item.address}
                       </AddressName>
-                    </ResultDetail>
-                    <ResultDetail2>{item.featureNm}</ResultDetail2>
+
+                      <Induty>{item.induty}</Induty>
+                    </ResultItem>
                   </ResultBox>
                 ))}
               </React.Fragment>
@@ -110,13 +120,10 @@ function Topic(topicImg: topicProps) {
 
 export default Topic;
 
-/* result */
-
 const TopContainer = styled.div`
-  width: auto;
-  max-width: ${(props) => props.theme.pixelToRem(475)};
-  height: ${(props) => props.theme.pixelToRem(300)};
-  margin: 0 auto;
+  width: ${(props) => props.theme.pixelToRem(375)};
+  height: ${(props) => props.theme.pixelToRem(266)};
+  margin: auto;
   border-bottom-left-radius: ${(props) => props.theme.pixelToRem(12)};
   border-bottom-right-radius: ${(props) => props.theme.pixelToRem(12)};
   background-image: url("/images/subject/image6.jpg");
@@ -138,31 +145,23 @@ const BackBtn = styled.div`
   }
 `;
 
-const ResultContainer = styled.div`
-  padding: 35px;
-  /* background-color: antiquewhite; */
-`;
+const ResultContainer = styled.div``;
 
 const ResultTop = styled.div`
-  width: inherit;
-  margin-top: 40px;
-  padding: {
-    top: 10px;
-    left: 10px;
-    right: 10px;
-  }
+  width: ${(props) => props.theme.pixelToRem(335)};
+  height: ${(props) => props.theme.pixelToRem(22)};
+  margin-top: ${(props) => props.theme.pixelToRem(24)};
+  margin-left: ${(props) => props.theme.pixelToRem(20)};
   justify-content: space-between;
   display: flex;
 
   .result {
     font-family: Pretendard;
-    font-size: 20px;
-    font-weight: 600;
+    font-size: ${(props) => props.theme.pixelToRem(18)};
     font-stretch: normal;
     font-style: normal;
     line-height: normal;
     letter-spacing: normal;
-    text-align: left;
     color: #333;
   }
 
@@ -175,95 +174,94 @@ const ResultTop = styled.div`
     line-height: 1.29;
     letter-spacing: normal;
     text-align: left;
-    color: #797979;
+    color: #666;
   }
 
   .popular {
     font-family: Pretendard;
-    font-size: ${(props) => props.theme.pixelToRem(14)};
+    font-size: ${(props) => props.theme.pixelToRem(12)};
     font-weight: 500;
     font-stretch: normal;
     font-style: normal;
     line-height: 1.29;
     letter-spacing: normal;
-    text-align: right;
-    color: #797979;
-    display: inline-block;
+    color: #666;
+  }
+
+  img {
+    padding: 5px;
   }
 `;
 
 const CampMap = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 5px;
-  /* background-color: red; */
+
   /* width: 375px; */
 `;
 
 const ResultBox = styled.div`
-  width: ${(props) => props.theme.pixelToRem(180)};
-  margin: 20px 10px;
-  justify-content: center;
+  width: ${(props) => props.theme.pixelToRem(162)};
+  height: ${(props) => props.theme.pixelToRem(290)};
+  margin: 20px 12px;
   align-items: center;
   display: flex;
   flex-direction: column;
   position: relative;
 `;
 
-const Bookmark = styled.div`
-  position: absolute;
-  top: 5px;
-  right: 15px;
-`;
-const BookmarkBorderIcon = styled.div`
-  position: absolute;
-  top: 5px;
-  right: 15px;
-`;
-
 const ResultItem = styled.div`
-  width: ${(props) => props.theme.pixelToRem(160)};
+  width: ${(props) => props.theme.pixelToRem(162)};
   height: ${(props) => props.theme.pixelToRem(139)};
-  /* font-size: ${(props) => props.theme.pixelToRem(16)}; */
   border-radius: 10px;
 `;
 
-const CampImg = styled.img`
-  width: 100%;
-  height: 100%;
-  border-radius: 10px;
-  /* display: block; */
-  object-fit: cover;
+const CampImg = styled.div`
+  img {
+    width: 100%;
+    height: ${(props) => props.theme.pixelToRem(196)};
+    border-radius: ${(props) => props.theme.pixelToRem(8)};
+    /* display: block; */
+    object-fit: cover;
+    object-fit: cover;
+  }
 `;
 
 const CampName = styled.div`
-  margin-top: 10px;
-  color: black;
-  font-weight: bold;
-  font-size: ${(props) => props.theme.pixelToRem(15)};
-  position: absolute;
+  margin: 10px 0 4px;
+  color: #222;
+  font-weight: 600;
+  font-size: ${(props) => props.theme.pixelToRem(16)};
 `;
 
-const AddressName = styled.div``;
-
-const ResultDetail = styled.div`
-  height: 60px;
-  margin-top: 30px;
+const AddressName = styled.div`
+  margin-top: ${(props) => props.theme.pixelToRem(5)};
   font-size: ${(props) => props.theme.pixelToRem(12)};
-  color: black;
-  align-self: flex-start;
+  color: #666;
+`;
+
+const Induty = styled.div`
+  font-size: ${(props) => props.theme.pixelToRem(12)};
+  color: #666;
+  margin-top: 15px;
   display: flex;
-  align-items: center;
 `;
 
-const ResultDetail2 = styled.div`
-  height: 60px;
-  /* margin-top: -20px; */
-  font-size: ${(props) => props.theme.pixelToRem(12)};
-  color: black;
-  align-self: flex-start;
+const ReviewInfo = styled.div`
+  position: absolute;
+  width: ${(props) => props.theme.pixelToRem(97)};
+  height: ${(props) => props.theme.pixelToRem(24)};
+  padding: 5px 15px;
+  opacity: 0.5;
+  border-radius: ${(props) => props.theme.pixelToRem(4)};
+  background-color: #000;
+  right: ${(props) => props.theme.pixelToRem(8)};
+  top: ${(props) => props.theme.pixelToRem(164)};
 
-  //
+  div {
+    font-size: ${(props) => props.theme.pixelToRem(12)};
+    color: #fff;
+  }
 `;
 
 const FloatingBtn = styled.button`

@@ -10,6 +10,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import PermIdentityIcon from "@mui/icons-material/PermIdentity";
 import { useNavigate } from "react-router";
 import BookmarkIcon from "@mui/icons-material/Bookmark"; //filled
+import { blue } from "@mui/material/colors";
 
 export default function Footer() {
   const [value, setValue] = React.useState(0);
@@ -27,15 +28,14 @@ export default function Footer() {
         zIndex: 5,
         justifyContent: "center",
         alignItems: "center",
-      }}
-    >
+        fontFamily: "Pretendard-Regular !important",
+      }}>
       <BottomNavigation
         showLabels
         value={value}
         onChange={(event, newValue) => {
           setValue(newValue);
-        }}
-      >
+        }}>
         <BottomNavigationAction
           label="Home"
           onClick={() => {

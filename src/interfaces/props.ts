@@ -11,3 +11,8 @@ export interface isDateProps {
 export interface topicProps {
   dropImg: string;
 }
+
+export interface semiOpenProps {
+  openSemi: boolean;
+  setOpenSemi: React.Dispatch<React.SetStateAction<boolean>>;
+}

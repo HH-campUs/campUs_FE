@@ -28,7 +28,7 @@ function KakaoLogin() {
         }
         const token = kakaoResult.data.access_token;
         const response = await axios.post(
-          "https://campus99.shop/kakao/callback",
+          "https://campus99.shop/kakao",
           kakaoResult.data,
           {
             headers: {
@@ -42,15 +42,15 @@ function KakaoLogin() {
           data: { accessToken, refreshToken, currentPage },
         } = response;
         if (status !== 200) return;
-        setAccessToken(accessToken);
+        setAccessToken(response.data.Tokens.accessToken);
         localStorage.setItem("token", refreshToken);
 
         if (currentPage) {
           console.log(accessToken, refreshToken, currentPage);
-          /* return window.location.replace(`/login`) */
+          return window.location.replace(`/`);
         } else {
           console.log(accessToken, refreshToken, currentPage);
-          /* return window.location.replace("/"); */
+          /*  return window.location.replace("/"); */
         }
       } catch (e) {
         console.error(e);

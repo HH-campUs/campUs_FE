@@ -1,6 +1,6 @@
 //url to image : string, image used as <img> ele : HTMLImageElement
 export interface IReviewPosts {
-  reviewImg: string; //확인해야함,back은 url로받음.
+  reviewImg: string;
   reviewComment: string;
 }
 
@@ -9,9 +9,7 @@ export interface IEditReviewPosts {
   reviewComment: string;
 }
 
-export interface IDeleteReviewPosts {
-  //id값 필요할텐데 명세서에 아무것도 없음.
-}
+export interface IDeleteReviewPosts {}
 
 export interface IPostTravelPlan {
   userId: number;

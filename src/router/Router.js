@@ -13,19 +13,12 @@ import KaKaoAuth from "../pages/OAuth/KaKaoAuth";
 
 import Topic from "../pages/Topic";
 import Detail from "../pages/Detail";
-import Dannounce from "../pages/DetailPage/Dannounce";
 import Ddetail from "../pages/DetailPage/Ddetail";
 import Dreview from "../pages/DetailPage/Dreview";
 import Result from "../pages/Result";
 import Mypage from "../pages/Mypage";
-import Error from "../pages/Error";
-import NotFound from "../pages/NotFound";
-import { ErrorBoundary } from "react-error-boundary";
-import { createGlobalStyle, ThemeProvider } from "styled-components";
-import { theme } from "../layout/theme";
 
-import { useRecoilValue } from "recoil";
-import { isDarkAtom } from "../store/atmos";
+import NotFound from "../pages/NotFound";
 import Layout from "../layout/Layout";
 import MyReview from "../pages/Mypage/MyReview";
 import MyPick from "../pages/Mypage/MyPick";
@@ -48,10 +41,9 @@ function Router() {
           <Route path="signup" element={<SignUp />} />
 
           {/* <Route path="detail" element={<Detail />} /> */}
-          <Route path="/detail/:id" element={<Detail />}>
-            <Route path="/detail/:id/announce" element={<Dannounce />} />
-            <Route path="/detail/:id/detail" element={<Ddetail />} />
-            <Route path="/detail/:id/review" element={<Dreview />} />
+          <Route path="/detail/:campId" element={<Detail />}>
+            <Route path="/detail/:campId/detail" element={<Ddetail />} />
+            <Route path="/detail/:campId/review" element={<Dreview />} />
           </Route>
           <Route path="/review" element={<Review />} />
 

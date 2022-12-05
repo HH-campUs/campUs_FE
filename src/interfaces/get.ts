@@ -54,11 +54,20 @@ export interface IGetWeather {
   snow?: number;
 }
 
+
+export interface IMostList extends IGetCampResult {
+  look: IGetCampResult;
+  pick: IGetCampResult;
+  review: IGetCampResult;
+}
+
+
 export interface RecoWeather extends IGetWeather {
   recommend: Array<IGetWeather>;
 }
 
 /* 캠프 */
+
 export interface IGetCampResult {
   ImageUrl: string;
   X: string;
@@ -85,6 +94,8 @@ export interface IGetCampResult {
   sigunguNm: string;
   swrmCo: string;
   themaEnvrnCl: string;
+  toiletCo: string;
+  wtrplCo: string;
 }
 
 export interface campArray extends IGetCampResult {
@@ -93,6 +104,7 @@ export interface campArray extends IGetCampResult {
   topicCamp: IGetCampResult[];
   campTopic: IGetCampResult[];
   regionCamp: IGetCampResult[];
+  detailCamp?: IGetCampResult[];
   camps: IGetCampResult[];
   nextPage?: number;
   lastPage?: boolean;
@@ -106,8 +118,6 @@ export interface campArray extends IGetCampResult {
 
 export interface campResult extends campArray {
   data: campArray[];
-  toiletCo: string;
-  wtrplCo: string;
 }
 
 export interface pickedCamp extends campArray {

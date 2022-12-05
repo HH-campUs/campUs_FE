@@ -12,6 +12,7 @@ import {
   campArray,
   pickedCamp,
   IGetCampResult,
+  IMostList,
 } from "../interfaces/get";
 
 const serverUrl = process.env.REACT_APP_API;
@@ -52,12 +53,12 @@ export const useGetCamp = (doNm: string) => {
 };
 
 //infiniteQuery for Topic
-// &userId=${userId}   userId: number
 export const useGetTopicInfinite = (topicId: string) => {
   const topicData = async ({ pageParam = 0 }) => {
     const { data } = await instance.get<pickedCamp>(
       `/camps/${topicId}?&numOfRows=10&pageNo=${pageParam}`
     );
+
     console.log(data.topicCamp);
     return {
       campTopic: data.topicCamp,
@@ -135,7 +136,7 @@ export const useRecommendWeather = () => {
 
 export const useGetApi = {
   useGetCampDetail: (campId: number) => {
-    return useQuery<IGetCampResult>(
+    return useQuery<campArray>(
       ["campDetail"],
       async () => {
         const { data } = await instance.get(`/camps/detail/${campId}`);
@@ -157,6 +158,26 @@ export const useGetApi = {
       );
       console.log(data);
       return data[0];
+    });
+  },
+
+  /* topic 별 캠핑장 결과 조회 */
+  useGetTopicResult: () => {
+    const params = 2;
+    return useQuery(["topicResult"], async () => {
+      const { data } = await instance.get<pickedCamp[]>(
+        `/camps/${params}?numOfRows=20&pageNo=1`
+      );
+      console.log(data);
+      return data[0];
+    });
+  },
+
+  useGetSort: () => {
+    return useQuery(["topicSort"], async () => {
+      const { data } = await instance.get<IMostList>(`/camps/sort`);
+      console.log(data);
+      return data;
     });
   },
 

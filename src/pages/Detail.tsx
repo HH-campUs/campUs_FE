@@ -1,39 +1,94 @@
-import React, { useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 
 import styled from "styled-components";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import { Link, Outlet, useMatch, useLocation } from "react-router-dom";
+import { Outlet, useMatch, useLocation, useNavigate } from "react-router-dom";
 import Search from "../components/withSearch/Search";
 import { isModal } from "../store/searchAtom";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder"; //empty
 import BookmarkIcon from "@mui/icons-material/Bookmark"; //filled
 import { useGetApi } from "../APIs/getApi";
+import { campArray, IGetCampResult } from "../interfaces/get";
 
 function Detail() {
+  const navigate = useNavigate();
   const [isSearch, setIsSearch] = useRecoilState(isModal);
 
-  const announceMatch = useMatch("/detail/:id/announce");
   const detailMatch = useMatch("/detail/:id/detail");
   const reviewMatch = useMatch("/detail/:id/review");
 
   const loca = useLocation();
   const state = loca.state as { campId: number };
 
-  const campDetail = useGetApi.useGetCampDetail(state.campId);
+  const goBack = () => {
+    navigate(-1);
+  };
+
+  //1. 타입 옵셔널 체이닝 확인
+  //2. 쿼리문의 타입 확인
+  //3. undefiend = !로 해결
+
+  const detailItem = useGetApi.useGetCampDetail(state.campId).data;
+  const checkItem = detailItem?.detailCamp![0];
+
+  const icon: string[] | undefined =
+    detailItem?.detailCamp![0].sbrsCl.split(",");
+  // console.log(checkItem);
+
+  console.log(icon);
+
+  interface IconArr {
+    [key: string]: string;
+  }
+
+  const iconArr: string[] = [
+    "애완동물",
+    "무선인터넷",
+    "장작판매",
+    "온수",
+    "트렘폴린",
+    "물놀이장",
+    "놀이터",
+    "산책로",
+    "운동장",
+    "운동시설",
+    "마트.편의점",
+    "애완동물",
+  ];
+  // , icons.push(iconArr[icon![i]]);
+
+  const icons: string[] = [];
+
+  // useEffect(() => {
+  //   for (let i = 0; i < 11; i++) {
+  //     if (icon !== undefined) {
+  //       iconArr.array.forEach((element) => {});
+  //     }
+  //   }
+  //   console.log(icons);
+  // }, []);
+
+  // console.log(kim);
+
 
   console.log(state.campId, campDetail);
   //recoil?
+
   const [bookmark, setBookMark] = useState(true);
   const marking = () => {
     setBookMark((prev) => !prev);
   };
+
+  // [{전기,"/images/back.svg"}].map((qwer) => {<img src="{adsf}"></img>})
+  // 진기 ? 아이콘 : null
 
   return (
     <>
       {isSearch == false ? null : <Search />}
       <Wrapper>
         {/* 최상단 이미지*/}
+
         <MainImage>
           <TopNavContainer>
             <div style={{ display: "flex" }}>
@@ -44,6 +99,7 @@ function Detail() {
                   style={{
                     marginTop: "2px",
                   }}
+                  onClick={goBack}
                 />
               </div>
             </div>
@@ -85,12 +141,14 @@ function Detail() {
               </div>
             </div>
           </TopNavContainer>
+          <MainCampImg src={checkItem?.ImageUrl} alt="campImg" />
         </MainImage>
 
         {/* 중앙 : 정보 + 찜 리뷰 + 일정 저장 버튼 */}
         <MiddleContainer>
           <UpperWrapper>
-            <Left>노을공원 가족캠핑장</Left>
+            <Left>{checkItem?.campName}</Left>
+            {/* 맵처리 */}
             <Right>
               <div>일반야영장</div> <div>글램핑</div>
             </Right>
@@ -99,12 +157,12 @@ function Detail() {
             <div>
               <img src="/images/location.svg" alt="location" />
             </div>
-            <p>서울 마포구 하늘공원로 108-1</p>
+            <p>{checkItem?.address}</p>
           </DownWrapper>
         </MiddleContainer>
         <PickBox>
-          <Pick>찜(30)</Pick>
-          <Review>리뷰(790)</Review>
+          <Pick>찜({checkItem?.pickCount})</Pick>
+          <Review>리뷰({checkItem?.reviewCount})</Review>
         </PickBox>
         <AddtripBtn>
           <div className="leftInfo">
@@ -122,10 +180,12 @@ function Detail() {
               <FcRight>전체보기</FcRight>
             </FcTextBox>
             <FcIconBox>
-              <TheIcon>
-                <img src="/images/faclIcon/icon-dog.svg" alt="dog" />
-                <span>애완동물</span>
-              </TheIcon>
+              {/* {icons?.map((item, i) => {
+                <TheIcon key={i}>
+                  <img src={item} alt="dog" />
+                  <span>애완동물</span>
+                </TheIcon>;
+              })} */}
               <TheIcon>
                 <img src="/images/faclIcon/icon-dog.svg" alt="dog" />
                 <span>애완동물</span>
@@ -152,14 +212,31 @@ function Detail() {
         <GrayHr />
 
         <Tabs>
-          <Tab isActive={Boolean(announceMatch)}>
-            <Link to="/detail/:id/announce"> 공지사항 </Link>
-          </Tab>
           <Tab isActive={Boolean(detailMatch)}>
-            <Link to="/detail/:id/detail"> 상세정보</Link>
+            <TabClick
+              onClick={() =>
+                navigate(`/detail/:${state.campId}/detail`, {
+                  state: {
+                    campId: `${state.campId}`,
+                  },
+                })
+              }
+            >
+              상세정보
+            </TabClick>
           </Tab>
           <Tab isActive={Boolean(reviewMatch)}>
-            <Link to="/detail/:id/review"> 리뷰</Link>
+            <TabClick
+              onClick={() =>
+                navigate(`/detail/:${state.campId}/review`, {
+                  state: {
+                    campId: `${state.campId}`,
+                  },
+                })
+              }
+            >
+              리뷰
+            </TabClick>
           </Tab>
         </Tabs>
         <div>
@@ -175,14 +252,21 @@ export default Detail;
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
+  width: ${(props) => props.theme.pixelToRem(375)};
 `;
 
 const MainImage = styled.div`
   margin: 0 auto;
   width: ${(props) => props.theme.pixelToRem(375)};
   height: ${(props) => props.theme.pixelToRem(256)};
-  background-image: url("http://economychosun.com/query/upload/344/20200419231455_gltgzjsu.jpg");
   position: relative;
+  object-fit: contain;
+`;
+
+const MainCampImg = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 `;
 
 const TopNavContainer = styled.div`
@@ -204,20 +288,9 @@ const TopNavContainer = styled.div`
   }
 `;
 
-const MiddleContainer = styled.div`
-  margin-top: 8px;
-  margin-left: 40px;
-  padding: 0 20px 0 20px;
-  width: 95%;
-  height: 120px;
-  display: flex;
-  flex-direction: column;
-`;
-
 const UpperWrapper = styled.div`
   display: flex;
   position: absolute;
-  justify-content: space-between;
 `;
 
 const Left = styled.div`
@@ -249,48 +322,53 @@ const Right = styled.div`
 `;
 
 const DownWrapper = styled.div`
+  /* background-color: red; */
   margin: 35px 5px;
   display: flex;
   text-align: center;
   align-items: center;
 
   p {
-    font-size: 0.9rem;
-    color: grey;
+    font-size: ${(props) => props.theme.pixelToRem(14)};
+    color: #666;
   }
 `;
 
+const MiddleContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  height: ${(props) => props.theme.pixelToRem(55)};
+  margin-top: ${(props) => props.theme.pixelToRem(14)};
+`;
+
 const PickBox = styled.div`
-  margin-top: -65px;
-  margin-left: -11px;
-  padding: 0 20px 0 20px;
-  height: 60px;
+  margin-left: ${(props) => props.theme.pixelToRem(10)};
+  height: ${(props) => props.theme.pixelToRem(30)};
   gap: 6px;
-  text-align: center;
+
   display: flex;
 `;
 
 const Pick = styled.p`
-  margin-left: 60px;
-  margin-top: 13px;
+  margin-top: ${(props) => props.theme.pixelToRem(12)};
   ${(props) => props.theme.fontTheme.Caption3}
-  color:#595959
+  color:#666;
 `;
 
 const Review = styled.p`
-  margin-top: 13px;
+  margin-top: ${(props) => props.theme.pixelToRem(12)};
   text-decoration: underline;
   ${(props) => props.theme.fontTheme.Caption3}
-  color:#595959
+  color:#666;
 `;
 
 const AddtripBtn = styled.button`
   width: ${(props) => props.theme.pixelToRem(335)};
   height: ${(props) => props.theme.pixelToRem(46)};
-  margin-top: -12px;
-  margin-left: 75px;
+  margin: ${(props) => props.theme.pixelToRem(24)} auto;
   flex-grow: 0;
-  border-radius: 10px;
+  border-radius: ${(props) => props.theme.pixelToRem(10)};
   border: solid 1px ${(props) => props.theme.colorTheme.border};
   background-color: ${(props) => props.theme.colorTheme.textWhite};
   justify-content: space-between;
@@ -355,21 +433,12 @@ const PickImg = styled.div`
 `;
 
 const WFcBox = styled.div`
-  width: 80%;
-  margin-left: 60px;
+  width: ${(props) => props.theme.pixelToRem(335)};
+  margin: auto;
   justify-content: space-around;
 `;
 
-const GrayHr = styled.hr`
-  width: ${(props) => props.theme.pixelToRem(375)};
-  height: ${(props) => props.theme.pixelToRem(8)};
-  margin: 0 auto;
-  border: none;
-  background-color: #f2f2f2;
-`;
-
 const FcBox = styled.div`
-  margin-top: 20px;
   display: flex;
   position: relative;
   flex-direction: column;
@@ -383,7 +452,6 @@ const FcTextBox = styled.div`
 
 const FcLeft = styled.div`
   margin-top: 5px;
-  margin-left: 13px;
   ${(props) => props.theme.fontTheme.Subtitle2};
   line-height: 1.22;
   letter-spacing: normal;
@@ -392,7 +460,7 @@ const FcLeft = styled.div`
 
 const FcRight = styled.div`
   margin-top: 5px;
-  margin-right: 23px;
+  margin-right: ${(props) => props.theme.pixelToRem(10)};
   ${(props) => props.theme.fontTheme.Caption2};
   color: ${(props) => props.theme.colorTheme.text3} !important;
   line-height: 1.29;
@@ -429,17 +497,24 @@ const TheIcon = styled.div`
   }
 `;
 
+const GrayHr = styled.hr`
+  width: ${(props) => props.theme.pixelToRem(375)};
+  height: ${(props) => props.theme.pixelToRem(8)};
+  margin: 0 auto;
+  border: none;
+  background-color: #f2f2f2;
+`;
+
 const Tabs = styled.div`
-  width: 380px;
+  width: ${(props) => props.theme.pixelToRem(375)};
   display: flex;
   justify-content: center;
   align-content: center;
-  margin: 30px 45px;
-  gap: 10px;
+  margin: 5px;
 `;
 
 const Tab = styled.span<{ isActive: boolean }>`
-  width: 33%;
+  width: 50%;
   text-align: center;
   font-size: 15px;
   font-weight: 500;
@@ -448,4 +523,8 @@ const Tab = styled.span<{ isActive: boolean }>`
   border-bottom: ${(props) => (props.isActive ? "3px solid black" : "none")};
   color: ${(props) =>
     props.isActive ? props.theme.accentColor : props.theme.textColor};
+`;
+
+const TabClick = styled.div`
+  cursor: pointer;
 `;

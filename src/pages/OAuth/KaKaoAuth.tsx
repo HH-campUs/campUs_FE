@@ -11,7 +11,7 @@ function KakaoLogin() {
   const REDIRECT_URI = "http://localhost:3000/kakao/callback";
 
   const code = new URL(window.location.href).searchParams.get("code");
-  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${"7aa957f9a1bc0790d8e39735b92eee63"}&redirect_uri=${"https://campus99.shop/kakao/callback"}&code=${code}`;
+  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${"7aa957f9a1bc0790d8e39735b92eee63"}&redirect_uri=${"http://localhost:3000/kakao/callback"}&code=${code}`;
   console.log(code);
 
   useEffect(() => {

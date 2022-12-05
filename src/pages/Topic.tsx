@@ -20,7 +20,7 @@ import { IGetCampResult } from "../interfaces/get";
 import TopicBookmark from "../components/TopicBookmark";
 import { idState } from "../store/loginAtom";
 
-function Topic() {
+function Topic(topicImg: topicProps) {
   const toZero = () => {
     window.scrollTo({ left: 0, top: 0, behavior: "smooth" });
   };
@@ -126,7 +126,7 @@ const TopContainer = styled.div`
   margin: auto;
   border-bottom-left-radius: ${(props) => props.theme.pixelToRem(12)};
   border-bottom-right-radius: ${(props) => props.theme.pixelToRem(12)};
-  background-image: url("{state.topicImg}");
+  background-image: url("/images/subject/image6.jpg");
   background-size: cover;
 `;
 

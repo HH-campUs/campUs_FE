@@ -118,7 +118,7 @@ const TopContainer = styled.div`
   margin: 0 auto;
   border-bottom-left-radius: ${(props) => props.theme.pixelToRem(12)};
   border-bottom-right-radius: ${(props) => props.theme.pixelToRem(12)};
-  background-image: url("{state.topicImg}");
+  background-image: url({state.topicImg});
   background-size: cover;
 `;
 

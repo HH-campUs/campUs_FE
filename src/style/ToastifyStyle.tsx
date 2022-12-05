@@ -1,4 +1,4 @@
-/* import React from 'react'
+import React from "react";
 import { ToastContainer } from "react-toastify";
 import styled from "styled-components";
 
@@ -27,9 +27,7 @@ export const Styles = styled(ToastContainer)`
   .Toastify__toast--error {
     background: rgba(224, 72, 82, 0.8);
   }
-`; */
-
-import React from "react";
+`;
 
 function ToastifyStyle() {
   return <div>ToastifyStyle</div>;

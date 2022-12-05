@@ -1,4 +1,4 @@
-/* import { toast, ToastOptions } from "react-toastify";
+import { toast, ToastOptions } from "react-toastify";
 import { Styles } from "../../style/ToastifyStyle";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -20,7 +20,7 @@ const toastOptions: ToastOptions = {
   closeButton: false,
 };
 
-export function showToast({ type, message, action = "바로가기" }: ToastProps) {
+export function Toast({ type, message, action = "바로가기" }: ToastProps) {
   switch (type) {
     case "success":
       // enum으로 타입 지정했을 때 가독성 상승 -> case ToastType.success:
@@ -34,17 +34,14 @@ export function showToast({ type, message, action = "바로가기" }: ToastProps
         ...toastOptions,
         icon: <img src="/svgs/toast_error.svg" alt="error" />,
       });
+      return;
+    case "info":
+      toast.info(message || "조건을 다 선택해주세요", {
+        ...toastOptions,
+        icon: <img src="/svgs/toast_error.svg" alt="error" />,
+      });
+      return;
   }
-}
-
-export default function Toast() {
-  return <Styles />;
-} */
-
-import React from "react";
-
-function Toast() {
-  return <div>Toast</div>;
 }
 
 export default Toast;

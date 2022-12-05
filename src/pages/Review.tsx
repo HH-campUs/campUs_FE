@@ -280,18 +280,6 @@ const ImgDiv = styled.div`
   }
 `;
 
-// const Good = styled.button`
-//   width: 100px;
-//   height: 100px;
-//   border: 1px solid red;
-// `;
-
-// const Bad = styled.button`
-//   width: 100px;
-//   height: 100px;
-//   border: 1px solid red;
-// `;
-
 const ReviewTip = styled.div`
   width: 335px;
   height: 124px;

@@ -61,6 +61,7 @@ const SplashLogo = styled.div`
   display: flex;
 `;
 //right
+/* 반응형 - max-width: 475px, min-width: 375px */
 const RightTemplate = styled.div`
   //background-color: teal;
   width: 475px;

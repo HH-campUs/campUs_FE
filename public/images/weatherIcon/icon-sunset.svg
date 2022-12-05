@@ -1,0 +1,12 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M3 20H21" stroke="#222222" stroke-width="2" stroke-linecap="round"/>
+<mask id="path-2-inside-1_1721_6233" fill="white">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16.9 21H7.10002C7.03443 20.6769 7 20.3425 7 20C7 17.2386 9.23858 15 12 15C14.7614 15 17 17.2386 17 20C17 20.3425 16.9656 20.6769 16.9 21Z"/>
+</mask>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16.9 21H7.10002C7.03443 20.6769 7 20.3425 7 20C7 17.2386 9.23858 15 12 15C14.7614 15 17 17.2386 17 20C17 20.3425 16.9656 20.6769 16.9 21Z" fill="#222222"/>
+<path d="M16.9 21V22H17.7174L17.88 21.1989L16.9 21ZM7.10002 21L6.12 21.1989L6.28261 22H7.10002V21ZM16.9 20H7.10002V22H16.9V20ZM8.08003 20.8011C8.02766 20.5431 8 20.2753 8 20H6C6 20.4097 6.0412 20.8107 6.12 21.1989L8.08003 20.8011ZM8 20C8 17.7909 9.79086 16 12 16V14C8.68629 14 6 16.6863 6 20H8ZM12 16C14.2091 16 16 17.7909 16 20H18C18 16.6863 15.3137 14 12 14V16ZM16 20C16 20.2753 15.9723 20.5431 15.92 20.8011L17.88 21.1989C17.9588 20.8107 18 20.4097 18 20H16Z" fill="#222222" mask="url(#path-2-inside-1_1721_6233)"/>
+<path d="M12 10V12" stroke="#222222" stroke-width="2" stroke-linecap="round"/>
+<path d="M19.0435 13L17.6811 14.4642" stroke="#222222" stroke-width="2" stroke-linecap="round"/>
+<path d="M5 13L6.36236 14.4642" stroke="#222222" stroke-width="2" stroke-linecap="round"/>
+<path d="M9.67846 3.75L12 6.26314L14.3215 3.75H9.67846Z" fill="#222222" stroke="#222222"/>
+</svg>

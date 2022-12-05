@@ -12,6 +12,7 @@ import {
   campArray,
   pickedCamp,
   IGetCampResult,
+  IMostList,
 } from "../interfaces/get";
 
 const serverUrl = process.env.REACT_APP_API;
@@ -138,7 +139,7 @@ export const useGetApi = {
 
   useGetSort: () => {
     return useQuery(["topicSort"], async () => {
-      const { data } = await instance.get<IGetCampResult>(`/camps/sort`);
+      const { data } = await instance.get<IMostList>(`/camps/sort`);
       console.log(data);
       return data;
     });

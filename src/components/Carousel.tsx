@@ -25,6 +25,12 @@ export default function Carousel() {
     console.log("asdfads");
   };
 
+  // const detailItem = useGetApi.useGetCampDetail(state.campId).data;
+  // const checkItem = detailItem?.detailCamp![0];
+
+  // const campSort = useGetApi.useGetSort().data?.look();
+  // const sortItem = campSort?.lo;
+  // console.log(sortItem);
   // {bookmarking ? (
   //   <BookmarkBorderIcon onClick={picking}>
   //     <img src="/images/picked2.svg" alt="Bookmarked" />

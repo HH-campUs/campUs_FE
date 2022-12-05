@@ -32,6 +32,12 @@ export interface IGetWeather {
   snow?: number;
 }
 
+export interface IMostList extends IGetCampResult {
+  look: IGetCampResult;
+  pick: IGetCampResult;
+  review: IGetCampResult;
+}
+
 export interface IGetCampResult {
   ImageUrl: string;
   X: string;

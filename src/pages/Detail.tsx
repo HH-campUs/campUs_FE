@@ -31,39 +31,45 @@ function Detail() {
 
   const detailItem = useGetApi.useGetCampDetail(state.campId).data;
   const checkItem = detailItem?.detailCamp![0];
+
+  const icon: string[] | undefined =
+    detailItem?.detailCamp![0].sbrsCl.split(",");
   // console.log(checkItem);
 
-  const Icon: any | undefined = detailItem?.detailCamp![0].sbrsCl.split(",");
+  console.log(icon);
 
-  console.log(Icon);
+  interface IconArr {
+    [key: string]: string;
+  }
 
-  const iconArr = [
-    {
-      애완동물: "/images/accfilno/icon-dog.svg",
-    },
-    // "전기":  ,
-    // "무선인터넷",
-    // "장작판매",
-    // "온수",
-    // "트렘폴린",
-    // "물놀이장",
-    // "놀이터",
-    // "산책로",
-    // "운동장",
-    // "운동시설",
-    // "마트.편의점",
+  const iconArr: string[] = [
+    "애완동물",
+    "무선인터넷",
+    "장작판매",
+    "온수",
+    "트렘폴린",
+    "물놀이장",
+    "놀이터",
+    "산책로",
+    "운동장",
+    "운동시설",
+    "마트.편의점",
+    "애완동물",
   ];
+  // , icons.push(iconArr[icon![i]]);
 
-  const iconList = ["/images/faclicon/icon-dog.svg"];
+  const icons: string[] = [];
 
-  console.log(iconList);
+  // useEffect(() => {
+  //   for (let i = 0; i < 11; i++) {
+  //     if (icon !== undefined) {
+  //       iconArr.array.forEach((element) => {});
+  //     }
+  //   }
+  //   console.log(icons);
+  // }, []);
 
-  const kim = () => {
-    for (let i = 0; i < iconArr.length; i++) {
-      if (iconArr[i] === Icon) {
-      }
-    }
-  };
+  // console.log(kim);
 
   const [bookmark, setBookMark] = useState(true);
   const marking = () => {
@@ -170,10 +176,12 @@ function Detail() {
               <FcRight>전체보기</FcRight>
             </FcTextBox>
             <FcIconBox>
-              <TheIcon>
-                <img src="/images/faclIcon/icon-dog.svg" alt="dog" />
-                <span>애완동물</span>
-              </TheIcon>
+              {/* {icons?.map((item, i) => {
+                <TheIcon key={i}>
+                  <img src={item} alt="dog" />
+                  <span>애완동물</span>
+                </TheIcon>;
+              })} */}
               <TheIcon>
                 <img src="/images/faclIcon/icon-dog.svg" alt="dog" />
                 <span>애완동물</span>

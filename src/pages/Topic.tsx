@@ -7,7 +7,7 @@ import styled from "styled-components";
 import Datepicker from "../components/withSearch/Datepicker";
 
 import Bg from "../static/testpic.jpg";
-import { useGetApi, useGetTopicInfinite } from "../APIs/getApi";
+import { useGetTopicInfinite } from "../APIs/getApi";
 import { useInView } from "react-intersection-observer";
 
 import { IGetCampResult } from "../interfaces/get";
@@ -23,9 +23,6 @@ function Topic() {
   const { topicId } = useParams();
   // const userId = useRecoilValue(idState);
   // console.log(userId);
-
-  const campSort = useGetApi.useGetSort();
-  console.log(campSort);
 
   //infiniteScroll
   const { campTopic, fetchNextPage, isSuccess, hasNextPage, refetch } =

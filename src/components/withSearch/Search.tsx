@@ -25,16 +25,12 @@ import Datepicker from "./Datepicker";
 import Location from "./Location";
 import { isProps, searchData } from "../../interfaces/inSearch";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { injectStyle } from "react-toastify/dist/inject-style";
+import { InfoToast, NavPickToast } from "../Toast/Toast";
 
 function Search() {
-  const notify = () => {
-    toast.success("This is a test success", {
-      position: toast.POSITION.BOTTOM_CENTER,
-      autoClose: 2000,
-      hideProgressBar: true,
-    });
-  };
+  /* toast boolean */
+  const [toastState, setToastState] = useState(false);
 
   const [isSearch, setIsSearch] = useRecoilState(isModal);
   const [openDate, setOpenDate] = useState(false);
@@ -109,10 +105,16 @@ function Search() {
   return (
     <>
       <Container>
+        {toastState == true ? (
+          <InfoToast
+            text={"검색조건이 불충분합니다"}
+            toastState={toastState}
+            setToastState={setToastState}
+          />
+        ) : null}
         <ModalBg isSearch={isSearch} onClick={closeModal} />
         {/* 모달창 밖 blur background 토글 기능 부여 (event bubbling 해결) */}
         <SearchModal isSearch={isSearch} className="isSearch">
-          <ToastContainer />
           {/* Headline + close btn */}
           <TopContainer>
             <SearchTitle>어디로 가시나요?</SearchTitle>
@@ -156,7 +158,13 @@ function Search() {
               <img src="/images/reset.svg" alt="reset" />
             </ResetBtn>
             {inputValue == "" && sendLocation == "" ? (
-              <DisabledBtn onClick={notify}> 검색하기 </DisabledBtn>
+              <DisabledBtn
+                onClick={() => {
+                  setToastState(true);
+                }}>
+                {" "}
+                검색하기{" "}
+              </DisabledBtn>
             ) : (
               <SearchBtn to="/result" onClick={closeModal}>
                 검색하기

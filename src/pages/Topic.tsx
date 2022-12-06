@@ -9,8 +9,6 @@ import Datepicker from "../components/withSearch/Datepicker";
 import { useGetTopicInfinite } from "../APIs/getApi";
 import { useInView } from "react-intersection-observer";
 
-
-
 //css
 import { useLocation } from "react-router-dom";
 import { BiChevronDown } from "react-icons/bi";
@@ -20,7 +18,7 @@ import { IGetCampResult } from "../interfaces/get";
 import TopicBookmark from "../components/TopicBookmark";
 import { idState } from "../store/loginAtom";
 
-function Topic(topicImg: topicProps) {
+function Topic() {
   const toZero = () => {
     window.scrollTo({ left: 0, top: 0, behavior: "smooth" });
   };
@@ -83,8 +81,7 @@ function Topic(topicImg: topicProps) {
                             campId: `${item.campId}`,
                           },
                         })
-                      }
-                    >
+                      }>
                       <CampImg>
                         <img src={item.ImageUrl} alt={item.campName} />
                         <ReviewInfo>

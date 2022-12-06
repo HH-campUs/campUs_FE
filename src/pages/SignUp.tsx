@@ -3,6 +3,9 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { ISignUpForm } from "../interfaces/inLogin";
 import { instance } from "../instance/instance";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { toastState } from "../store/toastAtom";
+import { InfoToast } from "../components/Toast/Toast";
 
 //css
 import styled from "styled-components";
@@ -11,6 +14,8 @@ import CheckIcon from "@mui/icons-material/Check";
 
 // #024873(회원가입), #5185A6(중복검사)
 export default function SignUp() {
+  const [isToast, setIsToast] = useRecoilState(toastState);
+
   const navigate = useNavigate();
 
   const {
@@ -36,8 +41,14 @@ export default function SignUp() {
       });
       console.log(data);
       if (response.status === 201) {
+        setIsToast(true);
         window.alert(`${data?.email}님\n반갑습니다.`);
-        navigate("/login");
+        const timer = setTimeout(() => {
+          navigate("/login");
+        }, 1600);
+        return () => {
+          clearTimeout(timer);
+        };
       }
     } catch (error) {
       window.alert("가입에 실패했습니다.");
@@ -78,6 +89,11 @@ export default function SignUp() {
         <LoginText>회원가입</LoginText>
       </LoginTitle>
       <HeadText>campUs</HeadText>
+      {/*  {isToast == true ? (
+        <InfoToast
+          text={"검색조건이 불충분합니다"}
+        />
+      ) : null} */}
       {/* Form Start */}
       {/* 중복검사 통과 체크버튼? */}
       <LoginForm onSubmit={handleSubmit(handleValid)}>

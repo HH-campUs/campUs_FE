@@ -98,7 +98,7 @@ export const useGetWeather = (pardo: string, date: string) => {
     onError: () => {
       console.error("에러가 났습니다.");
     },
-
+    retry: false,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
   });
@@ -160,19 +160,6 @@ export const useGetApi = {
       return data[0];
     });
   },
-
-  /* topic 별 캠핑장 결과 조회 */
-  useGetTopicResult: () => {
-    const params = 2;
-    return useQuery(["topicResult"], async () => {
-      const { data } = await instance.get<pickedCamp[]>(
-        `/camps/${params}?numOfRows=20&pageNo=1`
-      );
-      console.log(data);
-      return data[0];
-    });
-  },
-
   useGetSort: () => {
     return useQuery(["topicSort"], async () => {
       const { data } = await instance.get<IMostList>(`/camps/sort`);
@@ -190,26 +177,6 @@ export const useGetApi = {
       );
       return data;
     });
-  },
-
-  /* 날씨 조회 */
-  useGetWeather: () => {
-    const date = useRecoilValue(DateState);
-    const pardo = useRecoilValue(selectLo);
-    return useQuery(
-      ["weatherinfo"],
-      async () => {
-        const { data } = await instance.get<IGetWeather>(
-          `/weathers?pardo=${pardo}&dt=${date}`
-        );
-        console.log(data);
-        return data;
-      },
-      {
-        /* refetchOnMount: false, */
-        refetchOnWindowFocus: false,
-      }
-    );
   },
 };
 

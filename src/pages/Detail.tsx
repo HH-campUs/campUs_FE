@@ -4,17 +4,20 @@ import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { Outlet, useMatch, useLocation, useNavigate } from "react-router-dom";
+import SemiSearch from "../components/withSearch/SemiSearch";
 import Search from "../components/withSearch/Search";
 import { isModal } from "../store/searchAtom";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder"; //empty
 import BookmarkIcon from "@mui/icons-material/Bookmark"; //filled
 import { useGetApi } from "../APIs/getApi";
+
 import { campArray, IGetCampResult } from "../interfaces/get";
 import { differenceInCalendarQuarters } from "date-fns";
 
 function Detail() {
   const navigate = useNavigate();
   const [isSearch, setIsSearch] = useRecoilState(isModal);
+  const [openSemi, setOpenSemi] = useState(false);
 
   const detailMatch = useMatch("/detail/:id/detail");
   const reviewMatch = useMatch("/detail/:id/review");
@@ -29,6 +32,11 @@ function Detail() {
   //1. 타입 옵셔널 체이닝 확인
   //2. 쿼리문의 타입 확인
   //3. undefiend = !로 해결
+
+  const openModal = (event: any) => {
+    event.stopPropagation();
+    setOpenSemi(true);
+  };
 
   const detailItem = useGetApi.useGetCampDetail(state.campId).data;
   const checkItem = detailItem?.detailCamp![0];
@@ -80,8 +88,7 @@ function Detail() {
 
   // console.log(kim);
 
-
-  console.log(state.campId, campDetail);
+  console.log(state.campId);
   //recoil?
 
   const [bookmark, setBookMark] = useState(true);
@@ -94,6 +101,9 @@ function Detail() {
 
   return (
     <>
+      {openSemi == false ? null : (
+        <SemiSearch openSemi={openSemi} setOpenSemi={setOpenSemi} />
+      )}
       {isSearch == false ? null : <Search />}
       <Wrapper>
         {/* 최상단 이미지*/}
@@ -176,7 +186,17 @@ function Detail() {
         <AddtripBtn>
           <div className="leftInfo">
             <img src="/images/Calendar.svg" alt="calendar" />
-            <p>12월 20일 </p>
+            <u className="date" onClick={openModal}>
+              12월 20일{" "}
+            </u>
+            <span
+              style={{
+                fontSize: "1rem",
+                marginTop: "-4px",
+                marginLeft: "4px",
+              }}>
+              |
+            </span>
             <u>부산북구 날씨 상세</u>
           </div>
           <div className="rightBtn">여행일정 저장</div>
@@ -229,8 +249,7 @@ function Detail() {
                     campId: `${state.campId}`,
                   },
                 })
-              }
-            >
+              }>
               상세정보
             </TabClick>
           </Tab>
@@ -242,8 +261,7 @@ function Detail() {
                     campId: `${state.campId}`,
                   },
                 })
-              }
-            >
+              }>
               리뷰
             </TabClick>
           </Tab>
@@ -408,12 +426,23 @@ const AddtripBtn = styled.button`
       margin-top: -2px;
       margin-left: 6px;
       border-right: 1px solid #000000;
+      text-underline-position: under;
     }
 
     u {
       margin-top: -2px;
-      margin-left: 11px;
+      margin-left: 5px;
       text-underline-position: under;
+
+      .date {
+        width: 60px;
+        height: auto;
+        padding-bottom: 3px;
+        margin-top: -2px;
+        margin-left: 6px;
+        border-right: 1px solid #000000;
+        text-underline-position: under;
+      }
     }
   }
 

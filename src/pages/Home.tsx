@@ -15,14 +15,9 @@ import styled from "styled-components";
 function Home() {
   const [isSearch, setIsSearch] = useRecoilState(isModal);
 
-
   const openModal = () => {
     setIsSearch(true);
-  };
-
-  const closeModal = (event: MouseEvent) => {
-    event.stopPropagation();
-    setIsSearch(false);
+    document.body.style.overflow = "hidden";
   };
 
   const backgroundArr = [

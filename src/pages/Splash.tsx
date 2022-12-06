@@ -17,6 +17,13 @@ function Splash() {
   };
 
   useEffect(() => {
+    const mustSplashPathName = ["/"];
+    if (mustSplashPathName.includes(window.location.pathname)) {
+      setIsShow(true);
+    } else {
+      setIsShow(false);
+    }
+
     setTimeout(() => {
       setIsShow(false);
     }, 3000);

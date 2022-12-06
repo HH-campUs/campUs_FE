@@ -108,7 +108,6 @@ function App() {
       <ThemeProvider theme={theme}>
         <GlobalStyle />
         <ErrorBoundary FallbackComponent={Error}>
-          <Splash />
           <Router />
         </ErrorBoundary>
       </ThemeProvider>

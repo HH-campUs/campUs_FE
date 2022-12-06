@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { usePostsApi } from "../../APIs/postsApi";
 
 export default function MyPlan() {
   const [onOff, setOnOff] = useState(false);
@@ -12,13 +13,17 @@ export default function MyPlan() {
       setOnOff(true);
     }
   };
+  const tripId = 1;
+  const deleteHandler = () => {
+    usePostsApi.useDeleteTravelPlan(tripId);
+  };
   return (
     <TotalContainer>
       <ToggleBtn onOff={onOff}>
         <input type="checkbox" id="toggle" onChange={onChangeText} hidden />
 
         <span className="offSpan">다가올 여행</span>
-        <span className="onSpan">지난 여행</span>
+        <span className="onSpan">지난여행</span>
         <label htmlFor="toggle" className="toggleSwitch">
           <span className="toggleButton" />
         </label>
@@ -174,10 +179,10 @@ const ToggleBtn = styled.div<{ onOff: boolean }>`
 
 const Container = styled.div`
   width: inherit;
-  height: 1000px;
+  height: 100vh;
   margin-top: -20px;
   padding: 20px;
-  overflow: auto !important;
+  overflow-y: scroll !important;
 `;
 
 const PlanBox = styled.div`

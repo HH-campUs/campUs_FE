@@ -1,14 +1,16 @@
-import React from "react";
-import styled from "styled-components";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { useRecoilValue } from "recoil";
 import { LoginState } from "../store/loginAtom";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { getCamperToken } from "../instance/cookies";
+
+//css
+import styled from "styled-components";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
 
 export default function MytravelPlan() {
-  const isLogin = useRecoilValue(LoginState);
+  // const isLogin = useRecoilValue(LoginState);
   const navigate = useNavigate();
-
+  const isLogin = getCamperToken();
   return (
     <Wrapper>
       <TextBox>
@@ -16,7 +18,6 @@ export default function MytravelPlan() {
         <AllList>전체보기</AllList>
       </TextBox>
 
-      {/* div는 최대 넓이를 가짐. */}
       {isLogin ? (
         <PlanBox>
           <ImgBox />

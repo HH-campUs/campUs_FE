@@ -1,6 +1,13 @@
 //url to image : string, image used as <img> ele : HTMLImageElement
 export interface IReviewPosts {
-  reviewImg: string;
+  reviewImg: FormData;
+  reviewComment: string;
+  campId: number | string;
+  likeStatus: string;
+}
+
+export interface IReviewRead {
+  reviewImg: string[];
   reviewComment: string;
 }
 

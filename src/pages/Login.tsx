@@ -46,14 +46,17 @@ function Login() {
       setToken(response.data.Tokens.AccessToken);
 
       setIsLoggedIn(true);
-      console.log(response.data.Tokens.userId);
+
       setUseId(response.data.Tokens.userId);
       navigate("/");
     }
   };
 
-  const KaKaoLogin = () => {
-    window.location.href = KAKAO_AUTH_URL;
+  const KaKaoLogin = async () => {
+    window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${"7aa957f9a1bc0790d8e39735b92eee63"}&redirect_uri=${"http://localhost:3000/kakao/callback"}&response_type=code`;
+    /* const res = await instance.get("/kakao");
+    console.log(res);
+    return res; */
   };
 
   return (

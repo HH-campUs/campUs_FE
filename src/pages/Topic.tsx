@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import Search from "../components/withSearch/Search";
 import { isModal } from "../store/searchAtom";
 import { useNavigate, useParams } from "react-router-dom";

@@ -1,27 +1,32 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { useGetApi } from "../../APIs/getApi";
 
 function Dreview() {
   const navigate = useNavigate();
   const loca = useLocation();
   const state = loca.state as { campId: number };
 
+  const detailItem = useGetApi.useGetCampDetail(state.campId).data;
+  const checkItem = detailItem?.detailCamp![0];
+  console.log(checkItem);
+
   return (
     <Wrapper>
       <ReviewBox>
         <ReviewText>전체리뷰</ReviewText>
-        <ReviewNum>123</ReviewNum>
+        <ReviewNum>{checkItem?.reviewCount}</ReviewNum>
         <ReviewIcon
           onClick={() =>
-            navigate(`/review/:${state.campId}/`, {
+            navigate(`/review/${state.campId}/`, {
               state: {
                 campId: `${state.campId}`,
               },
             })
           }
         >
-          <img src="/images/review/icon-review2.svg" />
+          <img src="/images/mypage/reviewwrite.svg" />
         </ReviewIcon>
       </ReviewBox>
     </Wrapper>
@@ -43,7 +48,6 @@ const ReviewBox = styled.div`
   align-items: center;
   font-weight: bolder;
   justify-content: space-between;
-  /* background-color: red; */
 `;
 
 const ReviewText = styled.div`
@@ -61,5 +65,4 @@ const ReviewNum = styled.div`
 const ReviewIcon = styled.div`
   margin-right: ${(props) => props.theme.pixelToRem(20)};
   margin-top: ${(props) => props.theme.pixelToRem(2)};
-  /* background-color: aliceblue; */
 `;

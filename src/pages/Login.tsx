@@ -47,7 +47,7 @@ function Login() {
       setToken(response.data.Tokens.AccessToken);
 
       setIsLoggedIn(true);
-      console.log(response.data.Tokens.userId);
+
       setUseId(response.data.Tokens.userId);
       navigate("/");
     }

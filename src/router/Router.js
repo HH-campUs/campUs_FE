@@ -30,6 +30,7 @@ import Review from "../pages/Review";
 function Router() {
   return (
     <BrowserRouter>
+      <Splash />
       <Layout>
         <Routes>
           <Route path="/" element={<Home />} />

@@ -20,11 +20,6 @@ function Home() {
     document.body.style.overflow = "hidden";
   };
 
-  const closeModal = (event: MouseEvent) => {
-    event.stopPropagation();
-    setIsSearch(false);
-  };
-
   const backgroundArr = [
     "꿀보이스 김지원",
     "문공 어찌하여 목만오셨소",

@@ -91,7 +91,7 @@ function Result() {
           {/* 펼치기 전 */}
           <div className="isNotActive">
             <div className="secondSeparate">
-              <img src="/images/sunRain.svg" alt="weather-img" />
+              <img src="/images/weatherIcon/sunRain.svg" alt="weather-img" />
               <div className="infoBox">
                 <span>{doNm}</span>
                 <span>

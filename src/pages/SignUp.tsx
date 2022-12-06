@@ -14,7 +14,7 @@ import CheckIcon from "@mui/icons-material/Check";
 
 // #024873(회원가입), #5185A6(중복검사)
 export default function SignUp() {
-  const [isToast, setIsToast] = useRecoilState(toastState);
+  const [toastState, setToastState] = useState(false);
 
   const navigate = useNavigate();
 
@@ -41,7 +41,7 @@ export default function SignUp() {
       });
       console.log(data);
       if (response.status === 201) {
-        setIsToast(true);
+        setToastState(true);
         window.alert(`${data?.email}님\n반갑습니다.`);
         const timer = setTimeout(() => {
           navigate("/login");
@@ -79,6 +79,13 @@ export default function SignUp() {
 
   return (
     <LoginWrap>
+      {toastState == true ? (
+        <InfoToast
+          text={`반갑습니다.`}
+          toastState={toastState}
+          setToastState={setToastState}
+        />
+      ) : null}
       <LoginTitle>
         <div>
           <KeyboardArrowLeftIcon
@@ -89,11 +96,6 @@ export default function SignUp() {
         <LoginText>회원가입</LoginText>
       </LoginTitle>
       <HeadText>campUs</HeadText>
-      {/*  {isToast == true ? (
-        <InfoToast
-          text={"검색조건이 불충분합니다"}
-        />
-      ) : null} */}
       {/* Form Start */}
       {/* 중복검사 통과 체크버튼? */}
       <LoginForm onSubmit={handleSubmit(handleValid)}>

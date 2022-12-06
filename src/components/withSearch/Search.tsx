@@ -32,6 +32,7 @@ function Search() {
   /* toast boolean */
   const [toastState, setToastState] = useState(false);
 
+  /* search Modal 여닫는 boolean */
   const [isSearch, setIsSearch] = useRecoilState(isModal);
   const [openDate, setOpenDate] = useState(false);
   const [startDate, setStartDate] = useRecoilState(StartDate);
@@ -49,8 +50,6 @@ function Search() {
   const selectMonth = useRecoilValue(StrMonth);
   const selectDay = useRecoilValue(StrDay);
 
-  const nav = useNavigate();
-
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
   };
@@ -60,19 +59,12 @@ function Search() {
   const closeModal = (event: MouseEvent) => {
     event.stopPropagation();
     setIsSearch(false);
+    document.body.style.overflow = "unset";
   };
 
   const dateFolder = (event: MouseEvent) => {
     event.stopPropagation();
     setOpenDate(!openDate);
-  };
-
-  const DateFolder_Open = () => {
-    setOpenDate(true);
-  };
-
-  const DateFolder_Close = () => {
-    setOpenDate(false);
   };
 
   const resetHandler = () => {
@@ -81,26 +73,6 @@ function Search() {
     setSendLocation("");
     setStartDate(new Date());
   };
-
-  /* 이거 nav랑 setState랑 같이 못쓰나봄 */
-  /*  const searchHandler = () => {
-    nav("/result"), setIsSearch(false);
-  }; */
-
-  /* 추후에 모달 열리고 ModalBg에서 scroll x */
-  /*   useEffect(() => {
-    document.body.style.cssText = `
-    position: fixed;
-    top: -${window.scrollY}px;
-    overflow-y: scroll;
-    width: 100%;
-    `;
-    return () => {
-      const sY = document.body.style.top;
-      document.body.style.cssText = "";
-      window.scrollTo(0, parseInt(sY || "0", 10) * -1);
-    };
-  }, []); */
 
   return (
     <>
@@ -217,6 +189,7 @@ const Container = styled.div`
   align-items: center;
   position: fixed;
   display: flex;
+  overflow: hidden;
 `;
 
 /* Modal Background */
@@ -227,6 +200,8 @@ const ModalBg = styled.div<{ isSearch: boolean }>`
   backdrop-filter: blur(6px);
   animation-name: ${(props) => (props.isSearch == false ? fadeOut : fadeIn)};
   animation-duration: 0.3s;
+  position: fixed;
+  overflow: hidden;
 `;
 
 /* Search bar */
@@ -249,7 +224,6 @@ const SearchModal = styled.div<{ isSearch: boolean }>`
     padding: 25px 20px 39px;
     position: fixed;
     z-index: 100;
-    //overflow: auto;
     animation: ${(props) => (props.isSearch == false ? slideOut : slideIn)};
     animation-duration: 0.7s;
 

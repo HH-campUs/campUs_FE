@@ -1,12 +1,56 @@
+import { getPaginationItemUtilityClass } from "@mui/material";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import styled from "styled-components";
+import { useGetApi } from "../APIs/getApi";
 import { usePostsApi } from "../APIs/postsApi";
+import { getCamperToken } from "../instance/cookies";
 import { IReviewPosts } from "../interfaces/Posts";
 
 export default function Review() {
+  const isLogin = getCamperToken();
+  //campId확인.
+  const loca = useLocation();
+  const state = loca.state as { campId: number };
+  const { campId } = useParams();
+
+  //useQuery사용.
+  const detailItem = useGetApi.useGetCampDetail(state.campId).data;
+  const checkItem = detailItem?.detailCamp![0];
+
+  //버튼클릭 색상 변경
+  const [bestStatus, setBestStatus] = useState(false);
+  const handleBestButton = () => {
+    console.log("best?", bestStatus);
+    setBestStatus((prev) => !prev);
+    setGoodStatus(false);
+    setBadStatus(false);
+  };
+
+  const [goodStatus, setGoodStatus] = useState(false);
+  const handleGoodButton = () => {
+    console.log("good?", goodStatus);
+    setBestStatus(false);
+    setGoodStatus((prev) => !prev);
+    setBadStatus(false);
+  };
+
+  const [badStatus, setBadStatus] = useState(false);
+  const handleBadButton = () => {
+    console.log("bad?", badStatus);
+    setBestStatus(false);
+    setGoodStatus(false);
+    setBadStatus((prev) => !prev);
+  };
+
+  //추천 data 백 전달.
+  const [value, setValue] = useState<string>("");
+  const radioHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(event.target.value);
+  };
+
   const navigate = useNavigate();
   const reviewPost = usePostsApi.usePostReview();
   const {
@@ -20,6 +64,7 @@ export default function Review() {
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const imageLists = e.target.files;
+    console.log(imageLists);
     if (!imageLists) return;
     setImageFiles(imageLists);
     for (let i = 0; i < imageLists?.length; i++) {
@@ -32,38 +77,53 @@ export default function Review() {
       setImagePreview((prev) => prev.slice(0, 3));
     }
   };
-  console.log(imagePreview);
 
   const handleValid = (data: IReviewPosts) => {
+    if (!campId) return;
+    const formData = new FormData();
+    console.log(imageFiles);
+    for (let i = 0; i < imageFiles.length; i++) {
+      formData.append("reviewImg", imageFiles[i]);
+    }
     const body = {
+      reviewImg: formData,
       reviewComment: data.reviewComment,
-      reviewImg: imageFiles,
+      likeStatus: value,
+      campId: campId,
     };
-    console.log(body);
-
     reviewPost.mutate(body);
   };
 
+  //[1, 최고!추천해요! / 2,좋았어요! / 3,추천하지 않아요]
   return (
     <Wrapper>
       <Head>
-        <img
-          src="/images/back.svg"
-          alt="back"
-          style={{ marginLeft: "20px" }}
-          onClick={() => {
-            navigate(-1);
-          }}
-        />
+        <div>
+          <img
+            src="/images/back.svg"
+            alt="back"
+            style={{ marginLeft: "20px" }}
+            onClick={() => {
+              navigate(-1);
+            }}
+          />
+        </div>
+
         <HeadText>리뷰쓰기</HeadText>
       </Head>
+      <TextBox>
+        {/* <Campname>{checkItem?.campName}</Campname>
+        <CampLocation>{checkItem?.address}</CampLocation> */}
+      </TextBox>
+
       <ReviewImgBox>
-        <img src="" alt="test" style={{ objectFit: "contain" }} />
-        <TextBox>
-          <Campname>노을공원 가족캠핑장</Campname>
-          <CampLocation>충청남도 태안군 남면</CampLocation>
-        </TextBox>
+        <img
+          src={checkItem?.ImageUrl}
+          alt="test"
+          style={{ objectFit: "cover" }}
+        />
       </ReviewImgBox>
+
       <VisitDay>
         방문일선택
         <p style={{ textDecoration: "underline", marginLeft: "160px" }}>
@@ -72,51 +132,72 @@ export default function Review() {
         <RightArrow src="/images/review/rightArrow.svg" />
       </VisitDay>
       <Line />
+      {/* div */}
       <RecoBox>
-        <RecoBtn>
-          <ImgDiv>
-            <img
-              src="/images/review/emptybest.svg"
-              alt="best"
-              style={{
-                top: "50%",
-                transform: "translateY(calc(-50% - 3px)) translateX(3px)",
-              }}
-            />
-            <img
-              src="/images/review/best.svg"
-              alt="best"
-              style={{
-                top: "50%",
-                transform: "translateY(calc(-50% + 3px)) translateX(-6px)",
-              }}
-            />
-          </ImgDiv>
-          <div>최고!추천해요!</div>
-        </RecoBtn>
-        <RecoBtn>
-          <ImgDiv>
-            <img
-              src="/images/review/Bethumbsup.svg"
-              alt="best"
-              style={{ top: "50%", transform: "translateY(-50%)" }}
-            />
-          </ImgDiv>
+        {/* 라벨 */}
+        <BestImgDiv isBest={bestStatus}>
+          <img
+            src="/images/review/emptybest.svg"
+            alt="best"
+            style={{
+              top: "50%",
+              transform: "translateY(calc(-50% - 3px)) translateX(3px)",
+            }}
+          />
+          <img
+            src="/images/review/best.svg"
+            alt="best"
+            style={{
+              top: "50%",
+              transform: "translateY(calc(-50% + 3px)) translateX(-6px)",
+            }}
+          />
+          <BestInput
+            type="radio"
+            name="reco"
+            value="1"
+            onChange={radioHandler}
+            checked={bestStatus}
+            onClick={handleBestButton}
+          />
+          <BestBtnDiv isBest={bestStatus}>최고!추천해요!</BestBtnDiv>
+        </BestImgDiv>
 
-          <div>좋았어요!</div>
-        </RecoBtn>
-        <RecoBtn>
-          <ImgDiv>
-            <img
-              src="/images/review/thumbdown.svg"
-              alt="best"
-              style={{ top: "50%", transform: "translateY(-50%)" }}
-            />
-          </ImgDiv>
+        <GoodImgDiv isGood={goodStatus}>
+          <img
+            src="/images/review/Bethumbsup.svg"
+            alt="best"
+            style={{ top: "50%", transform: "translateY(-50%)" }}
+          />
+          <GoodInput
+            type="radio"
+            name="reco"
+            value="2"
+            onChange={radioHandler}
+            checked={goodStatus}
+            onClick={handleGoodButton}
+          />
+          <GoodBtnDiv isGood={goodStatus}>좋았어요!</GoodBtnDiv>
+        </GoodImgDiv>
 
-          <div>추천하지 않아요</div>
-        </RecoBtn>
+        <BadImgDiv isBad={badStatus}>
+          <img
+            src="/images/review/thumbdown.svg"
+            alt="best"
+            style={{ top: "50%", transform: "translateY(-50%)" }}
+          />
+          <BadInput
+            type="radio"
+            name="reco"
+            value="3"
+            onChange={radioHandler}
+            checked={badStatus}
+            onClick={handleBadButton}
+          />
+          <BadBtnDiv isBad={badStatus}>추천하지 않아요</BadBtnDiv>
+        </BadImgDiv>
       </RecoBox>
+
       <ReviewTip>
         <HeadLine>
           <img src="/images/review/annotation-check.svg" alt="check" />
@@ -124,13 +205,13 @@ export default function Review() {
         </HeadLine>
         <Body>
           누구와 여행을 갔나요?<br></br>
-          캠핑장과 주번 청결상태는 만족하셨나요?<br></br>
+          캠핑장과 주변 청결상태는 만족하셨나요?<br></br>
           그외 공용시설, 매너타임, 주차 등은 어땠나요?
         </Body>
       </ReviewTip>
       <WriteHead>
         <p>리뷰 쓰기</p>
-        <p style={{ color: "#5185A6" }}>0자 | 최소 20자</p>
+        <p style={{ color: "#5185A6" }}>최소 20자</p>
       </WriteHead>
       <ReviewForm onSubmit={handleSubmit(handleValid)}>
         <StTextArea
@@ -147,6 +228,7 @@ export default function Review() {
           <Upload>
             <img src="/images/review/camera.svg" alt="camera" />
             <span>사진업로드</span>
+
             <ImgInput
               type="file"
               multiple
@@ -159,7 +241,13 @@ export default function Review() {
             <img src={image} alt="reviewImg" key={id} />
           ))}
         </ImgList>
-        <StBtn>리뷰 남기기</StBtn>
+        {/* 여기 toast알람 들어가야함. */}
+        {isLogin ? (
+          <StBtn>리뷰 남기기</StBtn>
+        ) : (
+          <StBtn>로그인 후 이용해주세요</StBtn>
+        )}
+        {/* 여기 toast알람 들어가야함. */}
       </ReviewForm>
     </Wrapper>
   );
@@ -190,28 +278,41 @@ const HeadText = styled.div`
 const ReviewImgBox = styled.div`
   width: ${(props) => props.theme.pixelToRem(375)};
   height: ${(props) => props.theme.pixelToRem(170)};
-  background-color: black;
   margin-top: 10px;
+  /* align-items: center; */
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: contrast(55%);
+
+    /* position: relative; */
+    /* z-index: 10; */
+  }
 `;
 
 const TextBox = styled.div`
+  background-color: red;
+  /* justify-content: center; */
   align-items: center;
   display: flex;
   flex-direction: column;
-  vertical-align: middle;
-  margin-top: 40px;
+  position: absolute;
+  margin-top: 55px;
+
+  /* margin-left: 110px; */
 `;
 
 const Campname = styled.div`
-  /* justify-content: center; */
   font-size: ${(props) => props.theme.pixelToRem(22)};
-  color: white;
+
+  color: #fff;
 `;
 
 const CampLocation = styled.div`
-  /* justify-content: center; */
   font-size: ${(props) => props.theme.pixelToRem(14)};
-  color: white;
+
+  color: #fff;
   margin-top: 10px;
 `;
 
@@ -229,47 +330,29 @@ const RightArrow = styled.img`
 
 const Line = styled.div`
   border-bottom: 1px solid #eeeeee;
-  width: 335px;
+  width: ${(props) => props.theme.pixelToRem(335)};
   margin: 0 auto;
 `;
 
 const RecoBox = styled.div`
   display: flex;
-  margin: auto;
   margin-top: 30px;
-  height: 100px;
+  gap: 15%;
+  height: ${(props) => props.theme.pixelToRem(100)};
   justify-content: center;
   align-items: center;
-  /* background-color: blue; */
+  /* flex-direction: column; */
 `;
 
-const RecoBtn = styled.button`
-  width: 120px;
-  height: 100px;
-  border: 0;
-  background: none;
-  display: flex;
-  flex-direction: column;
-  cursor: pointer;
-  :active {
-    /* border: none !important; */
-    box-shadow: none !important;
-  }
-
-  div {
-    margin: 10px auto;
-    font-size: ${(props) => props.theme.pixelToRem(14)};
-    color: grey;
-  }
-`;
-
-const ImgDiv = styled.div`
+//* recoBtn tap *//
+// ${(props) => (props.value == 1 ? "#024873" : "lightgray")};
+const BestImgDiv = styled.label<{ isBest: Boolean }>`
   min-width: ${(props) => props.theme.pixelToRem(62)};
   min-height: ${(props) => props.theme.pixelToRem(62)};
   width: ${(props) => props.theme.pixelToRem(62)};
   height: ${(props) => props.theme.pixelToRem(62)};
   border-radius: ${(props) => props.theme.pixelToRem(62)};
-  background-color: lightgray;
+  background-color: ${(props) => (props.isBest ? "#024873" : "lightgray")};
   align-items: center;
   justify-content: center;
   display: flex;
@@ -280,9 +363,130 @@ const ImgDiv = styled.div`
   }
 `;
 
+const BestInput = styled.input`
+  width: ${(props) => props.theme.pixelToRem(120)};
+  height: ${(props) => props.theme.pixelToRem(100)};
+  border: 0;
+  background: none;
+  background-color: none;
+  display: flex;
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  :focus {
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+`;
+
+const BestBtnDiv = styled.div<{ isBest: Boolean }>`
+  /* display: flex; */
+  /* width: 250px; */
+  margin-top: 100px;
+
+  justify-content: center;
+  align-items: center;
+  font-size: ${(props) => props.theme.pixelToRem(14)};
+  color: ${(props) => (props.isBest ? "#024873" : "lightgray")};
+`;
+
+/* ${(props) => (props.isActive ? "#024873" : "lightgray")}; */
+
+const GoodInput = styled.input`
+  width: ${(props) => props.theme.pixelToRem(120)};
+  height: ${(props) => props.theme.pixelToRem(100)};
+  border: 0;
+  background: none;
+  background-color: none;
+  display: flex;
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  :active {
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  :focus {
+    border: none !important;
+    box-shadow: none !important;
+  }
+`;
+
+/* ${(props) => (props.isGood ? "#024873" : "lightgray")}; */
+const GoodImgDiv = styled.label<{ isGood: Boolean }>`
+  min-width: ${(props) => props.theme.pixelToRem(62)};
+  min-height: ${(props) => props.theme.pixelToRem(62)};
+  width: ${(props) => props.theme.pixelToRem(62)};
+  height: ${(props) => props.theme.pixelToRem(62)};
+  border-radius: ${(props) => props.theme.pixelToRem(62)};
+  background-color: ${(props) => (props.isGood ? "#024873" : "lightgray")};
+
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  position: relative;
+
+  img {
+    position: absolute;
+  }
+`;
+// ${(props) => (props.isGood ? "#024873" : "grey")};
+const GoodBtnDiv = styled.div<{ isGood: Boolean }>`
+  margin-top: 100px;
+  margin-left: 7px;
+  font-size: ${(props) => props.theme.pixelToRem(14)};
+  color: ${(props) => (props.isGood ? "#024873" : "lightgray")};
+`;
+
+const BadInput = styled.input`
+  width: ${(props) => props.theme.pixelToRem(120)};
+  height: ${(props) => props.theme.pixelToRem(100)};
+  border: 0;
+  background: none;
+  background-color: none;
+  display: flex;
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  :active {
+    border: none !important;
+    box-shadow: none !important;
+  }
+`;
+
+// ${(props) => (props.isBad ? "#024873" : "grey")};
+const BadBtnDiv = styled.div<{ isBad: Boolean }>`
+  margin-top: 100px;
+  margin-left: -9px;
+  font-size: ${(props) => props.theme.pixelToRem(14)};
+  color: ${(props) => (props.isBad ? "#024873" : "lightgray")};
+`;
+
+/* ${(props) => (props.isBad ? "#024873" : "lightgray")}; */
+const BadImgDiv = styled.label<{ isBad: Boolean }>`
+  min-width: ${(props) => props.theme.pixelToRem(62)};
+  min-height: ${(props) => props.theme.pixelToRem(62)};
+  width: ${(props) => props.theme.pixelToRem(62)};
+  height: ${(props) => props.theme.pixelToRem(62)};
+  border-radius: ${(props) => props.theme.pixelToRem(62)};
+  background-color: ${(props) => (props.isBad ? "#024873" : "lightgray")};
+
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  position: relative;
+
+  img {
+    position: absolute;
+  }
+`;
+
+//** RecoBtn tab 끝 */
 const ReviewTip = styled.div`
-  width: 335px;
-  height: 124px;
+  width: ${(props) => props.theme.pixelToRem(335)};
+  height: ${(props) => props.theme.pixelToRem(124)};
   margin: 40px auto;
   background-color: #f7f8fa;
   border-radius: ${(props) => props.theme.pixelToRem(14)};
@@ -303,7 +507,7 @@ const HeadLine = styled.div`
 const Body = styled.div`
   color: #5185a6;
   font-size: ${(props) => props.theme.pixelToRem(14)};
-  line-height: 20px;
+  line-height: ${(props) => props.theme.pixelToRem(20)};
   margin-left: 17px;
   margin-top: 5px;
 `;
@@ -328,13 +532,13 @@ const WriteHead = styled.div`
 `;
 
 const ReviewForm = styled.form`
-  width: 335px;
+  width: ${(props) => props.theme.pixelToRem(335)};
   margin: 0 auto;
 `;
 
 const StTextArea = styled.textarea`
-  width: 335px;
-  height: 225px;
+  width: ${(props) => props.theme.pixelToRem(335)};
+  height: ${(props) => props.theme.pixelToRem(225)};
   padding: 14px 16px;
   border: 1px solid lightgray;
   resize: none;
@@ -385,8 +589,8 @@ const Upload = styled.label`
 `;
 
 const StBtn = styled.button`
-  width: 335px;
-  height: 60px;
+  width: ${(props) => props.theme.pixelToRem(335)};
+  height: ${(props) => props.theme.pixelToRem(60)};
   font-size: ${(props) => props.theme.pixelToRem(18)};
   border: 0.5px none grey;
   margin-top: 20px;

@@ -15,7 +15,8 @@ export const idState = atom({
   effects_UNSTABLE: [persistAtom],
 });
 
-export const userInfo = atom<boolean>({
+//수정해야함.
+export const userInfo = atom({
   key: "user",
   default: false,
 });

@@ -33,27 +33,23 @@ function Router() {
       <Layout>
         <Routes>
           <Route path="/" element={<Home />} />
-
           <Route path="result" element={<Result />} />
           <Route path="topic/:topicId" element={<Topic />} />
           <Route path="login" element={<Login />} />
           <Route path="/kakao/callback" element={<KaKaoAuth />} />
           <Route path="signup" element={<SignUp />} />
-
           {/* <Route path="detail" element={<Detail />} /> */}
           <Route path="/detail/:campId" element={<Detail />}>
             <Route path="/detail/:campId/detail" element={<Ddetail />} />
             <Route path="/detail/:campId/review" element={<Dreview />} />
           </Route>
-          <Route path="/review" element={<Review />} />
-
+          <Route path="/review/:campId" element={<Review />} />
           <Route path="mypage" element={<Mypage />} />
           <Route path="/mypage/" element={<Mypage />}>
             <Route path="/mypage/myreview" element={<MyReview />} />
             <Route path="/mypage/mypick" element={<MyPick />} />
             <Route path="/mypage/myplan" element={<MyPlan />} />
           </Route>
-
           <Route path="/*" element={<NotFound />} />
         </Routes>
       </Layout>

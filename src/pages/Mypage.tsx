@@ -1,14 +1,14 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import { isModal } from "../store/searchAtom";
 import Search from "../components/withSearch/Search";
 import { Link, Outlet, useMatch, useNavigate } from "react-router-dom";
-
 import ProfileModal from "../components/ProfileModal";
 
 //Login
 import { LoginState } from "../store/loginAtom";
 import { useMyPageApi } from "../APIs/myPageApi";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { getCamperToken } from "../instance/cookies";
 
 //css
 import styled from "styled-components";
@@ -16,24 +16,23 @@ import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 
 function Mypage() {
   const checkPf = useMyPageApi.useGetMyPage().data?.data;
-  const [toKen, setToken] = useRecoilState(LoginState);
   const [isSearch, setIsSearch] = useRecoilState(isModal);
-  console.log();
+
   const [isPopUp, setIsPopUp] = useState(false);
   const myReviewMatch = useMatch("/mypage/myreview");
   const myPickMatch = useMatch("/mypage/mypick");
   const myPlanMatch = useMatch("/mypage/myplan");
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   console.log(checkPf);
-  // }, [checkPf]);
+  const isLogin = getCamperToken();
+
+  // useEffect(() => {}, [checkPf]);
 
   return (
     <>
       {isSearch == false ? null : <Search />}
       <Wrapper>
-        {toKen ? (
+        {isLogin ? (
           <>
             <UserProfile>
               <LoginProfile>
@@ -68,11 +67,7 @@ function Mypage() {
                   <Link to="/mypage/myreview">내 리뷰</Link>
                 </Tab>
               </Tabs>
-              <div
-                style={{
-                  marginTop: "-120px",
-                }}
-              >
+              <div>
                 <Outlet />
               </div>
             </UserProfile>
@@ -141,6 +136,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   height: 100vh;
+  /* background-color: red; */
 `;
 
 const HeadText = styled.div`
@@ -235,6 +231,7 @@ const SignBtn = styled.button`
 `;
 
 const Tabs = styled.div`
+  /* background-color: red; */
   width: ${(props) => props.theme.pixelToRem(375)};
   height: ${(props) => props.theme.pixelToRem(25)};
   margin-top: 40px;
@@ -244,11 +241,13 @@ const Tabs = styled.div`
 `;
 
 const Tab = styled.span<{ isActive: boolean }>`
+  /* background-color: red; */
   font-size: ${(props) => props.theme.pixelToRem(20)};
   font-weight: 600;
   background-color: ${(props) => props.theme.bgColor};
   border-bottom: ${(props) => (props.isActive ? "2px solid black" : "none")};
   color: ${(props) => (props.isActive ? "#222" : "#ccc")};
+  height: 100vh;
 `;
 
 const Line = styled.div`

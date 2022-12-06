@@ -15,10 +15,13 @@ export const usePostsApi = {
   //** 리뷰작성 / post **//
   usePostReview: () => {
     return useMutation(async (payload: IReviewPosts) => {
-      const { data } = await postInstance.post(`reviews/:campId/`, {
-        reviewImg: payload,
-        reviewComment: payload.reviewComment,
-      });
+      const fd = payload.reviewImg;
+      fd.append("reviewComment", payload.reviewComment);
+      fd.append("likeStatus", payload.likeStatus);
+      const { data } = await postInstance.post(
+        `reviews/${payload.campId}/`,
+        fd
+      );
       return data;
     });
   },

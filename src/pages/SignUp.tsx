@@ -211,6 +211,7 @@ const LoginForm = styled.form`
   /* align-items: center; */
 `;
 
+// #024873
 const EmailText = styled.div`
   margin-top: 40px;
   margin-left: 26px;

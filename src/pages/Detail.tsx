@@ -11,6 +11,9 @@ import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder"; //empty
 import BookmarkIcon from "@mui/icons-material/Bookmark"; //filled
 import { useGetApi } from "../APIs/getApi";
 
+import { campArray, IGetCampResult } from "../interfaces/get";
+import { differenceInCalendarQuarters } from "date-fns";
+
 function Detail() {
   const navigate = useNavigate();
   const [isSearch, setIsSearch] = useRecoilState(isModal);
@@ -40,7 +43,6 @@ function Detail() {
 
   const icon: string[] | undefined =
     detailItem?.detailCamp![0].sbrsCl.split(",");
-  // console.log(checkItem);
 
   console.log(icon);
 
@@ -48,8 +50,17 @@ function Detail() {
     [key: string]: string;
   }
 
+  //4~6단계.
+
+  //1. IconArr / icon 배열 각 각 일치하는 지 확인.
+  //2. 일치할때(true) IconnArr의 요소값 리턴,
+  //3. 그 리턴값 이미지url 사용 -> 배열이되야됨.
+  //4. 3번결과 배열로 맵사용.
+  //5. 맵을사용했을때 이미자만 나오는게아니라, 이미지+text같이나와야함.
+
+  // include , 이중for문, filter
+
   const iconArr: string[] = [
-    "애완동물",
     "무선인터넷",
     "장작판매",
     "온수",

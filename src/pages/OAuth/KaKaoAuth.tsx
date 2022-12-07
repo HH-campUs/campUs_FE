@@ -81,11 +81,3 @@ export default KakaoLogin;
 const CLIENT_ID = "7aa957f9a1bc0790d8e39735b92eee63";
 const REDIRECT_URI = "http://localhost:3000/kakao0";
 export const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code`;
-/* import React from "react";
-
-function KaKaoAuth() {
-  return <div>KaKaoAuth</div>;
-}
-
-export default KaKaoAuth;
- */

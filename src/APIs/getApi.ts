@@ -1,17 +1,19 @@
+import { useEffect } from "react";
 import { useQuery, useInfiniteQuery } from "@tanstack/react-query";
+import { useInView } from "react-intersection-observer";
 import { instance } from "../instance/instance";
-import { useRecoilValue } from "recoil";
-import { DateState } from "../store/dateAtom";
-import { selectLo } from "../store/locationAtom";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { ExportDate, DateState } from "../store/dateAtom";
+import { showLo, selectLo } from "../store/locationAtom";
 
 import {
   IGetCampReview,
   IGetWeather,
   campArray,
   pickedCamp,
-  IGetNewReview,
   IGetCampResult,
   IMostList,
+  IGetNewReview,
 } from "../interfaces/get";
 
 const serverUrl = process.env.REACT_APP_API;
@@ -102,7 +104,7 @@ export const useGetTopicInfinite = (topicId: string) => {
     isSuccess,
     hasNextPage,
     refetch,
-  } = useInfiniteQuery(["getCampTopic", topicId], topicData, {
+  } = useInfiniteQuery(["getCampTopic"], topicData, {
     getNextPageParam: (lastPage, pages) => {
       return lastPage.campTopic ? lastPage.currentPage : undefined;
     },
@@ -165,9 +167,17 @@ export const useRecommendWeather = () => {
 /* 정보 get Api 모음 */
 
 export const useGetApi = {
+  // ** 캠핑장 새로운 리뷰 ** //
+  useGetNewReview: () => {
+    return useQuery(["reviewnew"], async () => {
+      const { data } = await instance.get<IGetNewReview>(`/reviews`);
+      return data;
+    });
+  },
+
   useGetCampDetail: (campId: number) => {
     return useQuery<campArray>(
-      ["campDetail", campId],
+      ["campDetail"],
       async () => {
         const { data } = await instance.get(`/camps/detail/${campId}`);
         console.log(data);
@@ -179,25 +189,6 @@ export const useGetApi = {
       }
     );
   },
-
-  // ** 캠핑장 리뷰 조회 / get ** //
-  useGetCampReview: (campId: number) => {
-    return useQuery(["reviewinfo"], async () => {
-      const { data } = await instance.get<IGetCampReview>(`/reviews/${campId}`);
-      console.log(data);
-      return data;
-    });
-  },
-
-  // ** 캠핑장 새로운 리뷰 ** //
-  useGetNewReview: () => {
-    return useQuery(["reviewnew"], async () => {
-      const { data } = await instance.get<IGetNewReview>(`/reviews`);
-      return data;
-    });
-  },
-
-
   /* topic 별 캠핑장 결과 조회 */
   useGetTopicResult: () => {
     const params = 2;
@@ -205,15 +196,24 @@ export const useGetApi = {
       const { data } = await instance.get<pickedCamp[]>(
         `/camps/${params}?numOfRows=20&pageNo=1`
       );
+      console.log(data);
       return data[0];
     });
   },
-
-
-  // ** LOOK, PICK, REVIEW ** //
   useGetSort: () => {
     return useQuery(["topicSort"], async () => {
       const { data } = await instance.get<IMostList>(`/camps/sort`);
+      console.log(data);
+      return data;
+    });
+  },
+
+  //1.일몰 2.낚시 3.반려동물 4.장비대여
+  // ** 캠핑장 리뷰 조회 / get ** //
+  useGetCampReview: (campId: number) => {
+    return useQuery(["reviewinfo"], async () => {
+      const { data } = await instance.get<IGetCampReview>(`/reviews/${campId}`);
+      console.log(data);
       return data;
     });
   },

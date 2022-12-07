@@ -64,7 +64,7 @@ function Keyword() {
         </div>
         <div>
           <span style={{ width: "160px", marginLeft: "-150px" }}>
-            {Month}월 {Day}일 &nbsp; | &nbsp; {doNm}
+            {Month}월 {Day}일 &nbsp; | &nbsp; {keyword}
           </span>
         </div>
       </ReSearch>

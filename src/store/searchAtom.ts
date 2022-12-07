@@ -1,7 +1,7 @@
 import { atom, selector } from "recoil";
 
 export const textValue = atom<string>({
-  key: "inputValue",
+  key: "textValue",
   default: "",
 });
 

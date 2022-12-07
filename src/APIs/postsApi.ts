@@ -58,6 +58,13 @@ export const usePostsApi = {
     );
   },
 
+  /* 여행일정삭제 / delete */
+  useDeleteTravelPlan: (tripId: number) => {
+    return useMutation((payload: IPostTravelPlan) =>
+      instance.delete(`/users/:${tripId}`)
+    );
+  },
+
   // ** 캠핑장 찜하기 , payload값없이 header로 access/refresh토큰만보내면됨 / POST ** /
   useCampingPicked: () => {
     return useMutation((payload: ICampingPicked) =>

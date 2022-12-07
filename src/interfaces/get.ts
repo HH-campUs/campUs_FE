@@ -16,6 +16,7 @@ export interface IGetCampReview {
   profileImg: string;
 }
 
+
 export interface IGetNewReview {
   reviewId: number;
   campId: number;
@@ -28,9 +29,8 @@ export interface IGetNewReview {
   data: IGetNewReview[];
   NewReview: IGetNewReview[];
 }
-/* 날씨 */
-export interface IGetWeather {
-  weather: Array<any>;
+
+export interface weather {
   dt?: string;
   pardo?: string;
   date?: string;
@@ -51,12 +51,45 @@ export interface IGetWeather {
   snow?: number;
 }
 
+
+/* 날씨 */
+export interface IGetWeather {
+  weather: Array<any>;
+  recommend: Array<any>;
+  dt?: string;
+  pardo?: string;
+  date?: string;
+  sunrise?: string;
+  sunset?: string;
+  humidity?: string;
+  wind_speed?: number;
+  clouds?: number;
+  uvi?: number;
+  pop?: number;
+  day?: number;
+  min?: number;
+  max?: number;
+  night?: number;
+  eve?: number;
+  morn?: number;
+  rain?: number;
+  snow?: number;
+}
+
+
 export interface IMostList extends IGetCampResult {
   look: IGetCampResult;
   pick: IGetCampResult;
   review: IGetCampResult;
   MostList: IGetCampResult[];
 }
+
+
+export interface RecoWeather extends IGetWeather {
+  recommend: Array<IGetWeather>;
+}
+
+/* 캠프 */
 
 export interface IGetCampResult {
   ImageUrl: string;

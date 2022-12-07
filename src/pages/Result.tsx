@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { useInView } from "react-intersection-observer";
+
+import { isModal, textValue } from "../store/searchAtom";
 import { showLo, selectLo } from "../store/locationAtom";
 import { StrMonth, StrDay, DateState } from "../store/dateAtom";
 import Search from "../components/withSearch/Search";
-import { isModal } from "../store/searchAtom";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { useGetCamp, useGetWeather } from "../APIs/getApi";
+import { useGetCamp, useGetWeather, useSearchCamp } from "../APIs/getApi";
 import { IGetCampResult } from "../interfaces/get";
 
 function Result() {
@@ -19,12 +20,13 @@ function Result() {
   const [isSearch, setIsSearch] = useRecoilState(isModal);
   const [bookmarking, setBookMarking] = useState(false);
 
-  const doNm = useRecoilValue(showLo);
   const Month = useRecoilValue(StrMonth);
   const Day = useRecoilValue(StrDay);
 
+  const doNm = useRecoilValue(showLo);
   const pardo = useRecoilValue(selectLo);
   const date = useRecoilValue(DateState);
+  const keyword = useRecoilValue(textValue);
 
   /* weather api */
   const { WeatherData, isLoading, isError } = useGetWeather(pardo, date);
@@ -32,9 +34,9 @@ function Result() {
   console.log(WeatherData, isLoading, isError);
 
   /* camp result 무한스크롤 */
+
   const { campData, fetchNextPage, isSuccess, hasNextPage, refetch } =
     useGetCamp(doNm);
-
   console.log(campData);
 
   const { ref, inView } = useInView();
@@ -58,14 +60,13 @@ function Result() {
 
   return (
     <>
-      {isSearch == false ? null : <Search />}
+      {isSearch == false ? undefined : <Search />}
 
       <ReSearch>
         <div
           onClick={() => {
             nav("/");
-          }}
-        >
+          }}>
           <div style={{ position: "relative" }}>
             <img src="/images/back.svg" alt="back" />
             <span style={{ width: "60px" }}>검색조건</span>
@@ -80,12 +81,19 @@ function Result() {
 
       {/* Weather modal */}
 
+      {/* 여기서 문제... pardo값을 받게 되었을 때 잘나오지만 만약 pardo 값을 인자로 넣지
+      않는다면..?  => undefined 값이 나오게 된다잉.. 그렇다고 이 값을 여기에 맞추기엔 pardo
+      값을 정확히 입력하고, 날짜가 날씨를 지원하지 않는 거라면 Query Option 으로 isError일때, 
+      다른 컴포넌트가 나오게 처리해야된다.. 그렇다면?? 조건문을 중첩해서 써도 되지 않을까?
+      => 이거 질문해야겠다 시부레,.. */}
+
+      {/* 일단 키워드가 있고 없고 해도 잘 안됩니당 */}
+
       {isError == false ? (
         <WeatherModal
           isWeather={isWeather}
           onClick={WeatherHandler}
-          style={{ transition: "all 0.5 ease-in-out" }}
-        >
+          style={{ transition: "all 0.5 ease-in-out" }}>
           <div className="top">
             <span>날씨</span>
             <span>{isWeather ? "펼치기" : "접기"}</span>
@@ -93,21 +101,60 @@ function Result() {
           {/* 펼치기 전 */}
           <div className="isNotActive">
             <div className="secondSeparate">
-              <img src="/images/sunRain.svg" alt="weather-img" />
+              {/* 날씨 정보에 따른 조건부 이미지 로직 */}
+
+              {/* 구름이 많이 낄 때 */}
+              {WeatherData?.weather[1].clouds > 50 &&
+              WeatherData?.weather[1].rain == null ? (
+                <img
+                  src="/images/weatherIcon/img-cloudy.svg"
+                  alt="weather-img"
+                />
+              ) : /* 구름이 적게 낄 때 */
+              WeatherData?.weather[1].clouds > 29 &&
+                WeatherData?.weather[1].clouds < 50 ? (
+                <img
+                  src="/images/weatherIcon/img-cloud.svg"
+                  alt="weather-img"
+                />
+              ) : /* 적은 비가 내릴 때 */
+              WeatherData?.weather[1].rain < 0.29 &&
+                WeatherData?.weather[1].rain > 0.01 ? (
+                <img
+                  src="/images/weatherIcon/img-sunRain.svg"
+                  alt="weather-img"
+                />
+              ) : /* 많은 비가 내릴 때 */
+              WeatherData?.weather[1].rain > 0.3 ? (
+                <img src="/images/weatherIcon/img-rain.svg" alt="weather-img" />
+              ) : /* 눈이 내릴 떄 */
+              WeatherData?.weather[1].snow !== null ? (
+                <img src="/images/weatherIcon/img-snow.svg" alt="weather-img" />
+              ) : /* 눈과 비가 내릴 때 */
+              WeatherData?.weather[1].snow !== null &&
+                WeatherData?.weather[1].rain !== null ? (
+                <img src="/images/weatherIcon/img-snow.svg" alt="weather-img" />
+              ) : (
+                /* 구름이 거의 끼지 않아 밝을 떄 */
+                <img
+                  src="/images/weatherIcon/img-sunny.svg"
+                  alt="weather-img"
+                />
+              )}
               <div className="infoBox">
                 <span>{doNm}</span>
                 <span>
-                  비올확률 {WeatherData?.weather[0].pop.toFixed(1) * 100}%
+                  비올확률 {WeatherData?.weather[1].pop.toFixed(1) * 100}%
                 </span>
               </div>
             </div>
             <div className="thirdSeparate">
               <div className="temBox">
                 <div className="lowHigh">
-                  <p>{WeatherData?.weather[0].min.toFixed(0)}</p>
-                  <p>{WeatherData?.weather[0].max.toFixed(0)}</p>
+                  <p>{WeatherData?.weather[1].min.toFixed(0)}</p>
+                  <p>{WeatherData?.weather[1].max.toFixed(0)}</p>
                 </div>
-                <span>{WeatherData?.weather[0].day.toFixed(0)}</span>
+                <span>{WeatherData?.weather[1].day.toFixed(0)}</span>
                 <b>°</b>
               </div>
               <span>
@@ -121,6 +168,18 @@ function Result() {
             {/* 1층 */}
             <div className="firstFloor">
               <hr />
+              <div className="tempGraph">
+                <img
+                  src="/images/weatherIcon/icon-circleline.svg"
+                  alt="circleline"
+                />
+                <img src="/images/weatherIcon/icon-morning.svg" alt="morning" />
+                <img src="/images/weatherIcon/icon-lunch.svg" alt="lunch" />
+                <img src="/images/weatherIcon/icon-night.svg" alt="night" />
+                <span>{WeatherData?.weather[1].morn.toFixed(0)}°</span>
+                <span>{WeatherData?.weather[1].day.toFixed(0)}°</span>
+                <span>{WeatherData?.weather[1].night.toFixed(0)}°</span>
+              </div>
               <div className="infoBox">
                 <div className="left">
                   <div className="climate">
@@ -130,30 +189,102 @@ function Result() {
                   </div>
                   <div className="climateNum">
                     <div>
-                      <p>{WeatherData?.weather[0].wind_speed}</p>
-                      <p>{WeatherData?.weather[0].humidity}%</p>
-                      <p>{WeatherData?.weather[0].uvi}</p>
+                      <p>{WeatherData?.weather[1].wind_speed.toFixed(0)}m/s</p>
+                      <p>{WeatherData?.weather[1].humidity}%</p>
+                      <p>{WeatherData?.weather[1].uvi}</p>
                     </div>
                   </div>
                 </div>
                 <div className="right">
-                  <p>
-                    <b>·</b> 강풍으로 체감온도가 낮아요
-                  </p>
-                  <p>
-                    <b>·</b> 캠프파이어 하기 좋아요
-                  </p>
-                  <p>
-                    <b>·</b> 그늘이 많아요
-                  </p>
+                  {/* wind_speed */}
+                  {WeatherData?.weather[1].wind_speed.toFixed(0) > 5 ? (
+                    <p style={{ color: "#eb4343" }}>
+                      <b>·</b> 강풍으로 체감온도가 낮아요
+                    </p>
+                  ) : WeatherData?.weather[1].wind_speed.toFixed(0) < 5 &&
+                    WeatherData?.weather[1].wind_speed.toFixed(0) > 2.9 ? (
+                    <p style={{ color: "#fc9701" }}>
+                      <b>·</b> 다소 선선한 바람이 불어요
+                    </p>
+                  ) : (
+                    <p style={{ color: "#27a80c" }}>
+                      <b>·</b> 바람이 거의 불지 않아요
+                    </p>
+                  )}
+
+                  {/* humidity */}
+                  {WeatherData?.weather[1].humidity > 60 ? (
+                    <p style={{ color: "#eb4343" }}>
+                      <b>·</b> 많이 습해서 불쾌지수가 올라가요
+                    </p>
+                  ) : WeatherData?.weather[1].humidity < 60 &&
+                    WeatherData?.weather[1].humidity > 30 ? (
+                    <p style={{ color: "#27a80c" }}>
+                      <b>·</b> 캠프파이어 하기 딱 좋아요
+                    </p>
+                  ) : (
+                    <p style={{ color: "#fc9701" }}>
+                      <b>·</b> 수분크림을 꼭 챙기세요
+                    </p>
+                  )}
+
+                  {/* uvi */}
+                  {WeatherData?.weather[1].uvi > 4.9 ? (
+                    <p style={{ color: "#eb4343" }}>
+                      <b>·</b> 야외활동을 추천하지 않아요
+                    </p>
+                  ) : WeatherData?.weather[1].uvi < 5 &&
+                    WeatherData?.weather[1].uvi == 3 ? (
+                    <p style={{ color: "#fc9701" }}>
+                      <b>·</b> 썬크림은 꼭 발라주세요
+                    </p>
+                  ) : (
+                    <p style={{ color: "#27a80c" }}>
+                      <b>·</b> 활동하기 좋은 햇볕이에요
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
             {/* 2층 */}
+            <hr />
             <div className="secondFloor">
-              <hr />
-              <img src="/images/sunrise.svg" alt="sunrise" />
-              <img src="/images/Sunset.svg" alt="sunset" />
+              <div className="iconBox">
+                <img src="/images/weatherIcon/icon-sunrise.svg" alt="sunrise" />
+                <span>{WeatherData?.weather[1].sunrise.slice(-7, -3)}am</span>
+                <span>일출</span>
+              </div>
+              <div className="iconBox">
+                <img src="/images/weatherIcon/icon-sunset.svg" alt="sunset" />
+                <span>{WeatherData?.weather[1].sunset.slice(-7, -3)}pm</span>
+                <span>일몰</span>
+              </div>
+              <div className="iconBox">
+                {WeatherData?.weather[1].snow !== null &&
+                WeatherData?.weather[1].rain == null ? (
+                  <>
+                    <img src="/images/weatherIcon/icon-snow.svg" alt="snow" />
+                    <span>{WeatherData?.weather[1].snow}mm</span>
+                    <span>적설량</span>
+                  </>
+                ) : (
+                  <>
+                    <img src="/images/weatherIcon/icon-snow.svg" alt="snow" />
+                    <span>
+                      {WeatherData?.weather[1].rain == null
+                        ? 0
+                        : WeatherData?.weather[1].rain}
+                      mm
+                    </span>
+                    <span>강수량</span>
+                  </>
+                )}
+              </div>
+              <div className="iconBox">
+                <img src="/images/weatherIcon/icon-cloud.svg" alt="cloud" />
+                <span>{WeatherData?.weather[1].clouds}%</span>
+                <span>구름</span>
+              </div>
             </div>
           </div>
         </WeatherModal>
@@ -197,12 +328,11 @@ function Result() {
                           campId: `${item.campId}`,
                         },
                       })
-                    }
-                  >
+                    }>
                     <ResultImg src={item.ImageUrl} alt={item.ImageUrl} />
                     <InnerBg>
                       <span>
-                        찜({item.pickCount}) 리뷰({item.reviewCount}){" "}
+                        찜({item.pickCount}) 리뷰({item.reviewCount})
                       </span>
                     </InnerBg>
                   </ResultItem>
@@ -216,12 +346,12 @@ function Result() {
                   </DetailAddress>
                   {/* 시설 태그들 (max: 4) */}
                   <TagContainer>
-                    {item.sbrsCl.split(",").map((word, i) => (
-                      <div className="tag"> {word} </div>
-                    ))}
-                    <div className="tag"> 장작판매 </div>
-                    <div className="tag"> 물놀이장 </div>
-                    <div className="tag"> 마트/편의점 </div>
+                    {item.sbrsCl == ""
+                      ? null
+                      : item.sbrsCl
+                          .split(",")
+                          .slice(0, 4)
+                          .map((word) => <div className="tag"> {word} </div>)}
                   </TagContainer>
                 </ResultBox>
               ))}
@@ -266,45 +396,6 @@ const ReSearch = styled.div`
   }
 `;
 
-const ModalBg = styled.div`
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(6px);
-`;
-
-const SearchModal = styled.div`
-  margin: 10px auto;
-  width: ${(props) => props.theme.pixelToRem(335)};
-  background-color: #ebebeb;
-  border-radius: 13px;
-  justify-content: center;
-  align-content: center;
-
-  transition: all 0.5s ease-out;
-
-  z-index: 100;
-
-  &.isNotActive {
-    height: 65px;
-    padding: 5px;
-    font-size: 1rem;
-    color: #797979;
-    justify-content: space-between !important;
-    display: flex;
-
-    span {
-      margin-left: 10px;
-      font-size: 1.4rem;
-    }
-  }
-
-  &.isActive {
-    height: 567px;
-    padding: 10px;
-  }
-`;
-
 /* weather */
 
 const WeatherModal = styled.div<{ isWeather: boolean }>`
@@ -312,13 +403,14 @@ const WeatherModal = styled.div<{ isWeather: boolean }>`
   height: ${(props) =>
     props.isWeather == false
       ? props.theme.pixelToRem(116)
-      : props.theme.pixelToRem(342)};
+      : props.theme.pixelToRem(404)};
   flex-grow: 0;
   margin: 0 auto;
   border-radius: ${(props) => props.theme.pixelToRem(10)};
   border: solid 1px ${(props) => props.theme.colorTheme.border};
   background-color: rgba(81, 133, 166, 0.13);
-  transition: all 0.5s ease-out;
+  transition: all 0.3s linear;
+  overflow: hidden;
   z-index: 100;
 
   .top {
@@ -395,14 +487,17 @@ const WeatherModal = styled.div<{ isWeather: boolean }>`
         padding-right: 8px;
 
         .lowHigh {
-          width: ${(props) => props.theme.pixelToRem(15)};
+          width: ${(props) => props.theme.pixelToRem(20)};
           height: ${(props) => props.theme.pixelToRem(34)};
           margin-top: 8px;
           margin-left: 70px;
           flex-direction: row;
           position: absolute;
+          text-align: right;
           p:nth-child(1) {
-            display: flex;
+            display: inline-block;
+            position: absolute;
+            text-align: right;
             ${(props) => props.theme.fontTheme.Caption2};
             color: ${(props) => props.theme.colorTheme.cold};
           }
@@ -410,8 +505,9 @@ const WeatherModal = styled.div<{ isWeather: boolean }>`
           p:nth-child(2) {
             display: flex;
             position: absolute;
-            margin-top: 2px;
-            margin-left: 4px;
+            margin-top: 15px;
+            margin-left: 23px;
+            text-align: right;
             ${(props) => props.theme.fontTheme.Caption2};
             color: ${(props) => props.theme.colorTheme.hot};
           }
@@ -446,10 +542,11 @@ const WeatherModal = styled.div<{ isWeather: boolean }>`
   /* 펼쳤을 때의 날씨 정보 (detail) */
   .isActive {
     width: inherit;
-    height: ${(props) => props.theme.pixelToRem(217)};
+    height: ${(props) => props.theme.pixelToRem(298)};
     margin: 0 auto;
     padding: 10px;
-    visibility: ${(props) => (props.isWeather == true ? "visible" : "hidden")};
+    opacity: ${(props) => (props.isWeather == true ? 1 : 0)};
+    transition: opacity 0.2s ease-in;
 
     hr {
       width: ${(props) => props.theme.pixelToRem(295)};
@@ -459,9 +556,73 @@ const WeatherModal = styled.div<{ isWeather: boolean }>`
       background: ${(props) => props.theme.colorTheme.border} !important;
     }
     .firstFloor {
+      height: ${(props) => props.theme.pixelToRem(193)};
+
+      .tempGraph {
+        width: inherit;
+        height: ${(props) => props.theme.pixelToRem(97)};
+        margin-top: 15px;
+        margin-bottom: 5px;
+        padding: 20px;
+
+        img {
+          display: flex;
+
+          &:first-child {
+            width: ${(props) => props.theme.pixelToRem(247)};
+            margin: 0 auto;
+            position: relative;
+          }
+          &:nth-child(2) {
+            width: ${(props) => props.theme.pixelToRem(24)};
+            margin-top: -12px;
+            margin-left: -5px;
+            position: absoulte;
+          }
+          &:nth-child(3) {
+            width: ${(props) => props.theme.pixelToRem(24)};
+            margin-top: -70px;
+            margin-left: 125px;
+            position: absoulte;
+          }
+          &:nth-child(4) {
+            width: ${(props) => props.theme.pixelToRem(24)};
+            margin-top: 20px;
+            margin-left: 255px;
+            position: absoulte;
+          }
+        }
+
+        span {
+          ${(props) => props.theme.fontTheme.Caption1};
+          line-height: 1.29;
+          letter-spacing: normal;
+          text-align: center;
+          position: absolute;
+          display: flex;
+
+          &:nth-child(5) {
+            width: ${(props) => props.theme.pixelToRem(30)};
+            margin-top: 3px;
+            margin-left: -6px;
+          }
+          &:nth-child(6) {
+            width: ${(props) => props.theme.pixelToRem(30)};
+            margin-top: -44px;
+            margin-left: 123px;
+          }
+          &:nth-child(7) {
+            width: ${(props) => props.theme.pixelToRem(30)};
+            margin-top: -1px;
+            margin-left: 255px;
+          }
+        }
+      }
+
       .infoBox {
         width: inherit;
-        height: ${(props) => props.theme.pixelToRem(117)};
+        height: ${(props) => props.theme.pixelToRem(67)};
+        margin-top: -14px;
         padding: 10px;
         justify-content: space-between;
         display: flex;
@@ -494,7 +655,6 @@ const WeatherModal = styled.div<{ isWeather: boolean }>`
             margin: -78px 52px 0px 81px;
             ${(props) => props.theme.fontTheme.Caption2};
             flex-grow: 0;
-            color: ${(props) => props.theme.colorTheme.text2} !important;
             line-height: 1.29;
             letter-spacing: normal;
             text-align: right;
@@ -504,6 +664,7 @@ const WeatherModal = styled.div<{ isWeather: boolean }>`
             p {
               margin-top: 6px;
               display: flex;
+              color: ${(props) => props.theme.colorTheme.text2} !important;
             }
           }
         }
@@ -531,6 +692,42 @@ const WeatherModal = styled.div<{ isWeather: boolean }>`
       }
     }
     .secondFloor {
+      height: ${(props) => props.theme.pixelToRem(102)};
+      padding: 25px;
+      justify-content: space-around;
+      gap: 20px;
+      display: flex;
+      .iconBox {
+        width: ${(props) => props.theme.pixelToRem(60)};
+        height: ${(props) => props.theme.pixelToRem(75)};
+        flex-direction: column;
+        text-align: center;
+
+        img {
+          width: ${(props) => props.theme.pixelToRem(26)};
+        }
+
+        span {
+          margin: 0 auto;
+          ${(props) => props.theme.fontTheme.Body2};
+          font-style: normal;
+          line-height: normal;
+          letter-spacing: normal;
+          text-align: center;
+          display: inline-block;
+
+          &:first-child {
+            font-size: ${(props) => props.theme.pixelToRem(16)};
+            color: #333;
+            position: relative;
+          }
+          &:last-child {
+            margin-top: 3px;
+            font-size: ${(props) => props.theme.pixelToRem(14)};
+            color: #797979;
+          }
+        }
+      }
     }
   }
 `;
@@ -671,7 +868,7 @@ const ResultBox = styled.div`
 const ResultItem = styled.div`
   width: ${(props) => props.theme.pixelToRem(335)};
   height: ${(props) => props.theme.pixelToRem(190)};
-  margin: 20px 0 14px;
+  margin: 27px 0 14px;
   border-radius: 8px;
   position: relative;
 `;
@@ -696,8 +893,9 @@ const BookmarkBorderIcon = styled.div`
 `;
 
 const InnerBg = styled.div`
-  width: ${(props) => props.theme.pixelToRem(90)};
+  width: auto;
   height: ${(props) => props.theme.pixelToRem(24)};
+  padding: 2px;
   margin-top: -34px;
   margin-left: 230px;
   border-radius: 4px;
@@ -707,7 +905,6 @@ const InnerBg = styled.div`
   span {
     margin-top: 3px;
     margin-left: 6px;
-    font-family: Pretendard;
     font-size: 12px;
     font-weight: 500;
     font-stretch: normal;
@@ -774,7 +971,7 @@ const DetailAddress = styled.div`
 const TagContainer = styled.div`
   width: ${(props) => props.theme.pixelToRem(331)};
   height: ${(props) => props.theme.pixelToRem(24)};
-  margin: 12px 0 0 4px;
+  margin: 12px 0 5px 4px;
   padding: 0;
   flex-direction: row;
   justify-content: flex-end;
@@ -783,8 +980,9 @@ const TagContainer = styled.div`
   display: flex;
 
   .tag {
-    width: ${(props) => props.theme.pixelToRem(66)};
+    width: auto;
     height: ${(props) => props.theme.pixelToRem(24)};
+    padding: 4px 10px;
     flex-grow: 0;
     justify-content: center;
     align-items: center;

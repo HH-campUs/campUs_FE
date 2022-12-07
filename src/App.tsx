@@ -109,7 +109,6 @@ function App() {
       <ThemeProvider theme={theme}>
         <GlobalStyle />
         <ErrorBoundary FallbackComponent={Error}>
-          <Splash />
           <Router />
         </ErrorBoundary>
         <ReactQueryDevtools initialIsOpen={true}></ReactQueryDevtools>

@@ -1,50 +1,81 @@
-/* import { toast, ToastOptions } from "react-toastify";
-import { Styles } from "../../style/ToastifyStyle";
-import "react-toastify/dist/ReactToastify.css";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import styled, { keyframes } from "styled-components";
+import { ToastProps } from "../../interfaces/props";
 
-interface ToastProps {
-  // 코드 리뷰 -> type은 enum으로 따로 빼기
-  type: "success" | "error" | "info" | "action";
-  message?: string;
-  action?: string;
-}
+/* toast (just info) custom hook */
+export const InfoToast = ({ text, toastState, setToastState }: ToastProps) => {
+  const [toastAni, setToastAni] = useState(false);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setToastState(false);
+    }, 1500);
 
-const toastOptions: ToastOptions = {
-  position: "bottom-center",
-  autoClose: 2000,
-  hideProgressBar: true,
-  closeOnClick: false,
-  pauseOnHover: false,
-  draggable: true,
-  pauseOnFocusLoss: true,
-  closeButton: false,
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
+  return (
+    <ToastAlert toastState={toastState}>
+      <p>{text}</p>
+    </ToastAlert>
+  );
 };
 
-export function showToast({ type, message, action = "바로가기" }: ToastProps) {
-  switch (type) {
-    case "success":
-      // enum으로 타입 지정했을 때 가독성 상승 -> case ToastType.success:
-      toast.success(message || "성공적으로 완료되었습니다", {
-        ...toastOptions,
-        icon: <img src="/svgs/toast_success.svg" alt="success" />,
-      });
-      return;
-    case "error":
-      toast.error(message || "다시 한번 시도해주세요", {
-        ...toastOptions,
-        icon: <img src="/svgs/toast_error.svg" alt="error" />,
-      });
-  }
-}
+export const NavPickToast = () => {
+  const nav = useNavigate();
+  return (
+    <NavToast>
+      <p>찜목록에 추가되었습니다.</p>
+      <img
+        src="/images/back.svg"
+        alt="nav"
+        onClick={() => nav("/mypage/mypick")}
+      />
+    </NavToast>
+  );
+};
 
-export default function Toast() {
-  return <Styles />;
-} */
+export const NoIdPickToast = () => {
+  const nav = useNavigate();
+  return (
+    <NavToast>
+      <p>로그인을 해야 이용할 수 있습니다.</p>
+      <img src="/images/back.svg" alt="nav" onClick={() => nav("/login")} />
+    </NavToast>
+  );
+};
 
-import React from "react";
+const fadeIn = keyframes`
+  from {opacity: 0} 
+    to {opacity: 1}
 
-function Toast() {
-  return <div>Toast</div>;
-}
+`;
 
-export default Toast;
+const fadeOut = keyframes`
+  from {opacity: 1} 
+    to {opacity: 0}
+`;
+
+const ToastAlert = styled.div<{ toastState: boolean }>`
+  width: ${(props) => props.theme.pixelToRem(350)};
+  height: ${(props) => props.theme.pixelToRem(60)};
+  margin: 0 auto;
+  bottom: ${(props) => props.theme.pixelToRem(30)};
+  ${(props) => props.theme.fontTheme.Body2};
+  color: ${(props) => props.theme.colorTheme.textWhite};
+  background-color: #272727d8;
+  border-radius: 10px;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  display: flex;
+  z-index: 1000;
+  animation-name: ${(props) => (props.toastState == true ? fadeIn : fadeOut)};
+  animation-duration: 0.2s;
+`;
+
+const NavToast = styled.div`
+  padding: 20px;
+  justify-content: space-between;
+`;

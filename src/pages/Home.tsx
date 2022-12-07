@@ -17,11 +17,7 @@ function Home() {
 
   const openModal = () => {
     setIsSearch(true);
-  };
-
-  const closeModal = (event: MouseEvent) => {
-    event.stopPropagation();
-    setIsSearch(false);
+    document.body.style.overflow = "hidden";
   };
 
   const backgroundArr = [

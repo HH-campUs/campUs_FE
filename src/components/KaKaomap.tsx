@@ -67,6 +67,7 @@ export default function KaKaomap() {
           )
           .then((res) => console.log(res.data.documents))
           .catch((e) => console.log(e));
+
         // 마커와 인포윈도우를 표시합니다
         displayMarker(locPosition, message);
       });

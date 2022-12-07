@@ -18,11 +18,42 @@ const serverUrl = process.env.REACT_APP_API;
 
 // ** 캠핑장 카테고리 정보 조회 / get ** //
 
+/* 캠핑장 키워드 검색 */
+export const useSearchCamp = (keyword: string) => {
+  const useData = async ({ pageParam = 1 }) => {
+    const { data } = await instance.get<campArray>(
+      `/querysearch?keyword=${keyword}&numOfRows=20&pageNo=${pageParam}`
+    );
+    console.log(data, keyword);
+    return {
+      /* 같은 객체 레벨에 있는 total 값도 사용하기 위해서 data만 */
+      camps: data,
+      currentPage: pageParam,
+    };
+  };
+
+  const {
+    data: campData,
+    fetchNextPage,
+    isSuccess,
+    hasNextPage,
+    refetch,
+  } = useInfiniteQuery(["searchCamp", keyword], useData, {
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    getNextPageParam: (lastPage) => {
+      return lastPage.camps.campName ? lastPage.currentPage + 1 : undefined;
+    },
+  });
+  console.log(campData);
+  return { campData, fetchNextPage, isSuccess, hasNextPage, refetch };
+};
+
 /* 리얼 인피니티 스크롤 - 캠프 result 페이지 전용*/
 export const useGetCamp = (doNm: string) => {
   const useData = async ({ pageParam = 1 }) => {
     const { data } = await instance.get<campArray>(
-      `/camps?doNm=${doNm}&numOfRows=30&pageNo=${pageParam}`
+      `/camps?doNm=${doNm}&numOfRows=20&pageNo=${pageParam}`
     );
     console.log(data);
     return {
@@ -97,13 +128,38 @@ export const useGetWeather = (pardo: string, date: string) => {
     onError: () => {
       console.error("에러가 났습니다.");
     },
-
+    retry: false,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
   });
   console.log(WeatherData);
 
   return { WeatherData, isLoading, isError };
+};
+
+/* 추천 날씨 정보 조회 */
+
+export const useRecommendWeather = () => {
+  const useData = async () => {
+    const { data } = await instance.get<IGetWeather>(`/weathers/recommend`);
+    return data;
+  };
+
+  const {
+    data: RecommendData,
+    isLoading,
+    isError,
+  } = useQuery(["getRecommendWeather"], useData, {
+    onError: () => {
+      console.error("에러가 났습니다.");
+    },
+
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+  });
+  console.log(RecommendData);
+
+  return { RecommendData, isLoading, isError };
 };
 
 /* 정보 get Api 모음 */
@@ -123,6 +179,7 @@ export const useGetApi = {
       }
     );
   },
+
   // ** 캠핑장 리뷰 조회 / get ** //
   useGetCampReview: (campId: number) => {
     return useQuery(["reviewinfo"], async () => {
@@ -140,6 +197,7 @@ export const useGetApi = {
     });
   },
 
+
   /* topic 별 캠핑장 결과 조회 */
   useGetTopicResult: () => {
     const params = 2;
@@ -151,32 +209,13 @@ export const useGetApi = {
     });
   },
 
+
   // ** LOOK, PICK, REVIEW ** //
   useGetSort: () => {
     return useQuery(["topicSort"], async () => {
       const { data } = await instance.get<IMostList>(`/camps/sort`);
       return data;
     });
-  },
-
-  /* 날씨 조회 */
-  useGetWeather: () => {
-    const date = useRecoilValue(DateState);
-    const pardo = useRecoilValue(selectLo);
-    return useQuery(
-      ["weatherinfo"],
-      async () => {
-        const { data } = await instance.get<IGetWeather>(
-          `/weathers?pardo=${pardo}&dt=${date}`
-        );
-        console.log(data);
-        return data;
-      },
-      {
-        /* refetchOnMount: false, */
-        refetchOnWindowFocus: false,
-      }
-    );
   },
 };
 

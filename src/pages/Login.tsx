@@ -3,8 +3,9 @@ import { useForm } from "react-hook-form";
 import { useRecoilState } from "recoil";
 import { useNavigate } from "react-router";
 import { ILoginForm } from "../interfaces/inLogin";
+import axios from "axios";
 
-import { KAKAO_AUTH_URL } from "../components/KaKaoAuth";
+/* import { KAKAO_AUTH_URL } from "../components/KaKaoAuth"; */
 import { idState, LoginState, userInfo } from "../store/loginAtom";
 import { instance } from "../instance/instance";
 import { setAccessToken, setRefreshToken } from "../instance/cookies";

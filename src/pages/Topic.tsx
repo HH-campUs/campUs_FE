@@ -1,14 +1,20 @@
+
 import React, { useEffect } from "react";
 import { useRecoilState } from "recoil";
+
 import Search from "../components/withSearch/Search";
 import { isModal } from "../store/searchAtom";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Datepicker from "../components/withSearch/Datepicker";
 
-import Bg from "../static/testpic.jpg";
 import { useGetTopicInfinite } from "../APIs/getApi";
 import { useInView } from "react-intersection-observer";
+
+//css
+import { useLocation } from "react-router-dom";
+import { BiChevronDown } from "react-icons/bi";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
 
 import { IGetCampResult } from "../interfaces/get";
 import TopicBookmark from "../components/TopicBookmark";
@@ -23,6 +29,11 @@ function Topic() {
   const { topicId } = useParams();
   // const userId = useRecoilValue(idState);
   // console.log(userId);
+
+  const loca = useLocation();
+  const state = loca.state as { topicImg: string; id: number };
+  const bg = state.topicImg;
+  console.log(bg);
 
   //infiniteScroll
   const { campTopic, fetchNextPage, isSuccess, hasNextPage, refetch } =
@@ -40,7 +51,7 @@ function Topic() {
     <>
       {isSearch == false ? null : <Search />}
 
-      <TopContainer>
+      <TopContainer bg={bg}>
         <BackBtn onClick={() => navigate(`/`)}>
           <img src="/images/back.svg" alt="back" />
         </BackBtn>
@@ -49,7 +60,7 @@ function Topic() {
       <ResultContainer>
         <ResultTop>
           <div>
-            <span className="result"> 검색결과 </span>
+            <span className="result"> 전체 </span>
             <span className="total"> (개)</span>
           </div>
           <div style={{ display: "flex", alignItems: "center" }}>
@@ -73,8 +84,7 @@ function Topic() {
                             campId: `${item.campId}`,
                           },
                         })
-                      }
-                    >
+                      }>
                       <CampImg>
                         <img src={item.ImageUrl} alt={item.campName} />
                         <ReviewInfo>
@@ -110,13 +120,13 @@ function Topic() {
 
 export default Topic;
 
-const TopContainer = styled.div`
+const TopContainer = styled.div<{ bg: string }>`
   width: ${(props) => props.theme.pixelToRem(375)};
   height: ${(props) => props.theme.pixelToRem(266)};
   margin: auto;
   border-bottom-left-radius: ${(props) => props.theme.pixelToRem(12)};
   border-bottom-right-radius: ${(props) => props.theme.pixelToRem(12)};
-  background-image: url(${Bg});
+  background-image: url(${(props) => props.bg});
   background-size: cover;
 `;
 

@@ -19,11 +19,42 @@ const serverUrl = process.env.REACT_APP_API;
 
 // ** 캠핑장 카테고리 정보 조회 / get ** //
 
+/* 캠핑장 키워드 검색 */
+export const useSearchCamp = (keyword: string) => {
+  const useData = async ({ pageParam = 1 }) => {
+    const { data } = await instance.get<campArray>(
+      `/querysearch?keyword=${keyword}&numOfRows=20&pageNo=${pageParam}`
+    );
+    console.log(data, keyword);
+    return {
+      /* 같은 객체 레벨에 있는 total 값도 사용하기 위해서 data만 */
+      camps: data,
+      currentPage: pageParam,
+    };
+  };
+
+  const {
+    data: campData,
+    fetchNextPage,
+    isSuccess,
+    hasNextPage,
+    refetch,
+  } = useInfiniteQuery(["searchCamp", keyword], useData, {
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    getNextPageParam: (lastPage) => {
+      return lastPage.camps.campName ? lastPage.currentPage + 1 : undefined;
+    },
+  });
+  console.log(campData);
+  return { campData, fetchNextPage, isSuccess, hasNextPage, refetch };
+};
+
 /* 리얼 인피니티 스크롤 - 캠프 result 페이지 전용*/
 export const useGetCamp = (doNm: string) => {
   const useData = async ({ pageParam = 1 }) => {
     const { data } = await instance.get<campArray>(
-      `/camps?doNm=${doNm}&numOfRows=30&pageNo=${pageParam}`
+      `/camps?doNm=${doNm}&numOfRows=20&pageNo=${pageParam}`
     );
     console.log(data);
     return {

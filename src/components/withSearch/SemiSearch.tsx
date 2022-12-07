@@ -23,17 +23,8 @@ import { Link, useNavigate } from "react-router-dom";
 import styled, { keyframes, css } from "styled-components";
 import Datepicker from "./Datepicker";
 import { semiOpenProps } from "../../interfaces/props";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 function SemiSearch({ openSemi, setOpenSemi }: semiOpenProps) {
-  const notify = () => {
-    toast.success("This is a test success", {
-      position: toast.POSITION.BOTTOM_CENTER,
-      autoClose: 2000,
-      hideProgressBar: true,
-    });
-  };
   const [openDate, setOpenDate] = useState(false);
   const [startDate, setStartDate] = useRecoilState(StartDate);
 
@@ -44,6 +35,11 @@ function SemiSearch({ openSemi, setOpenSemi }: semiOpenProps) {
   const selectYear = useRecoilValue(StrYear);
   const selectMonth = useRecoilValue(StrMonth);
   const selectDay = useRecoilValue(StrDay);
+
+  const dateFolder = (event: MouseEvent) => {
+    event.stopPropagation();
+    setOpenDate(!openDate);
+  };
 
   return (
     <>
@@ -56,10 +52,9 @@ function SemiSearch({ openSemi, setOpenSemi }: semiOpenProps) {
         />
         {/* 모달창 밖 blur background 토글 기능 부여 (event bubbling 해결) */}
         <SearchModal openSemi={openSemi} className="isSearch">
-          <ToastContainer />
           {/* Headline + close btn */}
           <TopContainer>
-            <SearchTitle>어디로 가시나요?</SearchTitle>
+            <SearchTitle>여행일정을 등록해볼까요?</SearchTitle>
             <CloseBtn
               src="/images/closeBtn.svg"
               onClick={() => {
@@ -68,10 +63,18 @@ function SemiSearch({ openSemi, setOpenSemi }: semiOpenProps) {
             />
           </TopContainer>
 
-          <DateInfo>
+          <DateInfo openDate={openDate}>
+            <InfoBox onClick={dateFolder} />
+            <SubTitle onClick={dateFolder}>떠나고 싶은 날</SubTitle>
+            <DateText onClick={dateFolder}>
+              {selectMonth}월 {selectDay}일
+            </DateText>
+
             {/* 데이트 피커 */}
             <DateContainer>
-              <Datepicker openDate={true} setOpenDate={setOpenDate} />
+              {openDate ? (
+                <Datepicker openDate={openDate} setOpenDate={setOpenDate} />
+              ) : null}
             </DateContainer>
           </DateInfo>
           <BtnContainer openSemi={openSemi}>
@@ -122,6 +125,7 @@ const Container = styled.div`
   align-items: center;
   position: fixed;
   display: flex;
+  overflow: hidden;
 `;
 
 /* Modal Background */
@@ -148,7 +152,7 @@ const SearchModal = styled.div<{ openSemi: boolean }>`
   position: relative;
   z-index: 100;
   &.isSearch {
-    height: ${(props) => props.theme.pixelToRem(566)};
+    height: ${(props) => props.theme.pixelToRem(650)};
     left: 10;
     bottom: 0;
     padding: 25px 20px 39px;
@@ -183,20 +187,65 @@ const CloseBtn = styled.img`
 `;
 
 /* datepicker 열기전에 정보 보여주는 */
-const DateInfo = styled.div`
+const DateInfo = styled.div<{ openDate: boolean }>`
   width: ${(props) => props.theme.pixelToRem(335)};
-  height: ${(props) => props.theme.pixelToRem(360)};
+  height: ${(props) =>
+    props.openDate == false
+      ? props.theme.pixelToRem(70)
+      : props.theme.pixelToRem(414)};
   margin: 16px 0;
   padding: 25px 20px;
   border-radius: ${(props) => props.theme.pixelToRem(10)};
   border: solid ${(props) => props.theme.pixelToRem(1)} #e3e3e3;
   background-color: ${(props) => props.theme.colorTheme.textWhite};
   justify-content: space-between;
+  transition: all 0.4s ease;
   display: flex;
 `;
 
+const InfoBox = styled.div`
+  width: ${(props) => props.theme.pixelToRem(330)};
+  height: ${(props) => props.theme.pixelToRem(68)};
+  border-radius: ${(props) => props.theme.pixelToRem(10)};
+  margin-top: -25px;
+  margin-left: -18px;
+  position: fixed;
+  display: flex;
+  background-color: transparent;
+  z-index: 100;
+`;
+
+const SubTitle = styled.div`
+  width: 116px;
+  height: 20px;
+
+  font-family: Pretendard;
+  font-size: ${(props) => props.theme.pixelToRem(16)};
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: ${(props) => props.theme.pixelToRem(-0.5)};
+  text-align: left;
+  color: #333;
+`;
+
+const DateText = styled.div`
+  width: 124px;
+  height: 20px;
+  font-family: Pretendard;
+  font-size: ${(props) => props.theme.pixelToRem(16)};
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: ${(props) => props.theme.pixelToRem(-0.5)};
+  text-align: right;
+  color: #333;
+`;
+
 const DateContainer = styled.div`
-  margin-top: -76px;
+  margin-top: -8px;
   position: absolute;
 `;
 

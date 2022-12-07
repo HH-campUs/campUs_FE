@@ -24,8 +24,6 @@ import styled, { keyframes, css } from "styled-components";
 import Datepicker from "./Datepicker";
 import Location from "./Location";
 import { isProps, searchData } from "../../interfaces/inSearch";
-import { ToastContainer, toast } from "react-toastify";
-import { injectStyle } from "react-toastify/dist/inject-style";
 import { InfoToast, NavPickToast } from "../Toast/Toast";
 
 function Search() {
@@ -38,7 +36,7 @@ function Search() {
   const [startDate, setStartDate] = useRecoilState(StartDate);
 
   /* search api 에 사용될  keyword */
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useRecoilState(textValue);
   /* camp api 에 사용될 address */
   const [locationValue, setLocationValue] = useRecoilState(showLo);
   /* weather api에 사용될 pardo & dt */
@@ -52,6 +50,7 @@ function Search() {
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
+    console.log(inputValue);
   };
 
   /* SearchModal 작동 boolean  default: false */
@@ -134,11 +133,14 @@ function Search() {
                 onClick={() => {
                   setToastState(true);
                 }}>
-                {" "}
-                검색하기{" "}
+                검색하기
               </DisabledBtn>
-            ) : (
+            ) : inputValue == "" && sendLocation !== "" ? (
               <SearchBtn to="/result" onClick={closeModal}>
+                검색하기
+              </SearchBtn>
+            ) : (
+              <SearchBtn to="/keyword" onClick={closeModal}>
                 검색하기
               </SearchBtn>
             )}

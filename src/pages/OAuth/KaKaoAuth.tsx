@@ -1,10 +1,9 @@
 //redirect경로는 백엔드와 동일해야함.
 import axios from "axios";
 import React, { useEffect } from "react";
-import { Cookies } from "react-cookie";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { setAccessToken, setRefreshToken } from "../../instance/cookies";
+import { setAccessToken } from "../../instance/cookies";
 import { instance } from "../../instance/instance";
 
 function KakaoLogin() {
@@ -27,10 +26,7 @@ function KakaoLogin() {
         if (kakaoResult.status == 200) {
           console.log("연결 성공");
         }
-
-        //카카오 accesstoken
         const token = kakaoResult.data.access_token;
-        const freshtoken = kakaoResult.data.refresh_token;
         const response = await axios.post(
           "https://campus99.shop/kakao",
           kakaoResult.data,
@@ -43,23 +39,18 @@ function KakaoLogin() {
         console.log(token, kakaoResult.data);
         const {
           status,
-          data: { accessToken, refreshToken },
+          data: { accessToken, refreshToken, currentPage },
         } = response;
-        console.log("data", response.data);
         if (status !== 200) return;
-        // setAccessToken(response.data.accessToken);
-        const backAccess = response.data.accesstoken;
-        const backfresh = response.data.refreshtoken;
-        setAccessToken(backAccess);
-        setRefreshToken(backfresh);
-        // localStorage.setItem("camper_token", token);
+        setAccessToken(response.data.Tokens.accessToken);
+        localStorage.setItem("token", refreshToken);
 
-        if (status == 200) {
-          console.log(accessToken, refreshToken);
+        if (currentPage) {
+          console.log(accessToken, refreshToken, currentPage);
           return window.location.replace(`/`);
         } else {
-          console.log(accessToken, refreshToken);
-          return window.location.replace("/login");
+          console.log(accessToken, refreshToken, currentPage);
+          /*  return window.location.replace("/"); */
         }
       } catch (e) {
         console.error(e);
@@ -93,8 +84,8 @@ export const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id
 /* import React from "react";
 
 function KaKaoAuth() {
-return <div>KaKaoAuth</div>;
+  return <div>KaKaoAuth</div>;
 }
 
 export default KaKaoAuth;
-*/
+ */

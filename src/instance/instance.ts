@@ -15,7 +15,7 @@ export const instance = axios.create({
   baseURL,
   headers: {
     Authorization: `Bearer ${accessToken}`,
-    refreshToken: `Bearer ${refreshToken}`,
+    refreshToken: `${refreshToken}`,
   },
 });
 
@@ -24,7 +24,7 @@ export const postInstance = axios.create({
   baseURL: process.env.REACT_APP_API,
   headers: {
     Authorization: `Bearer ${accessToken}`,
-    refreshToken: `Bearer ${refreshToken}`,
+    refreshToken: `${refreshToken}`,
     "Content-Type": "multipart/form-data",
     // withCredentails: true,
   },

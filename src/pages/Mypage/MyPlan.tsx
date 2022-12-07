@@ -4,10 +4,9 @@ import { usePostsApi } from "../../APIs/postsApi";
 import { useNavigate } from "react-router-dom";
 import { getCamperToken } from "../../instance/cookies";
 
-
 export default function MyPlan() {
   const [onOff, setOnOff] = useState(false);
-   const isLogin = getCamperToken();
+  const isLogin = getCamperToken();
   const navigate = useNavigate();
 
   const onChangeText = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,42 +21,48 @@ export default function MyPlan() {
   const deleteHandler = () => {
     usePostsApi.useDeleteTravelPlan(tripId);
   };
+
   return (
     <TotalContainer>
-      <ToggleBtn onOff={onOff}>
-        <input type="checkbox" id="toggle" onChange={onChangeText} hidden />
+      <Wrapper>
+        {isLogin ? (
+          <>
+            <ToggleBtn onOff={onOff}>
+              <input
+                type="checkbox"
+                id="toggle"
+                onChange={onChangeText}
+                hidden
+              />
 
-        <span className="offSpan">다가올 여행</span>
-        <span className="onSpan">지난여행</span>
-        <label htmlFor="toggle" className="toggleSwitch">
-          <span className="toggleButton" />
-        </label>
-      </ToggleBtn>
-      
-       <Wrapper>
-      {isLogin ? (
-        <div>로그인햇당</div>
-      ) : (
-        <>
-          <NotiBox>
-            <div>
-              <img src="/images/mypage/myplan.svg" alt="tent" />
-            </div>
-            <PickText>아직 저장한 여행이 없어요!</PickText>
-            <PickBtn
-              onClick={() => {
-                navigate("/topic/1");
-              }}
-            >
-              가장 가까운 캠핑장 구경가기
-            </PickBtn>
-          </NotiBox>
-        </>
-      )}
-    </Wrapper>
-    
-  /*    <Container>
-       {onOff == false ? (
+              <span className="offSpan">다가올 여행</span>
+              <span className="onSpan">지난여행</span>
+              <label htmlFor="toggle" className="toggleSwitch">
+                <span className="toggleButton" />
+              </label>
+            </ToggleBtn>
+          </>
+        ) : (
+          <>
+            <NotiBox>
+              <div>
+                <img src="/images/mypage/myplan.svg" alt="tent" />
+              </div>
+              <PickText>아직 저장한 여행이 없어요!</PickText>
+              <PickBtn
+                onClick={() => {
+                  navigate("/topic/1");
+                }}
+              >
+                가장 가까운 캠핑장 구경가기
+              </PickBtn>
+            </NotiBox>
+          </>
+        )}
+      </Wrapper>
+      /*{" "}
+      <Container>
+        {onOff == false ? (
           <>
             <PlanBox>
               <img
@@ -125,15 +130,13 @@ export default function MyPlan() {
             </PlanBox>
           </>
         ) : null}
-       
-      </Container> */
-        
+      </Container>{" "}
+      */
     </TotalContainer>
   );
 }
 
 const TotalContainer = styled.div`
-  margin-top: 130px;
   position: absolute;
 `;
 
@@ -142,24 +145,24 @@ const ToggleBtn = styled.div<{ onOff: boolean }>`
   margin-left: -10px;
 
   .toggleSwitch {
-    width: 335px;
-    height: 48px;
+    width: ${(props) => props.theme.pixelToRem(335)};
+    height: ${(props) => props.theme.pixelToRem(48)};
     display: block;
     position: relative;
-    border-radius: 26px;
+    border-radius: ${(props) => props.theme.pixelToRem(26)};
     background-color: #5185a6;
     cursor: pointer;
     margin: 30px;
   }
 
   .toggleSwitch .toggleButton {
-    width: 150px;
-    height: 38px;
+    width: ${(props) => props.theme.pixelToRem(150)};
+    height: ${(props) => props.theme.pixelToRem(38)};
     position: absolute;
     top: 49%;
     left: 1.7%;
     transform: translateY(-50%);
-    border-radius: 37px;
+    border-radius: ${(props) => props.theme.pixelToRem(37)};
     background: #ffffff;
     z-index: 1;
   }
@@ -177,7 +180,7 @@ const ToggleBtn = styled.div<{ onOff: boolean }>`
   .offSpan {
     margin-top: 13px;
     margin-left: 70px;
-    font-size: 16px;
+    font-size: ${(props) => props.theme.pixelToRem(16)};
     font-weight: 500;
     font-stretch: normal;
     font-style: normal;
@@ -219,7 +222,7 @@ const PlanBox = styled.div`
   width: ${(props) => props.theme.pixelToRem(335)};
   height: ${(props) => props.theme.pixelToRem(150)};
   margin-bottom: 18px;
-  border-radius: 10px;
+  border-radius: ${(props) => props.theme.pixelToRem(10)};
   border: solid 1px #eee;
   display: flex;
 
@@ -299,9 +302,9 @@ const BtnBox = styled.div`
       width: ${(props) => props.theme.pixelToRem(114)};
     }
   }
-  `;
-  
-  const Wrapper = styled.div`
+`;
+
+const Wrapper = styled.div`
   /* background-color: red; */
   /* margin-top: 130px; */
   height: 100vh;

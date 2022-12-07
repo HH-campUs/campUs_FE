@@ -17,8 +17,13 @@ export interface semiOpenProps {
   setOpenSemi: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+export interface planOpenProps {
+  isPlan: boolean;
+  setIsPlan: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
 export interface ToastProps {
-  text: string;
+  text?: string;
   setText?: React.Dispatch<React.SetStateAction<string>>;
   toastState: boolean;
   setToastState: React.Dispatch<React.SetStateAction<boolean>>;

@@ -5,14 +5,16 @@ import styled from "styled-components";
 import { Outlet, useMatch, useLocation, useNavigate } from "react-router-dom";
 import SemiSearch from "../components/withSearch/SemiSearch";
 import Search from "../components/withSearch/Search";
+import PlanWrite from "../components/PlanWrite";
 import { isModal } from "../store/searchAtom";
 import { useGetApi } from "../APIs/getApi";
-
+import { eventNames } from "process";
 
 function Detail() {
   const navigate = useNavigate();
   const [isSearch, setIsSearch] = useRecoilState(isModal);
   const [openSemi, setOpenSemi] = useState(false);
+  const [isPlan, setIsPlan] = useState(false);
 
   const detailMatch = useMatch("/detail/id/detail");
   const reviewMatch = useMatch("/detail/id/review");
@@ -28,9 +30,12 @@ function Detail() {
   //2. 쿼리문의 타입 확인
   //3. undefiend = !로 해결
 
-  const openModal = (event: any) => {
-    event.stopPropagation();
+  const openModal = () => {
     setOpenSemi(true);
+  };
+
+  const openPlan = () => {
+    setIsPlan(true);
   };
 
   const detailItem = useGetApi.useGetCampDetail(state.campId).data;
@@ -100,6 +105,10 @@ function Detail() {
         <SemiSearch openSemi={openSemi} setOpenSemi={setOpenSemi} />
       )}
       {isSearch == false ? null : <Search />}
+
+      {isPlan == false ? null : (
+        <PlanWrite isPlan={isPlan} setIsPlan={setIsPlan} />
+      )}
       <Wrapper>
         {/* 최상단 이미지*/}
 
@@ -194,7 +203,9 @@ function Detail() {
             </span>
             <u>부산북구 날씨 상세</u>
           </div>
-          <div className="rightBtn">여행일정 저장</div>
+          <div className="rightBtn" onClick={openPlan}>
+            여행일정 저장
+          </div>
         </AddtripBtn>
 
         <WFcBox>

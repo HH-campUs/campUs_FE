@@ -1,9 +1,7 @@
 //redirect경로는 백엔드와 동일해야함.
 import axios from "axios";
 import React, { useEffect } from "react";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { setAccessToken } from "../../instance/cookies";
+import { setAccessToken, setRefreshToken } from "../../instance/cookies";
 import { instance } from "../../instance/instance";
 
 function KakaoLogin() {
@@ -39,41 +37,30 @@ function KakaoLogin() {
         console.log(token, kakaoResult.data);
         const {
           status,
-          data: { accessToken, refreshToken, currentPage },
+          data: { accessToken, refreshToken },
         } = response;
         if (status !== 200) return;
-        setAccessToken(response.data.Tokens.accessToken);
-        localStorage.setItem("token", refreshToken);
-
-        if (currentPage) {
-          console.log(accessToken, refreshToken, currentPage);
+        // setAccessToken(response.data.Tokens.accessToken);
+        // localStorage.setItem("token", refreshToken);
+        const backAccess = response.data.accesstoken;
+        const backfresh = response.data.refreshtoken;
+        setAccessToken(backAccess);
+        setRefreshToken(backfresh);
+        if (status == 200) {
+          console.log(accessToken, refreshToken);
           return window.location.replace(`/`);
         } else {
-          console.log(accessToken, refreshToken, currentPage);
+          console.log(accessToken, refreshToken);
           /*  return window.location.replace("/"); */
         }
       } catch (e) {
         console.error(e);
         /* window.location.replace("/"); */
-        toast.error("login error", {
-          position: "top-center",
-          autoClose: 1000,
-          hideProgressBar: true,
-          closeOnClick: false,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-        });
       }
     })();
   }, [code]);
 
-  return (
-    <div>
-      <ToastContainer />
-    </div>
-  );
+  return <div></div>;
 }
 
 export default KakaoLogin;
@@ -81,3 +68,11 @@ export default KakaoLogin;
 const CLIENT_ID = "7aa957f9a1bc0790d8e39735b92eee63";
 const REDIRECT_URI = "http://localhost:3000/kakao0";
 export const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+/* import React from "react";
+
+function KaKaoAuth() {
+  return <div>KaKaoAuth</div>;
+}
+
+export default KaKaoAuth;
+ */

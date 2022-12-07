@@ -48,20 +48,20 @@ export const usePostsApi = {
 
   //** 여행일정등록 / post */
   usePostTravelPlan: () => {
-    return useMutation((payload: IPostTravelPlan) =>
-      instance.post(`/users/:campId`, {
-        userId: payload.userId,
-        campId: payload.campId,
-        address: payload.address,
+    return useMutation(async (payload: IPostTravelPlan) => {
+      console.log(payload);
+      const { data } = await instance.post(`/camps/${payload.campId}/`, {
         date: payload.date,
-      })
-    );
+        memo: payload.memo,
+      });
+      return data;
+    });
   },
 
   /* 여행일정삭제 / delete */
   useDeleteTravelPlan: (tripId: number) => {
     return useMutation((payload: IPostTravelPlan) =>
-      instance.delete(`/users/:${tripId}`)
+      instance.delete(`/users/${tripId}`)
     );
   },
 

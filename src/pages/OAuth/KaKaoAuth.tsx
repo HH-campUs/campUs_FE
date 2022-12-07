@@ -3,7 +3,7 @@ import axios from "axios";
 import React, { useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { setAccessToken } from "../../instance/cookies";
+import { setAccessToken, setRefreshToken } from "../../instance/cookies";
 import { instance } from "../../instance/instance";
 
 function KakaoLogin() {
@@ -39,17 +39,20 @@ function KakaoLogin() {
         console.log(token, kakaoResult.data);
         const {
           status,
-          data: { accessToken, refreshToken, currentPage },
+          data: { accessToken, refreshToken },
         } = response;
         if (status !== 200) return;
-        setAccessToken(response.data.Tokens.accessToken);
-        localStorage.setItem("token", refreshToken);
-
-        if (currentPage) {
-          console.log(accessToken, refreshToken, currentPage);
+        // setAccessToken(response.data.Tokens.accessToken);
+        // localStorage.setItem("token", refreshToken);
+        const backAccess = response.data.accesstoken;
+        const backfresh = response.data.refreshtoken;
+        setAccessToken(backAccess);
+        setRefreshToken(backfresh);
+        if (status == 200) {
+          console.log(accessToken, refreshToken);
           return window.location.replace(`/`);
         } else {
-          console.log(accessToken, refreshToken, currentPage);
+          console.log(accessToken, refreshToken);
           /*  return window.location.replace("/"); */
         }
       } catch (e) {
@@ -89,3 +92,4 @@ function KaKaoAuth() {
 
 export default KaKaoAuth;
  */
+

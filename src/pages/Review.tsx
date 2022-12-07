@@ -1,15 +1,21 @@
-import { getPaginationItemUtilityClass } from "@mui/material";
-import React, { useState } from "react";
+import { previousDay } from "date-fns";
+import React, { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import styled from "styled-components";
 import { useGetApi } from "../APIs/getApi";
 import { usePostsApi } from "../APIs/postsApi";
+import PreviewImgDelete from "../components/PreviewImgDelete";
 import { getCamperToken } from "../instance/cookies";
 import { IReviewPosts } from "../interfaces/Posts";
 
 export default function Review() {
+  interface Props {
+    setImagePreview: React.Dispatch<React.SetStateAction<string[]>>;
+    setImageFiles: React.Dispatch<React.SetStateAction<File[]>>;
+  }
+
   const isLogin = getCamperToken();
   //campId확인.
   const loca = useLocation();
@@ -60,21 +66,19 @@ export default function Review() {
   } = useForm<IReviewPosts>();
 
   const [imagePreview, setImagePreview] = useState<string[]>([]);
-  const [imageFiles, setImageFiles] = useState<FileList | any>([]);
+  const [imageFiles, setImageFiles] = useState<File[]>([]);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const imageLists = e.target.files;
     console.log(imageLists);
     if (!imageLists) return;
-    setImageFiles(imageLists);
+    for (let i = 0; i < imageLists.length; i++) {
+      setImageFiles((prev) => [...prev, imageLists[i]]);
+    }
+
     for (let i = 0; i < imageLists?.length; i++) {
       const blobImage = URL.createObjectURL(imageLists[i]);
       setImagePreview((prev) => [...prev, blobImage]);
-    }
-    if (imagePreview.length > 3) {
-      console.log("30", imagePreview);
-      window.alert("이미지는 3장까지 첨부가능합니다.");
-      setImagePreview((prev) => prev.slice(0, 3));
     }
   };
 
@@ -94,7 +98,22 @@ export default function Review() {
     reviewPost.mutate(body);
   };
 
-  //[1, 최고!추천해요! / 2,좋았어요! / 3,추천하지 않아요]
+  // const handleDeleteImage = useCallback((idx: number) => {
+  //   setImagePreview((prev) => prev.filter((_, index) => index !== idx));
+  //   setImageFiles((prev) =>
+  //     prev.filter((_: string, index: number) => index !== idx)
+  //   );
+  // }, []);
+
+  // toast필요 / type에러확인
+  useEffect(() => {
+    if (imagePreview.length > 3) {
+      window.alert("이미지는 3장까지 첨부가능합니다.");
+      setImagePreview((prev) => prev.slice(0, 3));
+      setImageFiles((prev: File[]) => prev.slice(0, 3));
+    }
+  }, [imagePreview]);
+
   return (
     <Wrapper>
       <Head>
@@ -237,8 +256,30 @@ export default function Review() {
               onChange={onChange}
             />
           </Upload>
-          {imagePreview.map((image, id) => (
-            <img src={image} alt="reviewImg" key={id} />
+
+          {imagePreview.map((image, idx) => (
+            <PreviewDiv key={idx}>
+              <PreviewImg>
+                <img src={image} alt="reviewImg" />
+                {/* <Delete
+                  onClick={(event) => {
+                    event.preventDefault();
+                    handleDeleteImage(idx);
+                  }}
+                > */}
+                {/* <img
+                    src="/images/review/close.svg"
+                    style={{ width: "18px", height: "18px" }}
+                    alt="closeBtn"
+                  />
+                </Delete> */}
+              </PreviewImg>
+              {/* <PreviewImgDelete
+                image={image}
+                setImagePreview={setImagePreview}
+                setImageFiles={setImageFiles}
+              /> */}
+            </PreviewDiv>
           ))}
         </ImgList>
         {/* 여기 toast알람 들어가야함. */}
@@ -299,21 +340,6 @@ const TextBox = styled.div`
   flex-direction: column;
   position: absolute;
   margin-top: 55px;
-
-  /* margin-left: 110px; */
-`;
-
-const Campname = styled.div`
-  font-size: ${(props) => props.theme.pixelToRem(22)};
-
-  color: #fff;
-`;
-
-const CampLocation = styled.div`
-  font-size: ${(props) => props.theme.pixelToRem(14)};
-
-  color: #fff;
-  margin-top: 10px;
 `;
 
 const VisitDay = styled.div`
@@ -378,6 +404,15 @@ const BestInput = styled.input`
     border: none !important;
     box-shadow: none !important;
   }
+`;
+
+const PreviewImg = styled.div`
+  /* position: absolute; */
+`;
+
+const Delete = styled.div`
+  position: relative;
+  margin-top: -80px;
 `;
 
 const BestBtnDiv = styled.div<{ isBest: Boolean }>`
@@ -586,6 +621,10 @@ const Upload = styled.label`
     font-size: ${(props) => props.theme.pixelToRem(12)};
     color: grey;
   }
+`;
+
+const PreviewDiv = styled.div`
+  /* position: absolute; */
 `;
 
 const StBtn = styled.button`

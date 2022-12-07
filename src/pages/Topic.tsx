@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+
+import React, { useEffect } from "react";
+import { useRecoilState } from "recoil";
+
 import Search from "../components/withSearch/Search";
 import { isModal } from "../store/searchAtom";
 import { useNavigate, useParams } from "react-router-dom";
@@ -66,7 +68,8 @@ function Topic() {
             <img src="/images/topic/openclose.svg" alt="downArrow" />
           </div>
         </ResultTop>
-
+        {/*
+         */}
         <CampMap>
           {isSuccess && campTopic?.pages ? (
             campTopic?.pages.map((page) => (
@@ -76,7 +79,7 @@ function Topic() {
                     <TopicBookmark Camp={item} />
                     <ResultItem
                       onClick={() =>
-                        navigate(`/detail/:${item.campId}`, {
+                        navigate(`/detail/${item.campId}`, {
                           state: {
                             campId: `${item.campId}`,
                           },

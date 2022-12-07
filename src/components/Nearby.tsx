@@ -12,9 +12,8 @@ export default function Nearby() {
         <PlanWrapper>
           <MapBox>
             <KaKaomap />
-            {/* <KaKaomap /> */}
           </MapBox>
-
+          {/* <KaKaomap /> */}
           <RightBox>
             <DistanceText>10km | 20분</DistanceText>
             <LocationName>캠핑장 이름 적는곳</LocationName>

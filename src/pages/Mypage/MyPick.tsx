@@ -1,9 +1,11 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { useMyPageApi } from "../../APIs/myPageApi";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { IPickedCamp } from "../../interfaces/Posts";
 import { getCamperToken } from "../../instance/cookies";
+import { usePostsApi } from "../../APIs/postsApi";
+import MyPickDelete from "../../components/MyPickDelete";
 
 export default function MyPick() {
   // const isLogin = useRecoilValue(LoginState);
@@ -14,14 +16,15 @@ export default function MyPick() {
   const picked = myPick?.map((picks: IPickedCamp) => picks.Camp) || [];
   console.log(picked);
   console.log(myPick);
+
   // const picke = mypick?.~~~~~ || [];
   // const { Pick } = useMyPageApi.useGetMyPage().data?.data;
   // console.log(Pick);
   // const picked = Pick?.map((picks: IPickedCamp) => picks.Camp);
   // console.log(picked);
-  useEffect(() => {
-    console.log(picked);
-  }, [picked]);
+  // useEffect(() => {
+  //   console.log(picked);
+  // }, [picked]);
 
   return (
     <Wrapper>
@@ -29,7 +32,7 @@ export default function MyPick() {
         <MapBox>
           {picked.map((pick: IPickedCamp, campId: IPickedCamp) => (
             <Box key={pick.campId}>
-              <CampImg src={pick.ImageUrl} alt="" />
+              <MyPickDelete pick={pick} />
               <NameBox>
                 <CampName>{pick.campName}</CampName>
                 <CampDuty>{pick.induty}</CampDuty>
@@ -81,13 +84,6 @@ const Box = styled.div`
   /* text-align: left; */
   flex-direction: column;
   display: flex;
-`;
-
-const CampImg = styled.img`
-  width: 100%;
-  height: 120px;
-  object-fit: cover;
-  border-radius: ${(props) => props.theme.pixelToRem(8)};
 `;
 
 const NameBox = styled.div`

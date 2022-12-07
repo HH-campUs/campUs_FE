@@ -7,7 +7,7 @@ import Search from "../components/withSearch/Search";
 import WeekWeather from "../components/WeekWeather";
 import { useRecoilState } from "recoil";
 import { isModal } from "../store/searchAtom";
-import NewReview from "../components/NewReview";
+import NewReview from "../components/withReview/NewReview";
 
 //Css
 import styled from "styled-components";
@@ -58,6 +58,7 @@ function Home() {
       <MytravelPlan />
       <Subject />
       <Nearby />
+      <Title>새로 올라온 리뷰</Title>
       <NewReview />
     </Wrapper>
   );
@@ -125,4 +126,11 @@ const TextBox = styled.div`
 
 const CampText = styled.div`
   font-weight: 500;
+`;
+
+const Title = styled.div`
+  margin-left: 20px;
+  font-size: ${(props) => props.theme.pixelToRem(20)};
+  font-weight: 600;
+  color: #333;
 `;

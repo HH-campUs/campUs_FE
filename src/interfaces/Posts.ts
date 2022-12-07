@@ -9,6 +9,8 @@ export interface IReviewPosts {
 export interface IReviewRead {
   reviewImg: string[];
   reviewComment: string;
+  Camp: object;
+  campName: string;
 }
 
 export interface IEditReviewPosts {

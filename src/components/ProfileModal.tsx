@@ -13,13 +13,32 @@ import { useRecoilState } from "recoil";
 //css
 import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 import styled, { keyframes } from "styled-components";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
+import { IEditProfile } from "../interfaces/MyPage";
+import { postInstance } from "../instance/instance";
 
 export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
+  //
+  const queryClient = useQueryClient();
+  const mutateFn = async (payload: IEditProfile) => {
+    console.log(payload);
+    const { data } = await postInstance.put("/users/myPage", {
+      profileImg: payload.profileImg,
+      nickname: payload.nickname,
+    });
+    return data;
+  };
+  const profileMutate = useMutation(mutateFn, {
+    onSuccess: () => queryClient.invalidateQueries(["mypageinfo"]),
+    onError: () => console.log("파일전송에 실패했습니다."),
+  });
+
   const [toKen, setToken] = useRecoilState(LoginState);
   const [useId, setUseId] = useRecoilState(idState);
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(userInfo);
   const navigate = useNavigate();
-  const checkPf = useMyPageApi.useGetMyPage().data?.data[0];
+
   const {
     register,
     handleSubmit,
@@ -37,12 +56,10 @@ export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
       setImagePreview(URL.createObjectURL(file));
     }
   }, [image]);
-  // 유사배열확인
-  const profileEdit = useMyPageApi.useEditProfile();
 
   const handleValid = (data: IEditPfForm) => {
     const body = { nickname: data.nickname, profileImg: data.profileImg[0] };
-    profileEdit.mutate(body);
+    profileMutate.mutate(body);
     console.log(data);
     closeModal();
   };

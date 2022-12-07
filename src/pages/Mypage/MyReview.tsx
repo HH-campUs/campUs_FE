@@ -3,19 +3,19 @@ import { getCamperToken } from "../../instance/cookies";
 import { useMyPageApi } from "../../APIs/myPageApi";
 import { IReviewRead } from "../../interfaces/Posts";
 import styled from "styled-components";
+import { IGetMyReview } from "../../interfaces/MyPage";
 
 export default function MyReview() {
   const isLogin = getCamperToken();
   const navigate = useNavigate();
 
+  const myReviewDummy = useMyPageApi.useGetMyReview();
+  const myReview = myReviewDummy.data?.data;
+  // console.log("내리뷰", myReview);
   const checkPf = useMyPageApi.useGetMyPage().data?.data;
   const checkReview = checkPf?.Review;
-  // console.log(item?.reviewImg.split(","));
+  // console.log("체크리뷰", checkReview);
 
-  // const reviewImg = checkReview[0].reviewImg.split(",");
-  // console.log(checkPf?.profileImg);
-  // console.log(checkReview[0].reviewComment);
-  // console.log(checkReview[0].reviewImg.split(","));
   return (
     <Wrapper>
       {isLogin ? (
@@ -27,7 +27,7 @@ export default function MyReview() {
             <RightIcon src="/images/mypage/reviewwrite.svg" alt="write" />
           </ReviewHead>
 
-          {checkReview?.map((item: IReviewRead, i: number) => (
+          {myReview?.map((item: IGetMyReview, i: number) => (
             <ReviewMap key={i}>
               <PfBox>
                 <PfImg>
@@ -39,8 +39,8 @@ export default function MyReview() {
                     <ReviewUpdate>수정</ReviewUpdate>
                   </NickBox>
                   <LocaBox>
-                    <CampLoca>가평평화캠핑장 | </CampLoca>
-                    <Date>&nbsp;2022.11.18</Date>
+                    <CampLoca>{item?.campName} </CampLoca>
+                    <Date>&nbsp;{item?.createdAt.slice(0, 10)}</Date>
                   </LocaBox>
                 </div>
               </PfBox>
@@ -175,6 +175,10 @@ const ReviewBox = styled.div`
   margin-top: 15px;
   margin-left: 18px;
   line-height: 1.57;
+  word-break: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 const ReviewText = styled.div``;

@@ -1,4 +1,15 @@
-export interface IGetMyReview {}
+export interface IGetMyReview {
+  userId: number;
+  campId: number;
+  campName: string;
+  reviewImg: string[];
+  reviewComment: string;
+  likeStatus: number;
+  myReview: IGetMyReview[];
+  createdAt: string;
+  updatedAt: string;
+  data: IGetMyReview[];
+}
 
 export interface IGetMyPage {}
 

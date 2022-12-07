@@ -1,7 +1,5 @@
-import { dividerClasses } from "@mui/material";
-import { height } from "@mui/system";
 import axios from "axios";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import styled from "styled-components";
 
 declare global {
@@ -13,41 +11,8 @@ declare global {
 //함수형 컴포넌트는 이를 인식 할 수 없음. 이에 아래와 같이 지정.
 const { kakao } = window;
 
-const X = "33.450701";
-const Y = "126.570667";
 // eb71fe40472032a8657d1ae10c054221
 export default function KaKaomap() {
-  // var options = {
-  //   enableHighAccuracy: true,
-  //   timeout: 5000,
-  //   maximumAge: 0,
-  // };
-  // navigator.geolocation.getCurrentPosition(success, error, options);
-
-  // function success(position: GeolocationPosition) {
-  //   const lon = position.coords.latitude;
-  //   const lat = position.coords.longitude;
-  //   console.log("위도 : " + position.coords.latitude);
-  //   console.log("경도: " + position.coords.longitude);
-
-  //   axios
-  //     .get(
-  //       `https://dapi.kakao.com/v2/local/geo/coord2address.json?x=${lon}&y=${lat}&input_coord=WGS84`,
-
-  //       {
-  //         headers: {
-  //           Authorization: `KakaoAK eb71fe40472032a8657d1ae10c054221`,
-  //         },
-  //       }
-  //     )
-  //     .then((res) => console.log(res.data.documents))
-  //     .catch((e) => console.log(e));
-  // }
-
-  // function error(err: GeolocationPositionError) {
-  //   console.warn("ERROR(" + err.code + "): " + err.message);
-  // }
-
   useEffect(() => {
     //지도 담을 영역 지정.
     const container = document.getElementById("map");

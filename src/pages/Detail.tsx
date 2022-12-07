@@ -2,22 +2,17 @@ import React, { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 
 import styled from "styled-components";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { Outlet, useMatch, useLocation, useNavigate } from "react-router-dom";
 import Search from "../components/withSearch/Search";
 import { isModal } from "../store/searchAtom";
-import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder"; //empty
-import BookmarkIcon from "@mui/icons-material/Bookmark"; //filled
 import { useGetApi } from "../APIs/getApi";
-import { campArray, IGetCampResult } from "../interfaces/get";
-import { differenceInCalendarQuarters } from "date-fns";
 
 function Detail() {
   const navigate = useNavigate();
   const [isSearch, setIsSearch] = useRecoilState(isModal);
 
-  const detailMatch = useMatch("/detail/:id/detail");
-  const reviewMatch = useMatch("/detail/:id/review");
+  const detailMatch = useMatch("/detail/id/detail");
+  const reviewMatch = useMatch("/detail/id/review");
 
   const loca = useLocation();
   const state = loca.state as { campId: number };
@@ -220,7 +215,7 @@ function Detail() {
           <Tab isActive={Boolean(detailMatch)}>
             <TabClick
               onClick={() =>
-                navigate(`/detail/:${state.campId}/detail`, {
+                navigate(`/detail/${state.campId}/detail`, {
                   state: {
                     campId: `${state.campId}`,
                   },

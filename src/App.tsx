@@ -14,6 +14,7 @@ import { theme } from "./layout/theme";
 
 import { useRecoilValue } from "recoil";
 import { isDarkAtom } from "./store/atmos";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const GlobalStyle = createGlobalStyle`
 @import url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff');
@@ -111,6 +112,7 @@ function App() {
           <Splash />
           <Router />
         </ErrorBoundary>
+        <ReactQueryDevtools initialIsOpen={true}></ReactQueryDevtools>
       </ThemeProvider>
     </QueryClientProvider>
   );

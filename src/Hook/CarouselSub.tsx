@@ -3,7 +3,7 @@ import { useState } from "react";
 import useCarouselSize from "./useCarouselSizeHook";
 import styled from "styled-components";
 
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function CarouselSub() {
   const navigate = useNavigate();
@@ -39,7 +39,7 @@ export default function CarouselSub() {
     },
     {
       text: "겨울낚시",
-      img: "/images/subject/image1.jpg",
+      img: "/images/subject/image5.jpg",
       id: 4,
     },
   ];
@@ -61,7 +61,8 @@ export default function CarouselSub() {
         style={{
           height,
           overflow: hide ? "hidden" : "visible",
-        }}>
+        }}
+      >
         <CarouselSlider
           className="flex"
           style={{
@@ -82,7 +83,8 @@ export default function CarouselSub() {
 
               setTransX(0);
             },
-          })}>
+          })}
+        >
           <CaroImgBox>
             <BoxEx>
               <New>NEW</New>
@@ -122,9 +124,10 @@ export default function CarouselSub() {
               <ImgCover onClick={handleClick(4)} />
               <CarouselImg
                 draggable={false}
-                src={"/images/subject/image1.jpg"}
+                src={"/images/subject/image5.jpg"}
                 alt="img"
                 width={width}
+
               />
             </BoxEx>
           </CaroImgBox>

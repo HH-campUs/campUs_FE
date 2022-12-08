@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useGetApi } from "../../APIs/getApi";
 import registDragEvent from "../../utils/registDragEvent";
@@ -9,9 +8,8 @@ import { useMyPageApi } from "../../APIs/myPageApi";
 
 export default function NewReview() {
   const NewReview = useGetApi.useGetNewReview().data?.data || [];
-  console.log("내리뷰는누가먹었을까", NewReview);
+  console.log(NewReview);
   const checkPf = useMyPageApi.useGetMyPage().data?.data;
-  const navigate = useNavigate();
   const [hide, setHide] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [transX, setTransX] = useState(0);
@@ -23,12 +21,6 @@ export default function NewReview() {
     if (v > max) return max;
     return v;
   };
-
-  // const { id } = useParams();
-
-  // const handleClick = (id: number) => () => {
-  //   navigate(`/topic/${id}`);
-  // };
 
   const imageList = [0, 1, 2, 3, 4];
   return (
@@ -67,12 +59,12 @@ export default function NewReview() {
                 <MainBox>
                   <PfBox>
                     <PfImg>
-                      <img src={checkPf?.profileImg} alt="pfImg" />
+                      <img src={item?.profileImg} alt="pfImg" />
                     </PfImg>
                     <div
                       style={{ flexDirection: "column", marginLeft: "6.5px" }}>
                       <NickBox>
-                        <PfNick>{checkPf?.nickname}</PfNick>
+                        <PfNick>{item?.nickname}</PfNick>
                       </NickBox>
                       <LocaBox>
                         <Date>&nbsp;{item?.createdAt.slice(0, 10)}</Date>
@@ -88,7 +80,9 @@ export default function NewReview() {
                       .split(",")
                       .map((image: string, i: number) => (
                         <ImgBox>
-                          <img src={image} alt="reviewImg" key={i} />
+                          {item?.reviewImg ? (
+                            <img src={image} alt="reviewImg" key={i} />
+                          ) : null}
                         </ImgBox>
                       ))}
                   </ImgFlex>
@@ -118,12 +112,14 @@ const CaroImgBox = styled.div`
 `;
 
 const Wrapper = styled.div`
-  margin-left: 20px;
+  /* margin-left: 20px; */
 `;
 
 const MainBox = styled.div`
   margin-top: 18px;
-  width: ${(props) => props.theme.pixelToRem(288)};
+  margin-left: 20px;
+  transform: translateX(20px);
+  width: ${(props) => props.theme.pixelToRem(268)};
   height: ${(props) => props.theme.pixelToRem(256)};
   border-radius: ${(props) => props.theme.pixelToRem(10)};
   border: 1px solid #eee;
@@ -192,15 +188,14 @@ const ImgFlex = styled.div`
 `;
 
 const ImgBox = styled.div`
-  /* display: flex; */
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: ${(props) => props.theme.pixelToRem(5)};
 
   img {
-    width: ${(props) => props.theme.pixelToRem(77)};
+    width: ${(props) => props.theme.pixelToRem(70)};
     height: ${(props) => props.theme.pixelToRem(84)};
     aspect-ratio: 1/1;
-    /* border: 1px solid lightgray; */
+    border-radius: 8px;
   }
 `;

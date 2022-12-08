@@ -3,7 +3,7 @@ import Carousel from "../components/Carousel";
 
 import MytravelPlan from "../components/MytravelPlan";
 import Subject from "../components/Subject";
-import Nearby from "../components/Nearby";
+import Nearby from "../components/Nearpost/Nearby";
 import Search from "../components/withSearch/Search";
 import WeekWeather from "../components/WeekWeather";
 import { useRecoilState } from "recoil";

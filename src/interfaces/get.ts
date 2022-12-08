@@ -8,13 +8,12 @@ export interface IGetTravelPlan {
 }
 
 export interface IGetCampReview {
-  userId: number;
   campId: number;
   reviewImg: string;
   reviewComment: string;
   likeStatus: number;
   data: IGetCampReview[];
-  reviewMap: IGetCampReview[];
+  // reviewMap: IGetCampReview[];
   createdAt: string;
   updatedAt: string;
   nickname: string;
@@ -30,8 +29,45 @@ export interface IGetNewReview {
   likeStatus: number;
   createdAt: string;
   updatedAt: string;
+  nickname: string;
+  profileImg: string;
   data: IGetNewReview[];
   NewReview: IGetNewReview[];
+}
+
+export interface IGetDistance {
+  campId: number;
+  campName: string;
+  induty: string;
+  doNm: string;
+  sigunguNm: string;
+  address: string;
+  X: string;
+  Y: string;
+  operPdCl: string;
+  operDeCl: string;
+  animal: string;
+  ImageUrl: string;
+  homePage: string;
+  sbrsCl: string;
+  posblFcltyCl: string;
+  wtrplCo: string;
+  swrmCo: string;
+  toiletCo: string;
+  manageSttus: string;
+  themaEnvrnCl: string;
+  eqpmnLendCl: string;
+  createdtime: string;
+  featureNm: string;
+  clturEvent: string;
+  nearPost: IGetDistance;
+  nearCamp: IGetDistance;
+  reviewCount: number;
+  pickCount: number;
+  lookUp: number;
+  distance: number;
+  lat: number;
+  lon: number;
 }
 
 export interface weather {
@@ -132,7 +168,6 @@ export interface campArray extends IGetCampResult {
   campTopic: IGetCampResult[];
   searchSort?: IGetCampResult[];
   detailCamp?: IGetCampResult[];
-  camps?: IGetCampResult[];
   camp: IGetCampResult[];
   nextPage?: number;
   lastPage?: boolean;

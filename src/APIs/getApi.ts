@@ -1,10 +1,5 @@
-import { useEffect } from "react";
 import { useQuery, useInfiniteQuery } from "@tanstack/react-query";
-import { useInView } from "react-intersection-observer";
 import { instance } from "../instance/instance";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { ExportDate, DateState } from "../store/dateAtom";
-import { showLo, selectLo } from "../store/locationAtom";
 
 import {
   IGetCampReview,
@@ -13,6 +8,7 @@ import {
   pickedCamp,
   IGetTravelPlan,
   IMostList,
+  IGetDistance,
   IGetNewReview,
 } from "../interfaces/get";
 
@@ -86,12 +82,12 @@ export const useGetCamp = (doNm: string, sort: string) => {
 export const useGetTopicInfinite = (topicId: string) => {
   const topicData = async ({ pageParam = 0 }) => {
     const { data } = await instance.get<pickedCamp>(
-      `/camps/${topicId}?&numOfRows=10&pageNo=${pageParam}`
+      `/camps/${topicId}?&numOfRows=10&pageNo=${pageParam}&sort=lookUp`
     );
 
-    console.log(data.topicCamp);
+    console.log(data);
     return {
-      campTopic: data.topicCamp,
+      campTopic: data,
       currentPage: pageParam + 1,
     };
   };
@@ -102,7 +98,7 @@ export const useGetTopicInfinite = (topicId: string) => {
     isSuccess,
     hasNextPage,
     refetch,
-  } = useInfiniteQuery(["getCampTopic"], topicData, {
+  } = useInfiniteQuery(["getCampTopic", topicId], topicData, {
     getNextPageParam: (lastPage, pages) => {
       return lastPage.campTopic ? lastPage.currentPage : undefined;
     },
@@ -175,10 +171,9 @@ export const useGetApi = {
 
   useGetCampDetail: (campId: number) => {
     return useQuery<campArray>(
-      ["campDetail"],
+      ["campDetail", campId],
       async () => {
         const { data } = await instance.get(`/camps/detail/${campId}`);
-        console.log(data);
         return data;
       },
       {
@@ -187,6 +182,29 @@ export const useGetApi = {
       }
     );
   },
+
+  // ** 캠핑장 리뷰 조회 / get ** //
+  useGetCampReview: (campId: number) => {
+    return useQuery(["reviewinfo"], async () => {
+      const { data } = await instance.get<IGetCampReview>(`/reviews/${campId}`);
+
+      return data;
+    });
+  },
+
+  // ** 캠핑장 거리 조회 ** //
+  useGetDistance: (campX: number, campY: number) => {
+    console.log("apiX", campX);
+    console.log("apiY", campY);
+    return useQuery(["distanceinfo"], async () => {
+      const { data } = await instance.get<IGetDistance>(
+        `users/nearCamp?campX=${campX}&campY=${campY}`
+      );
+      console.log(data);
+      return data;
+    });
+  },
+
   /* topic 별 캠핑장 결과 조회 */
   useGetTopicResult: () => {
     const params = 2;
@@ -194,24 +212,15 @@ export const useGetApi = {
       const { data } = await instance.get<pickedCamp[]>(
         `/camps/${params}?numOfRows=20&pageNo=1`
       );
-      console.log(data);
+
       return data[0];
     });
   },
+
+  // ** LOOK, PICK, REVIEW ** //
   useGetSort: () => {
     return useQuery(["topicSort"], async () => {
       const { data } = await instance.get<IMostList>(`/camps/sort`);
-      console.log(data);
-      return data;
-    });
-  },
-
-  //1.일몰 2.낚시 3.반려동물 4.장비대여
-  // ** 캠핑장 리뷰 조회 / get ** //
-  useGetCampReview: (campId: number) => {
-    return useQuery(["reviewinfo"], async () => {
-      const { data } = await instance.get<IGetCampReview>(`/reviews/${campId}`);
-      console.log(data);
       return data;
     });
   },
@@ -220,7 +229,7 @@ export const useGetApi = {
   useGetTravelPlan: () => {
     return useQuery(["travelplan"], async () => {
       const { data } = await instance.get<IGetTravelPlan>(`/camps`);
-      console.log(data);
+
       return data;
     });
   },

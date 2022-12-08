@@ -42,7 +42,6 @@ export default function MyPlan() {
       <Wrapper>
         {isLogin ? (
           <>
-            <div>로그인햇당</div>
             <PlanBox>
               <img
                 src="https://mblogthumb-phinf.pstatic.net/MjAxOTExMDNfMTIw/MDAxNTcyNzExMzg5NjE4.S3sNMojDGrZ4WdYdGXRV-XMrd5R9jyxts4HLVGcZg1cg.kNrbyXXyEU7EHW5DqsGGr9XufBo-NWfGPIdyQ0mI3kcg.JPEG.z_ye0n/IMG_0206.JPG?type=w800"
@@ -69,7 +68,8 @@ export default function MyPlan() {
               <PickBtn
                 onClick={() => {
                   navigate("/topic/1");
-                }}>
+                }}
+              >
                 가장 가까운 캠핑장 구경가기
               </PickBtn>
             </NotiBox>
@@ -133,7 +133,6 @@ export default function MyPlan() {
 }
 
 const TotalContainer = styled.div`
-  margin-top: 130px;
   position: absolute;
 `;
 

@@ -53,7 +53,9 @@ export default function MyReview() {
                   .split(",")
                   .map((image: string, i: number) => (
                     <ImgBox>
-                      <img src={image} alt="reviewImg" key={i} />
+                      {item?.reviewImg ? (
+                        <img src={image} alt="" key={i} />
+                      ) : null}
                     </ImgBox>
                   ))}
               </ImgFlex>

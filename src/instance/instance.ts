@@ -24,7 +24,7 @@ export const postInstance = axios.create({
   baseURL: process.env.REACT_APP_API,
   headers: {
     Authorization: `Bearer ${accessToken}`,
-    refreshToken: `Bearer ${refreshToken}`,
+    refreshToken: `${refreshToken}`,
     "Content-Type": "multipart/form-data",
     // withCredentails: true,
   },
@@ -44,7 +44,7 @@ export const postInstance = axios.create({
 // };
 
 /* request / response 후 선 후행 처리를 커스텀 가능케 -> 예외처리로 넘어가기 전에
-가로채기 Ssap 가능 */
+가로채기  가능 */
 // instance.interceptors.request.use((config: AxiosRequestConfig) => {
 //   const token = getCamperToken();
 //   if (token) {

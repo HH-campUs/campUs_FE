@@ -87,6 +87,7 @@ export default function CarouselSub() {
             <BoxEx>
               <New>NEW</New>
               <CaroText>일몰 명소</CaroText>
+              <ImgCover />
               <CarouselImg
                 src={"/images/subject/image6.jpg"}
                 alt="img"
@@ -97,7 +98,8 @@ export default function CarouselSub() {
             </BoxEx>
 
             <BoxEx>
-              <CaroText>애견 동반</CaroText>
+              <CaroText>애견동반</CaroText>
+              <ImgCover />
               <CarouselImg
                 draggable={false}
                 src={"/images/subject/image4.jpg"}
@@ -108,7 +110,8 @@ export default function CarouselSub() {
             </BoxEx>
 
             <BoxEx>
-              <CaroText>장비 대여</CaroText>
+              <CaroText>장비대여</CaroText>
+              <ImgCover />
               <CarouselImg
                 draggable={false}
                 src={"/images/subject/image2.jpg"}
@@ -119,6 +122,7 @@ export default function CarouselSub() {
             </BoxEx>
             <BoxEx>
               <CaroText>겨울 낚시</CaroText>
+              <ImgCover />
               <CarouselImg
                 draggable={false}
                 src={"/images/subject/image1.jpg"}
@@ -135,7 +139,7 @@ export default function CarouselSub() {
 }
 
 const CarouselViewer = styled.div`
-  width: ${(props) => props.theme.pixelToRem(355)};
+  width: ${(props) => props.theme.pixelToRem(475)};
   height: ${(props) => props.theme.pixelToRem(210)} !important;
   overflow: hidden;
   user-select: none;
@@ -148,6 +152,15 @@ const CarouselSlider = styled.div`
 
 const CaroImgBox = styled.div`
   display: flex;
+`;
+
+const ImgCover = styled.div`
+  width: ${(props) => props.theme.pixelToRem(140)};
+  height: ${(props) => props.theme.pixelToRem(202)};
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: ${(props) => props.theme.pixelToRem(10)};
+  z-index: 1;
+  position: absolute;
 `;
 
 const CarouselImg = styled.img`
@@ -169,11 +182,13 @@ const New = styled.div`
   height: ${(props) => props.theme.pixelToRem(16)};
   font-size: 0.8rem;
   padding-left: 6px;
+  padding-top: 2px;
   position: absolute;
   color: black;
   border-radius: ${(props) => props.theme.pixelToRem(14)};
   background-color: #fff;
   margin: 10px;
+  z-index: 2;
 `;
 
 const CaroText = styled.div`
@@ -183,17 +198,5 @@ const CaroText = styled.div`
   color: #fff;
   font-weight: 500;
   font-size: ${(props) => props.theme.pixelToRem(14)};
+  z-index: 2;
 `;
-
-//  {imageList.map((imageLists,i)=>{
-//           <BoxEx ket={i}>
-//           <CaroText>{imageLists.text}</CaroText>
-//           <CarouselImg
-//             draggable={false}
-//             src={imageLists.img}
-//             alt="img"
-//             width={width}
-//             onClick={handleClick(imageLists.id)}
-//           />
-//         </BoxEx>
-//       })}

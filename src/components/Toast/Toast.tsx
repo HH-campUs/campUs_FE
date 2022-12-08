@@ -22,24 +22,77 @@ export const InfoToast = ({ text, toastState, setToastState }: ToastProps) => {
   );
 };
 
-export const NavPickToast = () => {
+export const NavPickToast = ({
+  text,
+  toastState,
+  setToastState,
+}: ToastProps) => {
   const nav = useNavigate();
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setToastState(false);
+    }, 1500);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
   return (
-    <NavToast>
-      <p>찜목록에 추가되었습니다.</p>
+    <NavToast toastState={toastState}>
+      <p>찜목록에 추가했어요.</p>
       <img
-        src="/images/back.svg"
+        src="/images/whiteBack.svg"
         alt="nav"
-        onClick={() => nav("/mypage/mypick")}
+        onClick={() => nav(`/mypage/mypick`)}
       />
     </NavToast>
   );
 };
 
-export const NoIdPickToast = () => {
+export const NavPlanToast = ({
+  text,
+  toastState,
+  setToastState,
+}: ToastProps) => {
   const nav = useNavigate();
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setToastState(false);
+    }, 1500);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
   return (
-    <NavToast>
+    <NavToast toastState={toastState}>
+      <p>여행일정 등록을 완료했어요.</p>
+      <img
+        src="/images/whiteBack.svg"
+        alt="nav"
+        onClick={() => nav(`/mypage/myplan`)}
+      />
+    </NavToast>
+  );
+};
+
+export const NoIdPickToast = ({
+  text,
+  toastState,
+  setToastState,
+}: ToastProps) => {
+  const nav = useNavigate();
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setToastState(false);
+    }, 1500);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
+  return (
+    <NavToast toastState={toastState}>
       <p>로그인을 해야 이용할 수 있습니다.</p>
       <img src="/images/back.svg" alt="nav" onClick={() => nav("/login")} />
     </NavToast>
@@ -75,7 +128,11 @@ const ToastAlert = styled.div<{ toastState: boolean }>`
   animation-duration: 0.2s;
 `;
 
-const NavToast = styled.div`
+const NavToast = styled(ToastAlert)`
   padding: 20px;
-  justify-content: space-between;
+  justify-content: space-between !important;
+
+  img {
+    transform: rotate(180deg);
+  }
 `;

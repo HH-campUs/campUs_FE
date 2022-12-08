@@ -24,7 +24,7 @@ import styled, { keyframes, css } from "styled-components";
 import Datepicker from "./Datepicker";
 import Location from "./Location";
 import { isProps, searchData } from "../../interfaces/inSearch";
-import { InfoToast, NavPickToast } from "../Toast/Toast";
+import { InfoToast } from "../Toast/Toast";
 
 function Search() {
   /* toast boolean */
@@ -78,7 +78,7 @@ function Search() {
       <Container>
         {toastState == true ? (
           <InfoToast
-            text={"검색조건이 불충분합니다"}
+            text={"검색조건이 불충분해요"}
             toastState={toastState}
             setToastState={setToastState}
           />
@@ -173,12 +173,6 @@ const fadeOut = keyframes`
     to {opacity: 0}
 `;
 
-const ModalSettings = (isSearch: boolean) => css`
-  visibility: ${isSearch == true ? "visible" : "hidden"};
-  animation: ${isSearch == true ? fadeIn : fadeOut} 0.4s ease-out;
-  transition: visibility 0.15s ease-out;
-`;
-
 const Container = styled.div`
   width: 100%;
   height: 100%;
@@ -218,7 +212,7 @@ const SearchModal = styled.div<{ isSearch: boolean }>`
   /* position없으면 위치속성 안먹음. */
   /* transform -> 위치작용 */
   position: relative;
-  z-index: 100;
+  z-index: 1000;
   &.isSearch {
     height: 43rem;
     left: 10;

@@ -66,9 +66,10 @@ function Home() {
 export default Home;
 
 const Wrapper = styled.div`
-  height: 200vh;
-  min-height: 1800px;
-  width: ${(props) => props.theme.pixelToRem(375)};
+  width: 100%;
+  min-width: ${(props) => props.theme.pixelToRem(375)};
+  height: calc(100vh - 9rem);
+  overflow-x: hidden;
   flex-direction: column;
 `;
 
@@ -87,7 +88,7 @@ const HeadText = styled.div`
 `;
 
 const SearchBar = styled.div<{ isSearch: Boolean }>`
-  width: ${(props) => props.theme.pixelToRem(335)};
+  width: 84%;
   height: ${(props) => props.theme.pixelToRem(54)};
   margin: 20px 20px 0 20px;
   padding: 16px 32px 16px 20px;

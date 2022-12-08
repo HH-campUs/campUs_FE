@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useState } from "react";
+import { useRecoilState } from "recoil";
 import { selectLo, showLo } from "../store/locationAtom";
 import { DateState } from "../store/dateAtom";
 import { Link } from "react-router-dom";
@@ -214,7 +214,7 @@ const Wrapper = styled.div`
 `;
 
 const WeatherModal = styled.div`
-  width: ${(props) => props.theme.pixelToRem(375)};
+  width: 100%;
   height: ${(props) => props.theme.pixelToRem(60)};
   background-color: #85a8e6;
   display: flex;
@@ -501,6 +501,7 @@ const DetailInfo = styled.div`
     }
   }
 `;
+
 const GoCampBtn = styled(Link)`
   width: ${(props) => props.theme.pixelToRem(335)};
   height: ${(props) => props.theme.pixelToRem(54)};
@@ -520,4 +521,4 @@ const GoCampBtn = styled(Link)`
     text-align: center;
     margin: 0 auto;
   }
-`;
+  `;

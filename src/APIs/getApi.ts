@@ -1,18 +1,15 @@
 import { useQuery, useInfiniteQuery } from "@tanstack/react-query";
 import { instance } from "../instance/instance";
-import { useRecoilValue } from "recoil";
-import { DateState } from "../store/dateAtom";
-import { selectLo } from "../store/locationAtom";
 
 import {
   IGetCampReview,
   IGetWeather,
   campArray,
   pickedCamp,
-  IGetNewReview,
-  IGetCampResult,
+  IGetTravelPlan,
   IMostList,
   IGetDistance,
+  IGetNewReview,
 } from "../interfaces/get";
 
 const serverUrl = process.env.REACT_APP_API;
@@ -20,10 +17,10 @@ const serverUrl = process.env.REACT_APP_API;
 // ** 캠핑장 카테고리 정보 조회 / get ** //
 
 /* 캠핑장 키워드 검색 */
-export const useSearchCamp = (keyword: string) => {
+export const useSearchCamp = (keyword: string, sort: string) => {
   const useData = async ({ pageParam = 1 }) => {
     const { data } = await instance.get<campArray>(
-      `/querysearch?keyword=${keyword}&numOfRows=20&pageNo=${pageParam}`
+      `/searchSort?keyword=${keyword}&numOfRows=20&pageNo=${pageParam}&sort=${sort}`
     );
     console.log(data, keyword);
     return {
@@ -39,7 +36,7 @@ export const useSearchCamp = (keyword: string) => {
     isSuccess,
     hasNextPage,
     refetch,
-  } = useInfiniteQuery(["searchCamp", keyword], useData, {
+  } = useInfiniteQuery(["searchCamp", keyword, sort], useData, {
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     getNextPageParam: (lastPage) => {
@@ -51,10 +48,10 @@ export const useSearchCamp = (keyword: string) => {
 };
 
 /* 리얼 인피니티 스크롤 - 캠프 result 페이지 전용*/
-export const useGetCamp = (doNm: string) => {
+export const useGetCamp = (doNm: string, sort: string) => {
   const useData = async ({ pageParam = 1 }) => {
     const { data } = await instance.get<campArray>(
-      `/camps?doNm=${doNm}&numOfRows=20&pageNo=${pageParam}`
+      `/camps?doNm=${doNm}&numOfRows=20&pageNo=${pageParam}&sort=${sort}`
     );
     console.log(data);
     return {
@@ -74,9 +71,7 @@ export const useGetCamp = (doNm: string) => {
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     getNextPageParam: (lastPage) => {
-      return lastPage.camps.regionCamp[0]
-        ? lastPage.currentPage + 1
-        : undefined;
+      return lastPage.camps ? lastPage.currentPage + 1 : undefined;
     },
   });
   console.log(campData);
@@ -103,7 +98,7 @@ export const useGetTopicInfinite = (topicId: string) => {
     isSuccess,
     hasNextPage,
     refetch,
-  } = useInfiniteQuery(["getCampTopic", topicId], topicData, {
+  } = useInfiniteQuery(["getCampTopic"], topicData, {
     getNextPageParam: (lastPage, pages) => {
       return lastPage.campTopic ? lastPage.currentPage : undefined;
     },
@@ -166,9 +161,17 @@ export const useRecommendWeather = () => {
 /* 정보 get Api 모음 */
 
 export const useGetApi = {
+  // ** 캠핑장 새로운 리뷰 ** //
+  useGetNewReview: () => {
+    return useQuery(["reviewnew"], async () => {
+      const { data } = await instance.get<IGetNewReview>(`/reviews`);
+      return data;
+    });
+  },
+
   useGetCampDetail: (campId: number) => {
     return useQuery<campArray>(
-      ["campDetail", campId],
+      ["campDetail"],
       async () => {
         const { data } = await instance.get(`/camps/detail/${campId}`);
         console.log(data);
@@ -199,14 +202,6 @@ export const useGetApi = {
     });
   },
 
-  // ** 캠핑장 새로운 리뷰 ** //
-  useGetNewReview: () => {
-    return useQuery(["reviewnew"], async () => {
-      const { data } = await instance.get<IGetNewReview>(`/reviews`);
-      return data;
-    });
-  },
-
   /* topic 별 캠핑장 결과 조회 */
   useGetTopicResult: () => {
     const params = 2;
@@ -214,6 +209,7 @@ export const useGetApi = {
       const { data } = await instance.get<pickedCamp[]>(
         `/camps/${params}?numOfRows=20&pageNo=1`
       );
+      console.log(data);
       return data[0];
     });
   },
@@ -222,6 +218,16 @@ export const useGetApi = {
   useGetSort: () => {
     return useQuery(["topicSort"], async () => {
       const { data } = await instance.get<IMostList>(`/camps/sort`);
+      console.log(data);
+      return data;
+    });
+  },
+
+  /* 여행일정 조회 */
+  useGetTravelPlan: () => {
+    return useQuery(["travelplan"], async () => {
+      const { data } = await instance.get<IGetTravelPlan>(`/camps`);
+      console.log(data);
       return data;
     });
   },

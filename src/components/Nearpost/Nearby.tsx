@@ -77,7 +77,7 @@ const TextBox = styled.div`
 `;
 
 const PlanBox = styled.div`
-  width: ${(props) => props.theme.pixelToRem(336)};
+  width: 80%;
   height: ${(props) => props.theme.pixelToRem(264)};
   border-radius: 10px;
   box-shadow: 15px;

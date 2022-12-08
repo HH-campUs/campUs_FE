@@ -15,8 +15,9 @@ function Keyword() {
   const nav = useNavigate();
 
   /* data */
-
   const [isSearch, setIsSearch] = useRecoilState(isModal);
+  const [inputValue, setInputValue] = useRecoilState(textValue);
+  const [sortState, setSortState] = useState("lookUp");
   const [bookmarking, setBookMarking] = useState(false);
 
   const Month = useRecoilValue(StrMonth);
@@ -29,8 +30,15 @@ function Keyword() {
 
   /* camp result 무한스크롤 */
 
+  /* 조회순 ⇒
+                sort = lookUp
+인기순 ⇒
+                sort = pickCount
+리뷰순 ⇒
+                sort = reviewCount */
+
   const { campData, fetchNextPage, isSuccess, hasNextPage, refetch } =
-    useSearchCamp(keyword);
+    useSearchCamp(keyword, sortState);
   console.log(campData);
 
   const { ref, inView } = useInView();
@@ -64,7 +72,7 @@ function Keyword() {
         </div>
         <div>
           <span style={{ width: "160px", marginLeft: "-150px" }}>
-            {Month}월 {Day}일 &nbsp; | &nbsp; {doNm}
+            {Month}월 {Day}일 &nbsp; | &nbsp; {inputValue}
           </span>
         </div>
       </ReSearch>
@@ -101,13 +109,32 @@ function Keyword() {
             <span className="total"> ({campData?.pages[0].camps.total}개)</span>
           </div>
           <div>
-            <span className="popular">인기순</span>
+            {sortState == "lookUp" ? (
+              <span
+                className="popular"
+                onClick={() => setSortState("pickCount")}>
+                {" "}
+                조회순{" "}
+              </span>
+            ) : sortState == "pickCount" ? (
+              <span
+                className="popular"
+                onClick={() => setSortState("reviewCount")}>
+                {" "}
+                인기순{" "}
+              </span>
+            ) : (
+              <span className="popular" onClick={() => setSortState("lookUp")}>
+                {" "}
+                리뷰순{" "}
+              </span>
+            )}
           </div>
         </ResultTop>
         {isSuccess && campData?.pages ? (
           campData?.pages.map((page) => (
             <React.Fragment key={page.currentPage}>
-              {page?.camps.regionCamp.map((item: IGetCampResult) => (
+              {page?.camps.searchSort?.map((item: IGetCampResult) => (
                 <ResultBox key={item.campId}>
                   <ResultItem
                     onClick={() =>
@@ -120,7 +147,7 @@ function Keyword() {
                     <ResultImg src={item.ImageUrl} alt={item.ImageUrl} />
                     <InnerBg>
                       <span>
-                        찜({item.pickCount}) 리뷰({item.reviewCount}){" "}
+                        찜({item.pickCount}) 리뷰({item.reviewCount})
                       </span>
                     </InnerBg>
                   </ResultItem>
@@ -130,16 +157,20 @@ function Keyword() {
                   </CampSpan>
                   <DetailAddress>
                     <img src="/images/location.svg" alt="location" />
-                    <span>{item.address}</span>
+                    <span>
+                      {item.address == ""
+                        ? "등록된 주소가 없습니다"
+                        : item.address}
+                    </span>
                   </DetailAddress>
                   {/* 시설 태그들 (max: 4) */}
                   <TagContainer>
-                    {item.sbrsCl
-                      .split(",")
-                      .slice(0, 4)
-                      .map((word) => (
-                        <div className="tag"> {word} </div>
-                      ))}
+                    {item.sbrsCl == ""
+                      ? null
+                      : item.sbrsCl
+                          .split(",")
+                          .slice(0, 4)
+                          .map((word) => <div className="tag"> {word} </div>)}
                   </TagContainer>
                 </ResultBox>
               ))}

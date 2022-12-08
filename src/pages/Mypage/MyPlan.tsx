@@ -1,13 +1,23 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import Kebop from "../../components/withPlan/Kebop";
+
 import { usePostsApi } from "../../APIs/postsApi";
 import { useNavigate } from "react-router-dom";
 import { getCamperToken } from "../../instance/cookies";
 
 export default function MyPlan() {
   const [onOff, setOnOff] = useState(false);
+<<<<<<< HEAD
+=======
+  const [openMore, setOpenMore] = useState(false);
+>>>>>>> 4599f1da384cfe694e23404175db8458a47ef6f1
   const isLogin = getCamperToken();
   const navigate = useNavigate();
+
+  const toggle = (event: MouseEvent) => {
+    setOpenMore(!openMore);
+  };
 
   const onChangeText = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log(e.target.checked);
@@ -35,6 +45,7 @@ export default function MyPlan() {
                 hidden
               />
 
+<<<<<<< HEAD
               <span className="offSpan">다가올 여행</span>
               <span className="onSpan">지난여행</span>
               <label htmlFor="toggle" className="toggleSwitch">
@@ -63,6 +74,54 @@ export default function MyPlan() {
       /*{" "}
       <Container>
         {onOff == false ? (
+=======
+        <span className="offSpan">다가올 여행</span>
+        <span className="onSpan">지난여행</span>
+        <label htmlFor="toggle" className="toggleSwitch">
+          <span className="toggleButton" />
+        </label>
+      </ToggleBtn>
+      <Wrapper>
+        {isLogin ? (
+>>>>>>> 4599f1da384cfe694e23404175db8458a47ef6f1
+          <>
+            <div>로그인햇당</div>
+            <PlanBox>
+              <img
+                src="https://mblogthumb-phinf.pstatic.net/MjAxOTExMDNfMTIw/MDAxNTcyNzExMzg5NjE4.S3sNMojDGrZ4WdYdGXRV-XMrd5R9jyxts4HLVGcZg1cg.kNrbyXXyEU7EHW5DqsGGr9XufBo-NWfGPIdyQ0mI3kcg.JPEG.z_ye0n/IMG_0206.JPG?type=w800"
+                alt="img"
+              />
+              <div className="infoBox">
+                <span>경기도 용인시</span>
+                <span>용인 자연휴양림 야영장</span>
+                <span>떠나는 날짜</span>
+                <span>22.12.03</span>
+              </div>
+
+              {/* 케밥박스 */}
+              <Kebop />
+            </PlanBox>
+          </>
+        ) : (
+          <>
+            <NotiBox>
+              <div>
+                <img src="/images/mypage/myplan.svg" alt="tent" />
+              </div>
+              <PickText>아직 저장한 여행이 없어요!</PickText>
+              <PickBtn
+                onClick={() => {
+                  navigate("/topic/1");
+                }}>
+                가장 가까운 캠핑장 구경가기
+              </PickBtn>
+            </NotiBox>
+          </>
+        )}
+      </Wrapper>
+
+      <Container>
+        {onOff == false ? (
           <>
             <PlanBox>
               <img
@@ -75,26 +134,7 @@ export default function MyPlan() {
                 <span>떠나는 날짜</span>
                 <span>22.12.03</span>
               </div>
-              <BtnBox>
-                <button>수정</button>
-                <button>리뷰쓰기</button>
-              </BtnBox>
-            </PlanBox>
-            <PlanBox>
-              <img
-                src="https://mblogthumb-phinf.pstatic.net/MjAxOTExMDNfMTIw/MDAxNTcyNzExMzg5NjE4.S3sNMojDGrZ4WdYdGXRV-XMrd5R9jyxts4HLVGcZg1cg.kNrbyXXyEU7EHW5DqsGGr9XufBo-NWfGPIdyQ0mI3kcg.JPEG.z_ye0n/IMG_0206.JPG?type=w800"
-                alt="img"
-              />
-              <div className="infoBox">
-                <span>경기도 용인시</span>
-                <span>용인 자연휴양림 야영장</span>
-                <span>떠나는 날짜</span>
-                <span>22.12.03</span>
-              </div>
-              <BtnBox>
-                <button>수정</button>
-                <button>리뷰쓰기</button>
-              </BtnBox>
+              <BtnBox></BtnBox>
             </PlanBox>
             <PlanBox>
               <img
@@ -130,8 +170,12 @@ export default function MyPlan() {
             </PlanBox>
           </>
         ) : null}
+<<<<<<< HEAD
       </Container>{" "}
       */
+=======
+      </Container>
+>>>>>>> 4599f1da384cfe694e23404175db8458a47ef6f1
     </TotalContainer>
   );
 }
@@ -178,7 +222,7 @@ const ToggleBtn = styled.div<{ onOff: boolean }>`
   }
 
   .offSpan {
-    margin-top: 13px;
+    margin-top: 14px;
     margin-left: 70px;
     font-size: ${(props) => props.theme.pixelToRem(16)};
     font-weight: 500;
@@ -188,13 +232,13 @@ const ToggleBtn = styled.div<{ onOff: boolean }>`
     letter-spacing: normal;
     text-align: center;
     color: ${(props) => (props.onOff == true ? "#ffffff" : "#000000")};
-    z-index: 10;
+    z-index: 2;
     position: absolute;
     transition: color 0.2s ease-in-out;
   }
 
   .onSpan {
-    margin-top: 13px;
+    margin-top: 14px;
     margin-left: 258px;
     font-size: 16px;
     font-weight: 500;
@@ -204,7 +248,7 @@ const ToggleBtn = styled.div<{ onOff: boolean }>`
     letter-spacing: normal;
     text-align: center;
     color: ${(props) => (props.onOff == true ? "#000000" : "#ffffff")};
-    z-index: 10;
+    z-index: 2;
     position: absolute;
     transition: color 0.2s ease-in-out;
   }
@@ -215,7 +259,6 @@ const Container = styled.div`
   height: 100vh;
   margin-top: -20px;
   padding: 20px;
-  overflow-y: scroll !important;
 `;
 
 const PlanBox = styled.div`
@@ -276,30 +319,43 @@ const PlanBox = styled.div`
 `;
 
 const BtnBox = styled.div`
+  width: ${(props) => props.theme.pixelToRem(85)};
+  height: ${(props) => props.theme.pixelToRem(94)};
+  flex-grow: 0;
+  margin-top: 30px;
+  margin-left: 230px;
+
+  border-radius: 10px;
+  box-shadow: 4px 4px 15px 0 rgba(0, 0, 0, 0.18);
+  background-color: #fff;
   display: flex;
   position: absolute;
-  margin-top: 104px;
-  left: 152px;
-  button {
-    height: ${(props) => props.theme.pixelToRem(36)};
-    gap: ${(props) => props.theme.pixelToRem(8)};
+  flex-direction: column;
 
+  div {
+    width: ${(props) => props.theme.pixelToRem(85)};
+    height: ${(props) => props.theme.pixelToRem(47)};
+    margin-left: 1px;
+    background-color: transparent;
+    text-align: right;
     ${(props) => props.theme.fontTheme.Caption1};
     line-height: 1.29;
     letter-spacing: normal;
-    border-radius: 8px;
-    border: solid 1px #ccc;
-    background-color: ${(props) => props.theme.colorTheme.textWhite};
-    flex-direction: row !important;
-    justify-content: center;
-    align-items: center;
-    display: flex;
-    :first-child {
-      width: ${(props) => props.theme.pixelToRem(69)};
+    color: ${(props) => props.theme.colorTheme.text2};
+
+    &:first-child {
+      margin-top: -2px;
+      padding-top: 18px;
+      padding-right: 15px;
+      border-top-right-radius: 10px;
+      border-top-left-radius: 10px;
     }
-    :last-child {
-      margin-left: 6px;
-      width: ${(props) => props.theme.pixelToRem(114)};
+    &:last-child {
+      margin-top: 3px;
+      padding-top: 13px;
+      padding-right: 15px;
+      border-bottom-right-radius: 10px;
+      border-bottom-left-radius: 10px;
     }
   }
 `;

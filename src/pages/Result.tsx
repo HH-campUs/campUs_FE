@@ -19,6 +19,7 @@ function Result() {
   const [isWeather, setIsWeather] = useState(false);
   const [isSearch, setIsSearch] = useRecoilState(isModal);
   const [bookmarking, setBookMarking] = useState(false);
+  const [sortState, setSortState] = useState("lookUp");
 
   const Month = useRecoilValue(StrMonth);
   const Day = useRecoilValue(StrDay);
@@ -36,8 +37,8 @@ function Result() {
   /* camp result 무한스크롤 */
 
   const { campData, fetchNextPage, isSuccess, hasNextPage, refetch } =
-    useGetCamp(doNm);
-  console.log(campData);
+    useGetCamp(doNm, sortState);
+  console.log(campData, sortState);
 
   const { ref, inView } = useInView();
 
@@ -317,14 +318,33 @@ function Result() {
             </span>
           </div>
           <div>
-            <span className="popular">인기순</span>
+            {sortState == "lookUp" ? (
+              <span
+                className="popular"
+                onClick={() => setSortState("pickCount")}>
+                {" "}
+                조회순{" "}
+              </span>
+            ) : sortState == "pickCount" ? (
+              <span
+                className="popular"
+                onClick={() => setSortState("reviewCount")}>
+                {" "}
+                인기순{" "}
+              </span>
+            ) : (
+              <span className="popular" onClick={() => setSortState("lookUp")}>
+                {" "}
+                리뷰순{" "}
+              </span>
+            )}
           </div>
         </ResultTop>
         {isSuccess && campData?.pages ? (
           /* page별로 map을 한 번 돌려서 2차원배열 구조로 되어있는~ */
           campData?.pages.map((page) => (
             <React.Fragment key={page.currentPage}>
-              {page?.camps.regionCamp.map((item: IGetCampResult) => (
+              {page?.camps.camp.map((item: IGetCampResult) => (
                 <ResultBox key={item.campId}>
                   <ResultItem
                     onClick={() =>
@@ -348,7 +368,11 @@ function Result() {
                   </CampSpan>
                   <DetailAddress>
                     <img src="/images/location.svg" alt="location" />
-                    <span>{item.address}</span>
+                    <span>
+                      {item.address == ""
+                        ? "등록된 주소가 없습니다"
+                        : item.address}
+                    </span>
                   </DetailAddress>
                   {/* 시설 태그들 (max: 4) */}
                   <TagContainer>
@@ -367,7 +391,9 @@ function Result() {
           <div>데이터가 없습니다</div>
         )}
       </ResultContainer>
-      <div ref={ref} style={{ width: "inherit", height: "auto" }}></div>
+      <div
+        ref={ref}
+        style={{ width: "inherit", height: "auto", bottom: "20" }}></div>
     </>
   );
 }
@@ -905,7 +931,7 @@ const InnerBg = styled.div`
   margin-top: -34px;
   margin-left: 230px;
   border-radius: 4px;
-  background-color: #0000005e;
+  background-color: #000000;
   position: relative;
 
   span {

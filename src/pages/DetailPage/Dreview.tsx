@@ -33,8 +33,7 @@ function Dreview() {
                 campId: `${state.campId}`,
               },
             })
-          }
-        >
+          }>
           <img src="/images/mypage/reviewwrite.svg" />
         </ReviewIcon>
       </ReviewBox>

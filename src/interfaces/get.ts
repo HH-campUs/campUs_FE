@@ -2,6 +2,11 @@ export interface IGetCampCatInfo {
   keyword: string;
 }
 
+export interface IGetTravelPlan {
+  campId: number;
+  tripId: number;
+}
+
 export interface IGetCampReview {
   campId: number;
   reviewImg: string;
@@ -159,7 +164,7 @@ export interface campArray extends IGetCampResult {
   total: number;
   topicCamp: IGetCampResult[];
   campTopic: IGetCampResult[];
-  regionCamp: IGetCampResult[];
+  searchSort?: IGetCampResult[];
   detailCamp?: IGetCampResult[];
   camp: IGetCampResult[];
   nextPage?: number;

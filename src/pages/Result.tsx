@@ -11,9 +11,12 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useGetCamp, useGetWeather, useSearchCamp } from "../APIs/getApi";
 import { IGetCampResult } from "../interfaces/get";
+import { InfoToast, NoIdPickToast, NavToast } from "../components/Toast/Toast";
 
 function Result() {
   const nav = useNavigate();
+  /* toast boolean */
+  const [toastState, setToastState] = useState(false);
 
   /* data */
   const [isActive, setIsActive] = useState(false);
@@ -62,6 +65,13 @@ function Result() {
 
   return (
     <Wrapper>
+      {toastState == true ? (
+        <InfoToast
+          text={"검색조건이 부족해요."}
+          toastState={toastState}
+          setToastState={setToastState}
+        />
+      ) : null}
       {isSearch == false ? undefined : <Search />}
 
       <ReSearch>

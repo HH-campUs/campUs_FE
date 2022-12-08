@@ -22,8 +22,10 @@ export const InfoToast = ({ text, toastState, setToastState }: ToastProps) => {
   );
 };
 
-export const NavPickToast = ({
+/* 바로가기 토스트 */
+export const NavToast = ({
   text,
+  url,
   toastState,
   setToastState,
 }: ToastProps) => {
@@ -38,18 +40,19 @@ export const NavPickToast = ({
     };
   }, []);
   return (
-    <NavToast toastState={toastState}>
-      <p>찜목록에 추가했어요.</p>
+    <NaviToast toastState={toastState}>
+      <p>{text}</p>
       <img
         src="/images/whiteBack.svg"
         alt="nav"
-        onClick={() => nav(`/mypage/mypick`)}
+        onClick={() => nav(`${url}`)}
       />
-    </NavToast>
+    </NaviToast>
   );
 };
 
-export const NavPlanToast = ({
+/* 여행일정 */
+/* export const NavPlanToast = ({
   text,
   toastState,
   setToastState,
@@ -65,16 +68,16 @@ export const NavPlanToast = ({
     };
   }, []);
   return (
-    <NavToast toastState={toastState}>
+    <NaviToast toastState={toastState}>
       <p>여행일정 등록을 완료했어요.</p>
       <img
         src="/images/whiteBack.svg"
         alt="nav"
         onClick={() => nav(`/mypage/myplan`)}
       />
-    </NavToast>
+    </NaviToast>
   );
-};
+}; */
 
 export const NoIdPickToast = ({
   text,
@@ -170,7 +173,7 @@ const CenterAlert = styled(ToastAlert)`
   }
 `;
 
-const NavToast = styled(ToastAlert)`
+const NaviToast = styled(ToastAlert)`
   padding: 20px;
   justify-content: space-between !important;
 

@@ -1,43 +1,57 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { useRecoilState } from "recoil";
 
 import Search from "../components/withSearch/Search";
 import { isModal } from "../store/searchAtom";
-import { Link, useNavigate, Outlet, useMatch } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Datepicker from "../components/withSearch/Datepicker";
-import { BiChevronDown } from "react-icons/bi";
-import Bg from "../static/testpic.jpg";
 
-//bookmark icon
-import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
+import { useGetTopicInfinite } from "../APIs/getApi";
+import { useInView } from "react-intersection-observer";
+
+//css
+import { useLocation } from "react-router-dom";
+import { BiChevronDown } from "react-icons/bi";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+
+import { IGetCampResult } from "../interfaces/get";
+import TopicBookmark from "../components/TopicBookmark";
+import { idState } from "../store/loginAtom";
 
 function Topic() {
-  const nav = useNavigate();
-  const [isActive, setIsActive] = useState(false);
-  const [isWeather, setIsWeather] = useState(false);
+  const toZero = () => {
+    window.scrollTo({ left: 0, top: 0, behavior: "smooth" });
+  };
+  const navigate = useNavigate();
   const [isSearch, setIsSearch] = useRecoilState(isModal);
-  const [topic, isTopic] = useState(false);
+  const { topicId } = useParams();
+  // const userId = useRecoilValue(idState);
+  // console.log(userId);
 
-  const ModalHandler = () => {
-    setIsActive(!isActive);
-  };
+  const loca = useLocation();
+  const state = loca.state as { topicImg: string; id: number };
+  const bg = state.topicImg;
+  console.log(bg);
 
-  const WeatherHandler = () => {
-    setIsWeather(!isWeather);
-  };
+  //infiniteScroll
+  const { campTopic, fetchNextPage, isSuccess, hasNextPage, refetch } =
+    useGetTopicInfinite(topicId!);
 
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    /* const { selectInput, selectDate, selectLocation } = event.target;
-  setInputValue({event.target.value|); */
-  };
+  const [ref, isView] = useInView();
+
+  useEffect(() => {
+    if (isView && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [isView]);
 
   return (
     <>
       {isSearch == false ? null : <Search />}
 
-      <TopContainer>
-        <BackBtn onClick={() => nav(`/`)}>
+      <TopContainer bg={bg}>
+        <BackBtn onClick={() => navigate(`/`)}>
           <img src="/images/back.svg" alt="back" />
         </BackBtn>
       </TopContainer>
@@ -45,26 +59,59 @@ function Topic() {
       <ResultContainer>
         <ResultTop>
           <div>
-            <span className="result"> 검색결과 </span>
-            <span className="total"> (000개)</span>
+            <span className="result"> 전체 </span>
+            <span className="total"> (개)</span>
           </div>
-          <div>
-            <span className="popular">
-              인기순{" "}
-              <BiChevronDown size="30" style={{ display: "inlineBox" }} />
-            </span>
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <span className="popular">인기순</span>
+            <img src="/images/topic/openclose.svg" alt="downArrow" />
           </div>
         </ResultTop>
-        {DummyData.map((item, i) => (
-          <ResultBox key={i}>
-            <ResultItem onClick={() => nav(`/detail`)}>
-              <ResultImg src={item.ImgUrl} alt={item.name} />
-              <ResultSpan>리뷰({item.reviewNum})</ResultSpan>
-            </ResultItem>
-            <ResultDetail>{item.location}</ResultDetail>
-            <ResultDetail2>{item.address}</ResultDetail2>
-          </ResultBox>
-        ))}
+        {/*
+         */}
+        <CampMap>
+          {isSuccess && campTopic?.pages ? (
+            campTopic?.pages.map((page) => (
+              <React.Fragment key={page.currentPage}>
+                {page?.campTopic.map((item: IGetCampResult) => (
+                  <ResultBox key={item.campId}>
+                    <TopicBookmark Camp={item} />
+                    <ResultItem
+                      onClick={() =>
+                        navigate(`/detail/${item.campId}`, {
+                          state: {
+                            campId: `${item.campId}`,
+                          },
+                        })
+                      }>
+                      <CampImg>
+                        <img src={item.ImageUrl} alt={item.campName} />
+                        <ReviewInfo>
+                          <div>
+                            찜({item.pickCount}) 리뷰({item.reviewCount})
+                          </div>
+                        </ReviewInfo>
+                      </CampImg>
+                      <CampName title={item.campName}>{item.campName}</CampName>
+                      <AddressName title={item.address}>
+                        {item.address}
+                      </AddressName>
+
+                      <Induty>{item.induty}</Induty>
+                    </ResultItem>
+                  </ResultBox>
+                ))}
+              </React.Fragment>
+            ))
+          ) : (
+            <div>데이터가 없습니다.</div>
+          )}
+        </CampMap>
+        <div ref={ref} style={{ width: "inherit", height: "auto" }}></div>
+
+        <FloatingBtn onClick={toZero}>
+          <UpArrow src="/images/uparrow.svg" />
+        </FloatingBtn>
       </ResultContainer>
     </>
   );
@@ -72,91 +119,13 @@ function Topic() {
 
 export default Topic;
 
-/* dummy data */
-
-interface Dummy {
-  ImgUrl?: string;
-  reviewNum: number;
-  name: string;
-  location: string;
-  address: string;
-}
-
-const DummyData: Array<Dummy> = [
-  {
-    ImgUrl: "https://img.sbs.co.kr/newimg/news/20170117/201015461_1280.jpg",
-    reviewNum: 50,
-    name: "모여봐요 동물의 숲",
-    location: "닌텐도 뀨뀨",
-    address: "대한민국 어딘가 ~",
-  },
-  {
-    ImgUrl:
-      "http://economychosun.com/query/upload/344/20200419231455_gltgzjsu.jpg",
-    reviewNum: 240,
-    name: "강원도로 갈까유",
-    location: "닌텐도 어딘가에 있겠지 임마",
-    address: "대한민국 어딘가 ~",
-  },
-  {
-    ImgUrl:
-      "https://image-cdn.hypb.st/https%3A%2F%2Fkr.hypebeast.com%2Ffiles%2F2022%2F04%2Fmakoto-shinkai-new-anime-movie-suzume-no-tojimari-first-video-visual-teaser-ft.jpg?w=960&cbr=1&q=90&fit=max",
-    reviewNum: 53,
-    name: "모이자",
-    location: "닌텐도 어딘가에 있겠지 임마",
-    address: "대한민국 어딘가 ~",
-  },
-  {
-    ImgUrl:
-      "http://newsimg.hankookilbo.com/2019/10/30/201910301882016576_6.jpg",
-    reviewNum: 342,
-    name: "모홍홍 숲",
-    location: "닌텐도 어딘가에 있겠지 임마",
-    address: "대한민국 어딘가 ~",
-  },
-  {
-    ImgUrl: "https://pbs.twimg.com/media/EbXmXe2VAAUKd_B.jpg",
-    reviewNum: 231,
-    name: "롤하고 싶당",
-    location: "닌텐도 어딘가에 있겠지 임마",
-    address: "대한민국 어딘가 ~",
-  },
-  {
-    ImgUrl:
-      "https://image-cdn.hypb.st/https%3A%2F%2Fkr.hypebeast.com%2Ffiles%2F2021%2F08%2Fblackpink-animal-crossing-new-horrizsons-island-info-2.jpg?q=75&w=800&cbr=1&fit=max",
-    reviewNum: 30,
-    name: "동물의 숲",
-    location: "닌텐도 어딘가에 있겠지 임마",
-    address: "대한민국 어딘가 ~",
-  },
-  {
-    ImgUrl:
-      "https://m.nongmin.com/upload/bbs/202207/20220712165858408/20220712165858408.jpg",
-    reviewNum: 42,
-    name: "모 숲",
-    location: "닌텐도 어딘가에 있겠지 임마",
-    address: "대한민국 어딘가 ~",
-  },
-  {
-    ImgUrl:
-      "https://cdn.eyesmag.com/content/uploads/posts/2020/03/31/animal-crossing-new-horizons-instagram-fashion-09-9d86eeb1-c87b-414d-849d-45431d21561c.jpg",
-    reviewNum: 341,
-    name: "부잉",
-    location: "닌텐도 어딘가에 있겠지 임마",
-    address: "대한민국 어딘가 ~",
-  },
-];
-
-/* result */
-
-const TopContainer = styled.div`
-  width: auto;
-  max-width: ${(props) => props.theme.pixelToRem(475)};
-  height: ${(props) => props.theme.pixelToRem(300)};
-  margin: 0 auto;
+const TopContainer = styled.div<{ bg: string }>`
+  width: 100%;
+  height: ${(props) => props.theme.pixelToRem(266)};
+  margin: auto;
   border-bottom-left-radius: ${(props) => props.theme.pixelToRem(12)};
   border-bottom-right-radius: ${(props) => props.theme.pixelToRem(12)};
-  background-image: url(${Bg});
+  background-image: url(${(props) => props.bg});
   background-size: cover;
 `;
 
@@ -175,32 +144,23 @@ const BackBtn = styled.div`
   }
 `;
 
-const ResultContainer = styled.div`
-  margin: 0;
-  padding: 35px;
-  flex: 1 1 0%;
-`;
+const ResultContainer = styled.div``;
 
 const ResultTop = styled.div`
-  width: inherit;
-  margin-top: 40px;
-  padding: {
-    top: 10px;
-    left: 10px;
-    right: 10px;
-  }
+  width: ${(props) => props.theme.pixelToRem(335)};
+  height: ${(props) => props.theme.pixelToRem(22)};
+  margin-top: ${(props) => props.theme.pixelToRem(24)};
+  margin-left: ${(props) => props.theme.pixelToRem(20)};
   justify-content: space-between;
   display: flex;
 
   .result {
     font-family: Pretendard;
-    font-size: 20px;
-    font-weight: 600;
+    font-size: ${(props) => props.theme.pixelToRem(18)};
     font-stretch: normal;
     font-style: normal;
     line-height: normal;
     letter-spacing: normal;
-    text-align: left;
     color: #333;
   }
 
@@ -213,71 +173,109 @@ const ResultTop = styled.div`
     line-height: 1.29;
     letter-spacing: normal;
     text-align: left;
-    color: #797979;
+    color: #666;
   }
 
   .popular {
     font-family: Pretendard;
-    font-size: ${(props) => props.theme.pixelToRem(14)};
+    font-size: ${(props) => props.theme.pixelToRem(12)};
     font-weight: 500;
     font-stretch: normal;
     font-style: normal;
     line-height: 1.29;
     letter-spacing: normal;
-    text-align: right;
-    color: #797979;
-    display: inline-block;
+    color: #666;
+  }
+
+  img {
+    padding: 5px;
   }
 `;
 
+const CampMap = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+
+  /* width: 375px; */
+`;
+
 const ResultBox = styled.div`
-  width: ${(props) => props.theme.pixelToRem(180)};
-  height: auto;
-  margin: 30px 10px;
-  height: auto;
+  width: ${(props) => props.theme.pixelToRem(162)};
+  height: ${(props) => props.theme.pixelToRem(290)};
+  margin: 20px 12px;
+  align-items: center;
+  display: flex;
   flex-direction: column;
-  justify-content: space-between;
   position: relative;
-  display: inline-block;
-  align-items: top;
 `;
 
 const ResultItem = styled.div`
-  width: ${(props) => props.theme.pixelToRem(160)};
+  width: ${(props) => props.theme.pixelToRem(162)};
   height: ${(props) => props.theme.pixelToRem(139)};
   border-radius: 10px;
 `;
 
-const ResultImg = styled.img`
-  width: 100%;
-  height: 100%;
-  border-radius: 10px;
-  display: block;
-  object-fit: cover;
+const CampImg = styled.div`
+  img {
+    width: 100%;
+    height: ${(props) => props.theme.pixelToRem(196)};
+    border-radius: ${(props) => props.theme.pixelToRem(8)};
+    /* display: block; */
+    object-fit: cover;
+    object-fit: cover;
+  }
 `;
 
-const ResultSpan = styled.div`
-  transform: translate(50%, -200%);
-  color: white;
-  font-weight: bold;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.911);
+const CampName = styled.div`
+  margin: 10px 0 4px;
+  color: #222;
+  font-weight: 600;
   font-size: ${(props) => props.theme.pixelToRem(16)};
-  position: absoulte;
-  z-index: 2;
 `;
 
-const ResultDetail = styled.div`
-  height: 60px;
-  margin-top: 10px;
-  background-color: transparent;
-  font-size: 1rem;
-  color: black;
+const AddressName = styled.div`
+  margin-top: ${(props) => props.theme.pixelToRem(5)};
+  font-size: ${(props) => props.theme.pixelToRem(12)};
+  color: #666;
 `;
 
-const ResultDetail2 = styled.div`
-  height: 60px;
-  margin-top: -20px;
-  background-color: transparent;
-  font-size: 1rem;
-  color: black;
+const Induty = styled.div`
+  font-size: ${(props) => props.theme.pixelToRem(12)};
+  color: #666;
+  margin-top: 15px;
+  display: flex;
 `;
+
+const ReviewInfo = styled.div`
+  position: absolute;
+  width: ${(props) => props.theme.pixelToRem(97)};
+  height: ${(props) => props.theme.pixelToRem(24)};
+  padding: 5px 15px;
+  opacity: 0.5;
+  border-radius: ${(props) => props.theme.pixelToRem(4)};
+  background-color: #000;
+  right: ${(props) => props.theme.pixelToRem(8)};
+  top: ${(props) => props.theme.pixelToRem(164)};
+
+  div {
+    font-size: ${(props) => props.theme.pixelToRem(12)};
+    color: #fff;
+  }
+`;
+
+const FloatingBtn = styled.button`
+  position: fixed;
+  right: ${(props) => props.theme.pixelToRem(45)};
+  bottom: 100px;
+  width: 45px;
+  height: 45px;
+  border-radius: 45px;
+  background-color: white;
+  /* justify-content: center; */
+  /* align-items: center; */
+  cursor: pointer;
+  z-index: 10;
+  border: 1px solid #eee;
+`;
+
+const UpArrow = styled.img``;

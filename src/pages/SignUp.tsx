@@ -3,6 +3,9 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { ISignUpForm } from "../interfaces/inLogin";
 import { instance } from "../instance/instance";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { toastState } from "../store/toastAtom";
+import { InfoToast } from "../components/Toast/Toast";
 
 //css
 import styled from "styled-components";
@@ -11,13 +14,15 @@ import CheckIcon from "@mui/icons-material/Check";
 
 // #024873(회원가입), #5185A6(중복검사)
 export default function SignUp() {
+  const [toastState, setToastState] = useState(false);
+
   const navigate = useNavigate();
 
   const {
     register,
     handleSubmit,
     watch,
-    formState: { errors, isSubmitted },
+    formState: { errors },
   } = useForm<ISignUpForm>();
 
   const [mailCK, setMailCk] = useState(false);
@@ -36,23 +41,29 @@ export default function SignUp() {
       });
       console.log(data);
       if (response.status === 201) {
+        setToastState(true);
         window.alert(`${data?.email}님\n반갑습니다.`);
-        navigate("/login");
+        const timer = setTimeout(() => {
+          navigate("/login");
+        }, 1600);
+        return () => {
+          clearTimeout(timer);
+        };
       }
     } catch (error) {
       window.alert("가입에 실패했습니다.");
     }
   };
 
-  const btnEffect = () => {
-    if (mailCK === false) {
-      setMailCk((prev) => !prev);
-    }
-  };
+  // 1.정규식(errors.email?) 에러발생하면 중복검사 버튼 돌아감.
+  // 2. 이 함수는 useEffect로 mailCK가 트루가 되었을때 사용.
+  // 3.useEffect사용으로 구현.
 
-  // useEffect(() => {
-  //   setMailCk((prev) => !prev);
-  // }, [mailCK]);
+  useEffect(() => {
+    if (errors.email) {
+      setMailCk(false);
+    }
+  }, [errors.email]);
 
   const mailchecking = async () => {
     await instance
@@ -68,18 +79,25 @@ export default function SignUp() {
 
   return (
     <LoginWrap>
+      {toastState == true ? (
+        <InfoToast
+          text={`반갑습니다.`}
+          toastState={toastState}
+          setToastState={setToastState}
+        />
+      ) : null}
       <LoginTitle>
         <div>
           <KeyboardArrowLeftIcon
-            sx={{ fontSize: 40, marginLeft: "10px" }}
-            onClick={() => navigate("-1")}
+            sx={{ fontSize: 32 }}
+            onClick={() => navigate(-1)}
           />
         </div>
-
         <LoginText>회원가입</LoginText>
       </LoginTitle>
       <HeadText>campUs</HeadText>
       {/* Form Start */}
+      {/* 중복검사 통과 체크버튼? */}
       <LoginForm onSubmit={handleSubmit(handleValid)}>
         <EmailText>이메일</EmailText>
         <EmailInputBox>
@@ -92,15 +110,14 @@ export default function SignUp() {
                 value: /^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w+[.]?\w{2,3}/,
                 message: "올바른 이메일 형식을 입력해주세요.",
               },
-              validate: {},
             })}
           />
 
           {mailCK ? (
-            <button type="button">
+            <DubckBtn type="button">
               <CheckIcon />
-              <span>&nbsp;중복검사</span>
-            </button>
+              <span>&nbsp;확인</span>
+            </DubckBtn>
           ) : (
             <DubckBtn type="button" onClick={mailchecking}>
               중복검사
@@ -127,8 +144,7 @@ export default function SignUp() {
             pattern: {
               value:
                 /^(?=.*[A-Z].*[a-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$/,
-              message:
-                "영어, 대문자, 숫자, 특수기호(!@#$%&)가 포함된 8~20자리 입니다.",
+              message: "숫자, 영어, 대문자, 특수기호가 포함된 8-20자리 입니다",
             },
           })}
         />
@@ -148,9 +164,6 @@ export default function SignUp() {
         />
         <ErrorMessage>{errors.passwordcheck?.message}</ErrorMessage>
 
-        <TextBox>
-          <FindUserInfo></FindUserInfo>
-        </TextBox>
         <StBtn>회원가입</StBtn>
         {/* form end */}
       </LoginForm>
@@ -158,16 +171,32 @@ export default function SignUp() {
   );
 }
 
-const LoginWrap = styled.div``;
+const LoginWrap = styled.div`
+  width: ${(props) => props.theme.pixelToRem(375)};
+  height: 95vh;
+`;
 
 const LoginTitle = styled.div`
   display: flex;
   align-items: center;
+  margin-top: 44px;
+
+  div {
+    margin-left: 20px;
+    margin-right: 95px;
+  }
 `;
 
 const LoginText = styled.div`
-  justify-content: center;
-  padding-left: 170px;
+  font-size: ${(props) => props.theme.pixelToRem(18)};
+  color: #222;
+`;
+
+const HeadText = styled.div`
+  position: absolute;
+  font-size: ${(props) => props.theme.pixelToRem(22)};
+  margin-top: 18px;
+  margin-left: 24px;
 `;
 
 const LoginForm = styled.form`
@@ -175,41 +204,47 @@ const LoginForm = styled.form`
   display: flex;
   flex-direction: column;
   align-content: center;
-  gap: 20px;
-  margin-top: 95px;
-  margin-left: 52.5px;
+  /* gap: 20px; */
+  margin-top: 40px;
+
   span {
     color: var(--point-color);
   }
-  /* background-color: red; */
   /* align-items: center; */
 `;
 
-const HeadText = styled.div`
-  /* text-align: left; */
-  position: absolute;
-  font-size: 2rem;
-  margin-left: 42.5px;
-  /* background-color: aliceblue; */
-  margin-top: 20px;
+// #024873
+const EmailText = styled.div`
+  margin-top: 40px;
+  margin-left: 26px;
+  font-size: ${(props) => props.theme.pixelToRem(14)};
+  font-weight: 500;
+  color: #909090;
 `;
 
-const EmailText = styled.div``;
-
-const PasswordText = styled.div``;
+const PasswordText = styled.div`
+  margin-top: 30px;
+  margin-left: 26px;
+  font-size: ${(props) => props.theme.pixelToRem(14)};
+  font-weight: 500;
+  color: #909090;
+`;
 
 const EmailInputBox = styled.div`
+  margin-top: 9px;
   display: flex;
 `;
 
 const StInputMail = styled.input<{ unValid: boolean }>`
-  width: 285px;
-  height: 60px;
-  font-size: 16px;
+  width: ${(props) => props.theme.pixelToRem(232)};
+  height: ${(props) => props.theme.pixelToRem(54)};
+  margin-left: 24px;
+  font-size: ${(props) => props.theme.pixelToRem(16)};
   border: 1px solid ${(props) => (props.unValid ? "red" : "grey")};
   border-radius: 8px;
   transition: all 0.5s linear;
-  margin-top: 5px;
+  color: #222;
+
   padding: 10px;
   &:focus {
     border: 1px solid #5185a6;
@@ -217,73 +252,49 @@ const StInputMail = styled.input<{ unValid: boolean }>`
 `;
 
 const DubckBtn = styled.button`
-  width: 75px;
-  height: 60px;
-  margin-top: 5px;
-  font-size: 13px;
-  margin-left: 10px;
-  border-radius: 10px;
+  width: ${(props) => props.theme.pixelToRem(85)};
+  height: ${(props) => props.theme.pixelToRem(54)};
+  font-size: ${(props) => props.theme.pixelToRem(14)};
+  margin-left: ${(props) => props.theme.pixelToRem(10)};
+  border-radius: ${(props) => props.theme.pixelToRem(10)};
   background-color: #5185a6;
   border: 1px solid #5185a6;
-  color: whitesmoke;
+  color: #fff;
 `;
 
 const StInput = styled.input<{ unValid: boolean }>`
-  width: 370px;
-  height: 60px;
-  font-size: 16px;
+  width: ${(props) => props.theme.pixelToRem(327)};
+  height: ${(props) => props.theme.pixelToRem(54)};
+  font-size: ${(props) => props.theme.pixelToRem(16)};
+  margin-left: ${(props) => props.theme.pixelToRem(24)};
+  margin-top: 9px;
   border: 1px solid ${(props) => (props.unValid ? "red" : "grey")};
   border-radius: 8px;
   transition: all 0.5s linear;
   padding: 10px;
+  color: #222;
   &:focus {
     border: 1px solid #5185a6;
   }
 `;
 
-const TextBox = styled.div`
-  display: flex;
-  font-size: 13px;
-  position: absolute;
-
-  margin-top: 155px;
-  margin-left: 230px;
-
-  span {
-    cursor: pointer;
-  }
-`;
-
-const FindUserInfo = styled.p`
-  color: ${(props) => props.theme.textColor};
-`;
-
 const StBtn = styled.button`
-  width: 370px;
-  height: 61px;
-  font-size: 16px;
-  border: 0.5px none grey;
-  margin-top: 50px;
-  border-radius: 8px;
+  width: ${(props) => props.theme.pixelToRem(327)};
+  height: ${(props) => props.theme.pixelToRem(60)};
+  font-size: ${(props) => props.theme.pixelToRem(18)};
+  margin-left: 24px;
+  margin-top: 32px;
+  border: 1px solid #adc2ce;
+  border-radius: ${(props) => props.theme.pixelToRem(10)};
+  background-color: #adc2ce;
   padding: 10px;
-  color: ${(props) => props.theme.textColor};
+  color: #fff;
   cursor: pointer;
 `;
 
-const ErrorMail = styled.p`
-  margin-top: -10px;
-  font-size: 0.85rem;
-  color: red;
-`;
-
 const ErrorMessage = styled.p`
-  margin-top: -10px;
-  font-size: 0.85rem;
-  color: red;
-`;
-
-const ErrorPassword = styled.p`
-  margin-top: -10px;
+  margin-top: 5px;
+  margin-left: 24px;
   font-size: 0.85rem;
   color: red;
 `;

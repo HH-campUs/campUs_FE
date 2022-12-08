@@ -2,30 +2,14 @@ import registDragEvent from "../utils/registDragEvent";
 import { useState } from "react";
 import useCarouselSize from "./useCarouselSizeHook";
 import styled from "styled-components";
-import Bookmark from "@mui/icons-material/Bookmark";
-import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
-import { ImgBox } from "../components/MytravelPlan";
-import { Navigate, useNavigate } from "react-router-dom";
 
-const imageList = [
-  "https://blog.kakaocdn.net/dn/dpxiAT/btqUBv6Fvpn/E8xUMncq7AVuDeOim0LrMk/img.jpg",
-  "https://blog.kakaocdn.net/dn/BGT7X/btqUzvTqi5h/flp39GdJH0GU6mo7cTbbhk/img.jpg",
-  "https://blog.kakaocdn.net/dn/bWnmfv/btqUBwqZvwA/3CiXGt3SR0TXoOveRJxV91/img.jpg",
-  "https://blog.kakaocdn.net/dn/XsLCO/btqUL8PQLwp/NZWCU2jAYKkKSXwcohBKTK/img.jpg",
-  "https://blog.kakaocdn.net/dn/bG3iVL/btqUvCZPaRL/ofIjkNWJP1mj2bOG9fie51/img.jpg",
-];
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 
 export default function CarouselSub() {
   const navigate = useNavigate();
   const [hide, setHide] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [transX, setTransX] = useState(0);
-  const [bookmarking, setBookMarking] = useState(false);
-
-  // const picking = () => {
-  //   setBookMarking((prev) => !prev);
-  //   console.log("asdfads");
-  // };
 
   const { ref, width, height } = useCarouselSize();
 
@@ -35,10 +19,38 @@ export default function CarouselSub() {
     return v;
   };
 
-  // /camps/:topicId?
-  //첫번째 인자- 동적변경되는부분
-  const handleClick = (id: string) => () => {
-    navigate(`/camps/${id}`);
+  // const { id } = useParams();
+
+  const imageList = [
+    {
+      text: "일몰명소",
+      img: "/images/subject/image6.jpg",
+      id: 1,
+    },
+    {
+      text: "애견동반",
+      img: "/images/subject/image4.jpg",
+      id: 2,
+    },
+    {
+      text: "장비대여",
+      img: "/images/subject/image2.jpg",
+      id: 3,
+    },
+    {
+      text: "겨울낚시",
+      img: "/images/subject/image1.jpg",
+      id: 4,
+    },
+  ];
+
+  const handleClick = (id: number) => () => {
+    navigate(`/topic/${id}`, {
+      state: {
+        topicImg: `${imageList[id - 1].img}`,
+        id: `${imageList[id - 1].id}`,
+      },
+    });
   };
 
   return (
@@ -49,8 +61,7 @@ export default function CarouselSub() {
         style={{
           height,
           overflow: hide ? "hidden" : "visible",
-        }}
-      >
+        }}>
         <CarouselSlider
           className="flex"
           style={{
@@ -71,12 +82,12 @@ export default function CarouselSub() {
 
               setTransX(0);
             },
-          })}
-        >
+          })}>
           <CaroImgBox>
             <BoxEx>
               <New>NEW</New>
               <CaroText>일몰 명소</CaroText>
+              <ImgCover onClick={handleClick(1)} />
               <CarouselImg
                 src={"/images/subject/image6.jpg"}
                 alt="img"
@@ -86,7 +97,8 @@ export default function CarouselSub() {
             </BoxEx>
 
             <BoxEx>
-              <CaroText>애견 동반</CaroText>
+              <CaroText>애견동반</CaroText>
+              <ImgCover onClick={handleClick(2)} />
               <CarouselImg
                 draggable={false}
                 src={"/images/subject/image4.jpg"}
@@ -96,7 +108,8 @@ export default function CarouselSub() {
             </BoxEx>
 
             <BoxEx>
-              <CaroText>장비 대여</CaroText>
+              <CaroText>장비대여</CaroText>
+              <ImgCover onClick={handleClick(3)} />
               <CarouselImg
                 draggable={false}
                 src={"/images/subject/image2.jpg"}
@@ -106,6 +119,7 @@ export default function CarouselSub() {
             </BoxEx>
             <BoxEx>
               <CaroText>겨울 낚시</CaroText>
+              <ImgCover onClick={handleClick(4)} />
               <CarouselImg
                 draggable={false}
                 src={"/images/subject/image1.jpg"}
@@ -120,80 +134,65 @@ export default function CarouselSub() {
   );
 }
 
-//carousel 한칸씩 되게는 할수가 없나?
-
 const CarouselViewer = styled.div`
-  width: 475px;
-  height: 200px !important;
+  width: ${(props) => props.theme.pixelToRem(475)};
+  height: ${(props) => props.theme.pixelToRem(210)} !important;
   overflow: hidden;
   user-select: none;
-  margin-top: 15px;
+  margin-top: 18px; ;
 `;
 
 const CarouselSlider = styled.div`
   display: flex;
-  position: relative;
 `;
-
-// const CarouselSlide = styled.div`
-//   flex-shrink: 0;
-//   display: block;
-//   position: relative;
-// `;
 
 const CaroImgBox = styled.div`
   display: flex;
-  gap: 1.2rem;
-  /* filter: blur(0.5px); */
+`;
+
+const ImgCover = styled.div`
+  width: ${(props) => props.theme.pixelToRem(140)};
+  height: ${(props) => props.theme.pixelToRem(202)};
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: ${(props) => props.theme.pixelToRem(10)};
+  z-index: 1;
+  position: absolute;
 `;
 
 const CarouselImg = styled.img`
-  width: 160px;
-  height: 200px;
-  margin: auto;
-  /* border: 1px solid red; */
-  border-radius: 1rem;
+  width: ${(props) => props.theme.pixelToRem(140)};
+  height: ${(props) => props.theme.pixelToRem(202)};
+  border-radius: ${(props) => props.theme.pixelToRem(10)};
   object-fit: cover;
-  margin: auto;
   transition: all 0.3s ease;
   flex: none;
 `;
 
 const BoxEx = styled.div`
   position: relative;
-  width: 160px;
-  /* background-color: red; */
+  width: ${(props) => props.theme.pixelToRem(156)};
 `;
 
 const New = styled.div`
-  font-size: 1rem;
+  width: ${(props) => props.theme.pixelToRem(40)};
+  height: ${(props) => props.theme.pixelToRem(16)};
+  font-size: 0.8rem;
+  padding-left: 6px;
+  padding-top: 2px;
   position: absolute;
   color: black;
-  padding: 3px;
-  border-radius: 13px;
-  border: 1px solid whitesmoke;
-  background-color: whitesmoke;
+  border-radius: ${(props) => props.theme.pixelToRem(14)};
+  background-color: #fff;
   margin: 10px;
+  z-index: 2;
 `;
 
 const CaroText = styled.div`
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: 10px;
+  right: 40%;
+  bottom: ${(props) => props.theme.pixelToRem(14)};
   position: absolute;
-  color: whitesmoke;
-  font-weight: 400;
-  font-size: 1rem;
-  /* justify-content: center;
-  align-items: center;
-  text-align: center; */
+  color: #fff;
+  font-weight: 500;
+  font-size: ${(props) => props.theme.pixelToRem(14)};
+  z-index: 2;
 `;
-
-{
-  /* <CarouselImg
-            draggable={false}
-            src={"/images/subject/image5.jpg"}
-            alt="img"
-            width={width}
-          /> */
-}

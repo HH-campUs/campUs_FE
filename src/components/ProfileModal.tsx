@@ -4,13 +4,41 @@ import { isPop } from "../interfaces/Modal";
 import { IEditPfForm } from "../interfaces/MyPage";
 import { useMyPageApi } from "../APIs/myPageApi";
 import { useNavigate } from "react-router-dom";
+
+//Login
+import { idState, LoginState, userInfo } from "../store/loginAtom";
+import { removeAccessToken, removeRefreshToken } from "../instance/cookies";
+import { useRecoilState } from "recoil";
+
 //css
 import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 import styled, { keyframes } from "styled-components";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
+import { IEditProfile } from "../interfaces/MyPage";
+import { postInstance } from "../instance/instance";
 
 export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
+  //
+  const queryClient = useQueryClient();
+  const mutateFn = async (payload: IEditProfile) => {
+    console.log(payload);
+    const { data } = await postInstance.put("/users/myPage", {
+      profileImg: payload.profileImg,
+      nickname: payload.nickname,
+    });
+    return data;
+  };
+  const profileMutate = useMutation(mutateFn, {
+    onSuccess: () => queryClient.invalidateQueries(["mypageinfo"]),
+    onError: () => console.log("파일전송에 실패했습니다."),
+  });
+
+  const [toKen, setToken] = useRecoilState(LoginState);
+  const [useId, setUseId] = useRecoilState(idState);
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(userInfo);
   const navigate = useNavigate();
-  const checkPf = useMyPageApi.useGetMyPage().data?.data[0];
+
   const {
     register,
     handleSubmit,
@@ -28,13 +56,12 @@ export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
       setImagePreview(URL.createObjectURL(file));
     }
   }, [image]);
-  // 유사배열확인
-  const profileEdit = useMyPageApi.useEditProfile();
 
   const handleValid = (data: IEditPfForm) => {
     const body = { nickname: data.nickname, profileImg: data.profileImg[0] };
-    profileEdit.mutate(body);
+    profileMutate.mutate(body);
     console.log(data);
+    closeModal();
   };
 
   // window.location.replace("/mypage");
@@ -42,12 +69,17 @@ export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
     setIsPopUp((prev) => !prev);
   };
 
-  const kmodalPop = () => {
-    setIsPopUp((prev) => !prev);
+  const closeModal = () => {
+    setIsPopUp(false);
   };
 
-  const gmodalPop = () => {
-    setIsPopUp((prev) => !prev);
+  const logOut = () => {
+    removeAccessToken();
+    removeRefreshToken();
+    setToken(null);
+    setUseId(null);
+    setIsLoggedIn(false);
+    navigate("/");
   };
 
   return (
@@ -59,10 +91,15 @@ export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
       {isPopUp && (
         <Container>
           <ModalBg onClick={modalPop} />
+
           <PfModalWrap className="isPopUp">
+            <HeadText>
+              <PfText>프로필 수정</PfText>
+              <CloseBtn src="/images/closeBtn.svg" onClick={closeModal} />
+            </HeadText>
+
             <NickForm onSubmit={handleSubmit(handleValid)}>
               <PfBox>
-                <PfText>기본 프로필 편집</PfText>
                 <PfCircle>
                   {imagePreview && (
                     <ImgPreview
@@ -74,8 +111,8 @@ export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
                     src="/images/kakaopf.jpeg"
                     alt="PFP"
                     style={{
-                      height: "75px",
-                      borderRadius: "125px",
+                      height: "90px",
+                      borderRadius: "90px",
                       objectFit: "contain",
                     }}
                   />
@@ -90,16 +127,15 @@ export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
                       />
                       <PhotoCameraIcon
                         sx={{
-                          marginLeft: "4px",
-                          marginTop: "3px",
-                          position: "absolute",
+                          marginLeft: "1px",
+                          marginTop: "3.5px",
                         }}
                       />
                     </label>
                   </CameraCircle>
                 </PfCircle>
               </PfBox>
-
+              <InputHead>닉네임</InputHead>
               <NickInput
                 placeholder="닉네임"
                 {...register("nickname", {
@@ -111,7 +147,9 @@ export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
                 })}
               />
               <ErrorNick>{errors.nickname?.message}</ErrorNick>
+              <NickBtn>수정완료</NickBtn>
             </NickForm>
+            <LogoutBtn onClick={logOut}>로그아웃</LogoutBtn>
           </PfModalWrap>
         </Container>
       )}
@@ -128,27 +166,24 @@ const ModalBg = styled.div`
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(6px);
+  /* backdrop-filter: blur(1px); */
   animation-name: ${fadeIn};
   animation-duration: 0.2s;
 `;
 
-const PfModalWrap = styled.div`
-  margin: 10px auto;
-  height: 35px;
-  width: 50px;
-  border-radius: 13px;
-  border: 1px solid grey;
-  justify-content: center;
-  align-content: center;
+const PfModalWrap = styled.button`
+  border: 1px solid #bdbdbd;
+  background-color: white;
+  color: #474747;
   z-index: 1;
 
   &.setIsPopUp {
-    width: 65px;
-    height: 35px;
-    padding: 10px;
-    font-size: 1rem;
-    text-align: center;
+    width: ${(props) => props.theme.pixelToRem(53)};
+    height: ${(props) => props.theme.pixelToRem(30)};
+    border-radius: ${(props) => props.theme.pixelToRem(40)};
+    font-size: ${(props) => props.theme.pixelToRem(12)};
+    margin-left: 80px;
+    margin-top: 30px;
 
     span {
       margin-left: 10px;
@@ -157,21 +192,21 @@ const PfModalWrap = styled.div`
   }
 
   &.isPopUp {
-    height: 300px;
-    width: 300px;
+    width: ${(props) => props.theme.pixelToRem(335)};
+    height: ${(props) => props.theme.pixelToRem(375)};
+    border-radius: ${(props) => props.theme.pixelToRem(10)};
     left: 10;
-    bottom: 100;
+    bottom: 200;
     padding: 10px;
     position: fixed;
     z-index: 100;
     overflow: auto;
-    background-color: lightgray;
-
-    /* animation-duration: 0.7s; */
+    margin-top: 130px;
   }
 `;
 
 const Container = styled.div`
+  /* background-color: red; */
   width: 100%;
   height: 100%;
   z-index: 10;
@@ -186,55 +221,94 @@ const Container = styled.div`
   transition: all 0.5s ease-in-out;
 `;
 
+const HeadText = styled.div`
+  text-align: left;
+  font-size: ${(props) => props.theme.pixelToRem(20)};
+  margin-left: 20px;
+`;
 const PfBox = styled.div``;
 
 const PfText = styled.span`
   font-weight: 500;
-  font-size: 0.9rem;
+  font-size: ${(props) => props.theme.pixelToRem(20)};
+  color: #222;
+`;
+
+const CloseBtn = styled.img`
+  width: ${(props) => props.theme.pixelToRem(20)};
+  height: ${(props) => props.theme.pixelToRem(20)};
+  margin-left: 160px;
+  /* background-color: red; */
+  /* display: inline-block; */
 `;
 
 const PfCircle = styled.div`
-  width: 75px;
-  height: 75px;
-  border-radius: 75px;
-  margin: 10px auto;
+  width: ${(props) => props.theme.pixelToRem(90)};
+  height: ${(props) => props.theme.pixelToRem(90)};
+  border-radius: ${(props) => props.theme.pixelToRem(100)};
+  margin-top: 17px;
+  margin-left: 113px;
   position: relative;
 `;
 const ImgPreview = styled.img`
-  width: 75px;
-  height: 75px;
-  border-radius: 75px;
+  width: ${(props) => props.theme.pixelToRem(90)};
+  height: ${(props) => props.theme.pixelToRem(90)};
+  border-radius: ${(props) => props.theme.pixelToRem(100)};
   position: absolute;
 `;
 
 const CameraCircle = styled.div`
-  width: 30px;
-  height: 30px;
-  background-color: white;
-  border-radius: 30px;
-  position: absolute;
-  margin-top: -35px;
-  margin-left: 42px;
+  width: ${(props) => props.theme.pixelToRem(36)};
+  height: ${(props) => props.theme.pixelToRem(36)};
+  background-color: #fff;
+  border-radius: ${(props) => props.theme.pixelToRem(40)};
+  position: relative;
+  margin-top: -39px;
+  margin-left: 55px;
+  border: 1px solid #bdbdbd;
 `;
 
 const NickForm = styled.form`
-  justify-content: center;
-  align-items: center;
-  display: flex;
+  /* justify-content: center; */
+  /* align-items: center; */
+  /* display: flex; */
   flex-direction: column;
 `;
 
-const NickInput = styled.input`
-  margin-top: 15px;
-  background-color: transparent;
-  border: none;
-  border-bottom: 1px solid black;
-  color: #555;
-  box-sizing: border-box;
+const InputHead = styled.div`
+  text-align: left;
+  margin-left: 10px;
+  color: #909090;
+`;
 
-  &:focus {
-    border-bottom: 1px solid white;
-  }
+const NickInput = styled.input`
+  margin-top: 9px;
+  border-radius: ${(props) => props.theme.pixelToRem(10)};
+  border: 1px solid #bdbdbd;
+  width: ${(props) => props.theme.pixelToRem(295)};
+  height: ${(props) => props.theme.pixelToRem(54)};
+  /* box-sizing: border-box; */
+`;
+
+// #adc2e;
+const NickBtn = styled.button`
+  margin-top: 18px;
+  border-radius: 0.8rem;
+  border: 1px solid grey;
+  width: ${(props) => props.theme.pixelToRem(295)};
+  height: ${(props) => props.theme.pixelToRem(52)};
+  background-color: #024873;
+  color: whitesmoke;
+  cursor: pointer;
+`;
+
+const LogoutBtn = styled.div`
+  margin-top: 10px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  text-decoration: underline;
+  color: grey;
+  cursor: pointer;
 `;
 
 const ErrorNick = styled.div`

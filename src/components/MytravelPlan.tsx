@@ -1,22 +1,31 @@
-import React from "react";
-import styled from "styled-components";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { useRecoilValue } from "recoil";
 import { LoginState } from "../store/loginAtom";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { getCamperToken } from "../instance/cookies";
+import { useGetApi } from "../APIs/getApi";
+
+//css
+import styled from "styled-components";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
 
 export default function MytravelPlan() {
-  const isLogin = useRecoilValue(LoginState);
-  const navigate = useNavigate();
+  // const isLogin = useRecoilValue(LoginState);
+  /* const data = useGetApi.useGetTravelPlan(); */
 
+  const navigate = useNavigate();
+  const isLogin = getCamperToken();
   return (
     <Wrapper>
       <TextBox>
         <MyPlan>내 여행일정</MyPlan>
-        <AllList>전체보기</AllList>
+        <AllList
+          onClick={() => {
+            navigate("/mypage/myplan");
+          }}>
+          전체보기
+        </AllList>
       </TextBox>
 
-      {/* div는 최대 넓이를 가짐. */}
       {isLogin ? (
         <PlanBox>
           <ImgBox />
@@ -28,60 +37,33 @@ export default function MytravelPlan() {
               <Dday>D-16</Dday>
             </PlaceBox>
             <Location>
-              {/* component화. */}
-              <LocationOnIcon /> <span>강원도 어디?</span>
+              <LocationOnIcon />
+              <span>난임요한, 황제지ㅋㅋ</span>
               <img src="/images/Calendar.svg" alt="Calendar" />
-              <span>2022.12.28(달력)</span>
+              <p>2022.12.28</p>
             </Location>
           </PlaceName>
         </PlanBox>
       ) : (
         <>
           <CloseBox>
+            <Carlendar>
+              <img src="/images/travelplan/calendarplan.svg" alt="carlendar" />
+            </Carlendar>
             <CloseText>
               <p
                 onClick={() => {
                   navigate("/login");
                 }}
-                style={{ textDecoration: "underline", cursor: "pointer" }}
-              >
-                로그인
+                style={{ textDecoration: "underline", cursor: "pointer" }}>
+                로그인하고
               </p>
-              &nbsp;후 내 여행일정을 등록해 보세요
+              &nbsp;
+              <span>내 여행일정을 등록해 보세요</span>
             </CloseText>
           </CloseBox>
 
-          <HiddenBox>
-            <ImgBox />
-            <PlaceName>
-              <PlaceBox>
-                <Campname></Campname>
-                <Dday>D-16</Dday>
-              </PlaceBox>
-              <Location>
-                <LocationOnIcon />
-                <div
-                  style={{
-                    backgroundColor: "grey",
-                    width: "70px",
-                    color: "grey",
-                  }}
-                >
-                  skeleton
-                </div>
-                <img src="/images/Calendar.svg" alt="Calendar" />
-                <div
-                  style={{
-                    backgroundColor: "grey",
-                    width: "70px",
-                    color: "grey",
-                  }}
-                >
-                  skeleton
-                </div>
-              </Location>
-            </PlaceName>
-          </HiddenBox>
+          <HiddenBox></HiddenBox>
         </>
       )}
     </Wrapper>
@@ -89,100 +71,122 @@ export default function MytravelPlan() {
 }
 
 const Wrapper = styled.div`
-  margin-top: 40px;
+  /* background-color: red; */
+  margin-top: ${(props) => props.theme.pixelToRem(40)};
+  width: 100%;
   /* margin: 20px 10px 20px 10px; */
 `;
 
 const TextBox = styled.div`
-  margin-top: 15px;
-  margin-bottom: 20px;
+  margin-top: ${(props) => props.theme.pixelToRem(15)};
   display: flex;
   justify-content: space-between;
   align-items: center;
+  font-weight: 600;
 `;
 
 const MyPlan = styled.div`
-  font-weight: 500;
+  font-size: ${(props) => props.theme.pixelToRem(20)};
+  margin-left: ${(props) => props.theme.pixelToRem(20)};
 `;
 
 const AllList = styled.div`
-  font-size: 0.8rem;
+  font-size: ${(props) => props.theme.pixelToRem(14)};
+  margin-right: ${(props) => props.theme.pixelToRem(20)};
   color: grey;
 `;
 
 const PlanBox = styled.div`
-  width: 380px;
-  height: 120px;
-  border-radius: 15px;
-  box-shadow: 15px;
-  background-color: whitesmoke;
-  margin: 15px auto;
-  font-size: 13px;
+  width: 90%;
+  height: ${(props) => props.theme.pixelToRem(102)};
+  border-radius: ${(props) => props.theme.pixelToRem(10)};
+  background-color: #f5f5f5;
   display: flex;
+  margin-top: ${(props) => props.theme.pixelToRem(18)};
+  margin-left: ${(props) => props.theme.pixelToRem(20)};
 `;
 
 const CloseBox = styled.div`
-  width: 380px;
-  height: 120px;
-  border-radius: 15px;
-  box-shadow: 15px;
+  width: ${(props) => props.theme.pixelToRem(335)};
+  height: ${(props) => props.theme.pixelToRem(102)};
+  border-radius: ${(props) => props.theme.pixelToRem(10)};
   /* background-color: whitesmoke; */
-  background-color: rgba(150, 150, 150, 0.8);
-  margin-left: 48px;
+  background-color: #bab8b0;
+  margin-top: ${(props) => props.theme.pixelToRem(15)};
+  margin-left: ${(props) => props.theme.pixelToRem(20)};
   font-size: 13px;
   display: flex;
-  z-index: 1;
-  position: absolute;
+  z-index: 3;
+  position: relative;
+`;
+
+const Carlendar = styled.div`
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  margin-left: ${(props) => props.theme.pixelToRem(20)};
 `;
 
 const CloseText = styled.div`
   display: flex;
   justify-content: center;
-  margin: auto;
-  font-size: 1rem;
+  margin-left: ${(props) => props.theme.pixelToRem(15)};
   color: whitesmoke;
   font-weight: 550;
+  flex-direction: column;
+
+  p {
+    font-size: ${(props) => props.theme.pixelToRem(14)};
+    cursor: pointer;
+    color: #666;
+  }
+
+  span {
+    font-size: ${(props) => props.theme.pixelToRem(16)};
+  }
 `;
 
 const HiddenBox = styled.div`
-  width: 380px;
-  height: 120px;
-  border-radius: 15px;
-  box-shadow: 15px;
-  /* background-color: whitesmoke; */
-  background-color: rgba(100, 100, 100, 0.4);
+  width: ${(props) => props.theme.pixelToRem(335)};
+  height: ${(props) => props.theme.pixelToRem(102)};
+  border-radius: ${(props) => props.theme.pixelToRem(10)};
+
+  background-color: rgba(100, 100, 100, 0.1);
   margin: 15px auto;
-  font-size: 13px;
+  font-size: ${(props) => props.theme.pixelToRem(13)};
   display: flex;
-  position: relative;
 `;
 
 export const ImgBox = styled.div`
-  width: 80px;
-  height: 80px;
-  border-radius: 10px;
+  width: ${(props) => props.theme.pixelToRem(70)};
+  height: ${(props) => props.theme.pixelToRem(70)};
+  border-radius: ${(props) => props.theme.pixelToRem(10)};
   background-color: grey;
-  margin: 20px 10px;
+  margin-top: 16px;
+  margin-left: 16px;
 `;
 
 const PlaceName = styled.div`
-  margin: 20px 0px;
-  width: 260px;
-  height: 70px;
+  width: ${(props) => props.theme.pixelToRem(235)};
+  height: ${(props) => props.theme.pixelToRem(73)};
   justify-content: space-between;
+  padding-left: 14px;
 `;
 
 const PlaceBox = styled.div`
   display: flex;
-  height: 50px;
 `;
 
 const Campname = styled.div`
-  width: 180px;
-  margin-top: 5px;
-  margin-left: 10px;
-  font-size: 1rem;
+  width: ${(props) => props.theme.pixelToRem(145)};
+  margin-top: ${(props) => props.theme.pixelToRem(18)};
+  margin-left: ${(props) => props.theme.pixelToRem(5)};
+  font-size: ${(props) => props.theme.pixelToRem(16)};
 
+  line-height: 1.25;
+  letter-spacing: normal;
+  color: #222;
+  line-height: 1.25;
   islogin {
     background-color: grey;
   }
@@ -191,17 +195,33 @@ const Campname = styled.div`
 const Location = styled.div`
   display: flex;
   align-items: center;
-  padding-left: 15px;
+  font-size: ${(props) => props.theme.pixelToRem(12)};
+  margin-top: ${(props) => props.theme.pixelToRem(3)};
+  /* background-color: red; */
+
+  span {
+    width: ${(props) => props.theme.pixelToRem(105)};
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  img {
+    margin-left: ${(props) => props.theme.pixelToRem(5)};
+  }
+  /* margin-top: ${(props) => props.theme.pixelToRem(11)}; */
+  /* background-color: blue; */
 `;
 
 const Dday = styled.div`
-  width: 66px;
-  height: 26px;
-  margin-top: 5px;
-  margin-left: 30px;
+  width: ${(props) => props.theme.pixelToRem(66)};
+  height: ${(props) => props.theme.pixelToRem(26)};
+  margin-top: ${(props) => props.theme.pixelToRem(14)};
+  margin-right: ${(props) => props.theme.pixelToRem(9)};
+  font-size: ${(props) => props.theme.pixelToRem(14)};
   border-radius: 1rem;
   background-color: #5185a6;
-  color: whitesmoke;
+  color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;

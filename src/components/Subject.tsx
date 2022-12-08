@@ -14,5 +14,11 @@ export default function Subject() {
 
 const Wrapper = styled.div`
   margin-top: 40px;
-  font-weight: 500;
+  margin-left: 20px;
+
+  span {
+    font-size: ${(props) => props.theme.pixelToRem(20)};
+    font-weight: 600;
+    color: #333;
+  }
 `;

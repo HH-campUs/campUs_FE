@@ -1,7 +1,16 @@
 //url to image : string, image used as <img> ele : HTMLImageElement
 export interface IReviewPosts {
-  reviewImg?: File; //확인해야함,back은 url로받음.
+  reviewImg: FormData;
   reviewComment: string;
+  campId: number | string;
+  likeStatus: string;
+}
+
+export interface IReviewRead {
+  reviewImg: string[];
+  reviewComment: string;
+  Camp: object;
+  campName: string;
 }
 
 export interface IEditReviewPosts {
@@ -9,18 +18,22 @@ export interface IEditReviewPosts {
   reviewComment: string;
 }
 
-export interface IDeleteReviewPosts {
-  //id값 필요할텐데 명세서에 아무것도 없음.
-}
-
+export interface IDeleteReviewPosts {}
 
 export interface IPostTravelPlan {
-  userId: number;
   campId: number;
-  address: string;
   date: string;
+  memo: string;
 }
 
-export interface ICampingPicked {
+export interface IPickedCamp {
+  Camp: Object;
+  ImageUrl: string;
+  address: string;
   campId: number;
+  campName: string;
+  induty: string;
+  Pick: Object;
 }
+
+export type ICampingPicked = number;

@@ -4,7 +4,7 @@ import useCarouselSize from "./useCarouselSize";
 
 //css
 import styled from "styled-components";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
+import { useGetApi } from "../APIs/getApi";
 
 const imageList = [
   "https://images.unsplash.com/photo-1607908560428-36ff9e0363b7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8dGVudHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60",
@@ -14,25 +14,34 @@ const imageList = [
   "https://images.unsplash.com/photo-1578645510447-e20b4311e3ce?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTd8fHRlbnR8ZW58MHx8MHx8&auto=format&fit=crop&w=600&q=60",
 ];
 
-const imageList2 = [
-  "https://blog.kakaocdn.net/dn/dpxiAT/btqUBv6Fvpn/E8xUMncq7AVuDeOim0LrMk/img.jpg",
-  "https://blog.kakaocdn.net/dn/BGT7X/btqUzvTqi5h/flp39GdJH0GU6mo7cTbbhk/img.jpg",
-  "https://blog.kakaocdn.net/dn/bWnmfv/btqUBwqZvwA/3CiXGt3SR0TXoOveRJxV91/img.jpg",
-  "https://blog.kakaocdn.net/dn/XsLCO/btqUL8PQLwp/NZWCU2jAYKkKSXwcohBKTK/img.jpg",
-  "https://blog.kakaocdn.net/dn/bG3iVL/btqUvCZPaRL/ofIjkNWJP1mj2bOG9fie51/img.jpg",
-];
-
 export default function Carousel() {
   const [hide, setHide] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [transX, setTransX] = useState(0);
   const [bookmarking, setBookMarking] = useState(false);
 
-  const picking = () => {
-    setBookMarking((prev) => !prev);
-    console.log("asdfads");
-  };
+  // const picking = () => {
+  //   setBookMarking((prev) => !prev);
+  //   console.log("asdfads");
+  // };
 
+  // console.log(sortItem);
+  // {bookmarking ? (
+  //   <BookmarkBorderIcon onClick={picking}>
+  //     <img src="/images/picked2.svg" alt="Bookmarked" />
+  //   </BookmarkBorderIcon>
+  // ) : (
+  //   <Bookmark onClick={picking}>
+  //     <img src="/images/pick1.svg" alt="Bookmark" />
+  //   </Bookmark>
+  // )}
+
+  const campLook = useGetApi.useGetSort().data?.MostList[0].look;
+  // console.log("look", campLook);
+  const campReview = useGetApi.useGetSort().data?.MostList[1].review;
+  // console.log("campReview", campReview);
+  const campPick = useGetApi.useGetSort().data?.MostList[2].pick;
+  console.log("campPick", campPick);
   const { ref, width, height } = useCarouselSize();
 
   const inrange = (v: number, min: number, max: number) => {
@@ -49,8 +58,7 @@ export default function Carousel() {
         style={{
           height,
           overflow: hide ? "hidden" : "visible",
-        }}
-      >
+        }}>
         <CarouselSlider
           className="flex"
           style={{
@@ -71,50 +79,91 @@ export default function Carousel() {
 
               setTransX(0);
             },
-          })}
-        >
-          {imageList.map((url, i) => (
-            <CarouselSlide key={i} className="flex-shrink-0">
-              <Outline>
-                {bookmarking ? (
-                  <BookmarkBorderIcon onClick={picking}>
-                    <img src="/images/picked2.svg" alt="Bookmarked" />
-                  </BookmarkBorderIcon>
-                ) : (
-                  <Bookmark onClick={picking}>
-                    <img src="/images/pick1.svg" alt="Bookmark" />
-                  </Bookmark>
-                )}
-                <CarouselImg
-                  draggable={false}
-                  src={url}
-                  alt="img"
-                  width={width}
-                />
-                <ReviewNum>
-                  <NumText> 리뷰(99.9)</NumText>
-                </ReviewNum>
-                <CrTextBox>
-                  <CampName>캠핑장 이름자리</CampName>
-                  <CampLoca>
-                    <LocationOnIcon /> <p>경기 가평군 조종면</p>
-                  </CampLoca>
-                </CrTextBox>
-              </Outline>
-            </CarouselSlide>
-          ))}
+          })}>
+          {/* 맵사용가능여부 확인해서 맵사용해야함. */}
+          {/* 조회수나 리뷰 우선순위 겹치면 똑같은게나옴. */}
+          <CarouselSlide>
+            <Outline>
+              <CarouselImg
+                draggable={false}
+                src={campLook?.ImageUrl}
+                alt="img"
+                width={width}
+              />
+              <CrTextBox>
+                <CampName>{campLook?.campName}</CampName>
+              </CrTextBox>
+              <ReviewInfo>
+                <NumText>
+                  찜({campLook?.pickCount}) 리뷰({campLook?.reviewCount})
+                </NumText>
+              </ReviewInfo>
+            </Outline>
+            <Outline>
+              <CarouselImg
+                draggable={false}
+                src={campReview?.ImageUrl}
+                alt="img"
+                width={width}
+              />
+              <CrTextBox>
+                <CampName>{campReview?.campName}</CampName>
+              </CrTextBox>
+              <ReviewInfo>
+                <NumText>
+                  찜({campReview?.pickCount}) 리뷰({campReview?.reviewCount})
+                </NumText>
+              </ReviewInfo>
+            </Outline>
+            <Outline>
+              <CarouselImg
+                draggable={false}
+                src={campPick?.ImageUrl}
+                alt="img"
+                width={width}
+              />
+              <CrTextBox>
+                <CampName>{campPick?.campName}</CampName>
+              </CrTextBox>
+              <ReviewInfo>
+                <NumText>
+                  찜({campPick?.pickCount}) 리뷰({campPick?.reviewCount})
+                </NumText>
+              </ReviewInfo>
+            </Outline>
+          </CarouselSlide>
         </CarouselSlider>
       </CarouselViewer>
     </>
   );
 }
 
+// {imageList.map((url, i) => (
+//   <CarouselSlide key={i} className="flex-shrink-0">
+//     <Outline>
+//       <CarouselImg
+//         draggable={false}
+//         src={url}
+//         alt="img"
+//         width={width}
+//       />
+//       <CrTextBox>
+//         <CampName>캠핑장 이름자리</CampName>
+//       </CrTextBox>
+//       <ReviewInfo>
+//         <NumText>찜(32) 리뷰(790)</NumText>
+//       </ReviewInfo>
+//     </Outline>
+//   </CarouselSlide>
+// ))}
+
 const CarouselViewer = styled.div`
-  width: 475px;
-  height: 300px !important;
+  width: ${(props) => props.theme.pixelToRem(475)};
+  max-width: ${(props) => props.theme.pixelToRem(475)};
+  min-width: ${(props) => props.theme.pixelToRem(375)};
+  height: ${(props) => props.theme.pixelToRem(318)} !important;
   overflow: hidden;
   user-select: none;
-  /* background-color: aquamarine; */
 `;
 
 const CarouselSlider = styled.div`
@@ -122,77 +171,52 @@ const CarouselSlider = styled.div`
 `;
 
 const CarouselSlide = styled.div`
-  /* flex-shrink: 0;
-  display: block;
-  position: relative; */
+  display: flex;
 `;
 
 const Outline = styled.div`
-  width: 200px;
-  height: 255px;
+  /* display: flex; */
+  width: ${(props) => props.theme.pixelToRem(214)};
+  height: ${(props) => props.theme.pixelToRem(260)};
   position: relative;
-  border: 1px solid grey;
-  border-radius: 10px;
-  padding: 5px;
-  margin-top: 20px;
+  margin-top: ${(props) => props.theme.pixelToRem(18)};
+  margin-left: ${(props) => props.theme.pixelToRem(20)};
 `;
 
 const CarouselImg = styled.img`
-  width: 190px;
-  height: 180px;
-  /* padding-left: 10px; */
-  padding: auto;
-  border-radius: 15px;
+  width: 100%;
+  height: 100%;
+  border-radius: ${(props) => props.theme.pixelToRem(15)};
   object-fit: cover;
   transition: all 0.3s ease;
   flex: none;
-`;
-
-const Bookmark = styled.div`
-  position: absolute;
-  margin-left: 150px;
-  margin-top: 10px;
-`;
-const BookmarkBorderIcon = styled.div`
-  position: absolute;
-  margin-left: 150px;
-  margin-top: 10px;
-`;
-
-const ReviewNum = styled.div`
-  font-size: 1rem;
-  position: absolute;
-  background-color: rgba(100, 100, 100, 0.5);
-  padding: 6px;
-  border-radius: 0.4rem;
-  margin-left: 115px;
-  margin-top: -35px;
-`;
-
-const NumText = styled.div`
-  /* transform: translate(50%, -200%); */
-  color: white;
-
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.9);
-  font-size: 0.8rem;
-  position: absoulte;
-  z-index: 2;
+  filter: contrast(60%);
 `;
 
 const CrTextBox = styled.div`
-  margin-top: 5px;
   padding: 5px;
+  position: absolute;
+  /* background-color: red; */
+  top: 190px;
+  margin-left: 10px;
+  color: #ffffff;
 `;
 
 const CampName = styled.div`
-  font-size: 1rem;
   font-weight: 600;
+  font-size: 1.2rem;
 `;
 
-const CampLoca = styled.div`
-  margin-top: 5px;
-  display: flex;
-  align-items: center;
-  font-size: 0.75rem;
-  color: gray;
+const ReviewInfo = styled.div`
+  font-size: 1rem;
+  position: absolute;
+  border-radius: 0.4rem;
+  margin-top: -35px;
+  margin-left: 17px;
+`;
+
+const NumText = styled.div`
+  color: #ffffff;
+  font-size: 0.9rem;
+  position: absoulte;
 `;

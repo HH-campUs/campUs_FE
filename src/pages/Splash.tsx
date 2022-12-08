@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Lottie from "react-lottie";
 import lottie from "../style/lottie.json";
+import { FaAccusoft } from "react-icons/fa";
 
 function Splash() {
   const [isShow, setIsShow] = useState<boolean>(true);
@@ -17,6 +18,13 @@ function Splash() {
   };
 
   useEffect(() => {
+    const mustSplashPathName = ["/"];
+    if (mustSplashPathName.includes(window.location.pathname)) {
+      setIsShow(true);
+    } else {
+      setIsShow(false);
+    }
+
     setTimeout(() => {
       setIsShow(false);
     }, 3000);
@@ -29,7 +37,7 @@ function Splash() {
         <SplashBg>
           <SplashLogo>
             <Lottie options={defaultOptions} height={500} width={500} />
-            {/* <span>campUs</span> */}
+            <img src="/images/logo.svg" alt="logo" />
           </SplashLogo>
         </SplashBg>
       </RightTemplate>
@@ -41,7 +49,7 @@ function Splash() {
 export default Splash;
 
 const SplashBg = styled.div`
-  width: 100vw;
+  width: 100%;
   max-width: 475px;
   height: 100vh;
   padding: 0 auto;
@@ -52,6 +60,13 @@ const SplashLogo = styled.div`
   height: 290px;
   margin: 0 auto;
   display: flex;
+
+  img {
+    width: 10rem;
+    top: 50%;
+    left: 34%;
+    position: fixed;
+  }
 `;
 
 const Root = styled.div`
@@ -75,6 +90,12 @@ const Root = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
+  &::-webkit-scrollbar {
+    background: none;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: none;
+  }
 `;
 //left
 const LeftTemplate = styled.div`
@@ -92,7 +113,7 @@ const RightTemplate = styled.div`
   //background-color: teal;
   width: 475px;
   //height: 500px;
-  max-width: 475px;
+  min-width: 375px;
 
   @media screen and (min-width: 915px) {
     max-width: 475px;

@@ -11,23 +11,23 @@ import {
 
 const serverUrl = process.env.REACT_APP_API;
 
-export const postsApi = {
+export const usePostsApi = {
   //** 리뷰작성 / post **//
-  postReview: () => {
+  usePostReview: () => {
     return useMutation(async (payload: IReviewPosts) => {
+      const fd = payload.reviewImg;
+      fd.append("reviewComment", payload.reviewComment);
+      fd.append("likeStatus", payload.likeStatus);
       const { data } = await postInstance.post(
-        `${serverUrl}camps/:campId/review`,
-        {
-          reviewImg: payload.reviewImg,
-          reviewComment: payload.reviewComment,
-        }
+        `reviews/${payload.campId}/`,
+        fd
       );
       return data;
     });
   },
 
   // ** 리뷰수정 / put ** //
-  editReview: () => {
+  useEditReview: () => {
     return useMutation((payload: IEditReviewPosts) =>
       instance.put(`${serverUrl}/camps/:campId/:ewviewId`, {
         reviewImg: payload.reviewImg,
@@ -37,7 +37,7 @@ export const postsApi = {
   },
 
   //** 리뷰삭제 / delete ** //
-  deleteReview: () => {
+  useDeleteReview: () => {
     return useMutation(async (id: number) => {
       const { data } = await instance.delete(
         `${serverUrl}/camps/:campId/:reviewId`
@@ -47,21 +47,28 @@ export const postsApi = {
   },
 
   //** 여행일정등록 / post */
-  postTravelPlan: () => {
-    return useMutation((payload: IPostTravelPlan) =>
-      instance.post(`${serverUrl}/users/:campId`, {
-        userId: payload.userId,
-        campId: payload.campId,
-        address: payload.address,
+  usePostTravelPlan: () => {
+    return useMutation(async (payload: IPostTravelPlan) => {
+      console.log(payload);
+      const { data } = await instance.post(`/camps/${payload.campId}/`, {
         date: payload.date,
-      })
+        memo: payload.memo,
+      });
+      return data;
+    });
+  },
+
+  /* 여행일정삭제 / delete */
+  useDeleteTravelPlan: (tripId: number) => {
+    return useMutation((payload: IPostTravelPlan) =>
+      instance.delete(`/users/${tripId}`)
     );
   },
 
   // ** 캠핑장 찜하기 , payload값없이 header로 access/refresh토큰만보내면됨 / POST ** /
-  campingPicked: () => {
+  useCampingPicked: () => {
     return useMutation((payload: ICampingPicked) =>
-      instance.post(`${serverUrl}/camps/:campId/pick`)
+      instance.put(`/camps/${payload}/pick`)
     );
   },
 };

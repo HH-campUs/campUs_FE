@@ -1,141 +1,117 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { isModal } from "../store/searchAtom";
 import Search from "../components/withSearch/Search";
 import { Link, Outlet, useMatch, useNavigate } from "react-router-dom";
-
 import ProfileModal from "../components/ProfileModal";
 
 //Login
 import { LoginState } from "../store/loginAtom";
-import { removeAccessToken, removeRefreshToken } from "../instance/cookies";
 import { useMyPageApi } from "../APIs/myPageApi";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { getCamperToken } from "../instance/cookies";
 
 //css
 import styled from "styled-components";
-import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 
 function Mypage() {
-  const checkPf = useMyPageApi.useGetMyPage().data?.data[0];
-  const [toKen, setToken] = useRecoilState(LoginState);
+  const checkPf = useMyPageApi.useGetMyPage().data?.data;
   const [isSearch, setIsSearch] = useRecoilState(isModal);
 
   const [isPopUp, setIsPopUp] = useState(false);
-  const myReviewMatch = useMatch("/mypage/:id/myreview");
-  const myPickMatch = useMatch("/mypage/:id/mypick");
-  const myPlanMatch = useMatch("/mypage/:id/myplan");
+  const myReviewMatch = useMatch("/mypage/myreview");
+  const myPickMatch = useMatch("/mypage/mypick");
+  const myPlanMatch = useMatch("/mypage/myplan");
   const navigate = useNavigate();
 
-  const logOut = () => {
-    removeAccessToken();
-    removeRefreshToken();
-    setToken(null);
-    navigate("/");
-  };
-
-  useEffect(() => {
-    console.log(checkPf);
-  }, [checkPf]);
+  const isLogin = getCamperToken();
 
   return (
     <>
       {isSearch == false ? null : <Search />}
       <Wrapper>
-        {toKen ? (
-          <UserProfile>
-            <Profile>
-              <>
-                <ProfileCircle>
-                  <img
-                    src={checkPf?.profileImg}
-                    alt="PFP"
-                    height={"75px"}
-                    width={"75px"}
-                    style={{ borderRadius: "125px", objectFit: "cover" }}
-                  />
-                </ProfileCircle>
-                <ProfileText>
-                  <Welcome>반갑습니다 {checkPf?.nickname} 님!</Welcome>
-                  <Nickname></Nickname>
-                </ProfileText>
-                <ProfileArrow>
-                  <KeyboardArrowRightIcon
-                    sx={{ fontSize: 30, cursor: "pointer" }}
-                  />
-                </ProfileArrow>
-                <ProfileModal isPopUp={isPopUp} setIsPopUp={setIsPopUp} />
-                <LogoutBtn onClick={logOut}>로그아웃</LogoutBtn>
-              </>
+        {isLogin ? (
+          <>
+            <UserProfile>
+              <LoginProfile>
+                <HeadText>campUs</HeadText>
+                <ProfileBox>
+                  <ProfileCircle>
+                    <img src={checkPf?.profileImg} alt="PFP" />
+                  </ProfileCircle>
+                  <LoginPfText>
+                    <Nickname>{checkPf?.nickname} 님!</Nickname>
+                    <EmailAddress>{checkPf?.email}</EmailAddress>
+                  </LoginPfText>
+                  <ProfileModal isPopUp={isPopUp} setIsPopUp={setIsPopUp} />
+                </ProfileBox>
+                <Line></Line>
+              </LoginProfile>
 
-              {/* <Alarmbell> 
-              <NotificationsNoneIcon sx={{ marginLeft: "10px" }} />
-            </Alarmbell> */}
-            </Profile>
-
-            <Tabs>
-              <Tab isActive={Boolean(myPickMatch)}>
-                <Link to="/mypage/:id/mypick">찜한 캠핑장</Link>
-              </Tab>
-              <Tab isActive={Boolean(myPlanMatch)}>
-                <Link to="/mypage/:id/myplan">여행일정</Link>
-              </Tab>
-              <Tab isActive={Boolean(myReviewMatch)}>
-                <Link to="/mypage/:id/myreview">내 리뷰</Link>
-              </Tab>
-            </Tabs>
-            <div
-              style={{
-                marginTop: "-120px",
-              }}
-            >
-              <Outlet />
-            </div>
-          </UserProfile>
+              <Tabs>
+                <Tab isActive={Boolean(myPickMatch)}>
+                  <Link to="/mypage/mypick">찜한 캠핑장</Link>
+                </Tab>
+                <Tab isActive={Boolean(myPlanMatch)}>
+                  <Link to="/mypage/myplan">여행일정</Link>
+                </Tab>
+                <Tab isActive={Boolean(myReviewMatch)}>
+                  <Link to="/mypage/myreview">내 리뷰</Link>
+                </Tab>
+              </Tabs>
+              <div>
+                <Outlet />
+              </div>
+            </UserProfile>
+          </>
         ) : (
-          <UserProfile>
-            <Profile>
-              <ProfileText>
-                <Welcome style={{ margin: "20px", fontSize: "1.1rem" }}>
-                  로그인 하고 더 많은 <br></br>기능을 사용해 보세요!
-                </Welcome>
-              </ProfileText>
-            </Profile>
-            <LoginBox>
-              <LoginBtn
-                onClick={() => {
-                  navigate("/login");
-                }}
-              >
-                로그인
-              </LoginBtn>
-              <SignBtn
-                onClick={() => {
-                  navigate("/signup");
-                }}
-              >
-                회원가입
-              </SignBtn>
-            </LoginBox>
-            <Tabs style={{ marginTop: "200px" }}>
-              <Tab isActive={Boolean(myPickMatch)}>
-                <Link to="/mypage/:id/mypick">찜한 캠핑장</Link>
-              </Tab>
-              <Tab isActive={Boolean(myPlanMatch)}>
-                <Link to="/mypage/:id/myplan">여행일정</Link>
-              </Tab>
-              <Tab isActive={Boolean(myReviewMatch)}>
-                <Link to="/mypage/:id/myreview">내 리뷰</Link>
-              </Tab>
-            </Tabs>
-            <div
-              style={{
-                marginTop: "20px",
-              }}
-            >
-              <Outlet />
-            </div>
-          </UserProfile>
+          <>
+            <UserProfile>
+              <Profile>
+                <HeadText>campUs</HeadText>
+                <ProfileText>
+                  <Welcome>
+                    로그인 하고 더 많은 <br></br>기능을 사용해 보세요!
+                  </Welcome>
+                </ProfileText>
+                <LoginBox>
+                  <LoginBtn
+                    onClick={(e) => {
+                      e.preventDefault();
+                      navigate("/login");
+                    }}>
+                    로그인
+                  </LoginBtn>
+                  <SignBtn
+                    onClick={(e) => {
+                      e.preventDefault();
+                      navigate("/signup");
+                    }}>
+                    회원가입
+                  </SignBtn>
+                </LoginBox>
+              </Profile>
+
+              <Tabs>
+                <Tab isActive={Boolean(myPickMatch)}>
+                  <Link to="/mypage/mypick">찜한 캠핑장</Link>
+                </Tab>
+                <Tab isActive={Boolean(myPlanMatch)}>
+                  <Link to="/mypage/myplan">여행일정</Link>
+                </Tab>
+                <Tab isActive={Boolean(myReviewMatch)}>
+                  <Link to="/mypage/myreview">내 리뷰</Link>
+                </Tab>
+              </Tabs>
+              <div
+                style={{
+                  // height: "100vh",
+                  marginTop: "20px",
+                }}>
+                <Outlet />
+              </div>
+            </UserProfile>
+          </>
         )}
       </Wrapper>
     </>
@@ -145,161 +121,128 @@ function Mypage() {
 export default Mypage;
 
 const Wrapper = styled.div`
+  width: ${(props) => props.theme.pixelToRem(375)};
   display: flex;
   flex-direction: column;
-  height: 95vh;
+  height: 100vh;
+  /* background-color: red; */
+`;
+
+const HeadText = styled.div`
+  font-size: ${(props) => props.theme.pixelToRem(20)};
+  margin-top: 20px;
+  margin-left: 20px;
+  line-height: 1.5;
+  color: #222;
 `;
 
 const UserProfile = styled.div`
-  height: 200px;
   display: flex;
   flex-direction: column;
   position: relative;
-  background-color: lightgray;
 `;
 
 const Profile = styled.div`
-  width: 100%;
-  height: 70%;
-  position: absolute;
+  width: ${(props) => props.theme.pixelToRem(375)};
+  height: ${(props) => props.theme.pixelToRem(286)};
+  background-color: #f5f5f5;
+`;
+
+const LoginProfile = styled.div``;
+
+const ProfileBox = styled.div`
   display: flex;
-  align-items: center;
 `;
 
 const ProfileCircle = styled.div`
-  width: 75px;
-  height: 75px;
-  border-radius: 75px;
-  margin: 25px;
+  margin: 24px 14px 17px 20px;
+
+  img {
+    width: ${(props) => props.theme.pixelToRem(48)};
+    height: ${(props) => props.theme.pixelToRem(48)};
+    border-radius: ${(props) => props.theme.pixelToRem(48)};
+    object-fit: cover;
+  }
 `;
 
-const ProfileText = styled.div``;
-
-const Welcome = styled.div`
-  margin-top: 8px;
-  font-weight: 500;
-`;
+const LoginPfText = styled.div``;
 
 const Nickname = styled.div`
+  margin-top: 27px;
+  font-size: ${(props) => props.theme.pixelToRem(18)};
+  font-weight: 500;
+  color: #222;
+`;
+
+const EmailAddress = styled.div`
+  font-size: ${(props) => props.theme.pixelToRem(14)};
+  color: #666;
   margin-top: 5px;
 `;
 
-const ProfileArrow = styled.div`
-  align-items: center;
+const ProfileText = styled.div`
   display: flex;
 `;
 
-const LogoutBtn = styled.button`
-  border-radius: 8px;
-  font-size: 0.9rem;
+const Welcome = styled.div`
+  margin-top: 48px;
+  margin-left: 20px;
+  font-weight: 500;
+  font-size: ${(props) => props.theme.pixelToRem(18)};
+  line-height: 1.27;
+  color: #666;
 `;
-
-const Alarmbell = styled.div``;
 
 const LoginBox = styled.div`
   display: flex;
-  gap: 15px;
-  margin: 70px auto;
+  margin-top: 30px;
+  margin-left: 20px;
+  gap: ${(props) => props.theme.pixelToRem(11)};
 `;
 
 const LoginBtn = styled.button`
-  width: 180px;
-  height: 48px;
-  font-size: 1rem;
-  border: 0.5px none grey;
-  margin-top: 50px;
-  border-radius: 8px;
-  color: ${(props) => props.theme.textColor};
+  width: ${(props) => props.theme.pixelToRem(162)};
+  height: ${(props) => props.theme.pixelToRem(48)};
+  font-size: ${(props) => props.theme.pixelToRem(16)};
+  border: 1px solid #024873;
+  border-radius: ${(props) => props.theme.pixelToRem(10)};
+  background-color: #fff;
+  color: #024873;
   cursor: pointer;
 `;
 
 const SignBtn = styled.button`
-  width: 180px;
-  height: 48px;
-  font-size: 1rem;
-  border: 0.5px none grey;
-  margin-top: 50px;
-  border-radius: 8px;
-  color: whitesmoke;
-  background-color: grey;
+  width: ${(props) => props.theme.pixelToRem(162)};
+  height: ${(props) => props.theme.pixelToRem(48)};
+  font-size: ${(props) => props.theme.pixelToRem(16)};
+  border: 1px solid #024873;
+  border-radius: ${(props) => props.theme.pixelToRem(10)};
+  color: #fff;
+  background-color: #024873;
   cursor: pointer;
 `;
 
 const Tabs = styled.div`
-  width: 380px;
+  width: ${(props) => props.theme.pixelToRem(375)};
+  height: ${(props) => props.theme.pixelToRem(25)};
+  margin-top: 20px;
+  margin-left: 20px;
   display: flex;
-  margin: 170px 45px;
-  gap: 10px;
-  position: absolute;
+  gap: ${(props) => props.theme.pixelToRem(16)};
 `;
 
 const Tab = styled.span<{ isActive: boolean }>`
-  width: 33%;
-  text-align: center;
-  font-size: 1rem;
-  font-weight: 500;
-
+  /* background-color: red; */
+  font-size: ${(props) => props.theme.pixelToRem(20)};
+  font-weight: 600;
   background-color: ${(props) => props.theme.bgColor};
-  padding: 7px 0px;
-  /* border-bottom padding webkit */
-  border-bottom: ${(props) => (props.isActive ? "3px solid black" : "none")};
-  color: ${(props) =>
-    props.isActive ? props.theme.accentColor : props.theme.textColor};
+  border-bottom: ${(props) => (props.isActive ? "2px solid black" : "none")};
+  color: ${(props) => (props.isActive ? "#222" : "#ccc")};
+  height: 100vh;
 `;
 
-//useForm사용해야 할 것 같다.
-//userProfile변경위함.
-
-//const { register, handleSubmit, watch, setValue } = useForm();
-//watch = getter. , setValue = setter.
-// const photo = watch("photo");
-// console.log(photo);
-
-// const onValid = async (data) => {
-//   const title = data.title;
-//   const content = data.content;
-//   const image = data.photo[0];
-//   const formData = new FormData();
-
-//   formData.append("title", title);
-//   formData.append("content", content);
-//   formData.append("image", image);
-
-//   const serverUrl = process.env.REACT_APP_API;
-
-//   await axios({
-//     method: "POST",
-//     url: `${serverUrl}/posts`,
-//     mode: "cors",
-//     headers: {
-//       "Content-Type": "multipart/form-data",
-//       accessToken: `${getCookie("accessToken")}`,
-//       refreshToken: `${getCookie("refreshToken")}`,
-//     },
-//     data: formData,
-//   });
-
-//   navigate("/posts");
-// };
-
-// useEffect(() => {
-//   setValue("photo", []);
-// }, []);
-
-// useEffect(() => {
-//   if (photo && photo.length > 0) {
-//     const file = photo[0];
-//     setPreviewImg(URL.createObjectURL(file));
-//   }
-// }, [photo]);
-
-//img 미리보기.
-// const encodeFileToBase64 = (fileBlob) => {
-//   const reader = new FileReader();
-//   reader.readAsDataURL(fileBlob);
-//   return new Promise(() => {
-//     reader.onload = () => {
-//       setPreviewImg(reader.result);
-//     };
-//   });
-// };
+const Line = styled.div`
+  border-bottom: 1px solid #eee;
+  width: ${(props) => props.theme.pixelToRem(355)};
+  margin: 10px auto;
+`;

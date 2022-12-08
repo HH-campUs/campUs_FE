@@ -9,7 +9,14 @@ export const LoginState = atom({
   effects_UNSTABLE: [persistAtom],
 });
 
-export const userInfo = atom<boolean>({
+export const idState = atom({
+  key: "idState",
+  default: null,
+  effects_UNSTABLE: [persistAtom],
+});
+
+//수정해야함.
+export const userInfo = atom({
   key: "user",
   default: false,
 });

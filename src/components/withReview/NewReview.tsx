@@ -39,8 +39,7 @@ export default function NewReview() {
         style={{
           height,
           overflow: hide ? "hidden" : "visible",
-        }}
-      >
+        }}>
         <CarouselSlider
           className="flex"
           style={{
@@ -61,8 +60,7 @@ export default function NewReview() {
 
               setTransX(0);
             },
-          })}
-        >
+          })}>
           {NewReview.map((item, reviewId) => (
             <CaroImgBox key={reviewId}>
               <Wrapper draggable={false}>
@@ -72,8 +70,7 @@ export default function NewReview() {
                       <img src={checkPf?.profileImg} alt="pfImg" />
                     </PfImg>
                     <div
-                      style={{ flexDirection: "column", marginLeft: "6.5px" }}
-                    >
+                      style={{ flexDirection: "column", marginLeft: "6.5px" }}>
                       <NickBox>
                         <PfNick>{checkPf?.nickname}</PfNick>
                       </NickBox>
@@ -106,7 +103,7 @@ export default function NewReview() {
 }
 
 const CarouselViewer = styled.div`
-  width: ${(props) => props.theme.pixelToRem(375)};
+  width: ${(props) => props.theme.pixelToRem(475)};
   height: ${(props) => props.theme.pixelToRem(300)} !important;
   overflow: hidden;
   user-select: none;

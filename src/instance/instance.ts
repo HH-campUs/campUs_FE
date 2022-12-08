@@ -15,7 +15,7 @@ export const instance = axios.create({
   baseURL,
   headers: {
     Authorization: `Bearer ${accessToken}`,
-    refreshToken: `Bearer ${refreshToken}`,
+    refreshToken: `${refreshToken}`,
   },
 });
 

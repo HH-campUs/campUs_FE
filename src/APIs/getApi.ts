@@ -11,7 +11,7 @@ import {
   IGetWeather,
   campArray,
   pickedCamp,
-  IGetCampResult,
+  IGetTravelPlan,
   IMostList,
   IGetNewReview,
 } from "../interfaces/get";
@@ -21,10 +21,10 @@ const serverUrl = process.env.REACT_APP_API;
 // ** 캠핑장 카테고리 정보 조회 / get ** //
 
 /* 캠핑장 키워드 검색 */
-export const useSearchCamp = (keyword: string) => {
+export const useSearchCamp = (keyword: string, sort: string) => {
   const useData = async ({ pageParam = 1 }) => {
     const { data } = await instance.get<campArray>(
-      `/querysearch?keyword=${keyword}&numOfRows=20&pageNo=${pageParam}`
+      `/searchSort?keyword=${keyword}&numOfRows=20&pageNo=${pageParam}&sort=${sort}`
     );
     console.log(data, keyword);
     return {
@@ -40,7 +40,7 @@ export const useSearchCamp = (keyword: string) => {
     isSuccess,
     hasNextPage,
     refetch,
-  } = useInfiniteQuery(["searchCamp", keyword], useData, {
+  } = useInfiniteQuery(["searchCamp", keyword, sort], useData, {
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     getNextPageParam: (lastPage) => {
@@ -52,10 +52,10 @@ export const useSearchCamp = (keyword: string) => {
 };
 
 /* 리얼 인피니티 스크롤 - 캠프 result 페이지 전용*/
-export const useGetCamp = (doNm: string) => {
+export const useGetCamp = (doNm: string, sort: string) => {
   const useData = async ({ pageParam = 1 }) => {
     const { data } = await instance.get<campArray>(
-      `/camps?doNm=${doNm}&numOfRows=20&pageNo=${pageParam}`
+      `/camps?doNm=${doNm}&numOfRows=20&pageNo=${pageParam}&sort=${sort}`
     );
     console.log(data);
     return {
@@ -75,9 +75,7 @@ export const useGetCamp = (doNm: string) => {
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     getNextPageParam: (lastPage) => {
-      return lastPage.camps.regionCamp[0]
-        ? lastPage.currentPage + 1
-        : undefined;
+      return lastPage.camps ? lastPage.currentPage + 1 : undefined;
     },
   });
   console.log(campData);
@@ -213,6 +211,15 @@ export const useGetApi = {
   useGetCampReview: (campId: number) => {
     return useQuery(["reviewinfo"], async () => {
       const { data } = await instance.get<IGetCampReview>(`/reviews/${campId}`);
+      console.log(data);
+      return data;
+    });
+  },
+
+  /* 여행일정 조회 */
+  useGetTravelPlan: () => {
+    return useQuery(["travelplan"], async () => {
+      const { data } = await instance.get<IGetTravelPlan>(`/camps`);
       console.log(data);
       return data;
     });

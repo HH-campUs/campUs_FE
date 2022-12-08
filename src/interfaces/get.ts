@@ -2,6 +2,11 @@ export interface IGetCampCatInfo {
   keyword: string;
 }
 
+export interface IGetTravelPlan {
+  campId: number;
+  tripId: number;
+}
+
 export interface IGetCampReview {
   userId: number;
   campId: number;
@@ -15,7 +20,6 @@ export interface IGetCampReview {
   nickname: string;
   profileImg: string;
 }
-
 
 export interface IGetNewReview {
   reviewId: number;
@@ -51,7 +55,6 @@ export interface weather {
   snow?: number;
 }
 
-
 /* 날씨 */
 export interface IGetWeather {
   weather: Array<any>;
@@ -76,14 +79,12 @@ export interface IGetWeather {
   snow?: number;
 }
 
-
 export interface IMostList extends IGetCampResult {
   look: IGetCampResult;
   pick: IGetCampResult;
   review: IGetCampResult;
   MostList: IGetCampResult[];
 }
-
 
 export interface RecoWeather extends IGetWeather {
   recommend: Array<IGetWeather>;
@@ -129,9 +130,10 @@ export interface campArray extends IGetCampResult {
   total: number;
   topicCamp: IGetCampResult[];
   campTopic: IGetCampResult[];
-  regionCamp: IGetCampResult[];
+  searchSort?: IGetCampResult[];
   detailCamp?: IGetCampResult[];
-  camps: IGetCampResult[];
+  camps?: IGetCampResult[];
+  camp: IGetCampResult[];
   nextPage?: number;
   lastPage?: boolean;
   isLast?: boolean;

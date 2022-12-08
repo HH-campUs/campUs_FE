@@ -98,7 +98,7 @@ export const useGetTopicInfinite = (topicId: string) => {
     isSuccess,
     hasNextPage,
     refetch,
-  } = useInfiniteQuery(["getCampTopic"], topicData, {
+  } = useInfiniteQuery(["getCampTopic", topicId], topicData, {
     getNextPageParam: (lastPage, pages) => {
       return lastPage.campTopic ? lastPage.currentPage : undefined;
     },
@@ -171,10 +171,9 @@ export const useGetApi = {
 
   useGetCampDetail: (campId: number) => {
     return useQuery<campArray>(
-      ["campDetail"],
+      ["campDetail", campId],
       async () => {
         const { data } = await instance.get(`/camps/detail/${campId}`);
-        console.log(data);
         return data;
       },
       {
@@ -188,16 +187,20 @@ export const useGetApi = {
   useGetCampReview: (campId: number) => {
     return useQuery(["reviewinfo"], async () => {
       const { data } = await instance.get<IGetCampReview>(`/reviews/${campId}`);
-      console.log(data);
+
       return data;
     });
   },
 
   // ** 캠핑장 거리 조회 ** //
   useGetDistance: (campX: number, campY: number) => {
+    console.log("apiX", campX);
+    console.log("apiY", campY);
     return useQuery(["distanceinfo"], async () => {
-      const { data } = await instance.get<IGetDistance>(`
-      users/nearCamp?campX=${campX}&campY=${campY}`);
+      const { data } = await instance.get<IGetDistance>(
+        `users/nearCamp?campX=${campX}&campY=${campY}`
+      );
+      console.log(data);
       return data;
     });
   },
@@ -209,7 +212,7 @@ export const useGetApi = {
       const { data } = await instance.get<pickedCamp[]>(
         `/camps/${params}?numOfRows=20&pageNo=1`
       );
-      console.log(data);
+
       return data[0];
     });
   },
@@ -218,7 +221,6 @@ export const useGetApi = {
   useGetSort: () => {
     return useQuery(["topicSort"], async () => {
       const { data } = await instance.get<IMostList>(`/camps/sort`);
-      console.log(data);
       return data;
     });
   },
@@ -227,7 +229,7 @@ export const useGetApi = {
   useGetTravelPlan: () => {
     return useQuery(["travelplan"], async () => {
       const { data } = await instance.get<IGetTravelPlan>(`/camps`);
-      console.log(data);
+
       return data;
     });
   },

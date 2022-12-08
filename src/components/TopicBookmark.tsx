@@ -8,9 +8,7 @@ import { IGetCampResult } from "../interfaces/get";
 export default function TopicMap({ Camp }: { Camp: IGetCampResult }) {
   const [bookmarking, setBookMarking] = useState(false);
   const campick = usePostsApi.useCampingPicked();
-  console.log("장용호", campick.data?.data);
 
-  // console.log(data);
   const pick = (campId: number) => {
     campick.mutate(campId);
     window.alert("찜하기 완료");

@@ -38,7 +38,7 @@ export default function NearPostMap() {
 
   useEffect(() => {
     //지도 담을 영역 지정.
-    const container = document.getElementById("map");
+    const container = document.getElementById("nearmap");
     const options = {
       center: new kakao.maps.LatLng(33.4507, 126.57),
       level: 5,
@@ -106,7 +106,7 @@ export default function NearPostMap() {
     const map = new kakao.maps.Map(container, options);
   }, []);
 
-  return <Wrapper id="map"></Wrapper>;
+  return <Wrapper id="nearmap"></Wrapper>;
 }
 
 const Wrapper = styled.div`

@@ -26,7 +26,7 @@ export default function Carousel() {
   const campReview = useGetApi.useGetSort().data?.MostList[1].review;
   // console.log("campReview", campReview);
   const campPick = useGetApi.useGetSort().data?.MostList[2].pick;
-  console.log("campPick", campPick);
+
   const { ref, width, height } = useCarouselSize();
 
   // navigate(`/topic/${id}`, {
@@ -35,9 +35,9 @@ export default function Carousel() {
   //   },
   // });
 
-  const handleClick = () => {
-    navigate(`/detail/${campLook?.campId}`);
-  };
+  // const handleClick = (campId: number) => () => {
+  //   navigate(`/detail/${campLook?.campId}`);
+  // };
 
   const inrange = (v: number, min: number, max: number) => {
     if (v < min) return min;
@@ -53,7 +53,8 @@ export default function Carousel() {
         style={{
           height,
           overflow: hide ? "hidden" : "visible",
-        }}>
+        }}
+      >
         <CarouselSlider
           className="flex"
           style={{
@@ -74,17 +75,19 @@ export default function Carousel() {
 
               setTransX(0);
             },
-          })}>
+          })}
+        >
           {/* 맵사용가능여부 확인해서 맵사용해야함. */}
           {/* 조회수나 리뷰 우선순위 겹치면 똑같은게나옴. */}
           <CarouselSlide>
             <Outline>
+              <ImgCover />
+              {/* onClick={handleClick(campLook?.campId)} */}
               <CarouselImg
                 draggable={false}
                 src={campLook?.ImageUrl}
                 alt="img"
                 width={width}
-                // onClick={handleClick(campLook?.campId)}
               />
               <CrTextBox>
                 <CampName>{campLook?.campName}</CampName>
@@ -96,6 +99,7 @@ export default function Carousel() {
               </ReviewInfo>
             </Outline>
             <Outline>
+              <ImgCover />
               <CarouselImg
                 draggable={false}
                 src={campReview?.ImageUrl}
@@ -112,6 +116,7 @@ export default function Carousel() {
               </ReviewInfo>
             </Outline>
             <Outline>
+              <ImgCover />
               <CarouselImg
                 draggable={false}
                 src={campPick?.ImageUrl}
@@ -179,6 +184,15 @@ const Outline = styled.div`
   margin-left: ${(props) => props.theme.pixelToRem(20)};
 `;
 
+const ImgCover = styled.div`
+  width: ${(props) => props.theme.pixelToRem(214)};
+  height: ${(props) => props.theme.pixelToRem(260)};
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: ${(props) => props.theme.pixelToRem(15)};
+  z-index: 1;
+  position: absolute;
+`;
+
 const CarouselImg = styled.img`
   width: 100%;
   height: 100%;
@@ -186,16 +200,15 @@ const CarouselImg = styled.img`
   object-fit: cover;
   transition: all 0.3s ease;
   flex: none;
-  filter: contrast(60%);
 `;
 
 const CrTextBox = styled.div`
   padding: 5px;
   position: absolute;
-  /* background-color: red; */
   top: 190px;
   margin-left: 10px;
   color: #ffffff;
+  z-index: 5;
 `;
 
 const CampName = styled.div`
@@ -209,6 +222,7 @@ const ReviewInfo = styled.div`
   border-radius: 0.4rem;
   margin-top: -35px;
   margin-left: 17px;
+  z-index: 5;
 `;
 
 const NumText = styled.div`

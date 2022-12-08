@@ -8,10 +8,8 @@ import Search from "../components/withSearch/Search";
 import PlanWrite from "../components/PlanWrite";
 import { isModal } from "../store/searchAtom";
 import { useGetApi } from "../APIs/getApi";
-<<<<<<< HEAD
-=======
 import { eventNames } from "process";
->>>>>>> 4599f1da384cfe694e23404175db8458a47ef6f1
+import { svgIconClasses } from "@mui/material";
 
 function Detail() {
   const copyLinkRef = useRef();
@@ -60,6 +58,13 @@ function Detail() {
 
   const icon: string[] | undefined =
     detailItem?.detailCamp![0].sbrsCl.split(",");
+
+  const 애완동물 = "/1.svg";
+  console.log(애완동물);
+  // === 새로운배열에 담아서
+
+  // [전기,애완동물]         [전기.svg, 2,3,4,5..]
+  // 가지고온 icon 배열 === 제가가지고잇는 svg파일을맞춰서 뛰어야됨.
 
   // const ImgArr = iconArr.map((item,i) => {
   //   icon?.map((receiveIcon,i)=>{

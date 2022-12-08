@@ -14,7 +14,7 @@ export default function Footer() {
   return (
     <Box
       sx={{
-        width: "100%",
+        width: "${(props) => props.theme.pixelToRem(375)}",
         position: "fixed",
         bottom: 0,
         // left: "50%",

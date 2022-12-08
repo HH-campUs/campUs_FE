@@ -68,7 +68,7 @@ export default Home;
 const Wrapper = styled.div`
   width: 100%;
   min-width: ${(props) => props.theme.pixelToRem(375)};
-  height: calc(100vh - 9rem);
+  height: calc(100vh - 3rem);
   overflow-x: hidden;
   flex-direction: column;
 `;

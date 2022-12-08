@@ -35,7 +35,6 @@ export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
   });
 
   const [toKen, setToken] = useRecoilState(LoginState);
-  const [useId, setUseId] = useRecoilState(idState);
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(userInfo);
   const navigate = useNavigate();
 
@@ -77,7 +76,6 @@ export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
     removeAccessToken();
     removeRefreshToken();
     setToken(null);
-    setUseId(null);
     setIsLoggedIn(false);
     navigate("/");
   };

@@ -1,11 +1,8 @@
 //redirect경로는 백엔드와 동일해야함.
 import axios from "axios";
 import React, { useEffect } from "react";
-<<<<<<< HEAD
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-=======
->>>>>>> 4599f1da384cfe694e23404175db8458a47ef6f1
 import { setAccessToken, setRefreshToken } from "../../instance/cookies";
 import { instance } from "../../instance/instance";
 

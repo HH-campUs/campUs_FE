@@ -30,12 +30,9 @@ function Keyword() {
 
   /* camp result 무한스크롤 */
 
-  /* 조회순 ⇒
-                sort = lookUp
-인기순 ⇒
-                sort = pickCount
-리뷰순 ⇒
-                sort = reviewCount */
+  /* 조회순 ⇒sort = lookUp
+      인기순 ⇒sort = pickCount
+      리뷰순 ⇒sort = reviewCount */
 
   const { campData, fetchNextPage, isSuccess, hasNextPage, refetch } =
     useSearchCamp(keyword, sortState);
@@ -64,7 +61,8 @@ function Keyword() {
         <div
           onClick={() => {
             nav("/");
-          }}>
+          }}
+        >
           <div style={{ position: "relative" }}>
             <img src="/images/back.svg" alt="back" />
             <span style={{ width: "60px" }}>검색조건</span>
@@ -112,14 +110,16 @@ function Keyword() {
             {sortState == "lookUp" ? (
               <span
                 className="popular"
-                onClick={() => setSortState("pickCount")}>
+                onClick={() => setSortState("pickCount")}
+              >
                 {" "}
                 조회순{" "}
               </span>
             ) : sortState == "pickCount" ? (
               <span
                 className="popular"
-                onClick={() => setSortState("reviewCount")}>
+                onClick={() => setSortState("reviewCount")}
+              >
                 {" "}
                 인기순{" "}
               </span>
@@ -143,7 +143,8 @@ function Keyword() {
                           campId: `${item.campId}`,
                         },
                       })
-                    }>
+                    }
+                  >
                     <ResultImg src={item.ImageUrl} alt={item.ImageUrl} />
                     <InnerBg>
                       <span>

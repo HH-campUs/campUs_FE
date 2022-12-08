@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useGetApi } from "../../APIs/getApi";
 import KaKaomap from "../KaKaomap";
+import NearestMap from "./NearestMap";
 import NearPostMap from "./NearPostMap";
 
 export default function Nearby() {
-  const [campX, setCampX] = useState<number>();
-  const [campY, setCampY] = useState<number>();
+  const [campX, setCampX] = useState<number | undefined>();
+  const [campY, setCampY] = useState<number | undefined>();
 
   useEffect(() => {
     getLocation();
@@ -19,11 +20,10 @@ export default function Nearby() {
           // const time = new Date(position.timestamp);
           setCampX(position.coords.latitude);
           setCampY(position.coords.longitude);
-
-          console.log(position);
+          // console.log(position);
           // console.log(`현재시간 : ${time}`);
-          console.log(`위도 : ${position.coords.latitude}`);
-          console.log(`경도 : ${position.coords.longitude}`);
+          // console.log(`위도 : ${position.coords.latitude}`);
+          // console.log(`경도 : ${position.coords.longitude}`);
         },
         (error) => {
           console.error(error);
@@ -38,8 +38,10 @@ export default function Nearby() {
       alert("사용이 불가능합니다.");
     }
   };
-  const nearPost = useGetApi.useGetDistance(campX!, campY!);
-  console.log(nearPost);
+
+  const nearPost = useGetApi.useGetDistance(campX!, campY!).data;
+  console.log("가까운캠프", nearPost?.nearCamp);
+  // console.log(nearPost?.data?.nearCamp?.);
 
   return (
     <Wrapper>
@@ -47,19 +49,40 @@ export default function Nearby() {
       <PlanBox>
         <PlanWrapper>
           <MapBox>
-            {/* <KaKaomap /> */}
             <NearPostMap />
           </MapBox>
-
           <RightBox>
-            <DistanceText>10km | 20분</DistanceText>
-            <LocationName>캠핑장 이름 적는곳</LocationName>
-            <HashTag>운동시설</HashTag>
+            <DistanceText>
+              {nearPost?.nearCamp?.distance
+                ? nearPost?.nearCamp?.distance
+                : "로딩중입니다"}
+              km
+            </DistanceText>
+            <CampName>
+              {nearPost?.nearCamp?.address
+                ? nearPost?.nearCamp?.address
+                : "로딩중입니다"}
+            </CampName>
+            <Induty>로딩중입니다.</Induty>
+          </RightBox>
+        </PlanWrapper>
+        <Line></Line>
+        <PlanWrapper>
+          <MapBox>
+            <KaKaomap />
+          </MapBox>
+          <RightBox>
+            <DistanceText></DistanceText>
+            <CampName></CampName>
           </RightBox>
         </PlanWrapper>
       </PlanBox>
+      {/* <MapBox></MapBox> */}
     </Wrapper>
   );
+}
+{
+  /* <NearestMap campX={campX} campY={campY} /> */
 }
 
 const Wrapper = styled.div`
@@ -79,13 +102,20 @@ const TextBox = styled.div`
 const PlanBox = styled.div`
   width: 80%;
   height: ${(props) => props.theme.pixelToRem(264)};
-  border-radius: 10px;
+  border-radius: ${(props) => props.theme.pixelToRem(10)};
   box-shadow: 15px;
-  background-color: whitesmoke;
   margin: 15px auto;
-  font-size: 13px;
   display: flex;
   position: relative;
+  flex-direction: column;
+`;
+
+const Line = styled.div`
+  width: ${(props) => props.theme.pixelToRem(300)};
+  height: 1px;
+  margin-left: 38px;
+  /* background-color: #eee; */
+  border-bottom: 1px solid #eee;
 `;
 
 const PlanWrapper = styled.div`
@@ -104,27 +134,26 @@ const MapBox = styled.div`
 
 const RightBox = styled.div`
   margin-left: 16px;
+  margin-top: 18px;
 `;
 
-const DistanceText = styled.div``;
-
-const LocationName = styled.div`
-  margin-top: 10px;
+const DistanceText = styled.div`
+  font-size: ${(props) => props.theme.pixelToRem(14)};
+  color: #666;
 `;
 
-const HashTag = styled.div`
-  margin-top: 10px;
-  font-size: 15px;
+const CampName = styled.div`
+  margin-top: 5px;
+  font-size: ${(props) => props.theme.pixelToRem(14)};
+  color: #222;
+`;
+
+const Induty = styled.div`
+  margin-top: 12px;
+  font-size: ${(props) => props.theme.pixelToRem(12)};
   width: 70px;
   height: 20px;
-  border-radius: 10px;
-  border: 1px solid grey;
+
   text-align: center;
   padding: 2px;
-`;
-
-const CenterLine = styled.div`
-  width: ${(props) => props.theme.pixelToRem(300)};
-  height: ${(props) => props.theme.pixelToRem(1)};
-  background-color: red;
 `;

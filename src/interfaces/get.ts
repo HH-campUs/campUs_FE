@@ -60,6 +60,8 @@ export interface IGetDistance {
   createdtime: string;
   featureNm: string;
   clturEvent: string;
+  nearPost: IGetDistance;
+  nearCamp: IGetDistance;
   reviewCount: number;
   pickCount: number;
   lookUp: number;

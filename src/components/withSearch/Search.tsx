@@ -24,9 +24,7 @@ import styled, { keyframes, css } from "styled-components";
 import Datepicker from "./Datepicker";
 import Location from "./Location";
 import { isProps, searchData } from "../../interfaces/inSearch";
-import { ToastContainer, toast } from "react-toastify";
-import { injectStyle } from "react-toastify/dist/inject-style";
-import { InfoToast, NavPickToast } from "../Toast/Toast";
+import { InfoToast } from "../Toast/Toast";
 
 function Search() {
   /* toast boolean */
@@ -38,7 +36,7 @@ function Search() {
   const [startDate, setStartDate] = useRecoilState(StartDate);
 
   /* search api 에 사용될  keyword */
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useRecoilState(textValue);
   /* camp api 에 사용될 address */
   const [locationValue, setLocationValue] = useRecoilState(showLo);
   /* weather api에 사용될 pardo & dt */
@@ -52,6 +50,7 @@ function Search() {
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
+    console.log(inputValue);
   };
 
   /* SearchModal 작동 boolean  default: false */
@@ -79,7 +78,7 @@ function Search() {
       <Container>
         {toastState == true ? (
           <InfoToast
-            text={"검색조건이 불충분합니다"}
+            text={"검색어가 부족해요."}
             toastState={toastState}
             setToastState={setToastState}
           />
@@ -134,11 +133,14 @@ function Search() {
                 onClick={() => {
                   setToastState(true);
                 }}>
-                {" "}
-                검색하기{" "}
+                검색하기
               </DisabledBtn>
-            ) : (
+            ) : inputValue == "" && sendLocation !== "" ? (
               <SearchBtn to="/result" onClick={closeModal}>
+                검색하기
+              </SearchBtn>
+            ) : (
+              <SearchBtn to="/keyword" onClick={closeModal}>
                 검색하기
               </SearchBtn>
             )}
@@ -169,12 +171,6 @@ const fadeIn = keyframes`
 const fadeOut = keyframes`
   from {opacity: 1} 
     to {opacity: 0}
-`;
-
-const ModalSettings = (isSearch: boolean) => css`
-  visibility: ${isSearch == true ? "visible" : "hidden"};
-  animation: ${isSearch == true ? fadeIn : fadeOut} 0.4s ease-out;
-  transition: visibility 0.15s ease-out;
 `;
 
 const Container = styled.div`
@@ -216,7 +212,7 @@ const SearchModal = styled.div<{ isSearch: boolean }>`
   /* position없으면 위치속성 안먹음. */
   /* transform -> 위치작용 */
   position: relative;
-  z-index: 100;
+  z-index: 1000;
   &.isSearch {
     height: 43rem;
     left: 10;

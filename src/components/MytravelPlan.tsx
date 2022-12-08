@@ -2,6 +2,7 @@ import { useRecoilValue } from "recoil";
 import { LoginState } from "../store/loginAtom";
 import { useNavigate } from "react-router-dom";
 import { getCamperToken } from "../instance/cookies";
+import { useGetApi } from "../APIs/getApi";
 
 //css
 import styled from "styled-components";
@@ -9,13 +10,20 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 
 export default function MytravelPlan() {
   // const isLogin = useRecoilValue(LoginState);
+  /* const data = useGetApi.useGetTravelPlan(); */
+
   const navigate = useNavigate();
   const isLogin = getCamperToken();
   return (
     <Wrapper>
       <TextBox>
         <MyPlan>내 여행일정</MyPlan>
-        <AllList>전체보기</AllList>
+        <AllList
+          onClick={() => {
+            navigate("/mypage/myplan");
+          }}>
+          전체보기
+        </AllList>
       </TextBox>
 
       {isLogin ? (
@@ -47,8 +55,7 @@ export default function MytravelPlan() {
                 onClick={() => {
                   navigate("/login");
                 }}
-                style={{ textDecoration: "underline", cursor: "pointer" }}
-              >
+                style={{ textDecoration: "underline", cursor: "pointer" }}>
                 로그인하고
               </p>
               &nbsp;
@@ -66,7 +73,7 @@ export default function MytravelPlan() {
 const Wrapper = styled.div`
   /* background-color: red; */
   margin-top: ${(props) => props.theme.pixelToRem(40)};
-  width: ${(props) => props.theme.pixelToRem(375)};
+  width: 100%;
   /* margin: 20px 10px 20px 10px; */
 `;
 
@@ -90,7 +97,7 @@ const AllList = styled.div`
 `;
 
 const PlanBox = styled.div`
-  width: ${(props) => props.theme.pixelToRem(335)};
+  width: 90%;
   height: ${(props) => props.theme.pixelToRem(102)};
   border-radius: ${(props) => props.theme.pixelToRem(10)};
   background-color: #f5f5f5;
@@ -110,7 +117,7 @@ const CloseBox = styled.div`
   font-size: 13px;
   display: flex;
   z-index: 3;
-  position: absolute;
+  position: relative;
 `;
 
 const Carlendar = styled.div`

@@ -12,9 +12,8 @@ export default function Nearby() {
         <PlanWrapper>
           <MapBox>
             <KaKaomap />
-            {/* <KaKaomap /> */}
           </MapBox>
-
+          {/* <KaKaomap /> */}
           <RightBox>
             <DistanceText>10km | 20분</DistanceText>
             <LocationName>캠핑장 이름 적는곳</LocationName>
@@ -42,7 +41,7 @@ const TextBox = styled.div`
 `;
 
 const PlanBox = styled.div`
-  width: ${(props) => props.theme.pixelToRem(336)};
+  width: 80%;
   height: ${(props) => props.theme.pixelToRem(264)};
   border-radius: 10px;
   box-shadow: 15px;

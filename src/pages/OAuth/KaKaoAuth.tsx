@@ -1,9 +1,6 @@
 //redirect경로는 백엔드와 동일해야함.
 import axios from "axios";
 import React, { useEffect } from "react";
-import { Cookies } from "react-cookie";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { setAccessToken, setRefreshToken } from "../../instance/cookies";
 import { instance } from "../../instance/instance";
 
@@ -27,10 +24,7 @@ function KakaoLogin() {
         if (kakaoResult.status == 200) {
           console.log("연결 성공");
         }
-
-        //카카오 accesstoken
         const token = kakaoResult.data.access_token;
-        const freshtoken = kakaoResult.data.refresh_token;
         const response = await axios.post(
           "https://campus99.shop/kakao",
           kakaoResult.data,
@@ -45,44 +39,28 @@ function KakaoLogin() {
           status,
           data: { accessToken, refreshToken },
         } = response;
-        console.log("data", response.data);
         if (status !== 200) return;
-        // setAccessToken(response.data.accessToken);
+        // setAccessToken(response.data.Tokens.accessToken);
+        // localStorage.setItem("token", refreshToken);
         const backAccess = response.data.accesstoken;
         const backfresh = response.data.refreshtoken;
         setAccessToken(backAccess);
         setRefreshToken(backfresh);
-        // localStorage.setItem("camper_token", token);
-
         if (status == 200) {
           console.log(accessToken, refreshToken);
           return window.location.replace(`/`);
         } else {
           console.log(accessToken, refreshToken);
-          return window.location.replace("/login");
+          /*  return window.location.replace("/"); */
         }
       } catch (e) {
         console.error(e);
         /* window.location.replace("/"); */
-        toast.error("login error", {
-          position: "top-center",
-          autoClose: 1000,
-          hideProgressBar: true,
-          closeOnClick: false,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-        });
       }
     })();
   }, [code]);
 
-  return (
-    <div>
-      <ToastContainer />
-    </div>
-  );
+  return <div></div>;
 }
 
 export default KakaoLogin;
@@ -93,8 +71,8 @@ export const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id
 /* import React from "react";
 
 function KaKaoAuth() {
-return <div>KaKaoAuth</div>;
+  return <div>KaKaoAuth</div>;
 }
 
 export default KaKaoAuth;
-*/
+ */

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
+
 import Search from "../components/withSearch/Search";
 import { isModal } from "../store/searchAtom";
 import { useNavigate, useParams } from "react-router-dom";
@@ -13,12 +14,16 @@ import { useInView } from "react-intersection-observer";
 import { useLocation } from "react-router-dom";
 import { BiChevronDown } from "react-icons/bi";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+import { NoIdPickToast } from "../components/Toast/Toast";
 
 import { IGetCampResult } from "../interfaces/get";
 import TopicBookmark from "../components/TopicBookmark";
 import { idState } from "../store/loginAtom";
 
 function Topic() {
+  /* toast boolean */
+  const [toastState, setToastState] = useState(false);
+
   const toZero = () => {
     window.scrollTo({ left: 0, top: 0, behavior: "smooth" });
   };
@@ -48,6 +53,9 @@ function Topic() {
   return (
     <>
       {isSearch == false ? null : <Search />}
+      {toastState == true ? (
+        <NoIdPickToast toastState={toastState} setToastState={setToastState} />
+      ) : null}
 
       <TopContainer bg={bg}>
         <BackBtn onClick={() => navigate(`/`)}>
@@ -66,7 +74,8 @@ function Topic() {
             <img src="/images/topic/openclose.svg" alt="downArrow" />
           </div>
         </ResultTop>
-
+        {/*
+         */}
         <CampMap>
           {isSuccess && campTopic?.pages ? (
             campTopic?.pages.map((page) => (
@@ -76,7 +85,7 @@ function Topic() {
                     <TopicBookmark Camp={item} />
                     <ResultItem
                       onClick={() =>
-                        navigate(`/detail/:${item.campId}`, {
+                        navigate(`/detail/${item.campId}`, {
                           state: {
                             campId: `${item.campId}`,
                           },
@@ -118,7 +127,7 @@ function Topic() {
 export default Topic;
 
 const TopContainer = styled.div<{ bg: string }>`
-  width: ${(props) => props.theme.pixelToRem(375)};
+  width: 100%;
   height: ${(props) => props.theme.pixelToRem(266)};
   margin: auto;
   border-bottom-left-radius: ${(props) => props.theme.pixelToRem(12)};
@@ -273,7 +282,7 @@ const FloatingBtn = styled.button`
   /* align-items: center; */
   cursor: pointer;
   z-index: 10;
-  border: 0.5px solid grey;
+  border: 1px solid #eee;
 `;
 
 const UpArrow = styled.img``;

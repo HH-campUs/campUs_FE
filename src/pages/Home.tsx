@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Carousel from "../components/Carousel";
 
 import MytravelPlan from "../components/MytravelPlan";
@@ -7,13 +8,17 @@ import Search from "../components/withSearch/Search";
 import WeekWeather from "../components/WeekWeather";
 import { useRecoilState } from "recoil";
 import { isModal } from "../store/searchAtom";
-import NewReview from "../components/NewReview";
+import NewReview from "../components/withReview/NewReview";
+import { NoIdPickToast } from "../components/Toast/Toast";
+import { getCamperToken } from "../instance/cookies";
 
 //Css
 import styled from "styled-components";
 
 function Home() {
   const [isSearch, setIsSearch] = useRecoilState(isModal);
+  /* toast boolean */
+  const [toastState, setToastState] = useState(false);
 
   const openModal = () => {
     setIsSearch(true);
@@ -40,6 +45,11 @@ function Home() {
 
   return (
     <Wrapper>
+      {/* 찜하기 알림 토스트 */}
+
+      {toastState == true ? (
+        <NoIdPickToast toastState={toastState} setToastState={setToastState} />
+      ) : null}
       {isSearch == false ? null : <Search />}
 
       <HeadText>
@@ -58,6 +68,7 @@ function Home() {
       <MytravelPlan />
       <Subject />
       <Nearby />
+      <Title>새로 올라온 리뷰</Title>
       <NewReview />
     </Wrapper>
   );
@@ -66,9 +77,10 @@ function Home() {
 export default Home;
 
 const Wrapper = styled.div`
-  height: 200vh;
-  min-height: 1800px;
-  width: ${(props) => props.theme.pixelToRem(375)};
+  width: 100%;
+  min-width: ${(props) => props.theme.pixelToRem(375)};
+  height: calc(100vh - 3rem);
+  overflow-x: hidden;
   flex-direction: column;
 `;
 
@@ -87,7 +99,7 @@ const HeadText = styled.div`
 `;
 
 const SearchBar = styled.div<{ isSearch: Boolean }>`
-  width: ${(props) => props.theme.pixelToRem(335)};
+  width: 84%;
   height: ${(props) => props.theme.pixelToRem(54)};
   margin: 20px 20px 0 20px;
   padding: 16px 32px 16px 20px;
@@ -125,4 +137,11 @@ const TextBox = styled.div`
 
 const CampText = styled.div`
   font-weight: 500;
+`;
+
+const Title = styled.div`
+  margin-left: 20px;
+  font-size: ${(props) => props.theme.pixelToRem(20)};
+  font-weight: 600;
+  color: #333;
 `;

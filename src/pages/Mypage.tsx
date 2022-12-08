@@ -26,8 +26,6 @@ function Mypage() {
 
   const isLogin = getCamperToken();
 
-  // useEffect(() => {}, [checkPf]);
-
   return (
     <>
       {isSearch == false ? null : <Search />}
@@ -39,13 +37,7 @@ function Mypage() {
                 <HeadText>campUs</HeadText>
                 <ProfileBox>
                   <ProfileCircle>
-                    <img
-                      src={checkPf?.profileImg}
-                      alt="PFP"
-                      height={"48px"}
-                      width={"48px"}
-                      style={{ borderRadius: "48px", objectFit: "cover" }}
-                    />
+                    <img src={checkPf?.profileImg} alt="PFP" />
                   </ProfileCircle>
                   <LoginPfText>
                     <Nickname>{checkPf?.nickname} 님!</Nickname>
@@ -87,16 +79,14 @@ function Mypage() {
                     onClick={(e) => {
                       e.preventDefault();
                       navigate("/login");
-                    }}
-                  >
+                    }}>
                     로그인
                   </LoginBtn>
                   <SignBtn
                     onClick={(e) => {
                       e.preventDefault();
                       navigate("/signup");
-                    }}
-                  >
+                    }}>
                     회원가입
                   </SignBtn>
                 </LoginBox>
@@ -117,8 +107,7 @@ function Mypage() {
                 style={{
                   // height: "100vh",
                   marginTop: "20px",
-                }}
-              >
+                }}>
                 <Outlet />
               </div>
             </UserProfile>
@@ -157,7 +146,6 @@ const Profile = styled.div`
   width: ${(props) => props.theme.pixelToRem(375)};
   height: ${(props) => props.theme.pixelToRem(286)};
   background-color: #f5f5f5;
-  /* background-color: blue; */
 `;
 
 const LoginProfile = styled.div``;
@@ -167,10 +155,14 @@ const ProfileBox = styled.div`
 `;
 
 const ProfileCircle = styled.div`
-  width: ${(props) => props.theme.pixelToRem(48)};
-  height: ${(props) => props.theme.pixelToRem(48)};
-  border-radius: ${(props) => props.theme.pixelToRem(48)};
   margin: 24px 14px 17px 20px;
+
+  img {
+    width: ${(props) => props.theme.pixelToRem(48)};
+    height: ${(props) => props.theme.pixelToRem(48)};
+    border-radius: ${(props) => props.theme.pixelToRem(48)};
+    object-fit: cover;
+  }
 `;
 
 const LoginPfText = styled.div``;
@@ -231,10 +223,9 @@ const SignBtn = styled.button`
 `;
 
 const Tabs = styled.div`
-  /* background-color: red; */
   width: ${(props) => props.theme.pixelToRem(375)};
   height: ${(props) => props.theme.pixelToRem(25)};
-  margin-top: 40px;
+  margin-top: 20px;
   margin-left: 20px;
   display: flex;
   gap: ${(props) => props.theme.pixelToRem(16)};
@@ -252,6 +243,6 @@ const Tab = styled.span<{ isActive: boolean }>`
 
 const Line = styled.div`
   border-bottom: 1px solid #eee;
-  width: 355px;
-  margin: 0 auto;
+  width: ${(props) => props.theme.pixelToRem(355)};
+  margin: 10px auto;
 `;

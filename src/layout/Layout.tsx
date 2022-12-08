@@ -35,7 +35,7 @@ export default function Layout(props: any) {
 //스크롤 땡겨지는거 막기
 const Root = styled.div`
   width: 100%;
-  //width: 915px;
+
   box-sizing: border-box;
   overflow: hidden;
   position: relative;
@@ -57,7 +57,7 @@ const LeftTemplate = styled.div`
 const SplashLogo = styled.div`
   width: 475px;
   height: inherit;
-  padding: 20p;
+  margin-top: 200px;
   display: flex;
 `;
 //right
@@ -66,16 +66,10 @@ const RightTemplate = styled.div`
   //background-color: teal;
   width: 475px;
   //height: 500px;
-  max-width: 475px;
+  min-width: 375px;
 
   @media screen and (min-width: 915px) {
     max-width: 475px;
     //margin-left: -17.5px;
   }
-  // @media screen and (min-width: 475px) {
-  //left: 50%;
-  // margin-left: -237.5px;
-  //   max-width: 475px;
-  // background-color: blue;
-  //}
 `;

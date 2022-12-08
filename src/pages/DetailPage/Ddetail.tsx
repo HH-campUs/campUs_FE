@@ -73,6 +73,7 @@ function Ddetail() {
 export default Ddetail;
 
 const Wrapper = styled.div`
+  width: 100%;
   margin-top: 20px;
   margin-bottom: 80px;
 `;

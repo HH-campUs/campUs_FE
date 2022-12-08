@@ -9,6 +9,8 @@ export interface IReviewPosts {
 export interface IReviewRead {
   reviewImg: string[];
   reviewComment: string;
+  Camp: object;
+  campName: string;
 }
 
 export interface IEditReviewPosts {
@@ -19,10 +21,9 @@ export interface IEditReviewPosts {
 export interface IDeleteReviewPosts {}
 
 export interface IPostTravelPlan {
-  userId: number;
   campId: number;
-  address: string;
   date: string;
+  memo: string;
 }
 
 export interface IPickedCamp {

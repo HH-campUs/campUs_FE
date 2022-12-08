@@ -11,19 +11,51 @@ import {
   IGetWeather,
   campArray,
   pickedCamp,
-  IGetCampResult,
+  IGetTravelPlan,
   IMostList,
+  IGetNewReview,
 } from "../interfaces/get";
 
 const serverUrl = process.env.REACT_APP_API;
 
 // ** 캠핑장 카테고리 정보 조회 / get ** //
 
-/* 리얼 인피니티 스크롤 - 캠프 result 페이지 전용*/
-export const useGetCamp = (doNm: string) => {
+/* 캠핑장 키워드 검색 */
+export const useSearchCamp = (keyword: string, sort: string) => {
   const useData = async ({ pageParam = 1 }) => {
     const { data } = await instance.get<campArray>(
-      `/camps?doNm=${doNm}&numOfRows=30&pageNo=${pageParam}`
+      `/searchSort?keyword=${keyword}&numOfRows=20&pageNo=${pageParam}&sort=${sort}`
+    );
+    console.log(data, keyword);
+    return {
+      /* 같은 객체 레벨에 있는 total 값도 사용하기 위해서 data만 */
+      camps: data,
+      currentPage: pageParam,
+    };
+  };
+
+  const {
+    data: campData,
+    fetchNextPage,
+    isSuccess,
+    hasNextPage,
+    refetch,
+  } = useInfiniteQuery(["searchCamp", keyword, sort], useData, {
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    getNextPageParam: (lastPage) => {
+      return lastPage.camps.campName ? lastPage.currentPage + 1 : undefined;
+    },
+  });
+  console.log(campData);
+  return { campData, fetchNextPage, isSuccess, hasNextPage, refetch };
+};
+
+/* 리얼 인피니티 스크롤 - 캠프 result 페이지 전용*/
+export const useGetCamp = (doNm: string, sort: string) => {
+  const useData = async ({ pageParam = 1 }) => {
+    const { data } = await instance.get<campArray>(
+      `/camps?doNm=${doNm}&numOfRows=20&pageNo=${pageParam}&sort=${sort}`
     );
     console.log(data);
     return {
@@ -43,9 +75,7 @@ export const useGetCamp = (doNm: string) => {
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     getNextPageParam: (lastPage) => {
-      return lastPage.camps.regionCamp[0]
-        ? lastPage.currentPage + 1
-        : undefined;
+      return lastPage.camps ? lastPage.currentPage + 1 : undefined;
     },
   });
   console.log(campData);
@@ -135,6 +165,14 @@ export const useRecommendWeather = () => {
 /* 정보 get Api 모음 */
 
 export const useGetApi = {
+  // ** 캠핑장 새로운 리뷰 ** //
+  useGetNewReview: () => {
+    return useQuery(["reviewnew"], async () => {
+      const { data } = await instance.get<IGetNewReview>(`/reviews`);
+      return data;
+    });
+  },
+
   useGetCampDetail: (campId: number) => {
     return useQuery<campArray>(
       ["campDetail"],
@@ -170,11 +208,19 @@ export const useGetApi = {
 
   //1.일몰 2.낚시 3.반려동물 4.장비대여
   // ** 캠핑장 리뷰 조회 / get ** //
-  useGetCampReview: () => {
+  useGetCampReview: (campId: number) => {
     return useQuery(["reviewinfo"], async () => {
-      const { data } = await instance.get<IGetCampReview>(
-        `${serverUrl}/camps/:campId/review`
-      );
+      const { data } = await instance.get<IGetCampReview>(`/reviews/${campId}`);
+      console.log(data);
+      return data;
+    });
+  },
+
+  /* 여행일정 조회 */
+  useGetTravelPlan: () => {
+    return useQuery(["travelplan"], async () => {
+      const { data } = await instance.get<IGetTravelPlan>(`/camps`);
+      console.log(data);
       return data;
     });
   },

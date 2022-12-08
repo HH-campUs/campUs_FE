@@ -14,6 +14,7 @@ import { theme } from "./layout/theme";
 
 import { useRecoilValue } from "recoil";
 import { isDarkAtom } from "./store/atmos";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const GlobalStyle = createGlobalStyle`
 @import url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff');
@@ -37,10 +38,20 @@ const GlobalStyle = createGlobalStyle`
     font-size: 100%;
     vertical-align: baseline;
     -ms-overflow-style: none;
+      .scroll_container{
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+  }
+  
+  .scroll_container::-webkit-scrollbar{
+  display: none;
+  width: 0;  /* Remove scrollbar space */
+  height: 0;
+  background: transparent;  /* Optional: just make scrollbar invisible */
+  -webkit-appearance: none;
+  }
     ::-webkit-scrollbar {
     display: none;
-    /* font-family: 'Pretendard-Regular'; */
-   
   }
   /* HTML5 display-role reset for older browsers */
   article, aside, details, figcaption, figure,
@@ -110,6 +121,7 @@ function App() {
         <ErrorBoundary FallbackComponent={Error}>
           <Router />
         </ErrorBoundary>
+        <ReactQueryDevtools initialIsOpen={true}></ReactQueryDevtools>
       </ThemeProvider>
     </QueryClientProvider>
   );

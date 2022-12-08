@@ -92,10 +92,19 @@ export const NoIdPickToast = ({
     };
   }, []);
   return (
-    <NavToast toastState={toastState}>
-      <p>로그인을 해야 이용할 수 있습니다.</p>
-      <img src="/images/back.svg" alt="nav" onClick={() => nav("/login")} />
-    </NavToast>
+    <CenterAlert toastState={toastState}>
+      <img src="/images/icons/icon-info.svg" />
+
+      <p>로그인 후 찜하기가 가능해요.</p>
+      <span>
+        로그인
+        <img
+          src="/images/whiteBack.svg"
+          alt="nav"
+          onClick={() => nav("/login")}
+        />
+      </span>
+    </CenterAlert>
   );
 };
 
@@ -111,14 +120,16 @@ const fadeOut = keyframes`
 `;
 
 const ToastAlert = styled.div<{ toastState: boolean }>`
-  width: ${(props) => props.theme.pixelToRem(350)};
-  height: ${(props) => props.theme.pixelToRem(60)};
+  width: ${(props) => props.theme.pixelToRem(243)};
+  height: ${(props) => props.theme.pixelToRem(48)};
   margin: 0 auto;
   bottom: ${(props) => props.theme.pixelToRem(30)};
-  ${(props) => props.theme.fontTheme.Body2};
+  ${(props) => props.theme.fontTheme.Caption2};
+  line-height: 1.29;
+  letter-spacing: normal;
   color: ${(props) => props.theme.colorTheme.textWhite};
   background-color: #272727d8;
-  border-radius: 10px;
+  border-radius: 25px;
   align-items: center;
   justify-content: center;
   position: fixed;
@@ -128,22 +139,35 @@ const ToastAlert = styled.div<{ toastState: boolean }>`
   animation-duration: 0.2s;
 `;
 
+const InfoAlert = styled(ToastAlert)``;
+
 const CenterAlert = styled(ToastAlert)`
-  width: ${(props) => props.theme.pixelToRem(350)};
-  height: ${(props) => props.theme.pixelToRem(60)};
-  margin: 0 auto;
-  bottom: ${(props) => props.theme.pixelToRem(30)};
-  ${(props) => props.theme.fontTheme.Body2};
-  color: ${(props) => props.theme.colorTheme.textWhite};
-  background-color: #272727d8;
+  width: ${(props) => props.theme.pixelToRem(245)};
+  height: ${(props) => props.theme.pixelToRem(124)};
   border-radius: 10px;
-  align-items: center;
-  justify-content: center;
-  position: fixed;
-  display: flex;
-  z-index: 1000;
-  animation-name: ${(props) => (props.toastState == true ? fadeIn : fadeOut)};
-  animation-duration: 0.2s;
+  margin: 0 auto;
+  bottom: 45% !important;
+  left: 20%;
+  flex-direction: column;
+
+  img:first-child {
+    position: absolute;
+    margin-top: -56px;
+  }
+  img:last-child {
+    width: 8%;
+    position: absolute;
+
+    margin: 0 10px 0 0;
+    transform: rotate(180deg);
+  }
+  p {
+    margin-top: 10px;
+    position: absolute;
+  }
+  span {
+    margin-top: 70px;
+  }
 `;
 
 const NavToast = styled(ToastAlert)`

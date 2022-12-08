@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useRecoilState } from "recoil";
 
 import Search from "../components/withSearch/Search";
@@ -14,12 +14,16 @@ import { useInView } from "react-intersection-observer";
 import { useLocation } from "react-router-dom";
 import { BiChevronDown } from "react-icons/bi";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+import { NoIdPickToast } from "../components/Toast/Toast";
 
 import { IGetCampResult } from "../interfaces/get";
 import TopicBookmark from "../components/TopicBookmark";
 import { idState } from "../store/loginAtom";
 
 function Topic() {
+  /* toast boolean */
+  const [toastState, setToastState] = useState(false);
+
   const toZero = () => {
     window.scrollTo({ left: 0, top: 0, behavior: "smooth" });
   };
@@ -49,6 +53,9 @@ function Topic() {
   return (
     <>
       {isSearch == false ? null : <Search />}
+      {toastState == true ? (
+        <NoIdPickToast toastState={toastState} setToastState={setToastState} />
+      ) : null}
 
       <TopContainer bg={bg}>
         <BackBtn onClick={() => navigate(`/`)}>

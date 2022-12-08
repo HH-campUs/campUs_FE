@@ -18,8 +18,6 @@ export const useMyPageApi = {
 
   // ** 마이페이지 조회 / get ** //
   useGetMyPage: () => {
-    const token = getCamperToken();
-    if (token == null) return;
     return useQuery(["mypage"], async () => {
       const data = await instance.get("/users/myPage");
       // console.log(data.data);

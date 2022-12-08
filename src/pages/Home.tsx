@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Carousel from "../components/Carousel";
 
 import MytravelPlan from "../components/MytravelPlan";
@@ -8,11 +9,16 @@ import WeekWeather from "../components/WeekWeather";
 import { useRecoilState } from "recoil";
 import { isModal } from "../store/searchAtom";
 import NewReview from "../components/withReview/NewReview";
+import { NoIdPickToast } from "../components/Toast/Toast";
+import { getCamperToken } from "../instance/cookies";
+
 //Css
 import styled from "styled-components";
 
 function Home() {
   const [isSearch, setIsSearch] = useRecoilState(isModal);
+  /* toast boolean */
+  const [toastState, setToastState] = useState(false);
 
   const openModal = () => {
     setIsSearch(true);
@@ -39,6 +45,11 @@ function Home() {
 
   return (
     <Wrapper>
+      {/* 찜하기 알림 토스트 */}
+
+      {toastState == true ? (
+        <NoIdPickToast toastState={toastState} setToastState={setToastState} />
+      ) : null}
       {isSearch == false ? null : <Search />}
 
       <HeadText>

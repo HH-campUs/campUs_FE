@@ -27,7 +27,7 @@ import { usePostsApi } from "../APIs/postsApi";
 import { getCamperToken } from "../instance/cookies";
 import { planOpenProps } from "../interfaces/props";
 import { IPostTravelPlan } from "../interfaces/Posts";
-import { NavPlanToast } from "./Toast/Toast";
+import { NavToast } from "./Toast/Toast";
 
 function PlanWrite({ isPlan, setIsPlan }: planOpenProps) {
   /* toast boolean */
@@ -76,7 +76,12 @@ function PlanWrite({ isPlan, setIsPlan }: planOpenProps) {
     <>
       <Container>
         {toastState == true ? (
-          <NavPlanToast toastState={toastState} setToastState={setToastState} />
+          <NavToast
+            text={"여행일정 등록을 완료했어요."}
+            url={"/mypage/myplan"}
+            toastState={toastState}
+            setToastState={setToastState}
+          />
         ) : null}
         <ModalBg
           isPlan={isPlan}

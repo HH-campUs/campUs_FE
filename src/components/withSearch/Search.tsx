@@ -78,7 +78,7 @@ function Search() {
       <Container>
         {toastState == true ? (
           <InfoToast
-            text={"검색조건이 불충분해요"}
+            text={"검색어가 부족해요."}
             toastState={toastState}
             setToastState={setToastState}
           />

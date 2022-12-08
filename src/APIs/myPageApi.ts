@@ -1,7 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
 import { getCamperToken } from "../instance/cookies";
 import { instance } from "../instance/instance";
 import { IGetMyReview } from "../interfaces/MyPage";
+
 
 const serverUrl = process.env.REACT_APP_API;
 
@@ -22,6 +24,7 @@ export const useMyPageApi = {
   useGetMyPage: () => {
     return useQuery(["mypageinfo"], async () => {
       if (!isLogin) return;
+
       const data = await instance.get("/users/myPage");
       return data;
     });

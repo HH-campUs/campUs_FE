@@ -38,10 +38,20 @@ const GlobalStyle = createGlobalStyle`
     font-size: 100%;
     vertical-align: baseline;
     -ms-overflow-style: none;
+      .scroll_container{
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+  }
+  
+  .scroll_container::-webkit-scrollbar{
+  display: none;
+  width: 0;  /* Remove scrollbar space */
+  height: 0;
+  background: transparent;  /* Optional: just make scrollbar invisible */
+  -webkit-appearance: none;
+  }
     ::-webkit-scrollbar {
     display: none;
-    /* font-family: 'Pretendard-Regular'; */
-   
   }
   /* HTML5 display-role reset for older browsers */
   article, aside, details, figcaption, figure,

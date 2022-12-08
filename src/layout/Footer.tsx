@@ -20,7 +20,7 @@ export default function Footer() {
   return (
     <Box
       sx={{
-        width: 375,
+        width: "100%",
         position: "fixed",
         bottom: 0,
         // left: "50%",

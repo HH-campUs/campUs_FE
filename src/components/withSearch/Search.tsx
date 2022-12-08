@@ -212,7 +212,7 @@ const SearchModal = styled.div<{ isSearch: boolean }>`
   /* position없으면 위치속성 안먹음. */
   /* transform -> 위치작용 */
   position: relative;
-  z-index: 100;
+  z-index: 1000;
   &.isSearch {
     height: 43rem;
     left: 10;

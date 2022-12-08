@@ -128,6 +128,24 @@ const ToastAlert = styled.div<{ toastState: boolean }>`
   animation-duration: 0.2s;
 `;
 
+const CenterAlert = styled(ToastAlert)`
+  width: ${(props) => props.theme.pixelToRem(350)};
+  height: ${(props) => props.theme.pixelToRem(60)};
+  margin: 0 auto;
+  bottom: ${(props) => props.theme.pixelToRem(30)};
+  ${(props) => props.theme.fontTheme.Body2};
+  color: ${(props) => props.theme.colorTheme.textWhite};
+  background-color: #272727d8;
+  border-radius: 10px;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  display: flex;
+  z-index: 1000;
+  animation-name: ${(props) => (props.toastState == true ? fadeIn : fadeOut)};
+  animation-duration: 0.2s;
+`;
+
 const NavToast = styled(ToastAlert)`
   padding: 20px;
   justify-content: space-between !important;

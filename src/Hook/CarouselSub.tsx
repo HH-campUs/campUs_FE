@@ -87,48 +87,44 @@ export default function CarouselSub() {
             <BoxEx>
               <New>NEW</New>
               <CaroText>일몰 명소</CaroText>
-              <ImgCover />
+              <ImgCover onClick={handleClick(1)} />
               <CarouselImg
                 src={"/images/subject/image6.jpg"}
                 alt="img"
                 width={width}
                 draggable={false}
-                onClick={handleClick(1)}
               />
             </BoxEx>
 
             <BoxEx>
               <CaroText>애견동반</CaroText>
-              <ImgCover />
+              <ImgCover onClick={handleClick(2)} />
               <CarouselImg
                 draggable={false}
                 src={"/images/subject/image4.jpg"}
                 alt="img"
                 width={width}
-                onClick={handleClick(2)}
               />
             </BoxEx>
 
             <BoxEx>
               <CaroText>장비대여</CaroText>
-              <ImgCover />
+              <ImgCover onClick={handleClick(3)} />
               <CarouselImg
                 draggable={false}
                 src={"/images/subject/image2.jpg"}
                 alt="img"
                 width={width}
-                onClick={handleClick(3)}
               />
             </BoxEx>
             <BoxEx>
               <CaroText>겨울 낚시</CaroText>
-              <ImgCover />
+              <ImgCover onClick={handleClick(4)} />
               <CarouselImg
                 draggable={false}
                 src={"/images/subject/image1.jpg"}
                 alt="img"
                 width={width}
-                onClick={handleClick(4)}
               />
             </BoxEx>
           </CaroImgBox>

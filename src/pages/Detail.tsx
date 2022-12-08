@@ -262,7 +262,7 @@ function Detail() {
           <Tab isActive={Boolean(reviewMatch)}>
             <TabClick
               onClick={() =>
-                navigate(`/detail/:${state.campId}/review`, {
+                navigate(`/detail/${state.campId}/review`, {
                   state: {
                     campId: `${state.campId}`,
                   },
@@ -283,14 +283,14 @@ function Detail() {
 export default Detail;
 
 const Wrapper = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
-  width: ${(props) => props.theme.pixelToRem(375)};
 `;
 
 const MainImage = styled.div`
   margin: 0 auto;
-  width: ${(props) => props.theme.pixelToRem(375)};
+  width: inherit;
   height: ${(props) => props.theme.pixelToRem(256)};
   position: relative;
   object-fit: contain;
@@ -305,7 +305,7 @@ const MainCampImg = styled.img`
 const TopNavContainer = styled.div`
   width: 100%;
   height: ${(props) => props.theme.pixelToRem(50)};
-  margin: 44px 0 0;
+  margin: 34px 0 0;
   padding: 9px 20px 9px 21px;
   background-color: transparent;
   justify-content: space-between;
@@ -324,6 +324,7 @@ const TopNavContainer = styled.div`
 const UpperWrapper = styled.div`
   display: flex;
   position: absolute;
+  justify-content: space-between;
 `;
 
 const Left = styled.div`
@@ -397,7 +398,7 @@ const Review = styled.p`
 `;
 
 const AddtripBtn = styled.button`
-  width: ${(props) => props.theme.pixelToRem(335)};
+  width: 80%;
   height: ${(props) => props.theme.pixelToRem(46)};
   margin: ${(props) => props.theme.pixelToRem(24)} auto;
   flex-grow: 0;
@@ -456,7 +457,7 @@ const AddtripBtn = styled.button`
     right: 0;
     top: 0;
     margin-top: -1px;
-    width: ${(props) => props.theme.pixelToRem(117)};
+    width: 36%;
     height: ${(props) => props.theme.pixelToRem(46)};
     border-bottom-right-radius: 10px;
     border-top-right-radius: 10px;
@@ -542,7 +543,7 @@ const TheIcon = styled.div`
 `;
 
 const GrayHr = styled.hr`
-  width: ${(props) => props.theme.pixelToRem(375)};
+  width: 100%;
   height: ${(props) => props.theme.pixelToRem(8)};
   margin: 0 auto;
   border: none;
@@ -550,7 +551,7 @@ const GrayHr = styled.hr`
 `;
 
 const Tabs = styled.div`
-  width: ${(props) => props.theme.pixelToRem(375)};
+  width: 100%;
   display: flex;
   justify-content: center;
   align-content: center;

@@ -1,4 +1,3 @@
-
 import React, { useEffect } from "react";
 import { useRecoilState } from "recoil";
 
@@ -121,7 +120,7 @@ function Topic() {
 export default Topic;
 
 const TopContainer = styled.div<{ bg: string }>`
-  width: ${(props) => props.theme.pixelToRem(375)};
+  width: 100%;
   height: ${(props) => props.theme.pixelToRem(266)};
   margin: auto;
   border-bottom-left-radius: ${(props) => props.theme.pixelToRem(12)};
@@ -276,7 +275,7 @@ const FloatingBtn = styled.button`
   /* align-items: center; */
   cursor: pointer;
   z-index: 10;
-  border: 0.5px solid grey;
+  border: 1px solid #eee;
 `;
 
 const UpArrow = styled.img``;

@@ -35,7 +35,7 @@ export default function Layout(props: any) {
 //스크롤 땡겨지는거 막기
 const Root = styled.div`
   width: 100%;
-  height: 100vh;
+
   box-sizing: border-box;
   overflow: hidden;
   position: relative;

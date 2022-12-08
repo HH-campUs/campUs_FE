@@ -1,4 +1,3 @@
-
 import React, { useEffect } from "react";
 import { useRecoilState } from "recoil";
 
@@ -33,11 +32,11 @@ function Topic() {
   const loca = useLocation();
   const state = loca.state as { topicImg: string; id: number };
   const bg = state.topicImg;
-  console.log(bg);
 
   //infiniteScroll
   const { campTopic, fetchNextPage, isSuccess, hasNextPage, refetch } =
     useGetTopicInfinite(topicId!);
+  console.log(campTopic);
 
   const [ref, isView] = useInView();
 
@@ -74,7 +73,7 @@ function Topic() {
           {isSuccess && campTopic?.pages ? (
             campTopic?.pages.map((page) => (
               <React.Fragment key={page.currentPage}>
-                {page?.campTopic.map((item: IGetCampResult) => (
+                {page?.campTopic.camp.map((item: IGetCampResult) => (
                   <ResultBox key={item.campId}>
                     <TopicBookmark Camp={item} />
                     <ResultItem
@@ -84,7 +83,8 @@ function Topic() {
                             campId: `${item.campId}`,
                           },
                         })
-                      }>
+                      }
+                    >
                       <CampImg>
                         <img src={item.ImageUrl} alt={item.campName} />
                         <ReviewInfo>
@@ -272,8 +272,6 @@ const FloatingBtn = styled.button`
   height: 45px;
   border-radius: 45px;
   background-color: white;
-  /* justify-content: center; */
-  /* align-items: center; */
   cursor: pointer;
   z-index: 10;
   border: 0.5px solid grey;

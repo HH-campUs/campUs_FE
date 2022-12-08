@@ -9,9 +9,6 @@ export default function TopicMap({ Camp }: { Camp: IGetCampResult }) {
   const [bookmarking, setBookMarking] = useState(false);
   const campick = usePostsApi.useCampingPicked();
   console.log("장용호", campick.data?.data);
-  // console.log("장용호", campick.data?.data.camp[0].status);
-
-  // const status = campick.data?.data.camp[0].status;
 
   // console.log(data);
   const pick = (campId: number) => {

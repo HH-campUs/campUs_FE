@@ -1,19 +1,56 @@
-import { height } from "@mui/system";
-import React from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
-import KaKaomap from "./KaKaomap";
-import { ImgBox } from "./MytravelPlan";
+import { useGetApi } from "../../APIs/getApi";
+import KaKaomap from "../KaKaomap";
+import NearPostMap from "./NearPostMap";
 
 export default function Nearby() {
+  const [campX, setCampX] = useState<number>();
+  const [campY, setCampY] = useState<number>();
+
+  useEffect(() => {
+    getLocation();
+  }, []);
+
+  const getLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          // const time = new Date(position.timestamp);
+          setCampX(position.coords.latitude);
+          setCampY(position.coords.longitude);
+
+          console.log(position);
+          // console.log(`현재시간 : ${time}`);
+          console.log(`위도 : ${position.coords.latitude}`);
+          console.log(`경도 : ${position.coords.longitude}`);
+        },
+        (error) => {
+          console.error(error);
+        },
+        {
+          enableHighAccuracy: false,
+          maximumAge: 0,
+          timeout: Infinity,
+        }
+      );
+    } else {
+      alert("사용이 불가능합니다.");
+    }
+  };
+  const nearPost = useGetApi.useGetDistance(campX!, campY!);
+  console.log(nearPost);
+
   return (
     <Wrapper>
       <TextBox>가장 가까운 캠핑장</TextBox>
       <PlanBox>
         <PlanWrapper>
           <MapBox>
-            <KaKaomap />
+            {/* <KaKaomap /> */}
+            <NearPostMap />
           </MapBox>
-          {/* <KaKaomap /> */}
+
           <RightBox>
             <DistanceText>10km | 20분</DistanceText>
             <LocationName>캠핑장 이름 적는곳</LocationName>
@@ -21,7 +58,6 @@ export default function Nearby() {
           </RightBox>
         </PlanWrapper>
       </PlanBox>
-      {/* <CenterLine></CenterLine> */}
     </Wrapper>
   );
 }
@@ -87,8 +123,8 @@ const HashTag = styled.div`
   padding: 2px;
 `;
 
-// const CenterLine = styled.div`
-//   width: ${(props) => props.theme.pixelToRem(300)};
-//   height: ${(props) => props.theme.pixelToRem(1)};
-//   background-color: red;
-// `;
+const CenterLine = styled.div`
+  width: ${(props) => props.theme.pixelToRem(300)};
+  height: ${(props) => props.theme.pixelToRem(1)};
+  background-color: red;
+`;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 
 import styled from "styled-components";
@@ -8,8 +8,8 @@ import Search from "../components/withSearch/Search";
 import { isModal } from "../store/searchAtom";
 import { useGetApi } from "../APIs/getApi";
 
-
 function Detail() {
+  const copyLinkRef = useRef();
   const navigate = useNavigate();
   const [isSearch, setIsSearch] = useRecoilState(isModal);
   const [openSemi, setOpenSemi] = useState(false);
@@ -32,6 +32,19 @@ function Detail() {
     event.stopPropagation();
     setOpenSemi(true);
   };
+  const iconArr = [
+    { 무선인터넷: 1 },
+    { 장작판매: 2 },
+    { 온수: 3 },
+    { 트렘폴린: 4 },
+    { 물놀이장: 5 },
+    { 놀이터: 6 },
+    { 산책로: 7 },
+    { 운동장: 8 },
+    { 운동시설: 9 },
+    { 마트편의점: 10 },
+    { 애완동물: 11 },
+  ];
 
   const detailItem = useGetApi.useGetCampDetail(state.campId).data;
   const checkItem = detailItem?.detailCamp![0];
@@ -39,14 +52,17 @@ function Detail() {
   const icon: string[] | undefined =
     detailItem?.detailCamp![0].sbrsCl.split(",");
 
-  console.log(icon);
+  // const ImgArr = iconArr.map((item,i) => {
+  //   icon?.map((receiveIcon,i)=>{
+  //     if(receiveIcon === iconArr)
+  //   })
+  // });
 
   interface IconArr {
     [key: string]: string;
   }
 
   //4~6단계.
-
   //1. IconArr / icon 배열 각 각 일치하는 지 확인.
   //2. 일치할때(true) IconnArr의 요소값 리턴,
   //3. 그 리턴값 이미지url 사용 -> 배열이되야됨.
@@ -55,19 +71,6 @@ function Detail() {
 
   // include , 이중for문, filter
 
-  const iconArr: string[] = [
-    "무선인터넷",
-    "장작판매",
-    "온수",
-    "트렘폴린",
-    "물놀이장",
-    "놀이터",
-    "산책로",
-    "운동장",
-    "운동시설",
-    "마트.편의점",
-    "애완동물",
-  ];
   // , icons.push(iconArr[icon![i]]);
 
   const icons: string[] = [];
@@ -82,9 +85,6 @@ function Detail() {
   // }, []);
 
   // console.log(kim);
-
-  console.log(state.campId);
-  //recoil?
 
   const [bookmark, setBookMark] = useState(true);
   const marking = () => {
@@ -162,9 +162,12 @@ function Detail() {
         <MiddleContainer>
           <UpperWrapper>
             <Left>{checkItem?.campName}</Left>
-            {/* 맵처리 */}
             <Right>
-              <div>일반야영장</div> <div>글램핑</div>
+              {checkItem?.induty.split(",").map((duty, i) => (
+                <DutyBox key={i}>
+                  <Duties>{duty}</Duties>
+                </DutyBox>
+              ))}
             </Right>
           </UpperWrapper>
           <DownWrapper>
@@ -189,7 +192,8 @@ function Detail() {
                 fontSize: "1rem",
                 marginTop: "-4px",
                 marginLeft: "4px",
-              }}>
+              }}
+            >
               |
             </span>
             <u>부산북구 날씨 상세</u>
@@ -244,19 +248,21 @@ function Detail() {
                     campId: `${state.campId}`,
                   },
                 })
-              }>
+              }
+            >
               상세정보
             </TabClick>
           </Tab>
           <Tab isActive={Boolean(reviewMatch)}>
             <TabClick
               onClick={() =>
-                navigate(`/detail/:${state.campId}/review`, {
+                navigate(`/detail/${state.campId}/review`, {
                   state: {
                     campId: `${state.campId}`,
                   },
                 })
-              }>
+              }
+            >
               리뷰
             </TabClick>
           </Tab>
@@ -312,7 +318,8 @@ const TopNavContainer = styled.div`
 
 const UpperWrapper = styled.div`
   display: flex;
-  position: absolute;
+  /* position: absolute; */
+  justify-content: space-between;
 `;
 
 const Left = styled.div`
@@ -325,27 +332,30 @@ const Left = styled.div`
 `;
 
 const Right = styled.div`
-  margin-top: 10px;
-  margin-left: 80px;
   font-size: ${(props) => props.theme.pixelToRem(13)};
-  color: grey;
   justify-content: center;
   display: flex;
+  right: 0;
+`;
 
-  div {
-    width: auto;
-    height: auto;
-    flex-grow: 0;
-    margin: 0 0 0 5px;
-    padding: 5px;
-    border-radius: 1px;
-    background-color: #f5f5f5;
-  }
+const DutyBox = styled.div`
+  border-radius: ${(props) => props.theme.pixelToRem(1)};
+  color: #666;
+  text-align: center;
+  margin-top: 5px;
+`;
+
+const Duties = styled.div`
+  margin-right: 7px;
+  padding-top: 5px;
+  background-color: #f5f5f5;
+  width: ${(props) => props.theme.pixelToRem(65)};
+  height: ${(props) => props.theme.pixelToRem(22)};
+  font-size: ${(props) => props.theme.pixelToRem(12)};
 `;
 
 const DownWrapper = styled.div`
-  /* background-color: red; */
-  margin: 35px 5px;
+  margin-left: 5px;
   display: flex;
   text-align: center;
   align-items: center;

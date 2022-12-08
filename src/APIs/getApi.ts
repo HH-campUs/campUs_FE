@@ -12,6 +12,7 @@ import {
   IGetNewReview,
   IGetCampResult,
   IMostList,
+  IGetDistance,
 } from "../interfaces/get";
 
 const serverUrl = process.env.REACT_APP_API;
@@ -86,12 +87,12 @@ export const useGetCamp = (doNm: string) => {
 export const useGetTopicInfinite = (topicId: string) => {
   const topicData = async ({ pageParam = 0 }) => {
     const { data } = await instance.get<pickedCamp>(
-      `/camps/${topicId}?&numOfRows=10&pageNo=${pageParam}`
+      `/camps/${topicId}?&numOfRows=10&pageNo=${pageParam}&sort=lookUp`
     );
 
-    console.log(data.topicCamp);
+    console.log(data);
     return {
-      campTopic: data.topicCamp,
+      campTopic: data,
       currentPage: pageParam + 1,
     };
   };
@@ -189,6 +190,15 @@ export const useGetApi = {
     });
   },
 
+  // ** 캠핑장 거리 조회 ** //
+  useGetDistance: (campX: number, campY: number) => {
+    return useQuery(["distanceinfo"], async () => {
+      const { data } = await instance.get<IGetDistance>(`
+      users/nearCamp?campX=${campX}&campY=${campY}`);
+      return data;
+    });
+  },
+
   // ** 캠핑장 새로운 리뷰 ** //
   useGetNewReview: () => {
     return useQuery(["reviewnew"], async () => {
@@ -196,7 +206,6 @@ export const useGetApi = {
       return data;
     });
   },
-
 
   /* topic 별 캠핑장 결과 조회 */
   useGetTopicResult: () => {
@@ -208,7 +217,6 @@ export const useGetApi = {
       return data[0];
     });
   },
-
 
   // ** LOOK, PICK, REVIEW ** //
   useGetSort: () => {

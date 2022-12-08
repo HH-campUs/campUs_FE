@@ -49,7 +49,7 @@ function Login() {
       setIsLoggedIn(true);
 
       setUseId(response.data.Tokens.userId);
-      navigate("/");
+      window.location.replace("/");
     }
   };
 

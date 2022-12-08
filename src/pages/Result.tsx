@@ -66,7 +66,8 @@ function Result() {
         <div
           onClick={() => {
             nav("/");
-          }}>
+          }}
+        >
           <div style={{ position: "relative" }}>
             <img src="/images/back.svg" alt="back" />
             <span style={{ width: "60px" }}>검색조건</span>
@@ -93,7 +94,8 @@ function Result() {
         <WeatherModal
           isWeather={isWeather}
           onClick={WeatherHandler}
-          style={{ transition: "all 0.5 ease-in-out" }}>
+          style={{ transition: "all 0.5 ease-in-out" }}
+        >
           <div className="top">
             <span>날씨</span>
             <span>{isWeather ? "펼치기" : "접기"}</span>
@@ -104,35 +106,35 @@ function Result() {
               {/* 날씨 정보에 따른 조건부 이미지 로직 */}
 
               {/* 구름이 많이 낄 때 */}
-              {WeatherData?.weather[1].clouds > 50 &&
-              WeatherData?.weather[1].rain == null ? (
+              {WeatherData?.weather[1]?.clouds > 50 &&
+              WeatherData?.weather[1]?.rain == null ? (
                 <img
                   src="/images/weatherIcon/img-cloudy.svg"
                   alt="weather-img"
                 />
               ) : /* 구름이 적게 낄 때 */
-              WeatherData?.weather[1].clouds > 29 &&
-                WeatherData?.weather[1].clouds < 50 ? (
+              WeatherData?.weather[1]?.clouds > 29 &&
+                WeatherData?.weather[1]?.clouds < 50 ? (
                 <img
                   src="/images/weatherIcon/img-cloud.svg"
                   alt="weather-img"
                 />
               ) : /* 적은 비가 내릴 때 */
-              WeatherData?.weather[1].rain < 0.29 &&
-                WeatherData?.weather[1].rain > 0.01 ? (
+              WeatherData?.weather[1]?.rain < 0.29 &&
+                WeatherData?.weather[1]?.rain > 0.01 ? (
                 <img
                   src="/images/weatherIcon/img-sunRain.svg"
                   alt="weather-img"
                 />
               ) : /* 많은 비가 내릴 때 */
-              WeatherData?.weather[1].rain > 0.3 ? (
+              WeatherData?.weather[1]?.rain > 0.3 ? (
                 <img src="/images/weatherIcon/img-rain.svg" alt="weather-img" />
               ) : /* 눈이 내릴 떄 */
-              WeatherData?.weather[1].snow !== null ? (
+              WeatherData?.weather[1]?.snow !== null ? (
                 <img src="/images/weatherIcon/img-snow.svg" alt="weather-img" />
               ) : /* 눈과 비가 내릴 때 */
-              WeatherData?.weather[1].snow !== null &&
-                WeatherData?.weather[1].rain !== null ? (
+              WeatherData?.weather[1]?.snow !== null &&
+                WeatherData?.weather[1]?.rain !== null ? (
                 <img src="/images/weatherIcon/img-snow.svg" alt="weather-img" />
               ) : (
                 /* 구름이 거의 끼지 않아 밝을 떄 */
@@ -144,17 +146,17 @@ function Result() {
               <div className="infoBox">
                 <span>{doNm}</span>
                 <span>
-                  비올확률 {WeatherData?.weather[1].pop.toFixed(1) * 100}%
+                  비올확률 {WeatherData?.weather[1]?.pop.toFixed(1) * 100}%
                 </span>
               </div>
             </div>
             <div className="thirdSeparate">
               <div className="temBox">
                 <div className="lowHigh">
-                  <p>{WeatherData?.weather[1].min.toFixed(0)}</p>
-                  <p>{WeatherData?.weather[1].max.toFixed(0)}</p>
+                  <p>{WeatherData?.weather[1]?.min.toFixed(0)}</p>
+                  <p>{WeatherData?.weather[1]?.max.toFixed(0)}</p>
                 </div>
-                <span>{WeatherData?.weather[1].day.toFixed(0)}</span>
+                <span>{WeatherData?.weather[1]?.day.toFixed(0)}</span>
                 <b>°</b>
               </div>
               <span>
@@ -176,9 +178,9 @@ function Result() {
                 <img src="/images/weatherIcon/icon-morning.svg" alt="morning" />
                 <img src="/images/weatherIcon/icon-lunch.svg" alt="lunch" />
                 <img src="/images/weatherIcon/icon-night.svg" alt="night" />
-                <span>{WeatherData?.weather[1].morn.toFixed(0)}°</span>
-                <span>{WeatherData?.weather[1].day.toFixed(0)}°</span>
-                <span>{WeatherData?.weather[1].night.toFixed(0)}°</span>
+                <span>{WeatherData?.weather[1]?.morn.toFixed(0)}°</span>
+                <span>{WeatherData?.weather[1]?.day.toFixed(0)}°</span>
+                <span>{WeatherData?.weather[1]?.night.toFixed(0)}°</span>
               </div>
               <div className="infoBox">
                 <div className="left">
@@ -189,20 +191,20 @@ function Result() {
                   </div>
                   <div className="climateNum">
                     <div>
-                      <p>{WeatherData?.weather[1].wind_speed.toFixed(0)}m/s</p>
-                      <p>{WeatherData?.weather[1].humidity}%</p>
-                      <p>{WeatherData?.weather[1].uvi}</p>
+                      <p>{WeatherData?.weather[1]?.wind_speed.toFixed(0)}m/s</p>
+                      <p>{WeatherData?.weather[1]?.humidity}%</p>
+                      <p>{WeatherData?.weather[1]?.uvi}</p>
                     </div>
                   </div>
                 </div>
                 <div className="right">
                   {/* wind_speed */}
-                  {WeatherData?.weather[1].wind_speed.toFixed(0) > 5 ? (
+                  {WeatherData?.weather[1]?.wind_speed.toFixed(0) > 5 ? (
                     <p style={{ color: "#eb4343" }}>
                       <b>·</b> 강풍으로 체감온도가 낮아요
                     </p>
-                  ) : WeatherData?.weather[1].wind_speed.toFixed(0) < 5 &&
-                    WeatherData?.weather[1].wind_speed.toFixed(0) > 2.9 ? (
+                  ) : WeatherData?.weather[1]?.wind_speed.toFixed(0) < 5 &&
+                    WeatherData?.weather[1]?.wind_speed.toFixed(0) > 2.9 ? (
                     <p style={{ color: "#fc9701" }}>
                       <b>·</b> 다소 선선한 바람이 불어요
                     </p>
@@ -213,12 +215,12 @@ function Result() {
                   )}
 
                   {/* humidity */}
-                  {WeatherData?.weather[1].humidity > 60 ? (
+                  {WeatherData?.weather[1]?.humidity > 60 ? (
                     <p style={{ color: "#eb4343" }}>
                       <b>·</b> 많이 습해서 불쾌지수가 올라가요
                     </p>
-                  ) : WeatherData?.weather[1].humidity < 60 &&
-                    WeatherData?.weather[1].humidity > 30 ? (
+                  ) : WeatherData?.weather[1]?.humidity < 60 &&
+                    WeatherData?.weather[1]?.humidity > 30 ? (
                     <p style={{ color: "#27a80c" }}>
                       <b>·</b> 캠프파이어 하기 딱 좋아요
                     </p>
@@ -229,12 +231,12 @@ function Result() {
                   )}
 
                   {/* uvi */}
-                  {WeatherData?.weather[1].uvi > 4.9 ? (
+                  {WeatherData?.weather[1]?.uvi > 4.9 ? (
                     <p style={{ color: "#eb4343" }}>
                       <b>·</b> 야외활동을 추천하지 않아요
                     </p>
-                  ) : WeatherData?.weather[1].uvi < 5 &&
-                    WeatherData?.weather[1].uvi == 3 ? (
+                  ) : WeatherData?.weather[1]?.uvi < 5 &&
+                    WeatherData?.weather[1]?.uvi == 3 ? (
                     <p style={{ color: "#fc9701" }}>
                       <b>·</b> 썬크림은 꼭 발라주세요
                     </p>
@@ -251,29 +253,29 @@ function Result() {
             <div className="secondFloor">
               <div className="iconBox">
                 <img src="/images/weatherIcon/icon-sunrise.svg" alt="sunrise" />
-                <span>{WeatherData?.weather[1].sunrise.slice(-7, -3)}am</span>
+                <span>{WeatherData?.weather[1]?.sunrise.slice(-7, -3)}am</span>
                 <span>일출</span>
               </div>
               <div className="iconBox">
                 <img src="/images/weatherIcon/icon-sunset.svg" alt="sunset" />
-                <span>{WeatherData?.weather[1].sunset.slice(-7, -3)}pm</span>
+                <span>{WeatherData?.weather[1]?.sunset.slice(-7, -3)}pm</span>
                 <span>일몰</span>
               </div>
               <div className="iconBox">
-                {WeatherData?.weather[1].snow !== null &&
-                WeatherData?.weather[1].rain == null ? (
+                {WeatherData?.weather[1]?.snow !== null &&
+                WeatherData?.weather[1]?.rain == null ? (
                   <>
                     <img src="/images/weatherIcon/icon-snow.svg" alt="snow" />
-                    <span>{WeatherData?.weather[1].snow}mm</span>
+                    <span>{WeatherData?.weather[1]?.snow}mm</span>
                     <span>적설량</span>
                   </>
                 ) : (
                   <>
                     <img src="/images/weatherIcon/icon-snow.svg" alt="snow" />
                     <span>
-                      {WeatherData?.weather[1].rain == null
+                      {WeatherData?.weather[1]?.rain == null
                         ? 0
-                        : WeatherData?.weather[1].rain}
+                        : WeatherData?.weather[1]?.rain}
                       mm
                     </span>
                     <span>강수량</span>
@@ -282,7 +284,7 @@ function Result() {
               </div>
               <div className="iconBox">
                 <img src="/images/weatherIcon/icon-cloud.svg" alt="cloud" />
-                <span>{WeatherData?.weather[1].clouds}%</span>
+                <span>{WeatherData?.weather[1]?.clouds}%</span>
                 <span>구름</span>
               </div>
             </div>
@@ -309,7 +311,10 @@ function Result() {
         <ResultTop>
           <div>
             <span className="result"> 검색결과 </span>
-            <span className="total"> ({campData?.pages[0].camps.total}개)</span>
+            <span className="total">
+              {" "}
+              ({campData?.pages[0]?.camps.total}개)
+            </span>
           </div>
           <div>
             <span className="popular">인기순</span>
@@ -328,7 +333,8 @@ function Result() {
                           campId: `${item.campId}`,
                         },
                       })
-                    }>
+                    }
+                  >
                     <ResultImg src={item.ImageUrl} alt={item.ImageUrl} />
                     <InnerBg>
                       <span>

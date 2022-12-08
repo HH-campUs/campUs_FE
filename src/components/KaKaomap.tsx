@@ -15,7 +15,7 @@ const { kakao } = window;
 export default function KaKaomap() {
   useEffect(() => {
     //지도 담을 영역 지정.
-    const container = document.getElementById("map");
+    const container = document.getElementById("KaKaomap");
     const options = {
       center: new kakao.maps.LatLng(33.4507, 126.57),
       level: 5,
@@ -51,7 +51,7 @@ export default function KaKaomap() {
       navigator.geolocation.getCurrentPosition(function (position) {
         var lat = position.coords.latitude, // 위도
           lon = position.coords.longitude; // 경도
-
+        console.log("위도경도", lat, lon);
         var locPosition = new kakao.maps.LatLng(lat, lon), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
           message = "내 위치";
 
@@ -81,7 +81,7 @@ export default function KaKaomap() {
     const map = new kakao.maps.Map(container, options);
   }, []);
 
-  return <Wrapper id="map"></Wrapper>;
+  return <Wrapper id="KaKaomap"></Wrapper>;
 }
 
 const Wrapper = styled.div`

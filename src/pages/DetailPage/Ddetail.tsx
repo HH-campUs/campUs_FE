@@ -2,7 +2,8 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { useGetApi } from "../../APIs/getApi";
-import KaKaomap from "../../components/KaKaomap";
+
+import DetailMap from "./DetailMap";
 
 // 1rem 16px <
 
@@ -12,7 +13,6 @@ function Ddetail() {
 
   const detailItem = useGetApi.useGetCampDetail(state.campId).data;
   const checkItem = detailItem?.detailCamp![0];
-  console.log(checkItem);
 
   // homepage: String,->  홈페이지
   // sbrsCl: String ,->  부대시설
@@ -61,7 +61,7 @@ function Ddetail() {
 
       <MapWrapper>
         <MapTitle>지도</MapTitle>
-        <KaKaomap />
+        <DetailMap />
       </MapWrapper>
     </Wrapper>
   );

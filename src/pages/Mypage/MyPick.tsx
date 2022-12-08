@@ -4,18 +4,16 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { IPickedCamp } from "../../interfaces/Posts";
 import { getCamperToken } from "../../instance/cookies";
-import { usePostsApi } from "../../APIs/postsApi";
+
 import MyPickDelete from "../../components/MyPickDelete";
 
 export default function MyPick() {
-  // const isLogin = useRecoilValue(LoginState);
   const navigate = useNavigate();
   const isLogin = getCamperToken();
-  //백엔드 로직 자체가 userId를 주는 거라서, 예외처리해서 찜 못하게 막아야 할 듯..?
+
   const myPick = useMyPageApi.useGetMyPick().data?.data.Pick;
   const picked = myPick?.map((picks: IPickedCamp) => picks.Camp) || [];
-  console.log(picked);
-  console.log(myPick);
+  console.log("id안나와요", picked);
 
   // const picke = mypick?.~~~~~ || [];
   // const { Pick } = useMyPageApi.useGetMyPage().data?.data;
@@ -35,7 +33,13 @@ export default function MyPick() {
               <MyPickDelete pick={pick} />
               <NameBox>
                 <CampName>{pick.campName}</CampName>
-                <CampDuty>{pick.induty}</CampDuty>
+                <CampDuty>
+                  {pick?.induty.split(",").map((duty, i) => (
+                    <DutyBox key={i}>
+                      <Duties>{duty}</Duties>
+                    </DutyBox>
+                  ))}
+                </CampDuty>
               </NameBox>
 
               <CampAddress>{pick.address}</CampAddress>
@@ -109,7 +113,22 @@ const CampDuty = styled.div`
   color: grey;
   font-size: ${(props) => props.theme.pixelToRem(12)};
   text-align: right;
-  padding-top: 15px;
+`;
+
+const DutyBox = styled.div`
+  border-radius: ${(props) => props.theme.pixelToRem(1)};
+  color: #666;
+  text-align: center;
+  margin-top: 15px;
+`;
+
+const Duties = styled.div`
+  padding-top: 5px;
+  background-color: #f5f5f5;
+  margin-left: 5px;
+  width: ${(props) => props.theme.pixelToRem(65)};
+  height: ${(props) => props.theme.pixelToRem(20)};
+  font-size: ${(props) => props.theme.pixelToRem(12)};
 `;
 
 const CampAddress = styled.div`

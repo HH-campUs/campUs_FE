@@ -11,14 +11,14 @@ function Dreview() {
 
   const detailItem = useGetApi?.useGetCampDetail(state.campId).data;
   const checkItem = detailItem?.detailCamp![0];
-  console.log(checkItem);
+
   //1. 타입 옵셔널 체이닝 확인
   //2. 쿼리문의 타입 확인
   //3. undefiend = !로 해결
 
   const reviewItem = useGetApi?.useGetCampReview(state.campId);
-  const reviewMap = reviewItem?.data?.data;
-
+  const reviewMap = reviewItem?.data?.data || [];
+  console.log("리뷰맵", reviewMap[0]?.likeStatus);
   //[1, 최고!추천해요! / 2,좋았어요! / 3,추천하지 않아요]
 
   return (
@@ -43,15 +43,22 @@ function Dreview() {
             <PfImg>
               <img src={item?.profileImg} alt="pfImg" />
             </PfImg>
-            <div style={{ flexDirection: "column", marginLeft: "6.5px" }}>
+            <PfDetail>
               <NickBox>
                 <PfNick>{item?.nickname}</PfNick>
-                <ReviewUpdate>수정</ReviewUpdate>
-              </NickBox>
-              <LocaBox>
                 <Date>{item?.createdAt.slice(0, 10)}</Date>
-              </LocaBox>
-            </div>
+              </NickBox>
+
+              <Recommend>
+                {item?.likeStatus === 1 ? (
+                  <YesRe> 최고!추천해요!</YesRe>
+                ) : item?.likeStatus === 2 ? (
+                  <GoodRe>좋았어요!</GoodRe>
+                ) : (
+                  <BadRe>추천하지 않아요</BadRe>
+                )}
+              </Recommend>
+            </PfDetail>
           </PfBox>
           <CommentBox>
             <ReviewText>{item?.reviewComment}</ReviewText>
@@ -135,10 +142,17 @@ const PfImg = styled.div`
   }
 `;
 
+const PfDetail = styled.div`
+  width: ${(props) => props.theme.pixelToRem(275)};
+  display: flex;
+  margin-left: 8px;
+  justify-content: space-between;
+`;
+
 const NickBox = styled.div`
   width: ${(props) => props.theme.pixelToRem(250)};
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   font-size: ${(props) => props.theme.pixelToRem(14)};
 `;
 
@@ -146,20 +160,47 @@ const PfNick = styled.div`
   color: #222;
 `;
 
-const ReviewUpdate = styled.div`
-  color: #5185a6;
-`;
-
-const LocaBox = styled.div`
-  width: ${(props) => props.theme.pixelToRem(250)};
-  display: flex;
-  margin-top: 6px;
-  font-size: ${(props) => props.theme.pixelToRem(14)};
+const Date = styled.div`
+  margin-top: 5px;
   color: #666;
 `;
 
-const Date = styled.div``;
+const Recommend = styled.div`
+  align-items: center;
+  text-align: center;
+  margin-top: 3px;
+  /* right: 0; */
+`;
 
+const YesRe = styled.div`
+  width: ${(props) => props.theme.pixelToRem(96)};
+  height: ${(props) => props.theme.pixelToRem(26)};
+  background-color: #fa845f;
+  font-size: ${(props) => props.theme.pixelToRem(12)};
+  border-radius: ${(props) => props.theme.pixelToRem(20)};
+  color: #ffffff;
+  padding-top: 6px;
+`;
+
+const GoodRe = styled.div`
+  width: ${(props) => props.theme.pixelToRem(69)};
+  height: ${(props) => props.theme.pixelToRem(26)};
+  background-color: #ff9d2a;
+  font-size: ${(props) => props.theme.pixelToRem(12)};
+  border-radius: ${(props) => props.theme.pixelToRem(20)};
+  color: #ffffff;
+  padding-top: 6px;
+`;
+
+const BadRe = styled.div`
+  width: ${(props) => props.theme.pixelToRem(100)};
+  height: ${(props) => props.theme.pixelToRem(26)};
+  background-color: #bab8b0;
+  font-size: ${(props) => props.theme.pixelToRem(12)};
+  border-radius: ${(props) => props.theme.pixelToRem(20)};
+  color: #ffffff;
+  padding-top: 6px;
+`;
 const CommentBox = styled.div`
   width: ${(props) => props.theme.pixelToRem(300)};
   color: #666;

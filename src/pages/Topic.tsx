@@ -1,4 +1,3 @@
-
 import React, { useEffect } from "react";
 import { useRecoilState } from "recoil";
 
@@ -33,7 +32,6 @@ function Topic() {
   const loca = useLocation();
   const state = loca.state as { topicImg: string; id: number };
   const bg = state.topicImg;
-  console.log(bg);
 
   //infiniteScroll
   const { campTopic, fetchNextPage, isSuccess, hasNextPage, refetch } =
@@ -50,12 +48,19 @@ function Topic() {
   return (
     <>
       {isSearch == false ? null : <Search />}
-
+      <ImgCover onClick={() => navigate(`/`)} />
       <TopContainer bg={bg}>
-        <BackBtn onClick={() => navigate(`/`)}>
+        <BackBtn>
           <img src="/images/back.svg" alt="back" />
         </BackBtn>
       </TopContainer>
+      {/* <div style={{ position: "absolute" , transform}}>
+        <TextTitle>일몰명소</TextTitle>
+        <MidTextBox>
+          <MidText>일몰 명소 캠핑장 추천</MidText>
+          <NextPage>애견동반</NextPage>
+        </MidTextBox>
+      </div> */}
 
       <ResultContainer>
         <ResultTop>
@@ -74,7 +79,7 @@ function Topic() {
           {isSuccess && campTopic?.pages ? (
             campTopic?.pages.map((page) => (
               <React.Fragment key={page.currentPage}>
-                {page?.campTopic.map((item: IGetCampResult) => (
+                {page?.campTopic.camp.map((item: IGetCampResult) => (
                   <ResultBox key={item.campId}>
                     <TopicBookmark Camp={item} />
                     <ResultItem
@@ -84,7 +89,8 @@ function Topic() {
                             campId: `${item.campId}`,
                           },
                         })
-                      }>
+                      }
+                    >
                       <CampImg>
                         <img src={item.ImageUrl} alt={item.campName} />
                         <ReviewInfo>
@@ -123,11 +129,20 @@ export default Topic;
 const TopContainer = styled.div<{ bg: string }>`
   width: ${(props) => props.theme.pixelToRem(375)};
   height: ${(props) => props.theme.pixelToRem(266)};
-  margin: auto;
   border-bottom-left-radius: ${(props) => props.theme.pixelToRem(12)};
   border-bottom-right-radius: ${(props) => props.theme.pixelToRem(12)};
   background-image: url(${(props) => props.bg});
   background-size: cover;
+  /* background-repeat: no-repeat; */
+  object-fit: cover;
+`;
+const ImgCover = styled.div`
+  width: ${(props) => props.theme.pixelToRem(375)};
+  height: ${(props) => props.theme.pixelToRem(266)};
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: ${(props) => props.theme.pixelToRem(15)};
+  z-index: 1;
+  position: absolute;
 `;
 
 const BackBtn = styled.div`
@@ -144,6 +159,14 @@ const BackBtn = styled.div`
     display: inline-block;
   }
 `;
+
+const TextTitle = styled.div``;
+
+const MidTextBox = styled.div``;
+
+const MidText = styled.div``;
+
+const NextPage = styled.div``;
 
 const ResultContainer = styled.div``;
 
@@ -272,8 +295,6 @@ const FloatingBtn = styled.button`
   height: 45px;
   border-radius: 45px;
   background-color: white;
-  /* justify-content: center; */
-  /* align-items: center; */
   cursor: pointer;
   z-index: 10;
   border: 0.5px solid grey;

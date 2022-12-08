@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-function AfterSignup() {
+function Welcome() {
   const nav = useNavigate();
   return (
     <Wrapper>
@@ -10,10 +10,10 @@ function AfterSignup() {
         <img src="/images/signup/icon-check.svg" alt="check" />
       </Circle>
 
-      <Welcome>
+      <Welcomee>
         <h2>회원가입 완료!</h2>
         <p className="sub">캠프어스에 오신 걸 환영해요</p>
-      </Welcome>
+      </Welcomee>
 
       <Container>
         <img src="/images/signup/icon-1.svg" alt="1" />
@@ -21,17 +21,17 @@ function AfterSignup() {
         <img src="/images/signup/icon-3.svg" alt="3" />
         <img src="/images/signup/icon-more.svg" alt="3" />
       </Container>
-      <span>
+      <Sub>
         지금 바로 캠프어스에서 가고 싶은 캠핑장을 검색하고 다양한 기능을
         만나보세요!
-      </span>
+      </Sub>
 
       <MainBtn onClick={() => nav("/")}>메인으로 가기</MainBtn>
     </Wrapper>
   );
 }
 
-export default AfterSignup;
+export default Welcome;
 
 const Wrapper = styled.div`
   width: 100%;
@@ -56,7 +56,7 @@ const Circle = styled.div`
   }
 `;
 
-const Welcome = styled.div`
+const Welcomee = styled.div`
   width: ${(props) => props.theme.pixelToRem(156)};
   height: ${(props) => props.theme.pixelToRem(26)};
   margin: 20px auto 20px;
@@ -108,23 +108,22 @@ const Container = styled.div`
       margin: 10px auto;
     }
   }
+`;
 
-  .sub {
-    width: ${(props) => props.theme.pixelToRem(269)};
-    height: ${(props) => props.theme.pixelToRem(44)};
-    margin: 20px auto;
-    ${(props) => props.theme};
-    font-size: 16px;
-    font-weight: normal;
-    line-height: 1.38;
-    letter-spacing: normal;
-    text-align: center;
-    color: #222;
-  }
+const Sub = styled.span`
+  width: ${(props) => props.theme.pixelToRem(275)};
+  height: ${(props) => props.theme.pixelToRem(44)};
+  margin: -2px auto 0;
+  text-align: center;
+  ${(props) => props.theme.fontTheme.Body2};
+  line-height: 1.38;
+  letter-spacing: normal;
+  text-align: center;
+  display: flex;
 `;
 
 const MainBtn = styled.button`
-  margin: 60px auto 35px;
+  margin: 80px auto 0;
   width: 327px;
   height: 60px;
   display: flex;
@@ -136,5 +135,10 @@ const MainBtn = styled.button`
   border-radius: 10px;
   background-color: #024873;
   border: none;
-  color: #fff;
+  color: #fff !important;
+  font-size: ${(props) => props.theme.pixelToRem(17)};
+  ${(props) => props.theme.fontTheme.Subtitle3};
+  line-height: 1.22;
+  letter-spacing: normal;
+  text-align: center;
 `;

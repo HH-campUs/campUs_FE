@@ -72,7 +72,7 @@ const Wrapper = styled.div`
 `;
 
 const HeadText = styled.div`
-  width: ${(props) => props.theme.pixelToRem(350)};
+  width: 20px auto 0;
   height: ${(props) => props.theme.pixelToRem(80)};
   margin: 84px 20px 20px;
   font-size: ${(props) => props.theme.pixelToRem(30)};

@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Kebop from "../../components/withPlan/Kebop";
+import SemiSearch from "../../components/withSearch/SemiSearch";
+import PlanUpdate from "../../components/withPlan/PlanUpdate";
 
 import { usePostsApi } from "../../APIs/postsApi";
 import { useNavigate } from "react-router-dom";
@@ -10,7 +12,8 @@ import { useMyPageApi } from "../../APIs/myPageApi";
 
 export default function MyPlan() {
   const [onOff, setOnOff] = useState(false);
-  const [openMore, setOpenMore] = useState(false);
+  const [isPlan, setIsPlan] = useState(false);
+
   const isLogin = getCamperToken();
   const navigate = useNavigate();
 
@@ -35,91 +38,76 @@ export default function MyPlan() {
     }
   };
 
-  const tripId = 1;
-  const deleteHandler = () => {
-    usePostsApi.useDeleteTravelPlan(tripId);
-  };
   return (
-    <TotalContainer>
-      <ToggleBtn onOff={onOff}>
-        <input type="checkbox" id="toggle" onChange={onChangeText} hidden />
+    <>
+      {isPlan == false ? null : (
+        <PlanUpdate isPlan={isPlan} setIsPlan={setIsPlan} />
+      )}
+      <TotalContainer>
+        <ToggleBtn onOff={onOff}>
+          <input type="checkbox" id="toggle" onChange={onChangeText} hidden />
 
-        <span className="offSpan" onClick={toggle}>
-          다가올 여행
-        </span>
-        <span className="onSpan" onClick={toggle}>
-          지난여행
-        </span>
-        <label htmlFor="toggle" className="toggleSwitch">
-          <span className="toggleButton" />
-        </label>
-      </ToggleBtn>
-      <Wrapper>
-        {isLogin ? (
-          <>
-            {onOff == false ? (
-              <>
-                {Trips?.map((trip: IGetTravelPlan, idx: number) => (
-                  <PlanBox key={idx}>
-                    <img src={trip.Camp?.ImageUrl} alt="img" />
-                    <Dday>D-day</Dday>
-                    <div className="infoBox">
-                      <span>{trip.Camp?.address}</span>
-                      <span>{trip.Camp?.campName}</span>
-                      <span>떠나는 날짜</span>
-                      <span>
-                        {trip.date.slice(2, 4)}.{trip.date.slice(4, 6)}.
-                        {trip.date.slice(6, 8)}
-                      </span>
-                      <Memo>
-                        안녕하세요.안녕하세요.안녕하세요. 안녕하세요.안녕하세요.
-                      </Memo>
-                    </div>
+          <span className="offSpan" onClick={toggle}>
+            다가올 여행
+          </span>
+          <span className="onSpan" onClick={toggle}>
+            지난여행
+          </span>
+          <label htmlFor="toggle" className="toggleSwitch">
+            <span className="toggleButton" />
+          </label>
+        </ToggleBtn>
+        <Wrapper>
+          {isLogin ? (
+            <>
+              {onOff == false ? (
+                <>
+                  {Trips?.map((trip: IGetTravelPlan) => (
+                    <PlanBox key={trip.Camp?.tripId}>
+                      <img src={trip.Camp?.ImageUrl} alt="img" />
+                      <Dday>D-day</Dday>
+                      <div className="infoBox">
+                        <span>{trip.Camp?.address}</span>
+                        <span>{trip.Camp?.campName}</span>
+                        <span>떠나는 날짜</span>
+                        <span>
+                          {trip.date.slice(2, 4)}.{trip.date.slice(4, 6)}.
+                          {trip.date.slice(6, 8)}
+                        </span>
+                        <Memo></Memo>
+                      </div>
 
-                    <Kebop />
-                  </PlanBox>
-                ))}
-              </>
-            ) : (
-              <PlanBox>
-                <img
-                  src="https://mblogthumb-phinf.pstatic.net/MjAxOTExMDNfMTIw/MDAxNTcyNzExMzg5NjE4.S3sNMojDGrZ4WdYdGXRV-XMrd5R9jyxts4HLVGcZg1cg.kNrbyXXyEU7EHW5DqsGGr9XufBo-NWfGPIdyQ0mI3kcg.JPEG.z_ye0n/IMG_0206.JPG?type=w800"
-                  alt="img"
-                />
-                <div className="infoBox">
-                  <span>경기도 용인시</span>
-                  <span>용인 자연휴양림 야영장</span>
-                  <span>떠나는 날짜</span>
-                  <span>22.12.03</span>
+
+                      <Kebop tripId={trip.tripId} setIsPlan={setIsPlan} />
+                    </PlanBox>
+                  ))}
+                </>
+              ) : null}
+            </>
+          ) : (
+            <>
+              <NotiBox>
+                <div>
+                  <img src="/images/mypage/myplan.svg" alt="tent" />
                 </div>
-
-                {/* 케밥박스 */}
-                <Kebop />
-              </PlanBox>
-            )}
-          </>
-        ) : (
-          <>
-            <NotiBox>
-              <div>
-                <img src="/images/mypage/myplan.svg" alt="tent" />
-              </div>
-              <PickText>아직 저장한 여행이 없어요!</PickText>
-              <PickBtn
-                onClick={() => {
-                  navigate("/topic/1");
-                }}>
-                가장 가까운 캠핑장 구경가기
-              </PickBtn>
-            </NotiBox>
-          </>
-        )}
-      </Wrapper>
-    </TotalContainer>
+                <PickText>아직 저장한 여행이 없어요!</PickText>
+                <PickBtn
+                  onClick={() => {
+                    navigate("/topic/1");
+                  }}>
+                  가장 가까운 캠핑장 구경가기
+                </PickBtn>
+              </NotiBox>
+            </>
+          )}
+        </Wrapper>
+      </TotalContainer>
+    </>
   );
 }
 
 const TotalContainer = styled.div`
+  width: 100%;
   position: absolute;
 `;
 

@@ -9,6 +9,7 @@ const refreshToken = getRefreshToken();
 
 const baseURL = process.env.REACT_APP_API;
 
+//bearer access가 들어감.
 export const instance = axios.create({
   baseURL,
   headers: {
@@ -17,7 +18,11 @@ export const instance = axios.create({
   },
 });
 
-//리뷰작성용 content-type : multipart/form-data.
+export const instanceTopic = axios.create({
+  baseURL,
+  headers: {},
+});
+
 export const postInstance = axios.create({
   baseURL: process.env.REACT_APP_API,
   headers: {

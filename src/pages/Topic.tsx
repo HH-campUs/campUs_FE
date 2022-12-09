@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 
 import { useRecoilState } from "recoil";
@@ -14,13 +13,12 @@ import { useInView } from "react-intersection-observer";
 
 //css
 import { useLocation } from "react-router-dom";
-import { BiChevronDown } from "react-icons/bi";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { NoIdPickToast } from "../components/Toast/Toast";
 
 import { IGetCampResult } from "../interfaces/get";
 import TopicBookmark from "../components/TopicBookmark";
-import { idState } from "../store/loginAtom";
+import { getCamperToken } from "../instance/cookies";
 
 function Topic() {
   /* toast boolean */
@@ -39,10 +37,13 @@ function Topic() {
   const state = loca.state as { topicImg: string; id: number };
   const bg = state.topicImg;
 
+  const isLogin = getCamperToken();
+
   //infiniteScroll
   const { campTopic, fetchNextPage, isSuccess, hasNextPage, refetch } =
     useGetTopicInfinite(topicId!);
 
+  console.log("camp", campTopic);
   const [ref, isView] = useInView();
 
   useEffect(() => {
@@ -58,7 +59,6 @@ function Topic() {
       {toastState == true ? (
         <NoIdPickToast toastState={toastState} setToastState={setToastState} />
       ) : null}
-
 
       <ImgCover onClick={() => navigate(`/`)} />
 
@@ -86,24 +86,22 @@ function Topic() {
             <img src="/images/topic/openclose.svg" alt="downArrow" />
           </div>
         </ResultTop>
-        {/*
-         */}
+
         <CampMap>
           {isSuccess && campTopic?.pages ? (
             campTopic?.pages.map((page) => (
               <React.Fragment key={page.currentPage}>
-                {page?.campTopic.camp.map((item: IGetCampResult) => (
+                {page?.campTopic?.topicCamp?.map((item: IGetCampResult) => (
                   <ResultBox key={item.campId}>
                     <TopicBookmark Camp={item} />
                     <ResultItem
                       onClick={() =>
-                        navigate(`/detail/${item.campId}`, {
+                        navigate(`/detail/${item.campId}/detail`, {
                           state: {
                             campId: `${item.campId}`,
                           },
                         })
-                      }
-                    >
+                      }>
                       <CampImg>
                         <img src={item.ImageUrl} alt={item.campName} />
                         <ReviewInfo>

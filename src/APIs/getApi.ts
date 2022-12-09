@@ -1,5 +1,5 @@
 import { useQuery, useInfiniteQuery } from "@tanstack/react-query";
-import { instance } from "../instance/instance";
+import { instance, instanceTopic } from "../instance/instance";
 
 import {
   IGetCampReview,
@@ -19,7 +19,7 @@ const serverUrl = process.env.REACT_APP_API;
 /* 캠핑장 키워드 검색 */
 export const useSearchCamp = (keyword: string, sort: string) => {
   const useData = async ({ pageParam = 1 }) => {
-    const { data } = await instance.get<campArray>(
+    const { data } = await instanceTopic.get<campArray>(
       `/searchSort?keyword=${keyword}&numOfRows=20&pageNo=${pageParam}&sort=${sort}`
     );
     console.log(data, keyword);
@@ -50,7 +50,7 @@ export const useSearchCamp = (keyword: string, sort: string) => {
 /* 리얼 인피니티 스크롤 - 캠프 result 페이지 전용*/
 export const useGetCamp = (doNm: string, sort: string) => {
   const useData = async ({ pageParam = 1 }) => {
-    const { data } = await instance.get<campArray>(
+    const { data } = await instanceTopic.get<campArray>(
       `/camps?doNm=${doNm}&numOfRows=20&pageNo=${pageParam}&sort=${sort}`
     );
 
@@ -81,7 +81,7 @@ export const useGetCamp = (doNm: string, sort: string) => {
 //infiniteQuery for Topic
 export const useGetTopicInfinite = (topicId: string) => {
   const topicData = async ({ pageParam = 0 }) => {
-    const { data } = await instance.get<pickedCamp>(
+    const { data } = await instanceTopic.get<pickedCamp>(
       `/camps/${topicId}?&numOfRows=10&pageNo=${pageParam}&sort=lookUp`
     );
     return {
@@ -195,7 +195,7 @@ export const useGetApi = {
       const { data } = await instance.get<IGetDistance>(
         `users/nearCamp?campX=${campX}&campY=${campY}`
       );
-      console.log(data);
+      // console.log(data);
       return data;
     });
   },

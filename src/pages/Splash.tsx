@@ -36,7 +36,9 @@ function Splash() {
       <RightTemplate>
         <SplashBg>
           <SplashLogo>
-            <Lottie options={defaultOptions} height={500} width={500} />
+            <div style={{ top: "-60%", left: "-41%", position: "absolute" }}>
+              <Lottie options={defaultOptions} height={600} width={600} />
+            </div>
             <img src="/images/logo.svg" alt="logo" />
           </SplashLogo>
         </SplashBg>
@@ -59,13 +61,16 @@ const SplashLogo = styled.div`
   width: 290px;
   height: 290px;
   margin: 0 auto;
+  top: 25%;
+  left: -7%;
+  position: relative;
   display: flex;
 
   img {
     width: 10rem;
-    top: 50%;
+    top: 80%;
     left: 34%;
-    position: fixed;
+    position: absolute;
   }
 `;
 
@@ -77,7 +82,7 @@ const Root = styled.div`
   box-sizing: border-box;
   display: flex;
   justify-content: center;
-  position: fixed;
+  position: relative;
   overflow: hidden;
   overflow-y: scroll;
   touch-action: none;
@@ -114,6 +119,7 @@ const RightTemplate = styled.div`
   width: 475px;
   //height: 500px;
   min-width: 375px;
+  position: relative;
 
   @media screen and (min-width: 915px) {
     max-width: 475px;

@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { ISignUpForm } from "../interfaces/inLogin";
 import { instance } from "../instance/instance";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { toastState } from "../store/toastAtom";
+import { isToast } from "../store/toastAtom";
 import { InfoToast } from "../components/Toast/Toast";
 
 //css
@@ -174,8 +174,9 @@ export default function SignUp() {
 }
 
 const LoginWrap = styled.div`
-  width: ${(props) => props.theme.pixelToRem(375)};
+  width: 100%;
   height: 95vh;
+  position: relative;
 `;
 
 const LoginTitle = styled.div`

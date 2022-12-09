@@ -39,8 +39,7 @@ export default function Carousel() {
         style={{
           height,
           overflow: hide ? "hidden" : "visible",
-        }}
-      >
+        }}>
         <CarouselSlider
           className="flex"
           style={{
@@ -61,8 +60,7 @@ export default function Carousel() {
 
               setTransX(0);
             },
-          })}
-        >
+          })}>
           {/* 맵사용가능여부 확인해서 맵사용해야함. */}
           {/* 조회수나 리뷰 우선순위 겹치면 똑같은게나옴. */}
           <CarouselSlide>

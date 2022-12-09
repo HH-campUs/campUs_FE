@@ -1,3 +1,4 @@
+import { toastState } from "../store/toastAtom";
 export interface IGetCampCatInfo {
   keyword: string;
 }
@@ -161,6 +162,10 @@ export interface IGetCampResult {
   review: IGetCampResult;
   pick: IGetCampResult;
   camp: IGetCampResult[];
+
+  /* toast */
+  toastState?: boolean;
+  setToastState?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface campArray extends IGetCampResult {

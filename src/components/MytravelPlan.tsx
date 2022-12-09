@@ -18,7 +18,12 @@ export default function MytravelPlan() {
     <Wrapper>
       <TextBox>
         <MyPlan>내 여행일정</MyPlan>
-        <AllList>전체보기</AllList>
+        <AllList
+          onClick={() => {
+            navigate("/mypage/myplan");
+          }}>
+          전체보기
+        </AllList>
       </TextBox>
 
       {isLogin ? (
@@ -112,7 +117,7 @@ const CloseBox = styled.div`
   font-size: 13px;
   display: flex;
   z-index: 3;
-  position: absolute;
+  position: relative;
 `;
 
 const Carlendar = styled.div`

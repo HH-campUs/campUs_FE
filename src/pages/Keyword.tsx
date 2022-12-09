@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { useInView } from "react-intersection-observer";
 
+import Up from "../components/Up";
 import { isModal, textValue } from "../store/searchAtom";
 import { showLo, selectLo } from "../store/locationAtom";
 import { StrMonth, StrDay, DateState } from "../store/dateAtom";
@@ -30,10 +31,6 @@ function Keyword() {
 
   /* camp result 무한스크롤 */
 
-  /* 조회순 ⇒sort = lookUp
-      인기순 ⇒sort = pickCount
-      리뷰순 ⇒sort = reviewCount */
-
   const { campData, fetchNextPage, isSuccess, hasNextPage, refetch } =
     useSearchCamp(keyword, sortState);
   console.log(campData);
@@ -61,8 +58,7 @@ function Keyword() {
         <div
           onClick={() => {
             nav("/");
-          }}
-        >
+          }}>
           <div style={{ position: "relative" }}>
             <img src="/images/back.svg" alt="back" />
             <span style={{ width: "60px" }}>검색조건</span>
@@ -110,16 +106,14 @@ function Keyword() {
             {sortState == "lookUp" ? (
               <span
                 className="popular"
-                onClick={() => setSortState("pickCount")}
-              >
+                onClick={() => setSortState("pickCount")}>
                 {" "}
                 조회순{" "}
               </span>
             ) : sortState == "pickCount" ? (
               <span
                 className="popular"
-                onClick={() => setSortState("reviewCount")}
-              >
+                onClick={() => setSortState("reviewCount")}>
                 {" "}
                 인기순{" "}
               </span>
@@ -134,7 +128,7 @@ function Keyword() {
         {isSuccess && campData?.pages ? (
           campData?.pages.map((page) => (
             <React.Fragment key={page.currentPage}>
-              {page?.camps.searchSort?.map((item: IGetCampResult) => (
+              {page?.camps.searchCamp?.map((item: IGetCampResult) => (
                 <ResultBox key={item.campId}>
                   <ResultItem
                     onClick={() =>
@@ -143,8 +137,7 @@ function Keyword() {
                           campId: `${item.campId}`,
                         },
                       })
-                    }
-                  >
+                    }>
                     <ResultImg src={item.ImageUrl} alt={item.ImageUrl} />
                     <InnerBg>
                       <span>
@@ -180,8 +173,9 @@ function Keyword() {
         ) : (
           <div>데이터가 없습니다</div>
         )}
+        <div ref={ref} style={{ width: "inherit", height: "auto" }}></div>
       </ResultContainer>
-      <div ref={ref} style={{ width: "inherit", height: "auto" }}></div>
+      <Up />
     </>
   );
 }
@@ -191,7 +185,7 @@ export default Keyword;
 /* result */
 
 const ReSearch = styled.div`
-  width: ${(props) => props.theme.pixelToRem(335)};
+  width: 89%;
   height: ${(props) => props.theme.pixelToRem(54)};
   margin: 15px auto;
   padding: 15px 20px 15px 14px;
@@ -219,7 +213,7 @@ const ReSearch = styled.div`
 /* weather */
 
 const NoWeather = styled.div`
-  width: ${(props) => props.theme.pixelToRem(335)};
+  width: 89%;
   height: ${(props) => props.theme.pixelToRem(116)};
   flex-grow: 0;
   margin: 0 auto;
@@ -230,7 +224,7 @@ const NoWeather = styled.div`
   z-index: 100;
 
   .top {
-    width: ${(props) => props.theme.pixelToRem(335)};
+    width: 100%;
     height: ${(props) => props.theme.pixelToRem(35)};
     border-top-left-radius: ${(props) => props.theme.pixelToRem(10)};
     border-top-right-radius: ${(props) => props.theme.pixelToRem(10)};
@@ -259,7 +253,7 @@ const NoWeather = styled.div`
 
     .inline {
       margin-top: 10px;
-      margin-left: 50px;
+      margin-left: 40px;
       margin-bottom: 6px;
       display: flex;
       img {
@@ -289,13 +283,13 @@ const NoWeather = styled.div`
 
 /* 결과 창 */
 const ResultContainer = styled.div`
-  width: ${(props) => props.theme.pixelToRem(335)};
+  width: 89%;
   height: auto;
   margin: 0 auto;
 `;
 
 const ResultTop = styled.div`
-  width: inherit;
+  width: 100%;
   margin-top: 40px;
   padding: {
     top: 10px;
@@ -352,7 +346,7 @@ const ResultBox = styled.div`
 `;
 
 const ResultItem = styled.div`
-  width: ${(props) => props.theme.pixelToRem(335)};
+  width: 100%;
   height: ${(props) => props.theme.pixelToRem(190)};
   margin: 27px 0 14px;
   border-radius: 8px;
@@ -405,7 +399,7 @@ const InnerBg = styled.div`
 `;
 
 const CampSpan = styled.div`
-  width: ${(props) => props.theme.pixelToRem(335)};
+  width: inherit;
   justify-content: space-between;
   display: flex;
 
@@ -455,7 +449,7 @@ const DetailAddress = styled.div`
   }
 `;
 const TagContainer = styled.div`
-  width: ${(props) => props.theme.pixelToRem(331)};
+  width: 100%;
   height: ${(props) => props.theme.pixelToRem(24)};
   margin: 12px 0 5px 4px;
   padding: 0;

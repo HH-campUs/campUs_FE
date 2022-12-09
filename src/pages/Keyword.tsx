@@ -128,7 +128,7 @@ function Keyword() {
         {isSuccess && campData?.pages ? (
           campData?.pages.map((page) => (
             <React.Fragment key={page.currentPage}>
-              {page?.camps.searchSort?.map((item: IGetCampResult) => (
+              {page?.camps.searchCamp?.map((item: IGetCampResult) => (
                 <ResultBox key={item.campId}>
                   <ResultItem
                     onClick={() =>
@@ -173,8 +173,8 @@ function Keyword() {
         ) : (
           <div>데이터가 없습니다</div>
         )}
+        <div ref={ref} style={{ width: "inherit", height: "auto" }}></div>
       </ResultContainer>
-      <div ref={ref} style={{ width: "inherit", height: "auto" }}></div>
       <Up />
     </>
   );

@@ -350,7 +350,7 @@ function Result() {
           /* page별로 map을 한 번 돌려서 2차원배열 구조로 되어있는~ */
           campData?.pages.map((page) => (
             <React.Fragment key={page.currentPage}>
-              {page?.camps.camp.map((item: IGetCampResult) => (
+              {page?.camps.regionCamp.map((item: IGetCampResult) => (
                 <ResultBox key={item.campId}>
                   <ResultItem
                     onClick={() =>
@@ -390,6 +390,13 @@ function Result() {
                   </TagContainer>
                 </ResultBox>
               ))}
+              <div
+                ref={ref}
+                style={{
+                  width: "inherit",
+                  height: "auto",
+                  bottom: "20",
+                }}></div>
             </React.Fragment>
           ))
         ) : (

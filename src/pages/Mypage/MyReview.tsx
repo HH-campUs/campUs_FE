@@ -71,8 +71,7 @@ export default function MyReview() {
             <PickBtn
               onClick={() => {
                 navigate("/topic/1");
-              }}
-            >
+              }}>
               다녀온 캠핑장 구경가기
             </PickBtn>
           </NotiBox>

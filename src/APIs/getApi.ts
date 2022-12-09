@@ -19,7 +19,7 @@ const serverUrl = process.env.REACT_APP_API;
 /* 캠핑장 키워드 검색 */
 export const useSearchCamp = (keyword: string, sort: string) => {
   const useData = async ({ pageParam = 1 }) => {
-    const { data } = await instance.get<campArray>(
+    const { data } = await instanceTopic.get<campArray>(
       `/searchSort?keyword=${keyword}&numOfRows=20&pageNo=${pageParam}&sort=${sort}`
     );
     console.log(data, keyword);
@@ -50,7 +50,7 @@ export const useSearchCamp = (keyword: string, sort: string) => {
 /* 리얼 인피니티 스크롤 - 캠프 result 페이지 전용*/
 export const useGetCamp = (doNm: string, sort: string) => {
   const useData = async ({ pageParam = 1 }) => {
-    const { data } = await instance.get<campArray>(
+    const { data } = await instanceTopic.get<campArray>(
       `/camps?doNm=${doNm}&numOfRows=20&pageNo=${pageParam}&sort=${sort}`
     );
 

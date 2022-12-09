@@ -132,7 +132,7 @@ function Keyword() {
                 <ResultBox key={item.campId}>
                   <ResultItem
                     onClick={() =>
-                      nav(`/detail/:${item.campId}`, {
+                      nav(`/detail/:${item.campId}/detail`, {
                         state: {
                           campId: `${item.campId}`,
                         },

@@ -17,19 +17,19 @@ import {
   StrDay,
   StrMonth,
   StrYear,
-} from "../store/dateAtom";
-import { selectLo, showLo } from "../store/locationAtom";
-import { isModal, textValue } from "../store/searchAtom";
+} from "../../store/dateAtom";
+import { selectLo, showLo } from "../../store/locationAtom";
+import { isModal, textValue } from "../../store/searchAtom";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import styled, { keyframes, css } from "styled-components";
-import Datepicker from "./withSearch/Datepicker";
-import { usePostsApi } from "../APIs/postsApi";
-import { getCamperToken } from "../instance/cookies";
-import { planOpenProps } from "../interfaces/props";
-import { IPostTravelPlan } from "../interfaces/Posts";
-import { NavToast } from "./Toast/Toast";
+import Datepicker from "../withSearch/Datepicker";
+import { usePostsApi } from "../../APIs/postsApi";
+import { getCamperToken } from "../../instance/cookies";
+import { planOpenProps } from "../../interfaces/props";
+import { IPostTravelPlan } from "../../interfaces/Posts";
+import { NavToast } from "../Toast/Toast";
 
-function PlanWrite({ isPlan, setIsPlan }: planOpenProps) {
+function PlanUpdate({ isPlan, setIsPlan }: planOpenProps) {
   /* toast boolean */
   const [toastState, setToastState] = useState(false);
 
@@ -48,12 +48,11 @@ function PlanWrite({ isPlan, setIsPlan }: planOpenProps) {
     setOpenDate(!openDate);
   };
 
-  const isLogin = getCamperToken();
   //campId확인.
   const loca = useLocation();
   const state = loca.state as { campId: number };
 
-  const planPost = usePostsApi.usePostTravelPlan();
+  const planPost = usePostsApi.useUpdateTravelPlan();
   const {
     register,
     handleSubmit,
@@ -93,7 +92,7 @@ function PlanWrite({ isPlan, setIsPlan }: planOpenProps) {
         <SearchModal isPlan={isPlan} className="isSearch">
           {/* Headline + close btn */}
           <TopContainer>
-            <SearchTitle>여행일정을 등록해볼까요?</SearchTitle>
+            <SearchTitle>어떻게 수정할까요?</SearchTitle>
             <CloseBtn
               src="/images/closeBtn.svg"
               onClick={() => {
@@ -123,7 +122,7 @@ function PlanWrite({ isPlan, setIsPlan }: planOpenProps) {
             />
 
             <BtnContainer isPlan={isPlan}>
-              <SearchBtn>일정 등록하기</SearchBtn>
+              <SearchBtn>일정 수정하기</SearchBtn>
             </BtnContainer>
           </form>
         </SearchModal>
@@ -132,7 +131,7 @@ function PlanWrite({ isPlan, setIsPlan }: planOpenProps) {
   );
 }
 
-export default PlanWrite;
+export default PlanUpdate;
 /* animations */
 const slideIn = keyframes`
   from {bottom: -500px; opacity: 0} 

@@ -12,12 +12,14 @@ export interface IGetMyReview {
 }
 
 export interface IGetTravelPlan {
+  tripId: number | undefined;
   campId: number;
   memo?: string;
   ImageUrl: string;
   campName: string;
   address?: string;
   date: string;
+  setOpenSemi: React.Dispatch<React.SetStateAction<boolean>>;
   Camp?: IGetTravelPlan;
 }
 

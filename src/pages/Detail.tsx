@@ -5,13 +5,17 @@ import styled from "styled-components";
 import { Outlet, useMatch, useLocation, useNavigate } from "react-router-dom";
 import SemiSearch from "../components/withSearch/SemiSearch";
 import Search from "../components/withSearch/Search";
-import PlanWrite from "../components/PlanWrite";
+import PlanWrite from "../components/withPlan/PlanWrite";
 import { isModal } from "../store/searchAtom";
 import { useGetApi } from "../APIs/getApi";
 import { StrDay } from "../store/dateAtom";
 import getIcons from "../utils/getIcons";
+import { getCamperToken } from "../instance/cookies";
+
+import { InfoToast, NoIdPickToast, NavToast } from "../components/Toast/Toast";
 
 function Detail() {
+  const [toastState, setToastState] = useState(false);
   const copyLinkRef = useRef();
   const navigate = useNavigate();
   const [isSearch, setIsSearch] = useRecoilState(isModal);
@@ -24,10 +28,10 @@ function Detail() {
 
   const day = useRecoilValue(StrDay);
   console.log(day);
+  const isLogin = getCamperToken();
 
   const loca = useLocation();
   const state = loca.state as { campId: number };
-
   const goBack = () => {
     navigate(-1);
   };
@@ -60,8 +64,27 @@ function Detail() {
     setBookMark((prev) => !prev);
   };
 
+  useEffect(() => {
+    window.scrollTo({ left: 0, top: 0 });
+  }, []);
+
   return (
     <>
+      {isLogin == true ? (
+        <NoIdPickToast
+          text={"로그인 후 여행등록이 가능해요."}
+          toastState={toastState}
+          setToastState={setToastState}
+        />
+      ) : toastState == true ? (
+        <NavToast
+          text={"내 여행일정에 추가되었어요."}
+          url={"/mypage/myplan"}
+          toastState={toastState}
+          setToastState={setToastState}
+        />
+      ) : null}
+
       {openSemi == false ? null : (
         <SemiSearch openSemi={openSemi} setOpenSemi={setOpenSemi} />
       )}
@@ -162,8 +185,7 @@ function Detail() {
                 fontSize: "1rem",
                 marginTop: "-4px",
                 marginLeft: "4px",
-              }}
-            >
+              }}>
               |
             </span>
             <Plan> 일정을 저장해 보세요!</Plan>
@@ -201,8 +223,7 @@ function Detail() {
                     campId: `${state.campId}`,
                   },
                 })
-              }
-            >
+              }>
               상세정보
             </TabClick>
           </Tab>
@@ -214,8 +235,7 @@ function Detail() {
                     campId: `${state.campId}`,
                   },
                 })
-              }
-            >
+              }>
               리뷰
             </TabClick>
           </Tab>
@@ -270,11 +290,7 @@ const TopNavContainer = styled.div`
 `;
 
 const UpperWrapper = styled.div`
-<<<<<<< HEAD
   display: flex;
-=======
-  display: flex; 
->>>>>>> 835cc14bf09ba997b5439e0caf990c2e230fc1bd
   justify-content: space-between;
 `;
 

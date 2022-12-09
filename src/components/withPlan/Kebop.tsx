@@ -1,9 +1,22 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import SemiSearch from "../withSearch/SemiSearch";
+import { usePostsApi } from "../../APIs/postsApi";
+import { IGetTravelPlan } from "../../interfaces/MyPage";
+import { semiOpenProps } from "../../interfaces/props";
+import PlanUpdate from "../../components/withPlan/PlanUpdate";
 
-function Kebop() {
+function Kebop({ tripId }: any) {
   const [openMore, setOpenMore] = useState(false);
+  const [isPlan, setIsPlan] = useState(true);
 
+  const deleteId = usePostsApi.useDeleteTravelPlan();
+
+  const unPlan = () => {
+    deleteId.mutate(tripId);
+    setOpenMore(false);
+    console.log(tripId);
+  };
   return (
     <>
       <img
@@ -14,8 +27,8 @@ function Kebop() {
       />
       {openMore == true ? (
         <BtnBox>
-          <div>수정하기</div>
-          <div>삭제</div>
+          <div onClick={() => setIsPlan(true)}>수정하기</div>
+          <div onClick={unPlan}>삭제</div>
         </BtnBox>
       ) : null}
     </>

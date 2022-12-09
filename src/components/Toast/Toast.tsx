@@ -51,6 +51,37 @@ export const NavToast = ({
   );
 };
 
+export const NoIdPickToast = ({
+  text,
+  toastState,
+  setToastState,
+}: ToastProps) => {
+  const nav = useNavigate();
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setToastState(false);
+    }, 1500);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
+  return (
+    <CenterAlert toastState={toastState}>
+      <img src="/images/icons/icon-info.svg" />
+
+      <p>{text}</p>
+      <span>
+        로그인
+        <img
+          src="/images/whiteBack.svg"
+          alt="nav"
+          onClick={() => nav("/login")}
+        />
+      </span>
+    </CenterAlert>
+  );
+};
 /* 여행일정 */
 /* export const NavPlanToast = ({
   text,
@@ -79,38 +110,6 @@ export const NavToast = ({
   );
 }; */
 
-export const NoIdPickToast = ({
-  text,
-  toastState,
-  setToastState,
-}: ToastProps) => {
-  const nav = useNavigate();
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setToastState(false);
-    }, 1500);
-
-    return () => {
-      clearTimeout(timer);
-    };
-  }, []);
-  return (
-    <CenterAlert toastState={toastState}>
-      <img src="/images/icons/icon-info.svg" />
-
-      <p>로그인 후 찜하기가 가능해요.</p>
-      <span>
-        로그인
-        <img
-          src="/images/whiteBack.svg"
-          alt="nav"
-          onClick={() => nav("/login")}
-        />
-      </span>
-    </CenterAlert>
-  );
-};
-
 const fadeIn = keyframes`
   from {opacity: 0} 
     to {opacity: 1}
@@ -135,8 +134,8 @@ const ToastAlert = styled.div<{ toastState: boolean }>`
   border-radius: 25px;
   align-items: center;
   justify-content: center;
-  position: fixed;
   display: flex;
+  position: fixed;
   z-index: 1000;
   animation-name: ${(props) => (props.toastState == true ? fadeIn : fadeOut)};
   animation-duration: 0.2s;
@@ -174,7 +173,11 @@ const CenterAlert = styled(ToastAlert)`
 `;
 
 const NaviToast = styled(ToastAlert)`
+  width: ${(props) => props.theme.pixelToRem(351)};
+  bottom: 10%;
+  transform: translateX(6%);
   padding: 20px;
+  border-radius: 10px;
   justify-content: space-between !important;
 
   img {

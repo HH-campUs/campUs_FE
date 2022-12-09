@@ -17,6 +17,11 @@ export const instance = axios.create({
   },
 });
 
+export const instanceTopic = axios.create({
+  baseURL,
+  headers: {},
+});
+
 //리뷰작성용 content-type : multipart/form-data.
 export const postInstance = axios.create({
   baseURL: process.env.REACT_APP_API,

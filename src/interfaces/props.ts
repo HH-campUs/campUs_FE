@@ -23,6 +23,8 @@ export interface planOpenProps {
 }
 
 export interface ToastProps {
+  url?: string;
+  imgUrl?: string;
   text?: string;
   setText?: React.Dispatch<React.SetStateAction<string>>;
   toastState: boolean;

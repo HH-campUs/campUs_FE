@@ -12,10 +12,12 @@ function Kebop() {
         style={{ width: "6%", marginTop: "-52px", marginLeft: "18px" }}
         onClick={() => setOpenMore(!openMore)}
       />
-      <BtnBox>
-        <div>수정하기</div>
-        <div>삭제</div>
-      </BtnBox>
+      {openMore == true ? (
+        <BtnBox>
+          <div>수정하기</div>
+          <div>삭제</div>
+        </BtnBox>
+      ) : null}
     </>
   );
 }

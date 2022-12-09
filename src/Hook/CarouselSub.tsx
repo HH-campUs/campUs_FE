@@ -126,6 +126,8 @@ export default function CarouselSub() {
                 draggable={false}
                 src={"/images/subject/image5.jpg"}
                 alt="img"
+                width={width}
+
               />
             </BoxEx>
           </CaroImgBox>

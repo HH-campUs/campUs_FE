@@ -1,4 +1,6 @@
-import React, { useEffect } from "react";
+
+import React, { useState, useEffect } from "react";
+
 import { useRecoilState } from "recoil";
 
 import Search from "../components/withSearch/Search";
@@ -13,11 +15,15 @@ import { useInView } from "react-intersection-observer";
 //css
 import { useLocation } from "react-router-dom";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+import { NoIdPickToast } from "../components/Toast/Toast";
 
 import { IGetCampResult } from "../interfaces/get";
 import TopicBookmark from "../components/TopicBookmark";
 
 function Topic() {
+  /* toast boolean */
+  const [toastState, setToastState] = useState(false);
+
   const toZero = () => {
     window.scrollTo({ left: 0, top: 0, behavior: "smooth" });
   };
@@ -47,7 +53,14 @@ function Topic() {
   return (
     <>
       {isSearch == false ? null : <Search />}
+
+      {toastState == true ? (
+        <NoIdPickToast toastState={toastState} setToastState={setToastState} />
+      ) : null}
+
+
       <ImgCover onClick={() => navigate(`/`)} />
+
       <TopContainer bg={bg}>
         <BackBtn>
           <img src="/images/back.svg" alt="back" />
@@ -126,7 +139,7 @@ function Topic() {
 export default Topic;
 
 const TopContainer = styled.div<{ bg: string }>`
-  width: ${(props) => props.theme.pixelToRem(375)};
+  width: 100%;
   height: ${(props) => props.theme.pixelToRem(266)};
   border-bottom-left-radius: ${(props) => props.theme.pixelToRem(12)};
   border-bottom-right-radius: ${(props) => props.theme.pixelToRem(12)};
@@ -296,7 +309,7 @@ const FloatingBtn = styled.button`
   background-color: white;
   cursor: pointer;
   z-index: 10;
-  border: 0.5px solid grey;
+  border: 1px solid #eee;
 `;
 
 const UpArrow = styled.img``;

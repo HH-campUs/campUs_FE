@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { isModal } from "../store/searchAtom";
 import Search from "../components/withSearch/Search";
 import { Link, Outlet, useMatch, useNavigate } from "react-router-dom";
 import ProfileModal from "../components/ProfileModal";
 
 //Login
-import { LoginState } from "../store/loginAtom";
+
 import { useMyPageApi } from "../APIs/myPageApi";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { getCamperToken } from "../instance/cookies";
 
 //css
@@ -34,7 +34,9 @@ function Mypage() {
           <>
             <UserProfile>
               <LoginProfile>
-                <HeadText>campUs</HeadText>
+                <HeadText>
+                  <img src="/images/mypage/campUs logo.svg" alt="" />{" "}
+                </HeadText>
                 <ProfileBox>
                   <ProfileCircle>
                     <img src={checkPf?.profileImg} alt="PFP" />
@@ -68,7 +70,10 @@ function Mypage() {
           <>
             <UserProfile>
               <Profile>
-                <HeadText>campUs</HeadText>
+                <HeadText>
+                  {" "}
+                  <img src="/images/mypage/campUs logo.svg" alt="" />
+                </HeadText>
                 <ProfileText>
                   <Welcome>
                     로그인 하고 더 많은 <br></br>기능을 사용해 보세요!
@@ -79,14 +84,16 @@ function Mypage() {
                     onClick={(e) => {
                       e.preventDefault();
                       navigate("/login");
-                    }}>
+                    }}
+                  >
                     로그인
                   </LoginBtn>
                   <SignBtn
                     onClick={(e) => {
                       e.preventDefault();
                       navigate("/signup");
-                    }}>
+                    }}
+                  >
                     회원가입
                   </SignBtn>
                 </LoginBox>
@@ -107,7 +114,8 @@ function Mypage() {
                 style={{
                   // height: "100vh",
                   marginTop: "20px",
-                }}>
+                }}
+              >
                 <Outlet />
               </div>
             </UserProfile>

@@ -1,7 +1,7 @@
-import { previousDay } from "date-fns";
 import React, { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useRecoilValue } from "recoil";
 
 import styled from "styled-components";
 import { useGetApi } from "../APIs/getApi";
@@ -9,14 +9,17 @@ import { usePostsApi } from "../APIs/postsApi";
 import PreviewImgDelete from "../components/PreviewImgDelete";
 import { getCamperToken } from "../instance/cookies";
 import { IReviewPosts } from "../interfaces/Posts";
+import { StrDay, StrMonth } from "../store/dateAtom";
 
 export default function Review() {
-  interface Props {
-    setImagePreview: React.Dispatch<React.SetStateAction<string[]>>;
-    setImageFiles: React.Dispatch<React.SetStateAction<File[]>>;
-  }
+  // interface Props {
+  //   setImagePreview: React.Dispatch<React.SetStateAction<string[]>>;
+  //   setImageFiles: React.Dispatch<React.SetStateAction<File[]>>;
+  // }
 
   const isLogin = getCamperToken();
+  const Month = useRecoilValue(StrMonth);
+  const Day = useRecoilValue(StrDay);
   //campId확인.
   const loca = useLocation();
   const state = loca.state as { campId: number };
@@ -82,6 +85,8 @@ export default function Review() {
     }
   };
 
+  //이것도 캐싱 다시해야할 수 있음. (invalidQuery - key사용)
+  //로딩에 5초정도걸림.
   const handleValid = (data: IReviewPosts) => {
     if (!campId) return;
     const formData = new FormData();
@@ -96,6 +101,7 @@ export default function Review() {
       campId: campId,
     };
     reviewPost.mutate(body);
+    navigate(-1);
   };
 
   // const handleDeleteImage = useCallback((idx: number) => {
@@ -105,14 +111,19 @@ export default function Review() {
   //   );
   // }, []);
 
-  // toast필요 / type에러확인
+  // toast필요
   useEffect(() => {
+    if (imagePreview.length === 0) return;
     if (imagePreview.length > 3) {
       window.alert("이미지는 3장까지 첨부가능합니다.");
       setImagePreview((prev) => prev.slice(0, 3));
       setImageFiles((prev: File[]) => prev.slice(0, 3));
     }
   }, [imagePreview]);
+
+  const warning = () => {
+    window.alert("로그인 후 이용해주세요!");
+  };
 
   return (
     <Wrapper>
@@ -130,11 +141,7 @@ export default function Review() {
 
         <HeadText>리뷰쓰기</HeadText>
       </Head>
-      <TextBox>
-        {/* <Campname>{checkItem?.campName}</Campname>
-        <CampLocation>{checkItem?.address}</CampLocation> */}
-      </TextBox>
-
+      <TextBox></TextBox>
       <ReviewImgBox>
         <img
           src={checkItem?.ImageUrl}
@@ -146,14 +153,13 @@ export default function Review() {
       <VisitDay>
         방문일선택
         <p style={{ textDecoration: "underline", marginLeft: "160px" }}>
-          2022.19.99
+          2022.{Month}.{Day}
         </p>
         <RightArrow src="/images/review/rightArrow.svg" />
       </VisitDay>
       <Line />
-      {/* div */}
+
       <RecoBox>
-        {/* 라벨 */}
         <BestImgDiv isBest={bestStatus}>
           <img
             src="/images/review/emptybest.svg"
@@ -230,15 +236,15 @@ export default function Review() {
       </ReviewTip>
       <WriteHead>
         <p>리뷰 쓰기</p>
-        <p style={{ color: "#5185A6" }}>최소 20자</p>
+        <p style={{ color: "#5185A6" }}>최소 10자</p>
       </WriteHead>
       <ReviewForm onSubmit={handleSubmit(handleValid)}>
         <StTextArea
           {...register("reviewComment", {
             required: "리뷰를 작성해주세요.",
             minLength: {
-              value: 20,
-              message: "20자 이상 작성해주세요.",
+              value: 10,
+              message: "10자 이상 작성해주세요.",
             },
           })}
         />
@@ -286,7 +292,7 @@ export default function Review() {
         {isLogin ? (
           <StBtn>리뷰 남기기</StBtn>
         ) : (
-          <StBtn>로그인 후 이용해주세요</StBtn>
+          <StBtn onClick={warning}>로그인 후 이용해주세요</StBtn>
         )}
         {/* 여기 toast알람 들어가야함. */}
       </ReviewForm>
@@ -367,11 +373,9 @@ const RecoBox = styled.div`
   height: ${(props) => props.theme.pixelToRem(100)};
   justify-content: center;
   align-items: center;
-  /* flex-direction: column; */
 `;
 
 //* recoBtn tap *//
-// ${(props) => (props.value == 1 ? "#024873" : "lightgray")};
 const BestImgDiv = styled.label<{ isBest: Boolean }>`
   min-width: ${(props) => props.theme.pixelToRem(62)};
   min-height: ${(props) => props.theme.pixelToRem(62)};
@@ -386,6 +390,9 @@ const BestImgDiv = styled.label<{ isBest: Boolean }>`
 
   img {
     position: absolute;
+  }
+  div {
+    width: ${(props) => props.theme.pixelToRem(80)};
   }
 `;
 
@@ -406,9 +413,7 @@ const BestInput = styled.input`
   }
 `;
 
-const PreviewImg = styled.div`
-  /* position: absolute; */
-`;
+const PreviewImg = styled.div``;
 
 const Delete = styled.div`
   position: relative;
@@ -416,17 +421,11 @@ const Delete = styled.div`
 `;
 
 const BestBtnDiv = styled.div<{ isBest: Boolean }>`
-  /* display: flex; */
-  /* width: 250px; */
+  position: absolute;
   margin-top: 100px;
-
-  justify-content: center;
-  align-items: center;
   font-size: ${(props) => props.theme.pixelToRem(14)};
   color: ${(props) => (props.isBest ? "#024873" : "lightgray")};
 `;
-
-/* ${(props) => (props.isActive ? "#024873" : "lightgray")}; */
 
 const GoodInput = styled.input`
   width: ${(props) => props.theme.pixelToRem(120)};
@@ -449,7 +448,6 @@ const GoodInput = styled.input`
   }
 `;
 
-/* ${(props) => (props.isGood ? "#024873" : "lightgray")}; */
 const GoodImgDiv = styled.label<{ isGood: Boolean }>`
   min-width: ${(props) => props.theme.pixelToRem(62)};
   min-height: ${(props) => props.theme.pixelToRem(62)};
@@ -467,10 +465,9 @@ const GoodImgDiv = styled.label<{ isGood: Boolean }>`
     position: absolute;
   }
 `;
-// ${(props) => (props.isGood ? "#024873" : "grey")};
+
 const GoodBtnDiv = styled.div<{ isGood: Boolean }>`
   margin-top: 100px;
-  margin-left: 7px;
   font-size: ${(props) => props.theme.pixelToRem(14)};
   color: ${(props) => (props.isGood ? "#024873" : "lightgray")};
 `;
@@ -491,15 +488,6 @@ const BadInput = styled.input`
   }
 `;
 
-// ${(props) => (props.isBad ? "#024873" : "grey")};
-const BadBtnDiv = styled.div<{ isBad: Boolean }>`
-  margin-top: 100px;
-  margin-left: -9px;
-  font-size: ${(props) => props.theme.pixelToRem(14)};
-  color: ${(props) => (props.isBad ? "#024873" : "lightgray")};
-`;
-
-/* ${(props) => (props.isBad ? "#024873" : "lightgray")}; */
 const BadImgDiv = styled.label<{ isBad: Boolean }>`
   min-width: ${(props) => props.theme.pixelToRem(62)};
   min-height: ${(props) => props.theme.pixelToRem(62)};
@@ -516,9 +504,22 @@ const BadImgDiv = styled.label<{ isBad: Boolean }>`
   img {
     position: absolute;
   }
+
+  div {
+    width: ${(props) => props.theme.pixelToRem(90)};
+  }
+`;
+
+const BadBtnDiv = styled.div<{ isBad: Boolean }>`
+  position: absolute;
+  margin-top: 100px;
+  margin-left: 5px;
+  font-size: ${(props) => props.theme.pixelToRem(14)};
+  color: ${(props) => (props.isBad ? "#024873" : "lightgray")};
 `;
 
 //** RecoBtn tab 끝 */
+
 const ReviewTip = styled.div`
   width: ${(props) => props.theme.pixelToRem(335)};
   height: ${(props) => props.theme.pixelToRem(124)};

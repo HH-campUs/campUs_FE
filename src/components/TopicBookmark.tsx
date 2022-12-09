@@ -6,30 +6,22 @@ import styled from "styled-components";
 import { IGetCampResult } from "../interfaces/get";
 
 export default function TopicMap({ Camp }: { Camp: IGetCampResult }) {
-  const [bookmarking, setBookMarking] = useState(false);
   const campick = usePostsApi.useCampingPicked();
-  console.log("장용호", campick.data?.data);
-  // console.log("장용호", campick.data?.data.camp[0].status);
 
-  // const status = campick.data?.data.camp[0].status;
-
-  // console.log(data);
   const pick = (campId: number) => {
     campick.mutate(campId);
     window.alert("찜하기 완료");
-    setBookMarking((prev) => !prev);
   };
 
   const unpick = (campId: number) => {
     campick.mutate(campId);
     window.alert("찜하기 취소");
-    setBookMarking((prev) => !prev);
   };
 
   //onclick한번 / icon 3항.
   return (
     <>
-      {bookmarking ? (
+      {Camp.status ? (
         <CampImgBox>
           <BookmarkBorderIcon
             onClick={() => {

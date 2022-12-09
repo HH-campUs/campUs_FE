@@ -11,10 +11,9 @@ export default function MyReview() {
 
   const myReviewDummy = useMyPageApi.useGetMyReview();
   const myReview = myReviewDummy.data?.data;
-  // console.log("내리뷰", myReview);
+
   const checkPf = useMyPageApi.useGetMyPage().data?.data;
   const checkReview = checkPf?.Review;
-  // console.log("체크리뷰", checkReview);
 
   return (
     <Wrapper>
@@ -53,7 +52,9 @@ export default function MyReview() {
                   .split(",")
                   .map((image: string, i: number) => (
                     <ImgBox>
-                      <img src={image} alt="reviewImg" key={i} />
+                      {item?.reviewImg ? (
+                        <img src={image} alt="" key={i} />
+                      ) : null}
                     </ImgBox>
                   ))}
               </ImgFlex>
@@ -70,8 +71,7 @@ export default function MyReview() {
             <PickBtn
               onClick={() => {
                 navigate("/topic/1");
-              }}
-            >
+              }}>
               다녀온 캠핑장 구경가기
             </PickBtn>
           </NotiBox>

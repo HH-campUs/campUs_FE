@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
 
 import styled from "styled-components";
 import { Outlet, useMatch, useLocation, useNavigate } from "react-router-dom";
@@ -8,16 +8,22 @@ import Search from "../components/withSearch/Search";
 import PlanWrite from "../components/PlanWrite";
 import { isModal } from "../store/searchAtom";
 import { useGetApi } from "../APIs/getApi";
-import { eventNames } from "process";
+import { StrDay } from "../store/dateAtom";
+import getIcons from "../utils/getIcons";
 
 function Detail() {
+  const copyLinkRef = useRef();
   const navigate = useNavigate();
   const [isSearch, setIsSearch] = useRecoilState(isModal);
+
   const [openSemi, setOpenSemi] = useState(false);
   const [isPlan, setIsPlan] = useState(false);
 
   const detailMatch = useMatch("/detail/id/detail");
   const reviewMatch = useMatch("/detail/id/review");
+
+  const day = useRecoilValue(StrDay);
+  console.log(day);
 
   const loca = useLocation();
   const state = loca.state as { campId: number };
@@ -33,71 +39,26 @@ function Detail() {
   const openModal = () => {
     setOpenSemi(true);
   };
-
   const openPlan = () => {
     setIsPlan(true);
   };
 
   const detailItem = useGetApi.useGetCampDetail(state.campId).data;
+  console.log(detailItem);
   const checkItem = detailItem?.detailCamp![0];
+  // console.log(detailItem);
 
-  const icon: string[] | undefined =
-    detailItem?.detailCamp![0].sbrsCl.split(",");
+  const icons = useMemo<string[]>(() => {
+    if (!detailItem?.detailCamp) return [];
+    return detailItem?.detailCamp[0]?.sbrsCl?.split(",");
+  }, [detailItem]);
 
-  console.log(icon);
-
-  interface IconArr {
-    [key: string]: string;
-  }
-
-  //4~6단계.
-
-  //1. IconArr / icon 배열 각 각 일치하는 지 확인.
-  //2. 일치할때(true) IconnArr의 요소값 리턴,
-  //3. 그 리턴값 이미지url 사용 -> 배열이되야됨.
-  //4. 3번결과 배열로 맵사용.
-  //5. 맵을사용했을때 이미자만 나오는게아니라, 이미지+text같이나와야함.
-
-  // include , 이중for문, filter
-
-  const iconArr: string[] = [
-    "무선인터넷",
-    "장작판매",
-    "온수",
-    "트렘폴린",
-    "물놀이장",
-    "놀이터",
-    "산책로",
-    "운동장",
-    "운동시설",
-    "마트.편의점",
-    "애완동물",
-  ];
-  // , icons.push(iconArr[icon![i]]);
-
-  const icons: string[] = [];
-
-  // useEffect(() => {
-  //   for (let i = 0; i < 11; i++) {
-  //     if (icon !== undefined) {
-  //       iconArr.array.forEach((element) => {});
-  //     }
-  //   }
-  //   console.log(icons);
-  // }, []);
-
-  // console.log(kim);
-
-  console.log(state.campId);
-  //recoil?
+  console.log(icons);
 
   const [bookmark, setBookMark] = useState(true);
   const marking = () => {
     setBookMark((prev) => !prev);
   };
-
-  // [{전기,"/images/back.svg"}].map((qwer) => {<img src="{adsf}"></img>})
-  // 진기 ? 아이콘 : null
 
   return (
     <>
@@ -171,9 +132,12 @@ function Detail() {
         <MiddleContainer>
           <UpperWrapper>
             <Left>{checkItem?.campName}</Left>
-            {/* 맵처리 */}
             <Right>
-              <div>일반야영장</div> <div>글램핑</div>
+              {checkItem?.induty.split(",").map((duty, i) => (
+                <DutyBox key={i}>
+                  <Duties>{duty}</Duties>
+                </DutyBox>
+              ))}
             </Right>
           </UpperWrapper>
           <DownWrapper>
@@ -191,17 +155,18 @@ function Detail() {
           <div className="leftInfo">
             <img src="/images/Calendar.svg" alt="calendar" />
             <u className="date" onClick={openModal}>
-              12월 20일{" "}
+              12월 {day}일
             </u>
             <span
               style={{
                 fontSize: "1rem",
                 marginTop: "-4px",
                 marginLeft: "4px",
-              }}>
+              }}
+            >
               |
             </span>
-            <u>부산북구 날씨 상세</u>
+            <Plan> 일정을 저장해 보세요!</Plan>
           </div>
           <div className="rightBtn" onClick={openPlan}>
             여행일정 저장
@@ -215,32 +180,13 @@ function Detail() {
               <FcRight>전체보기</FcRight>
             </FcTextBox>
             <FcIconBox>
-              {/* {icons?.map((item, i) => {
-                <TheIcon key={i}>
-                  <img src={item} alt="dog" />
-                  <span>애완동물</span>
-                </TheIcon>;
-              })} */}
-              <TheIcon>
-                <img src="/images/faclIcon/icon-dog.svg" alt="dog" />
-                <span>애완동물</span>
-              </TheIcon>
-              <TheIcon>
-                <img src="/images/faclIcon/icon-dog.svg" alt="dog" />
-                <span>애완동물</span>
-              </TheIcon>
-              <TheIcon>
-                <img src="/images/faclIcon/icon-dog.svg" alt="dog" />
-                <span>애완동물</span>
-              </TheIcon>
-              <TheIcon>
-                <img src="/images/faclIcon/icon-dog.svg" alt="dog" />
-                <span>애완동물</span>
-              </TheIcon>
-              <TheIcon>
-                <img src="/images/faclIcon/icon-dog.svg" alt="dog" />
-                <span>애완동물</span>
-              </TheIcon>
+              {icons.length > 0 &&
+                icons?.map((item, i) => (
+                  <TheIcon key={i}>
+                    {getIcons(item)}
+                    <span>{item}</span>
+                  </TheIcon>
+                ))}
             </FcIconBox>
           </FcBox>
         </WFcBox>
@@ -255,7 +201,8 @@ function Detail() {
                     campId: `${state.campId}`,
                   },
                 })
-              }>
+              }
+            >
               상세정보
             </TabClick>
           </Tab>
@@ -267,7 +214,8 @@ function Detail() {
                     campId: `${state.campId}`,
                   },
                 })
-              }>
+              }
+            >
               리뷰
             </TabClick>
           </Tab>
@@ -322,8 +270,7 @@ const TopNavContainer = styled.div`
 `;
 
 const UpperWrapper = styled.div`
-  display: flex;
-  position: absolute;
+  display: flex; 
   justify-content: space-between;
 `;
 
@@ -337,27 +284,31 @@ const Left = styled.div`
 `;
 
 const Right = styled.div`
-  margin-top: 10px;
-  margin-left: 80px;
   font-size: ${(props) => props.theme.pixelToRem(13)};
-  color: grey;
   justify-content: center;
   display: flex;
+  /* right: 0; */
+`;
 
-  div {
-    width: auto;
-    height: auto;
-    flex-grow: 0;
-    margin: 0 0 0 5px;
-    padding: 5px;
-    border-radius: 1px;
-    background-color: #f5f5f5;
-  }
+const DutyBox = styled.div`
+  border-radius: ${(props) => props.theme.pixelToRem(1)};
+  color: #666;
+  text-align: center;
+  margin-top: 6.5px;
+`;
+
+const Duties = styled.div`
+  margin-right: 5px;
+  padding-top: 5px;
+  background-color: #f5f5f5;
+  width: ${(props) => props.theme.pixelToRem(65)};
+  height: ${(props) => props.theme.pixelToRem(22)};
+  font-size: ${(props) => props.theme.pixelToRem(12)};
 `;
 
 const DownWrapper = styled.div`
-  /* background-color: red; */
-  margin: 35px 5px;
+  position: relative;
+  margin-left: 5px;
   display: flex;
   text-align: center;
   align-items: center;
@@ -379,19 +330,17 @@ const MiddleContainer = styled.div`
 const PickBox = styled.div`
   margin-left: ${(props) => props.theme.pixelToRem(10)};
   height: ${(props) => props.theme.pixelToRem(30)};
+  margin-top: 20px;
   gap: 6px;
-
   display: flex;
 `;
 
 const Pick = styled.p`
-  margin-top: ${(props) => props.theme.pixelToRem(12)};
   ${(props) => props.theme.fontTheme.Caption3}
   color:#666;
 `;
 
 const Review = styled.p`
-  margin-top: ${(props) => props.theme.pixelToRem(12)};
   text-decoration: underline;
   ${(props) => props.theme.fontTheme.Caption3}
   color:#666;
@@ -400,7 +349,7 @@ const Review = styled.p`
 const AddtripBtn = styled.button`
   width: 80%;
   height: ${(props) => props.theme.pixelToRem(46)};
-  margin: ${(props) => props.theme.pixelToRem(24)} auto;
+  margin: ${(props) => props.theme.pixelToRem(4)} auto;
   flex-grow: 0;
   border-radius: ${(props) => props.theme.pixelToRem(10)};
   border: solid 1px ${(props) => props.theme.colorTheme.border};
@@ -433,13 +382,13 @@ const AddtripBtn = styled.button`
       margin-top: -2px;
       margin-left: 6px;
       border-right: 1px solid #000000;
-      text-underline-position: under;
+      /* text-underline-position: under; */
     }
 
     u {
       margin-top: -2px;
       margin-left: 5px;
-      text-underline-position: under;
+      /* text-underline-position: under; */
 
       .date {
         width: 60px;
@@ -448,7 +397,7 @@ const AddtripBtn = styled.button`
         margin-top: -2px;
         margin-left: 6px;
         border-right: 1px solid #000000;
-        text-underline-position: under;
+        /* text-underline-position: under; */
       }
     }
   }
@@ -472,6 +421,11 @@ const AddtripBtn = styled.button`
   }
 `;
 
+const Plan = styled.div`
+  margin-left: 6px;
+  transform: translateY(-2px);
+`;
+
 const PickImg = styled.div`
   display: flex;
   flex-direction: column;
@@ -490,6 +444,7 @@ const FcBox = styled.div`
 `;
 
 const FcTextBox = styled.div`
+  margin-top: 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -522,12 +477,14 @@ const FcIconBox = styled.div`
 `;
 
 const TheIcon = styled.div`
-  width: ${(props) => props.theme.pixelToRem(50)};
+  width: ${(props) => props.theme.pixelToRem(55)};
   height: ${(props) => props.theme.pixelToRem(50)};
   margin-top: -4px;
   margin-right: 10px;
   flex-direction: column;
   display: flex;
+  align-items: center;
+  justify-content: center;
   img {
     margin: 0 auto;
     width: ${(props) => props.theme.pixelToRem(30)};
@@ -537,8 +494,12 @@ const TheIcon = styled.div`
     ${(props) => props.theme.fontTheme.Caption3};
     line-height: normal;
     letter-spacing: normal;
-    text-align: center;
+
+    /* align-items: center; */
+    /* text-align: center; */
+    /* justify-content: center; */
     color: ${(props) => props.theme.colorTheme.text2} !important;
+    font-size: ${(props) => props.theme.pixelToRem(12)};
   }
 `;
 

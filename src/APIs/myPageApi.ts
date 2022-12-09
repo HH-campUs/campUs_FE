@@ -1,9 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { instance, postInstance } from "../instance/instance";
-import { IGetMyPage, IGetMyReview, IEditProfile } from "../interfaces/MyPage";
+
 import { getCamperToken } from "../instance/cookies";
+import { instance } from "../instance/instance";
+import { IGetTravelPlan } from "../interfaces/get";
+import { IGetMyReview } from "../interfaces/MyPage";
 
 const serverUrl = process.env.REACT_APP_API;
+
+const isLogin = getCamperToken();
 
 export const useMyPageApi = {
   // ** 내가 쓴 리뷰 조회 / get ** // /users/review - mypage용.
@@ -18,9 +22,10 @@ export const useMyPageApi = {
 
   // ** 마이페이지 조회 / get ** //
   useGetMyPage: () => {
-    return useQuery(["mypage"], async () => {
+    return useQuery(["mypageinfo"], async () => {
+      if (!isLogin) return;
+
       const data = await instance.get("/users/myPage");
-      // console.log(data.data);
       return data;
     });
   },
@@ -30,6 +35,15 @@ export const useMyPageApi = {
     return useQuery(["mypageinfo"], async () => {
       const data = await instance.get("/users/myPage/myPick");
       console.log(data.data);
+      return data;
+    });
+  },
+
+  /*  */
+  useGetTravelPlan: () => {
+    return useQuery(["travelplan"], async () => {
+      const { data } = await instance.get<IGetTravelPlan>(`/camps/`);
+
       return data;
     });
   },

@@ -5,6 +5,8 @@ import Kebop from "../../components/withPlan/Kebop";
 import { usePostsApi } from "../../APIs/postsApi";
 import { useNavigate } from "react-router-dom";
 import { getCamperToken } from "../../instance/cookies";
+import { IGetTravelPlan } from "../../interfaces/MyPage";
+import { useMyPageApi } from "../../APIs/myPageApi";
 
 export default function MyPlan() {
   const [onOff, setOnOff] = useState(false);
@@ -12,9 +14,17 @@ export default function MyPlan() {
   const isLogin = getCamperToken();
   const navigate = useNavigate();
 
-  const toggle = (event: MouseEvent) => {
-    setOpenMore(!openMore);
+  const checkbox = document.getElementById("toggle") as HTMLInputElement | null;
+
+  const toggle = () => {
+    if (checkbox?.checked == true)
+      return (checkbox.checked = false), setOnOff(false);
+    else if (checkbox?.checked == false)
+      return (checkbox.checked = true), setOnOff(true);
   };
+
+  const Trips = useMyPageApi.useGetMyPage().data?.data.Trip;
+  console.log(Trips);
 
   const onChangeText = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log(e.target.checked);
@@ -24,6 +34,7 @@ export default function MyPlan() {
       setOnOff(true);
     }
   };
+
   const tripId = 1;
   const deleteHandler = () => {
     usePostsApi.useDeleteTravelPlan(tripId);
@@ -33,8 +44,12 @@ export default function MyPlan() {
       <ToggleBtn onOff={onOff}>
         <input type="checkbox" id="toggle" onChange={onChangeText} hidden />
 
-        <span className="offSpan">다가올 여행</span>
-        <span className="onSpan">지난여행</span>
+        <span className="offSpan" onClick={toggle}>
+          다가올 여행
+        </span>
+        <span className="onSpan" onClick={toggle}>
+          지난여행
+        </span>
         <label htmlFor="toggle" className="toggleSwitch">
           <span className="toggleButton" />
         </label>
@@ -42,22 +57,46 @@ export default function MyPlan() {
       <Wrapper>
         {isLogin ? (
           <>
-            <div>로그인햇당</div>
-            <PlanBox>
-              <img
-                src="https://mblogthumb-phinf.pstatic.net/MjAxOTExMDNfMTIw/MDAxNTcyNzExMzg5NjE4.S3sNMojDGrZ4WdYdGXRV-XMrd5R9jyxts4HLVGcZg1cg.kNrbyXXyEU7EHW5DqsGGr9XufBo-NWfGPIdyQ0mI3kcg.JPEG.z_ye0n/IMG_0206.JPG?type=w800"
-                alt="img"
-              />
-              <div className="infoBox">
-                <span>경기도 용인시</span>
-                <span>용인 자연휴양림 야영장</span>
-                <span>떠나는 날짜</span>
-                <span>22.12.03</span>
-              </div>
+            {onOff == false ? (
+              <>
+                {Trips?.map((trip: IGetTravelPlan, idx: number) => (
+                  <PlanBox key={idx}>
+                    <img src={trip.Camp?.ImageUrl} alt="img" />
+                    <Dday>D-day</Dday>
+                    <div className="infoBox">
+                      <span>{trip.Camp?.address}</span>
+                      <span>{trip.Camp?.campName}</span>
+                      <span>떠나는 날짜</span>
+                      <span>
+                        {trip.date.slice(2, 4)}.{trip.date.slice(4, 6)}.
+                        {trip.date.slice(6, 8)}
+                      </span>
+                      <Memo>
+                        안녕하세요.안녕하세요.안녕하세요. 안녕하세요.안녕하세요.
+                      </Memo>
+                    </div>
 
-              {/* 케밥박스 */}
-              <Kebop />
-            </PlanBox>
+                    <Kebop />
+                  </PlanBox>
+                ))}
+              </>
+            ) : (
+              <PlanBox>
+                <img
+                  src="https://mblogthumb-phinf.pstatic.net/MjAxOTExMDNfMTIw/MDAxNTcyNzExMzg5NjE4.S3sNMojDGrZ4WdYdGXRV-XMrd5R9jyxts4HLVGcZg1cg.kNrbyXXyEU7EHW5DqsGGr9XufBo-NWfGPIdyQ0mI3kcg.JPEG.z_ye0n/IMG_0206.JPG?type=w800"
+                  alt="img"
+                />
+                <div className="infoBox">
+                  <span>경기도 용인시</span>
+                  <span>용인 자연휴양림 야영장</span>
+                  <span>떠나는 날짜</span>
+                  <span>22.12.03</span>
+                </div>
+
+                {/* 케밥박스 */}
+                <Kebop />
+              </PlanBox>
+            )}
           </>
         ) : (
           <>
@@ -76,64 +115,11 @@ export default function MyPlan() {
           </>
         )}
       </Wrapper>
-
-      <Container>
-        {onOff == false ? (
-          <>
-            <PlanBox>
-              <img
-                src="https://mblogthumb-phinf.pstatic.net/MjAxOTExMDNfMTIw/MDAxNTcyNzExMzg5NjE4.S3sNMojDGrZ4WdYdGXRV-XMrd5R9jyxts4HLVGcZg1cg.kNrbyXXyEU7EHW5DqsGGr9XufBo-NWfGPIdyQ0mI3kcg.JPEG.z_ye0n/IMG_0206.JPG?type=w800"
-                alt="img"
-              />
-              <div className="infoBox">
-                <span>경기도 용인시</span>
-                <span>용인 자연휴양림 야영장</span>
-                <span>떠나는 날짜</span>
-                <span>22.12.03</span>
-              </div>
-              <BtnBox></BtnBox>
-            </PlanBox>
-            <PlanBox>
-              <img
-                src="https://mblogthumb-phinf.pstatic.net/MjAxOTExMDNfMTIw/MDAxNTcyNzExMzg5NjE4.S3sNMojDGrZ4WdYdGXRV-XMrd5R9jyxts4HLVGcZg1cg.kNrbyXXyEU7EHW5DqsGGr9XufBo-NWfGPIdyQ0mI3kcg.JPEG.z_ye0n/IMG_0206.JPG?type=w800"
-                alt="img"
-              />
-              <div className="infoBox">
-                <span>경기도 용인시</span>
-                <span>용인 자연휴양림 야영장</span>
-                <span>떠나는 날짜</span>
-                <span>22.12.03</span>
-              </div>
-              <BtnBox>
-                <button>수정</button>
-                <button>리뷰쓰기</button>
-              </BtnBox>
-            </PlanBox>
-            <PlanBox>
-              <img
-                src="https://mblogthumb-phinf.pstatic.net/MjAxOTExMDNfMTIw/MDAxNTcyNzExMzg5NjE4.S3sNMojDGrZ4WdYdGXRV-XMrd5R9jyxts4HLVGcZg1cg.kNrbyXXyEU7EHW5DqsGGr9XufBo-NWfGPIdyQ0mI3kcg.JPEG.z_ye0n/IMG_0206.JPG?type=w800"
-                alt="img"
-              />
-              <div className="infoBox">
-                <span>경기도 용인시</span>
-                <span>용인 자연휴양림 야영장</span>
-                <span>떠나는 날짜</span>
-                <span>22.12.03</span>
-              </div>
-              <BtnBox>
-                <button>수정</button>
-                <button>리뷰쓰기</button>
-              </BtnBox>
-            </PlanBox>
-          </>
-        ) : null}
-      </Container>
     </TotalContainer>
   );
 }
 
 const TotalContainer = styled.div`
-  margin-top: 130px;
   position: absolute;
 `;
 
@@ -208,24 +194,29 @@ const ToggleBtn = styled.div<{ onOff: boolean }>`
 `;
 
 const Container = styled.div`
-  width: inherit;
+  width: 100%;
   height: 100vh;
   margin-top: -20px;
   padding: 20px;
+  overflow-y: scroll;
 `;
 
 const PlanBox = styled.div`
-  width: ${(props) => props.theme.pixelToRem(335)};
+  width: 90%;
   height: ${(props) => props.theme.pixelToRem(150)};
-  margin-bottom: 18px;
+  margin: 0 auto 18px;
   border-radius: 10px;
   border: solid 1px #eee;
   display: flex;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 
   img {
     width: ${(props) => props.theme.pixelToRem(118)};
     height: ${(props) => props.theme.pixelToRem(150)};
     border-radius: 10px;
+    position: relative;
   }
 
   .infoBox {
@@ -245,7 +236,7 @@ const PlanBox = styled.div`
       :nth-child(2) {
         width: ${(props) => props.theme.pixelToRem(140)};
         height: ${(props) => props.theme.pixelToRem(18)};
-        margin-top: 2px;
+        margin-top: 4px;
         ${(props) => props.theme.fontTheme.Caption1};
         line-height: normal;
         letter-spacing: normal;
@@ -262,7 +253,7 @@ const PlanBox = styled.div`
       :last-child {
         width: ${(props) => props.theme.pixelToRem(106)};
         height: ${(props) => props.theme.pixelToRem(14)};
-        margin-top: 2px;
+        margin-top: 40px;
         ${(props) => props.theme.fontTheme.Caption1};
         line-height: normal;
         letter-spacing: normal;
@@ -271,54 +262,53 @@ const PlanBox = styled.div`
   }
 `;
 
-const BtnBox = styled.div`
-  width: ${(props) => props.theme.pixelToRem(85)};
-  height: ${(props) => props.theme.pixelToRem(94)};
+const Dday = styled.div`
+  width: ${(props) => props.theme.pixelToRem(66)};
+  height: ${(props) => props.theme.pixelToRem(26)};
   flex-grow: 0;
-  margin-top: 30px;
-  margin-left: 230px;
-
-  border-radius: 10px;
-  box-shadow: 4px 4px 15px 0 rgba(0, 0, 0, 0.18);
-  background-color: #fff;
-  display: flex;
+  margin: 10px 0px 0 25px;
+  padding: 2px 11.2px;
+  border-radius: 17px;
+  border: solid 2px #fff;
+  background-color: #024873;
   position: absolute;
-  flex-direction: column;
+  display: flex;
 
-  div {
-    width: ${(props) => props.theme.pixelToRem(85)};
-    height: ${(props) => props.theme.pixelToRem(47)};
-    margin-left: 1px;
-    background-color: transparent;
-    text-align: right;
-    ${(props) => props.theme.fontTheme.Caption1};
-    line-height: 1.29;
-    letter-spacing: normal;
-    color: ${(props) => props.theme.colorTheme.text2};
+  ${(props) => props.theme.fontTheme.Caption1};
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: center;
+  color: ${(props) => props.theme.colorTheme.textWhite};
+`;
 
-    &:first-child {
-      margin-top: -2px;
-      padding-top: 18px;
-      padding-right: 15px;
-      border-top-right-radius: 10px;
-      border-top-left-radius: 10px;
-    }
-    &:last-child {
-      margin-top: 3px;
-      padding-top: 13px;
-      padding-right: 15px;
-      border-bottom-right-radius: 10px;
-      border-bottom-left-radius: 10px;
-    }
-  }
+const Memo = styled.div`
+  width: ${(props) => props.theme.pixelToRem(198)};
+  height: ${(props) => props.theme.pixelToRem(32)};
+  top: 75%;
+  margin: 4px 0;
+  font-family: Pretendard;
+  ${(props) => props.theme.fontTheme.Caption4};
+  line-height: 1.33;
+  letter-spacing: normal;
+  text-align: left;
+  color: ${(props) => props.theme.colorTheme.text2};
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* 라인수 */
+  -webkit-box-orient: vertical;
+  word-wrap: break-word;
+  position: absolute;
 `;
 
 const Wrapper = styled.div`
+  width: 100%;
   /* background-color: red; */
   /* margin-top: 130px; */
-  height: 100vh;
+
   /* margin-bottom: 500px; */
-  min-height: 500px;
+
   overflow-y: scroll;
 `;
 

@@ -5,9 +5,7 @@ import { getCamperToken } from "./cookies";
 import { getRefreshToken } from "./cookies";
 
 const accessToken = getCamperToken();
-console.log(accessToken);
 const refreshToken = getRefreshToken();
-console.log(refreshToken);
 
 const baseURL = process.env.REACT_APP_API;
 
@@ -19,12 +17,17 @@ export const instance = axios.create({
   },
 });
 
+export const instanceTopic = axios.create({
+  baseURL,
+  headers: {},
+});
+
 //리뷰작성용 content-type : multipart/form-data.
 export const postInstance = axios.create({
   baseURL: process.env.REACT_APP_API,
   headers: {
     Authorization: `Bearer ${accessToken}`,
-    refreshToken: `Bearer ${refreshToken}`,
+    refreshToken: `${refreshToken}`,
     "Content-Type": "multipart/form-data",
     // withCredentails: true,
   },
@@ -44,7 +47,7 @@ export const postInstance = axios.create({
 // };
 
 /* request / response 후 선 후행 처리를 커스텀 가능케 -> 예외처리로 넘어가기 전에
-가로채기 Ssap 가능 */
+가로채기  가능 */
 // instance.interceptors.request.use((config: AxiosRequestConfig) => {
 //   const token = getCamperToken();
 //   if (token) {

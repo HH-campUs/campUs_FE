@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useState } from "react";
+import { useRecoilState } from "recoil";
 import { selectLo, showLo } from "../store/locationAtom";
 import { DateState } from "../store/dateAtom";
 import { Link } from "react-router-dom";
@@ -38,7 +38,6 @@ export default function Subject() {
 
   const isModal = () => {
     setIsWeather((prev) => !prev);
-    console.log("modal", "modal");
   };
 
   return (
@@ -67,13 +66,17 @@ export default function Subject() {
                       <img src="/images/Sunny.svg" alt="sunny" />
                     </Icon>
                     <CenterInfo>
-                      <Loca>{recommendData.name}</Loca>
-                      <PopPercent>비올확률 {recommendData.pop}%</PopPercent>
+                      <City>{recommendData?.name}</City>
+                      <PopPercent>비올확률 {recommendData?.pop}%</PopPercent>
                     </CenterInfo>
                     <TempInfo>
                       <MinMax>
-                        <p style={{ color: "blue" }}>{recommendData.min}</p>
-                        <p style={{ color: "red" }}>{recommendData.max}</p>
+                        <p style={{ color: "#5db1ff" }}>
+                          {recommendData?.min.toFixed(0)}
+                        </p>
+                        <p style={{ color: "#e27554" }}>
+                          {recommendData?.max.toFixed(0)}
+                        </p>
                       </MinMax>
                       <Regular>
                         {recommendData.day.toFixed(0)}
@@ -85,8 +88,8 @@ export default function Subject() {
                     {recommendData.dt.slice(4, 6)}월
                     {recommendData.dt.slice(6, 8)}일 낮 기준
                   </DayInfo>
+                  <Line></Line>
                   <DetailInfo>
-                    <hr />
                     <div className="tempGraph">
                       <img
                         src="/images/weatherIcon/icon-circleline.svg"
@@ -175,7 +178,7 @@ export default function Subject() {
                   </DetailInfo>
 
                   <GoCampBtn to="/result" onClick={exportData}>
-                    {recommendData.name} 캠핑장 둘러보기
+                    <div>{recommendData.name} 캠핑장 둘러보기</div>
                   </GoCampBtn>
                 </ModalBox>
               </WeatherModal>
@@ -219,9 +222,8 @@ const WeatherModal = styled.div`
   align-content: center;
 
   &.isActive {
-    height: 25rem;
-    width: ${(props) => props.theme.pixelToRem(475)};
-
+    height: ${(props) => props.theme.pixelToRem(488)};
+    width: ${(props) => props.theme.pixelToRem(375)};
     bottom: 0;
     position: relative;
     z-index: 100;
@@ -278,9 +280,9 @@ const ModalBox = styled.div`
 `;
 
 const TextBox = styled.div`
-  font-size: 1rem;
-  height: 500px;
-  margin-left: 30px;
+  font-size: ${(props) => props.theme.pixelToRem(20)};
+  margin-top: 25px;
+  margin-left: 20px;
 `;
 
 const TextSub = styled.div`
@@ -289,63 +291,74 @@ const TextSub = styled.div`
 `;
 
 const TextSec = styled.div`
-  margin-top: 7px;
-  font-size: 0.8rem;
-  color: grey;
+  margin-top: 4px;
+  font-size: ${(props) => props.theme.pixelToRem(14)};
+
+  color: #666;
 `;
 
 const WeatherInfo = styled.div`
-  height: 100px;
+  height: ${(props) => props.theme.pixelToRem(72)};
   display: flex;
   margin-top: 20px;
 `;
 
 const Icon = styled.div`
-  margin-left: 50px;
+  margin-left: 28px;
 `;
 
 const CenterInfo = styled.div`
-  margin-left: 0.75rem;
-  margin-top: 5px;
+  margin-left: 9px;
+  margin-right: 60px;
 `;
 
-const Loca = styled.div`
-  font-size: 1.2rem;
+const City = styled.div`
+  font-size: ${(props) => props.theme.pixelToRem(16)};
 `;
 
 const PopPercent = styled.div`
-  font-size: 0.9rem;
+  font-size: ${(props) => props.theme.pixelToRem(14)};
   margin-top: 5px;
-  font-weight: 200;
+  color: #666;
 `;
 
 const TempInfo = styled.div`
-  margin-left: 150px;
-  margin-top: 5px;
   display: flex;
+  transform: translateX(30px);
 `;
 
 const MinMax = styled.div`
   flex-direction: column;
   text-align: center;
+  font-size: ${(props) => props.theme.pixelToRem(14)};
+  margin-top: 7px;
 `;
 
 const Regular = styled.div`
   margin-left: 5px;
-  font-size: 2.2rem;
+  margin-right: 37px;
+  font-size: ${(props) => props.theme.pixelToRem(40)};
+  color: #222;
   p {
     font-size: ${(props) => props.theme.pixelToRem(20)};
     display: inline-block;
     position: absolute;
+    color: #222222;
   }
 `;
 
 const DayInfo = styled.div`
-  margin-left: 320px;
-  font-size: 0.9rem;
+  font-size: ${(props) => props.theme.pixelToRem(12)};
   position: relative;
-  top: -20px;
-  color: grey;
+  color: #909090;
+  transform: translateX(70%) translateY(-15px);
+`;
+
+const Line = styled.div`
+  margin-left: 28px;
+  margin-top: 9px;
+  border-bottom: 1px solid #e3e3e3;
+  width: ${(props) => props.theme.pixelToRem(319)};
 `;
 
 const DetailInfo = styled.div`
@@ -369,19 +382,19 @@ const DetailInfo = styled.div`
       &:nth-child(2) {
         width: ${(props) => props.theme.pixelToRem(24)};
         margin-top: -12px;
-        margin-left: 73px;
+        margin-left: 23px;
         position: absoulte;
       }
       &:nth-child(3) {
         width: ${(props) => props.theme.pixelToRem(24)};
         margin-top: -70px;
-        margin-left: 204px;
+        margin-left: 155px;
         position: absoulte;
       }
       &:nth-child(4) {
         width: ${(props) => props.theme.pixelToRem(24)};
-        margin-top: 20px;
-        margin-left: 335px;
+        margin-top: 23px;
+        margin-left: 285px;
         position: absoulte;
       }
     }
@@ -397,17 +410,17 @@ const DetailInfo = styled.div`
       &:nth-child(5) {
         width: ${(props) => props.theme.pixelToRem(30)};
         margin-top: 1px;
-        margin-left: 80px;
+        margin-left: 27px;
       }
       &:nth-child(6) {
         width: ${(props) => props.theme.pixelToRem(30)};
         margin-top: -44px;
-        margin-left: 209px;
+        margin-left: 161px;
       }
       &:nth-child(7) {
         width: ${(props) => props.theme.pixelToRem(30)};
-        margin-top: -3px;
-        margin-left: 345px;
+        margin-top: -1px;
+        margin-left: 295px;
       }
     }
   }
@@ -429,12 +442,13 @@ const DetailInfo = styled.div`
         height: auto;
         ${(props) => props.theme.fontTheme.Caption2};
         flex-grow: 0;
-        margin: 4px 0px 6px -5px;
+        margin: 12px 30px 6px 26px;
         line-height: 1.29;
         letter-spacing: normal;
         text-align: left;
         flex-direction: column;
         display: flex;
+        color: #222;
 
         p {
           margin-top: 6px;
@@ -443,6 +457,7 @@ const DetailInfo = styled.div`
       }
 
       .climateNum {
+        transform: translateX(30px);
         width: ${(props) => props.theme.pixelToRem(62)};
         height: auto;
         margin: -78px 52px 0px 81px;
@@ -465,13 +480,14 @@ const DetailInfo = styled.div`
     .right {
       width: 55%;
       height: auto;
-      margin: 4px -6px 6px -10px;
+      margin: 13px 25px 6px -10px;
       ${(props) => props.theme.fontTheme.Caption1};
       flex-grow: 0;
       line-height: 1.29;
       letter-spacing: normal;
       text-align: right;
       display: inline;
+
       b {
         margin-top: -12px;
         margin-left: -15px;
@@ -484,16 +500,24 @@ const DetailInfo = styled.div`
     }
   }
 `;
+
 const GoCampBtn = styled(Link)`
-  width: 405px;
-  height: 60px;
+  width: ${(props) => props.theme.pixelToRem(335)};
+  height: ${(props) => props.theme.pixelToRem(54)};
   font-size: 1.1rem;
   border: 0.5px none grey;
-  margin-top: 40px;
-  margin-left: 30px;
+  margin-left: 20px;
+  transform: translateY(70px);
   border-radius: 8px;
   padding: 15px;
   color: white;
-  background-color: #5185a6;
+  background-color: #024873;
   cursor: pointer;
-`;
+  
+  div{
+    font-size:font-size: ${(props) => props.theme.pixelToRem(16)} ;
+    color: #fff;
+    text-align: center;
+    margin: 0 auto;
+  }
+  `;

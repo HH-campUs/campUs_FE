@@ -8,7 +8,7 @@ import { toast, ToastContainer } from "react-toastify";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
 import SignUp from "../pages/SignUp";
-import AfterSignup from "../pages/AfterSignup";
+import Welcome from "../pages/Welcome";
 import Splash from "../pages/Splash";
 import KaKaoAuth from "../pages/OAuth/KaKaoAuth";
 
@@ -44,7 +44,7 @@ function Router() {
               <Route path="login" element={<Login />} />
               <Route path="/kakao/callback" element={<KaKaoAuth />} />
               <Route path="signup" element={<SignUp />} />
-              <Route path="AfterSignup" element={<AfterSignup />} />
+              <Route path="Welcome" element={<Welcome />} />
               <Route path="/detail/:campId" element={<Detail />}>
                 <Route path="/detail/:campId/detail" element={<Ddetail />} />
                 <Route path="/detail/:campId/review" element={<Dreview />} />

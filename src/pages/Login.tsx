@@ -35,13 +35,10 @@ function Login() {
     return data;
   };
 
-  // window.location.replace("/");
-
   const handleValid = async (data: ILoginForm) => {
     const response = await loginApi(data);
 
     if (response.status === 200) {
-      //리스폰스확인필!
       setAccessToken(response.data.Tokens.AccessToken);
       setRefreshToken(response.data.Tokens.RefreshToken);
       setToken(response.data.Tokens.AccessToken);
@@ -49,20 +46,16 @@ function Login() {
       setIsLoggedIn(true);
 
       setUseId(response.data.Tokens.userId);
-      navigate("/");
+      window.location.replace("/");
     }
   };
 
   const KaKaoLogin = async () => {
     window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${"7aa957f9a1bc0790d8e39735b92eee63"}&redirect_uri=${"http://localhost:3000/kakao/callback"}&response_type=code`;
-    /* const res = await instance.get("/kakao");
-    console.log(res);
-    return res; */
   };
 
   return (
     <LoginWrap>
-      {/* component화 할수잇음. */}
       <LoginTitle>
         <div>
           <KeyboardArrowLeftIcon
@@ -72,7 +65,9 @@ function Login() {
         </div>
         <LoginText>로그인</LoginText>
       </LoginTitle>
-
+      <Logo>
+        <img src="/images/mypage/_campUs logo_5.svg" alt="" />
+      </Logo>
       <LoginForm onSubmit={handleSubmit(handleValid)}>
         <StInput
           {...register("email", {
@@ -158,6 +153,14 @@ const LoginText = styled.div`
   color: #222;
 `;
 
+const Logo = styled.div`
+  /* width: ${(props) => props.theme.pixelToRem(375)}; */
+  justify-content: center;
+  align-items: center;
+  margin-left: 144px;
+  transform: translateY(50px);
+`;
+
 const LoginForm = styled.form`
   position: relative;
   display: flex;
@@ -165,7 +168,7 @@ const LoginForm = styled.form`
   align-items: center;
   align-content: center;
   gap: ${(props) => props.theme.pixelToRem(14)};
-  margin-top: 95px;
+  margin-top: 85px;
   span {
     color: var(--point-color);
   }

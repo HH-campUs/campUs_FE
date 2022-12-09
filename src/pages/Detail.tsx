@@ -270,7 +270,11 @@ const TopNavContainer = styled.div`
 `;
 
 const UpperWrapper = styled.div`
+<<<<<<< HEAD
+  display: flex;
+=======
   display: flex; 
+>>>>>>> 835cc14bf09ba997b5439e0caf990c2e230fc1bd
   justify-content: space-between;
 `;
 

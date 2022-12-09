@@ -1,18 +1,17 @@
-import React from "react";
 import { useForm } from "react-hook-form";
 import { useRecoilState } from "recoil";
 import { useNavigate } from "react-router";
 import { ILoginForm } from "../interfaces/inLogin";
-import axios from "axios";
 
 /* import { KAKAO_AUTH_URL } from "../components/KaKaoAuth"; */
-import { idState, LoginState, userInfo } from "../store/loginAtom";
+import { LoginState, userInfo } from "../store/loginAtom";
 import { instance } from "../instance/instance";
 import { setAccessToken, setRefreshToken } from "../instance/cookies";
 //css
 import styled from "styled-components";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
+import { InfoToast } from "../components/Toast/Toast";
 
 function Login() {
   const serverUrl = process.env.REACT_APP_API;
@@ -20,7 +19,7 @@ function Login() {
 
   const [toKen, setToken] = useRecoilState(LoginState);
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(userInfo);
-  const [useId, setUseId] = useRecoilState(idState);
+
   const {
     register,
     handleSubmit,
@@ -44,8 +43,6 @@ function Login() {
       setToken(response.data.Tokens.AccessToken);
 
       setIsLoggedIn(true);
-
-      setUseId(response.data.Tokens.userId);
       window.location.replace("/");
     }
   };
@@ -154,7 +151,6 @@ const LoginText = styled.div`
 `;
 
 const Logo = styled.div`
-  /* width: ${(props) => props.theme.pixelToRem(375)}; */
   justify-content: center;
   align-items: center;
   margin-left: 144px;
@@ -192,15 +188,12 @@ const ErrorMessage = styled.p`
   color: red;
 `;
 
-//  #5185A6 #024873;
-
 const TextBox = styled.div`
   display: flex;
   font-size: ${(props) => props.theme.pixelToRem(14)};
   position: relative;
   margin-top: 12px;
   left: ${(props) => props.theme.pixelToRem(100)};
-  /* text-align: right; */
   color: #909090;
   span {
     cursor: pointer;
@@ -210,7 +203,7 @@ const TextBox = styled.div`
 const FindUserInfo = styled.p`
   color: ${(props) => props.theme.textColor};
 `;
-//로그인버튼색변경?
+
 const StBtn = styled.button`
   width: ${(props) => props.theme.pixelToRem(327)};
   height: ${(props) => props.theme.pixelToRem(60)};

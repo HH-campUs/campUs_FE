@@ -14,13 +14,11 @@ import { useInView } from "react-intersection-observer";
 
 //css
 import { useLocation } from "react-router-dom";
-import { BiChevronDown } from "react-icons/bi";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { NoIdPickToast } from "../components/Toast/Toast";
 
 import { IGetCampResult } from "../interfaces/get";
 import TopicBookmark from "../components/TopicBookmark";
-import { idState } from "../store/loginAtom";
 
 function Topic() {
   /* toast boolean */
@@ -43,6 +41,7 @@ function Topic() {
   const { campTopic, fetchNextPage, isSuccess, hasNextPage, refetch } =
     useGetTopicInfinite(topicId!);
 
+  console.log("camp", campTopic);
   const [ref, isView] = useInView();
 
   useEffect(() => {
@@ -92,7 +91,7 @@ function Topic() {
           {isSuccess && campTopic?.pages ? (
             campTopic?.pages.map((page) => (
               <React.Fragment key={page.currentPage}>
-                {page?.campTopic.camp.map((item: IGetCampResult) => (
+                {page?.campTopic?.topicCamp?.map((item: IGetCampResult) => (
                   <ResultBox key={item.campId}>
                     <TopicBookmark Camp={item} />
                     <ResultItem

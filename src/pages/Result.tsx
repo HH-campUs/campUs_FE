@@ -9,7 +9,7 @@ import { StrMonth, StrDay, DateState } from "../store/dateAtom";
 import Search from "../components/withSearch/Search";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { useGetCamp, useGetWeather, useSearchCamp } from "../APIs/getApi";
+import { useGetCamp, useGetWeather } from "../APIs/getApi";
 import { IGetCampResult } from "../interfaces/get";
 import ResultBookmark from "../components/ResultBookmark";
 import { InfoToast, NoIdPickToast, NavToast } from "../components/Toast/Toast";

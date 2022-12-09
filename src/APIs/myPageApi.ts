@@ -34,7 +34,7 @@ export const useMyPageApi = {
   useGetMyPick: () => {
     return useQuery(["mypageinfo"], async () => {
       const data = await instance.get("/users/myPage/myPick");
-      console.log(data.data);
+      // console.log(data.data);
       return data;
     });
   },

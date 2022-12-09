@@ -51,7 +51,7 @@ export default function KaKaomap() {
       navigator.geolocation.getCurrentPosition(function (position) {
         var lat = position.coords.latitude, // 위도
           lon = position.coords.longitude; // 경도
-        console.log("위도경도", lat, lon);
+
         var locPosition = new kakao.maps.LatLng(lat, lon), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
           message = "내 위치";
 

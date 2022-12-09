@@ -80,7 +80,7 @@ function Login() {
       <LoginForm onSubmit={handleSubmit(handleValid)}>
         <StInput
           {...register("email", {
-            required: "Emial을 입력해 주세요.",
+            required: "mail을 입력해 주세요.",
             pattern: {
               value: /^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w+[.]?\w{2,3}/,
               message: "올바른 이메일 형식을 입력해주세요.",
@@ -141,19 +141,24 @@ function Login() {
 
 export default Login;
 
+// ${(props) => props.theme.pixelToRem(375)};
 const LoginWrap = styled.div`
-  width: ${(props) => props.theme.pixelToRem(375)};
+  width: 100%;
   height: 105vh;
 `;
 
 const LoginTitle = styled.div`
+  width: 100%;
   display: flex;
   align-items: center;
+  justify-content: center;
+  /* margin: 44px auto 0 auto; */
   margin-top: 44px;
+  position: relative;
 
   div {
-    margin-left: 20px;
-    margin-right: 95px;
+    margin-left: -20px;
+    margin-right: 145px;
   }
 `;
 
@@ -168,9 +173,14 @@ const LoginText = styled.div`
 `;
 
 const Logo = styled.div`
+  width: ${(props) => props.theme.pixelToRem(375)};
+  max-width: ${(props) => props.theme.pixelToRem(475)};
   justify-content: center;
   align-items: center;
-  margin-left: 144px;
+  position: relative;
+  /* margin: auto; */
+  margin: auto;
+  display: flex;
   transform: translateY(50px);
 `;
 

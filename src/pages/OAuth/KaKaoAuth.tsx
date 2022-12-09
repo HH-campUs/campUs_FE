@@ -8,11 +8,10 @@ import { instance } from "../../instance/instance";
 
 function KakaoLogin() {
   const CLIENT_ID = "7aa957f9a1bc0790d8e39735b92eee63";
-  const REDIRECT_URI = "http://localhost:3000/kakao/callback";
+  const REDIRECT_URI = "https://camp-us.co.kr/kakao/callback";
 
   const code = new URL(window.location.href).searchParams.get("code");
-  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${"7aa957f9a1bc0790d8e39735b92eee63"}&redirect_uri=${"http://localhost:3000/kakao/callback"}&code=${code}`;
-  console.log(code);
+  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${"7aa957f9a1bc0790d8e39735b92eee63"}&redirect_uri=${"https://camp-us.co.kr/kakao/callback"}&code=${code}`;
 
   useEffect(() => {
     (async () => {
@@ -24,7 +23,6 @@ function KakaoLogin() {
         });
         if (kakaoResult.status !== 200) console.log("연결실패");
         if (kakaoResult.status == 200) {
-          console.log("연결 성공");
         }
         const token = kakaoResult.data.access_token;
         const response = await axios.post(
@@ -67,9 +65,9 @@ function KakaoLogin() {
 
 export default KakaoLogin;
 
-const CLIENT_ID = "7aa957f9a1bc0790d8e39735b92eee63";
-const REDIRECT_URI = "http://localhost:3000/kakao0";
-export const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+// const CLIENT_ID = "7aa957f9a1bc0790d8e39735b92eee63";
+// const REDIRECT_URI = "http://localhost:3000/kakao0";
+// export const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code`;
 /* import React from "react";
 
 function KaKaoAuth() {

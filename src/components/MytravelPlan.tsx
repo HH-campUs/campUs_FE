@@ -32,9 +32,7 @@ export default function MytravelPlan() {
           <ImgBox />
           <PlaceName>
             <PlaceBox>
-              <Campname className="isLogin">
-                캠핑장 이름두줄해도 아이콘안밀려남
-              </Campname>
+              <Campname className="isLogin">캠핑장이름</Campname>
               <Dday>D-16</Dday>
             </PlaceBox>
             <Location>

@@ -71,7 +71,8 @@ export default function MyReview() {
             <PickBtn
               onClick={() => {
                 navigate("/topic/1");
-              }}>
+              }}
+            >
               다녀온 캠핑장 구경가기
             </PickBtn>
           </NotiBox>
@@ -89,6 +90,7 @@ const Wrapper = styled.div`
 
 const WrapperFirst = styled.div`
   margin-bottom: 230px;
+  width: 100%;
 `;
 
 const ReviewHead = styled.div`
@@ -111,25 +113,25 @@ const LeftText = styled.div`
 const RightIcon = styled.img`
   margin-right: 20px;
 `;
-
+// ${(props) => props.theme.pixelToRem(335)};
 const ReviewMap = styled.div`
   margin-top: 16px;
   margin-left: 20px;
   /* margin-bottom: 250px; */
-  width: ${(props) => props.theme.pixelToRem(335)};
+  width: 90%;
+
   height: ${(props) => props.theme.pixelToRem(258)};
   border-radius: ${(props) => props.theme.pixelToRem(10)};
   border: 1px solid #eee;
   background-color: #f8f8f8;
   flex-direction: column;
 `;
-
+// ${(props) => props.theme.pixelToRem(300)};
 const PfBox = styled.div`
-  width: ${(props) => props.theme.pixelToRem(300)};
+  width: 91%;
   height: ${(props) => props.theme.pixelToRem(40)};
   margin: 18px 18px 0 22px;
   display: flex;
-  /* background-color: red; */
 `;
 
 const PfImg = styled.div`
@@ -140,11 +142,12 @@ const PfImg = styled.div`
     object-fit: cover;
   }
 `;
-
+//${(props) => props.theme.pixelToRem(250)}; */
 const NickBox = styled.div`
-  width: ${(props) => props.theme.pixelToRem(250)};
-  display: flex;
+  width: 100%;
+  /* max-width: ${(props) => props.theme.pixelToRem(340)}; */
   justify-content: space-between;
+  display: flex;
   font-size: ${(props) => props.theme.pixelToRem(14)};
 `;
 
@@ -166,7 +169,9 @@ const LocaBox = styled.div`
 
 const CampLoca = styled.div``;
 
-const Date = styled.div``;
+const Date = styled.div`
+  margin-left: 5px;
+`;
 
 const ReviewBox = styled.div`
   width: ${(props) => props.theme.pixelToRem(300)};

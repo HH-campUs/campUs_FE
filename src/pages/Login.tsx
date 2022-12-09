@@ -12,10 +12,12 @@ import styled from "styled-components";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import { InfoToast } from "../components/Toast/Toast";
+import { useState } from "react";
 
 function Login() {
   const serverUrl = process.env.REACT_APP_API;
   const navigate = useNavigate();
+  const [toastState, setToastState] = useState(false);
 
   const [toKen, setToken] = useRecoilState(LoginState);
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(userInfo);
@@ -44,6 +46,7 @@ function Login() {
 
       setIsLoggedIn(true);
       window.location.replace("/");
+      setToastState(true);
     }
   };
 
@@ -53,6 +56,15 @@ function Login() {
 
   return (
     <LoginWrap>
+      <Toast>
+        {toastState == true ? (
+          <InfoToast
+            text={"환영합니다"}
+            toastState={toastState}
+            setToastState={setToastState}
+          />
+        ) : null}
+      </Toast>
       <LoginTitle>
         <div>
           <KeyboardArrowLeftIcon
@@ -143,6 +155,11 @@ const LoginTitle = styled.div`
     margin-left: 20px;
     margin-right: 95px;
   }
+`;
+
+const Toast = styled.div`
+  margin-left: 65px;
+  /* transform: translateY(200px); */
 `;
 
 const LoginText = styled.div`

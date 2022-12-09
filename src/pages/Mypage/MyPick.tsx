@@ -1,31 +1,33 @@
-import React, { useEffect } from "react";
 import { useMyPageApi } from "../../APIs/myPageApi";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { IPickedCamp } from "../../interfaces/Posts";
 import { getCamperToken } from "../../instance/cookies";
-
 import MyPickDelete from "../../components/MyPickDelete";
+import { InfoToast } from "../../components/Toast/Toast";
+import { useState } from "react";
 
 export default function MyPick() {
   const navigate = useNavigate();
   const isLogin = getCamperToken();
+  const [toastState, setToastState] = useState(false);
 
   const myPick = useMyPageApi.useGetMyPick().data?.data.Pick;
   const picked = myPick?.map((picks: IPickedCamp) => picks.Camp) || [];
   console.log("id안나와요", picked);
 
-  // const picke = mypick?.~~~~~ || [];
-  // const { Pick } = useMyPageApi.useGetMyPage().data?.data;
-  // console.log(Pick);
-  // const picked = Pick?.map((picks: IPickedCamp) => picks.Camp);
-  // console.log(picked);
-  // useEffect(() => {
-  //   console.log(picked);
-  // }, [picked]);
-
   return (
     <Wrapper>
+      <div>
+        {toastState == true ? (
+          <InfoToast
+            text={"검색조건이 불충분해요"}
+            toastState={toastState}
+            setToastState={setToastState}
+          />
+        ) : null}
+      </div>
+
       {isLogin ? (
         <MapBox>
           {picked.map((pick: IPickedCamp, campId: IPickedCamp) => (

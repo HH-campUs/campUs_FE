@@ -41,22 +41,27 @@ export default function MyPlan() {
   };
   return (
     <TotalContainer>
-      <ToggleBtn onOff={onOff}>
-        <input type="checkbox" id="toggle" onChange={onChangeText} hidden />
-
-        <span className="offSpan" onClick={toggle}>
-          다가올 여행
-        </span>
-        <span className="onSpan" onClick={toggle}>
-          지난여행
-        </span>
-        <label htmlFor="toggle" className="toggleSwitch">
-          <span className="toggleButton" />
-        </label>
-      </ToggleBtn>
       <Wrapper>
         {isLogin ? (
           <>
+            <ToggleBtn onOff={onOff}>
+              <input
+                type="checkbox"
+                id="toggle"
+                onChange={onChangeText}
+                hidden
+              />
+
+              <span className="offSpan" onClick={toggle}>
+                다가올 여행
+              </span>
+              <span className="onSpan" onClick={toggle}>
+                지난여행
+              </span>
+              <label htmlFor="toggle" className="toggleSwitch">
+                <span className="toggleButton" />
+              </label>
+            </ToggleBtn>
             {onOff == false ? (
               <>
                 {Trips?.map((trip: IGetTravelPlan, idx: number) => (
@@ -108,7 +113,8 @@ export default function MyPlan() {
               <PickBtn
                 onClick={() => {
                   navigate("/topic/1");
-                }}>
+                }}
+              >
                 가장 가까운 캠핑장 구경가기
               </PickBtn>
             </NotiBox>
@@ -120,6 +126,7 @@ export default function MyPlan() {
 }
 
 const TotalContainer = styled.div`
+  width: 100%;
   position: absolute;
 `;
 

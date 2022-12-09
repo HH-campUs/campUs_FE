@@ -67,8 +67,9 @@ export const usePostsApi = {
 
   // ** 캠핑장 찜하기 , payload값없이 header로 access/refresh토큰만보내면됨 / POST ** /
   useCampingPicked: () => {
-    return useMutation((payload: ICampingPicked) =>
-      instance.put(`/camps/${payload}/pick`)
+    return useMutation(
+      async (payload: ICampingPicked) =>
+        await instance.put(`/camps/${payload}/pick`)
     );
   },
 };

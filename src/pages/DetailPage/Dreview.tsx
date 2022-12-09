@@ -18,8 +18,6 @@ function Dreview() {
 
   const reviewItem = useGetApi?.useGetCampReview(state.campId);
   const reviewMap = reviewItem?.data?.data || [];
-  console.log("리뷰맵", reviewMap[0]?.likeStatus);
-  //[1, 최고!추천해요! / 2,좋았어요! / 3,추천하지 않아요]
 
   return (
     <Wrapper>
@@ -33,7 +31,8 @@ function Dreview() {
                 campId: `${state.campId}`,
               },
             })
-          }>
+          }
+        >
           <img src="/images/mypage/reviewwrite.svg" />
         </ReviewIcon>
       </ReviewBox>

@@ -46,7 +46,6 @@ function Detail() {
   const detailItem = useGetApi.useGetCampDetail(state.campId).data;
   console.log(detailItem);
   const checkItem = detailItem?.detailCamp![0];
-  // console.log(detailItem);
 
   const icons = useMemo<string[]>(() => {
     if (!detailItem?.detailCamp) return [];
@@ -270,11 +269,7 @@ const TopNavContainer = styled.div`
 `;
 
 const UpperWrapper = styled.div`
-<<<<<<< HEAD
   display: flex;
-=======
-  display: flex; 
->>>>>>> 835cc14bf09ba997b5439e0caf990c2e230fc1bd
   justify-content: space-between;
 `;
 

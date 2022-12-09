@@ -22,7 +22,7 @@ export const useMyPageApi = {
 
   // ** 마이페이지 조회 / get ** //
   useGetMyPage: () => {
-    return useQuery(["mypageinfo"], async () => {
+    return useQuery(["mypagefo"], async () => {
       if (!isLogin) return;
 
       const data = await instance.get("/users/myPage");

@@ -36,8 +36,7 @@ export default function Carousel() {
         style={{
           height,
           overflow: hide ? "hidden" : "visible",
-        }}
-      >
+        }}>
         <CarouselSlider
           className="flex"
           style={{
@@ -58,8 +57,7 @@ export default function Carousel() {
 
               setTransX(0);
             },
-          })}
-        >
+          })}>
           <CarouselSlide>
             <Outline>
               <ImgCover />

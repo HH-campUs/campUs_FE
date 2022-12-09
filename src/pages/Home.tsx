@@ -50,7 +50,7 @@ function Home() {
       <TextBox>
         <CampText>요즘 많이 찾는 캠핑장</CampText>
       </TextBox>
-      <Carousel />
+      {/* <Carousel /> */}
       <WeekWeather />
       <MytravelPlan />
       <Subject />

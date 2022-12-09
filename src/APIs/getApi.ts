@@ -1,5 +1,5 @@
 import { useQuery, useInfiniteQuery } from "@tanstack/react-query";
-import { instance } from "../instance/instance";
+import { instance, instanceTopic } from "../instance/instance";
 
 import {
   IGetCampReview,
@@ -81,7 +81,7 @@ export const useGetCamp = (doNm: string, sort: string) => {
 //infiniteQuery for Topic
 export const useGetTopicInfinite = (topicId: string) => {
   const topicData = async ({ pageParam = 0 }) => {
-    const { data } = await instance.get<pickedCamp>(
+    const { data } = await instanceTopic.get<pickedCamp>(
       `/camps/${topicId}?&numOfRows=10&pageNo=${pageParam}&sort=lookUp`
     );
     return {
@@ -195,7 +195,7 @@ export const useGetApi = {
       const { data } = await instance.get<IGetDistance>(
         `users/nearCamp?campX=${campX}&campY=${campY}`
       );
-      console.log(data);
+      // console.log(data);
       return data;
     });
   },

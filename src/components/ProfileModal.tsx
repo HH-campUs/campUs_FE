@@ -17,9 +17,10 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { IEditProfile } from "../interfaces/MyPage";
 import { postInstance } from "../instance/instance";
+import { InfoToast } from "./Toast/Toast";
 
 export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
-  //
+  const [toastState, setToastState] = useState(false);
   const queryClient = useQueryClient();
   const mutateFn = async (payload: IEditProfile) => {
     console.log(payload);
@@ -76,6 +77,7 @@ export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
     removeRefreshToken();
     setToken(null);
     setIsLoggedIn(false);
+    setToastState(true);
     navigate("/");
   };
 
@@ -94,6 +96,15 @@ export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
               <PfText>프로필 수정</PfText>
               <CloseBtn src="/images/closeBtn.svg" onClick={closeModal} />
             </HeadText>
+            <Toast>
+              {toastState == true ? (
+                <InfoToast
+                  text={"다음에 만나요!"}
+                  toastState={toastState}
+                  setToastState={setToastState}
+                />
+              ) : null}
+            </Toast>
 
             <NickForm onSubmit={handleSubmit(handleValid)}>
               <PfBox>
@@ -216,6 +227,10 @@ const Container = styled.div`
   position: fixed;
   display: flex;
   transition: all 0.5s ease-in-out;
+`;
+
+const Toast = styled.div`
+  margin: 0 auto;
 `;
 
 const HeadText = styled.div`

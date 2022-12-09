@@ -18,6 +18,7 @@ import { NoIdPickToast } from "../components/Toast/Toast";
 
 import { IGetCampResult } from "../interfaces/get";
 import TopicBookmark from "../components/TopicBookmark";
+import { getCamperToken } from "../instance/cookies";
 
 function Topic() {
   /* toast boolean */
@@ -35,6 +36,8 @@ function Topic() {
   const loca = useLocation();
   const state = loca.state as { topicImg: string; id: number };
   const bg = state.topicImg;
+
+  const isLogin = getCamperToken();
 
   //infiniteScroll
   const { campTopic, fetchNextPage, isSuccess, hasNextPage, refetch } =
@@ -83,8 +86,7 @@ function Topic() {
             <img src="/images/topic/openclose.svg" alt="downArrow" />
           </div>
         </ResultTop>
-        {/*
-         */}
+
         <CampMap>
           {isSuccess && campTopic?.pages ? (
             campTopic?.pages.map((page) => (

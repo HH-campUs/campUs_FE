@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { ISignUpForm } from "../interfaces/inLogin";
 import { instance } from "../instance/instance";
-import { useRecoilState, useRecoilValue } from "recoil";
+
 import { toastState } from "../store/toastAtom";
 import { InfoToast } from "../components/Toast/Toast";
 
@@ -12,7 +12,6 @@ import styled from "styled-components";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import CheckIcon from "@mui/icons-material/Check";
 
-// #024873(회원가입), #5185A6(중복검사)
 export default function SignUp() {
   const [toastState, setToastState] = useState(false);
 
@@ -33,16 +32,14 @@ export default function SignUp() {
   console.log(password);
 
   const handleValid = async (data: ISignUpForm) => {
-    if (mailCK === false) return window.alert("중복확인을 다시 해주세요.");
+    if (mailCK === false) return setToastState(true);
+
     try {
       const response = await instance.post(`/users/signup`, {
         email: data.email,
         password: data.password,
       });
-      console.log(data);
       if (response.status === 201) {
-        setToastState(true);
-        window.alert(`${data?.email}님\n반갑습니다.`);
         const timer = setTimeout(() => {
           navigate("/login");
         }, 1600);

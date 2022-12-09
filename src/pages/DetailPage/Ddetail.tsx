@@ -14,14 +14,6 @@ function Ddetail() {
   const detailItem = useGetApi.useGetCampDetail(state.campId).data;
   const checkItem = detailItem?.detailCamp![0];
 
-  // homepage: String,->  홈페이지
-  // sbrsCl: String ,->  부대시설
-  // posblFcltyCl: String,->  주변이용시설
-  // wtrplCo: String ->  계수대 개수
-  // swrmCo:String  ->  샤워실 개수
-  // toiletCo: String ->  화장실 개수
-  //eqpmnLendCl _> 캠핑장비대여
-
   return (
     <Wrapper>
       <InfoBox>

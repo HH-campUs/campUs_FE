@@ -1,15 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { usePostsApi } from "../APIs/postsApi";
-
 import { IPickedCamp } from "../interfaces/Posts";
+import { InfoToast } from "./Toast/Toast";
 
 export default function MyPickDelete({ pick }: { pick: IPickedCamp }) {
   const campick = usePostsApi.useCampingPicked();
+  const [toastState, setToastState] = useState(false);
 
+  //   <Toast>
+  //   {toastState == true ? (
+  //     <InfoToast
+  //       text={"찜하기 삭제"}
+  //       toastState={toastState}
+  //       setToastState={setToastState}
+  //     />
+  //   ) : null}
+  // </Toast>
   const unpick = (campId: number) => {
     campick.mutate(campId);
-    window.alert("찜하기 삭제");
+    window.alert("찜하기삭제");
+    // setToastState(true);
   };
 
   return (
@@ -17,7 +28,6 @@ export default function MyPickDelete({ pick }: { pick: IPickedCamp }) {
       <Delete
         src="/images/mypage/deletewhite.svg"
         onClick={() => {
-          // event.stopPropagation();
           unpick(pick.campId);
         }}
         style={{ width: "32px", height: "32px" }}
@@ -41,6 +51,10 @@ const CampImg = styled.div`
     object-fit: cover;
     border-radius: ${(props) => props.theme.pixelToRem(8)};
   }
+`;
+
+const Toast = styled.div`
+  margin-left: 50px;
 `;
 
 const Delete = styled.img`

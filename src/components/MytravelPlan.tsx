@@ -21,7 +21,8 @@ export default function MytravelPlan() {
         <AllList
           onClick={() => {
             navigate("/mypage/myplan");
-          }}>
+          }}
+        >
           전체보기
         </AllList>
       </TextBox>
@@ -38,15 +39,15 @@ export default function MytravelPlan() {
             </PlaceBox>
             <Location>
               <LocationOnIcon />
-              <span>난임요한, 황제지ㅋㅋ</span>
+              <span> 주소 </span>
               <img src="/images/Calendar.svg" alt="Calendar" />
               <p>2022.12.28</p>
             </Location>
           </PlaceName>
         </PlanBox>
       ) : (
-        <>
-          <CloseBox>
+        <CloseBox>
+          <CloBox>
             <Carlendar>
               <img src="/images/travelplan/calendarplan.svg" alt="carlendar" />
             </Carlendar>
@@ -55,21 +56,22 @@ export default function MytravelPlan() {
                 onClick={() => {
                   navigate("/login");
                 }}
-                style={{ textDecoration: "underline", cursor: "pointer" }}>
+                style={{ textDecoration: "underline", cursor: "pointer" }}
+              >
                 로그인하고
               </p>
               &nbsp;
               <span>내 여행일정을 등록해 보세요</span>
             </CloseText>
-          </CloseBox>
-
-          <HiddenBox></HiddenBox>
-        </>
+          </CloBox>
+        </CloseBox>
       )}
     </Wrapper>
   );
 }
-
+{
+  /* <HiddenBox></HiddenBox> */
+}
 const Wrapper = styled.div`
   /* background-color: red; */
   margin-top: ${(props) => props.theme.pixelToRem(40)};
@@ -106,18 +108,33 @@ const PlanBox = styled.div`
   margin-left: ${(props) => props.theme.pixelToRem(20)};
 `;
 
+const PlaceName = styled.div`
+  width: ${(props) => props.theme.pixelToRem(235)};
+  height: ${(props) => props.theme.pixelToRem(73)};
+  justify-content: space-between;
+  padding-left: 14px;
+`;
+
+const PlaceBox = styled.div`
+  display: flex;
+`;
+
 const CloseBox = styled.div`
-  width: ${(props) => props.theme.pixelToRem(335)};
+  width: 90%;
   height: ${(props) => props.theme.pixelToRem(102)};
-  border-radius: ${(props) => props.theme.pixelToRem(10)};
-  /* background-color: whitesmoke; */
-  background-color: #bab8b0;
+  margin-left: 20px;
   margin-top: ${(props) => props.theme.pixelToRem(15)};
-  margin-left: ${(props) => props.theme.pixelToRem(20)};
-  font-size: 13px;
+`;
+
+const CloBox = styled.div`
+  width: 100%;
+  height: 100%;
+  border-radius: ${(props) => props.theme.pixelToRem(10)};
+  background-color: #bab8b0;
+  font-size: ${(props) => props.theme.pixelToRem(13)};
   display: flex;
   z-index: 3;
-  position: relative;
+  /* position: relative; */
 `;
 
 const Carlendar = styled.div`
@@ -164,17 +181,6 @@ export const ImgBox = styled.div`
   background-color: grey;
   margin-top: 16px;
   margin-left: 16px;
-`;
-
-const PlaceName = styled.div`
-  width: ${(props) => props.theme.pixelToRem(235)};
-  height: ${(props) => props.theme.pixelToRem(73)};
-  justify-content: space-between;
-  padding-left: 14px;
-`;
-
-const PlaceBox = styled.div`
-  display: flex;
 `;
 
 const Campname = styled.div`

@@ -11,7 +11,9 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useGetCamp, useGetWeather, useSearchCamp } from "../APIs/getApi";
 import { IGetCampResult } from "../interfaces/get";
+import ResultBookmark from "../components/ResultBookmark";
 import { InfoToast, NoIdPickToast, NavToast } from "../components/Toast/Toast";
+
 
 function Result() {
   const nav = useNavigate();
@@ -22,7 +24,6 @@ function Result() {
   const [isActive, setIsActive] = useState(false);
   const [isWeather, setIsWeather] = useState(false);
   const [isSearch, setIsSearch] = useRecoilState(isModal);
-  const [bookmarking, setBookMarking] = useState(false);
   const [sortState, setSortState] = useState("lookUp");
 
   const Month = useRecoilValue(StrMonth);
@@ -50,11 +51,6 @@ function Result() {
 
   const WeatherHandler = () => {
     setIsWeather(!isWeather);
-  };
-
-  const picking = () => {
-    setBookMarking((prev) => !prev);
-    console.log("asdfads");
   };
 
   useEffect(() => {
@@ -97,7 +93,7 @@ function Result() {
       않는다면..?  => undefined 값이 나오게 된다잉.. 그렇다고 이 값을 여기에 맞추기엔 pardo
       값을 정확히 입력하고, 날짜가 날씨를 지원하지 않는 거라면 Query Option 으로 isError일때, 
       다른 컴포넌트가 나오게 처리해야된다.. 그렇다면?? 조건문을 중첩해서 써도 되지 않을까?
-      => 이거 질문해야겠다 시부레,.. */}
+      => 이거 질문해야겠다  */}
 
       {/* 일단 키워드가 있고 없고 해도 잘 안됩니당 */}
 
@@ -327,14 +323,16 @@ function Result() {
             {sortState == "lookUp" ? (
               <span
                 className="popular"
-                onClick={() => setSortState("pickCount")}>
+                onClick={() => setSortState("pickCount")}
+              >
                 {" "}
                 조회순{" "}
               </span>
             ) : sortState == "pickCount" ? (
               <span
                 className="popular"
-                onClick={() => setSortState("reviewCount")}>
+                onClick={() => setSortState("reviewCount")}
+              >
                 {" "}
                 인기순{" "}
               </span>
@@ -359,7 +357,9 @@ function Result() {
                           campId: `${item.campId}`,
                         },
                       })
-                    }>
+                    }
+                  >
+                    <ResultBookmark camp={item} />
                     <ResultImg src={item.ImageUrl} alt={item.ImageUrl} />
                     <InnerBg>
                       <span>
@@ -408,6 +408,8 @@ function Result() {
         style={{ width: "inherit", height: "auto", bottom: "20" }}></div>
       <Up />
     </Wrapper>
+
+
   );
 }
 

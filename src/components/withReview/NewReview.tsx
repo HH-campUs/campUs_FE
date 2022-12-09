@@ -8,7 +8,6 @@ import { useMyPageApi } from "../../APIs/myPageApi";
 
 export default function NewReview() {
   const NewReview = useGetApi.useGetNewReview().data?.data || [];
-  console.log(NewReview);
   const checkPf = useMyPageApi.useGetMyPage().data?.data;
   const [hide, setHide] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -31,7 +30,8 @@ export default function NewReview() {
         style={{
           height,
           overflow: hide ? "hidden" : "visible",
-        }}>
+        }}
+      >
         <CarouselSlider
           className="flex"
           style={{
@@ -52,7 +52,8 @@ export default function NewReview() {
 
               setTransX(0);
             },
-          })}>
+          })}
+        >
           {NewReview.map((item, reviewId) => (
             <CaroImgBox key={reviewId}>
               <Wrapper draggable={false}>
@@ -62,7 +63,8 @@ export default function NewReview() {
                       <img src={item?.profileImg} alt="pfImg" />
                     </PfImg>
                     <div
-                      style={{ flexDirection: "column", marginLeft: "6.5px" }}>
+                      style={{ flexDirection: "column", marginLeft: "6.5px" }}
+                    >
                       <NickBox>
                         <PfNick>{item?.nickname}</PfNick>
                       </NickBox>
@@ -78,10 +80,10 @@ export default function NewReview() {
                     {item?.reviewImg
                       .toString()
                       .split(",")
-                      .map((image: string, i: number) => (
+                      .map((image: string, reviewId) => (
                         <ImgBox>
                           {item?.reviewImg ? (
-                            <img src={image} alt="reviewImg" key={i} />
+                            <img src={image} alt="reviewImg" key={reviewId} />
                           ) : null}
                         </ImgBox>
                       ))}

@@ -95,9 +95,11 @@ export default function SignUp() {
         </div>
         <LoginText>회원가입</LoginText>
       </LoginTitle>
-      <HeadText>campUs</HeadText>
+      <HeadText>
+        {" "}
+        <img src="/images/mypage/campUs logo.svg" alt="" />
+      </HeadText>
       {/* Form Start */}
-      {/* 중복검사 통과 체크버튼? */}
       <LoginForm onSubmit={handleSubmit(handleValid)}>
         <EmailText>이메일</EmailText>
         <EmailInputBox>
@@ -195,7 +197,7 @@ const LoginText = styled.div`
 const HeadText = styled.div`
   position: absolute;
   font-size: ${(props) => props.theme.pixelToRem(22)};
-  margin-top: 18px;
+  margin-top: 23px;
   margin-left: 24px;
 `;
 

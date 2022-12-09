@@ -1,7 +1,7 @@
-import { keyframes } from "@emotion/react";
 import React, { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useRecoilValue } from "recoil";
 
 import styled from "styled-components";
 import { useGetApi } from "../APIs/getApi";
@@ -9,15 +9,17 @@ import { usePostsApi } from "../APIs/postsApi";
 import PreviewImgDelete from "../components/PreviewImgDelete";
 import { getCamperToken } from "../instance/cookies";
 import { IReviewPosts } from "../interfaces/Posts";
+import { StrDay, StrMonth } from "../store/dateAtom";
 
 export default function Review() {
-  interface Props {
-    setImagePreview: React.Dispatch<React.SetStateAction<string[]>>;
-    setImageFiles: React.Dispatch<React.SetStateAction<File[]>>;
-  }
+  // interface Props {
+  //   setImagePreview: React.Dispatch<React.SetStateAction<string[]>>;
+  //   setImageFiles: React.Dispatch<React.SetStateAction<File[]>>;
+  // }
 
   const isLogin = getCamperToken();
-
+  const Month = useRecoilValue(StrMonth);
+  const Day = useRecoilValue(StrDay);
   //campId확인.
   const loca = useLocation();
   const state = loca.state as { campId: number };
@@ -151,7 +153,7 @@ export default function Review() {
       <VisitDay>
         방문일선택
         <p style={{ textDecoration: "underline", marginLeft: "160px" }}>
-          2022.19.99
+          2022.{Month}.{Day}
         </p>
         <RightArrow src="/images/review/rightArrow.svg" />
       </VisitDay>

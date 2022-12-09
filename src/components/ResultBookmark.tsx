@@ -5,7 +5,7 @@ import { usePostsApi } from "../APIs/postsApi";
 import styled from "styled-components";
 import { IGetCampResult } from "../interfaces/get";
 
-export default function TopicMap({ Camp }: { Camp: IGetCampResult }) {
+export default function ResultBookmark({ camp }: { camp: IGetCampResult }) {
   const campick = usePostsApi.useCampingPicked();
 
   const pick = (campId: number) => {
@@ -21,11 +21,12 @@ export default function TopicMap({ Camp }: { Camp: IGetCampResult }) {
   //onclick한번 / icon 3항.
   return (
     <>
-      {Camp.status ? (
+      {camp.status ? (
         <CampImgBox>
           <BookmarkBorderIcon
-            onClick={() => {
-              unpick(Camp.campId);
+            onClick={(e) => {
+              e.stopPropagation();
+              unpick(camp.campId);
             }}
           >
             <img
@@ -38,8 +39,9 @@ export default function TopicMap({ Camp }: { Camp: IGetCampResult }) {
       ) : (
         <CampImgBox>
           <Bookmark
-            onClick={() => {
-              pick(Camp.campId);
+            onClick={(e) => {
+              e.stopPropagation();
+              pick(camp.campId);
             }}
           >
             <img
@@ -65,4 +67,6 @@ const BookmarkBorderIcon = styled.div`
   right: 10px;
 `;
 
-const CampImgBox = styled.div``;
+const CampImgBox = styled.div`
+  z-index: 1;
+`;

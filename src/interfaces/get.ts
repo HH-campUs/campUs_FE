@@ -139,6 +139,7 @@ export interface IGetCampResult {
   clturEvent: string;
   createdtime: string;
   doNm: string;
+  status: boolean;
   eqpmnLendCl: string;
   featureNm: string;
   homePage: string;
@@ -159,6 +160,7 @@ export interface IGetCampResult {
   look: IGetCampResult;
   review: IGetCampResult;
   pick: IGetCampResult;
+  camp: IGetCampResult[];
 }
 
 export interface campArray extends IGetCampResult {
@@ -178,6 +180,7 @@ export interface campArray extends IGetCampResult {
   isSuccess: boolean;
   hasNextPage: boolean;
   refetch: boolean;
+  icons: string;
 }
 
 export interface campResult extends campArray {

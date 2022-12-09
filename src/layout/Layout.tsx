@@ -2,7 +2,6 @@ import React from "react";
 import Lottie from "react-lottie";
 import pcLottie from "../style/pcLottie.json";
 import styled from "styled-components";
-import Header from "./Header";
 import Footer from "./Footer";
 
 export default function Layout(props: any) {
@@ -23,7 +22,6 @@ export default function Layout(props: any) {
         </SplashLogo>
       </LeftTemplate>
       <RightTemplate>
-        {/* <Header /> */}
         <div style={{ marginBottom: "40px" }}>{props.children}</div>
         <Footer />
       </RightTemplate>

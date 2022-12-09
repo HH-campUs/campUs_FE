@@ -14,28 +14,14 @@ export default function Carousel() {
   const [hide, setHide] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [transX, setTransX] = useState(0);
-  const [bookmarking, setBookMarking] = useState(false);
 
-  // const picking = () => {
-  //   setBookMarking((prev) => !prev);
-  //   console.log("asdfads");
-  // };
-
-  const campLook = useGetApi.useGetSort().data?.MostList[0].look;
-  // console.log("look", campLook);
-  const campReview = useGetApi.useGetSort().data?.MostList[1].review;
-  // console.log("campReview", campReview);
-  const campPick = useGetApi.useGetSort().data?.MostList[2].pick;
+  const campLook = useGetApi.useGetSort().data?.MostList[0]?.look;
+  const campReview = useGetApi.useGetSort().data?.MostList[1]?.review;
+  const campPick = useGetApi.useGetSort().data?.MostList[2]?.pick;
 
   const { ref, width, height } = useCarouselSize();
 
-  // navigate(`/topic/${id}`, {
-  //   state: {
-  //     id: `${imageList[id - 1].id}`,
-  //   },
-  // });
-
-  // const handleClick = (campId: number) => () => {
+  // const handleClick = () => {
   //   navigate(`/detail/${campLook?.campId}`);
   // };
 
@@ -82,7 +68,7 @@ export default function Carousel() {
           <CarouselSlide>
             <Outline>
               <ImgCover />
-              {/* onClick={handleClick(campLook?.campId)} */}
+              {/* onClick={handleClick} */}
               <CarouselImg
                 draggable={false}
                 src={campLook?.ImageUrl}

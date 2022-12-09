@@ -121,7 +121,7 @@ function App() {
         <ErrorBoundary FallbackComponent={Error}>
           <Router />
         </ErrorBoundary>
-        <ReactQueryDevtools initialIsOpen={true}></ReactQueryDevtools>
+        {/* <ReactQueryDevtools initialIsOpen={true}></ReactQueryDevtools> */}
       </ThemeProvider>
     </QueryClientProvider>
   );

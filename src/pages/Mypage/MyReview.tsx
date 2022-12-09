@@ -11,10 +11,9 @@ export default function MyReview() {
 
   const myReviewDummy = useMyPageApi.useGetMyReview();
   const myReview = myReviewDummy.data?.data;
-  // console.log("내리뷰", myReview);
+
   const checkPf = useMyPageApi.useGetMyPage().data?.data;
   const checkReview = checkPf?.Review;
-  // console.log("체크리뷰", checkReview);
 
   return (
     <Wrapper>
@@ -72,8 +71,7 @@ export default function MyReview() {
             <PickBtn
               onClick={() => {
                 navigate("/topic/1");
-              }}
-            >
+              }}>
               다녀온 캠핑장 구경가기
             </PickBtn>
           </NotiBox>

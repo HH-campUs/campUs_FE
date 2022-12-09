@@ -11,6 +11,24 @@ export interface IGetMyReview {
   data: IGetMyReview[];
 }
 
+export interface IGetTravelPlan {
+  campId: number;
+  memo?: string;
+  ImageUrl: string;
+  campName: string;
+  address?: string;
+  date: string;
+  Camp?: IGetTravelPlan;
+}
+
+/* interface IGetMyCamp {
+  campId: number;
+  memo?:   string;
+  ImageUrl: string;
+  campName: string;
+  address?: string;
+} */
+
 export interface IGetMyPage {}
 
 //api용

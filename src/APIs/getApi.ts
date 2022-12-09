@@ -36,14 +36,14 @@ export const useSearchCamp = (keyword: string, sort: string) => {
     isSuccess,
     hasNextPage,
     refetch,
-  } = useInfiniteQuery(["searchCamp", keyword, sort], useData, {
+  } = useInfiniteQuery(["searchCamp", keyword], useData, {
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     getNextPageParam: (lastPage) => {
-      return lastPage.camps.campName ? lastPage.currentPage + 1 : undefined;
+      return lastPage.camps ? lastPage.currentPage + 1 : undefined;
     },
   });
-  console.log(campData);
+
   return { campData, fetchNextPage, isSuccess, hasNextPage, refetch };
 };
 
@@ -53,7 +53,7 @@ export const useGetCamp = (doNm: string, sort: string) => {
     const { data } = await instance.get<campArray>(
       `/camps?doNm=${doNm}&numOfRows=20&pageNo=${pageParam}&sort=${sort}`
     );
-    console.log(data);
+
     return {
       /* 같은 객체 레벨에 있는 total 값도 사용하기 위해서 data만 */
       camps: data,
@@ -74,7 +74,7 @@ export const useGetCamp = (doNm: string, sort: string) => {
       return lastPage.camps ? lastPage.currentPage + 1 : undefined;
     },
   });
-  console.log(campData);
+  // console.log(campData);
   return { campData, fetchNextPage, isSuccess, hasNextPage, refetch };
 };
 
@@ -84,8 +84,6 @@ export const useGetTopicInfinite = (topicId: string) => {
     const { data } = await instance.get<pickedCamp>(
       `/camps/${topicId}?&numOfRows=10&pageNo=${pageParam}&sort=lookUp`
     );
-
-    console.log(data);
     return {
       campTopic: data,
       currentPage: pageParam + 1,
@@ -153,7 +151,6 @@ export const useRecommendWeather = () => {
     refetchOnMount: false,
     refetchOnWindowFocus: false,
   });
-  console.log(RecommendData);
 
   return { RecommendData, isLoading, isError };
 };
@@ -194,8 +191,6 @@ export const useGetApi = {
 
   // ** 캠핑장 거리 조회 ** //
   useGetDistance: (campX: number, campY: number) => {
-    console.log("apiX", campX);
-    console.log("apiY", campY);
     return useQuery(["distanceinfo"], async () => {
       const { data } = await instance.get<IGetDistance>(
         `users/nearCamp?campX=${campX}&campY=${campY}`
@@ -226,8 +221,8 @@ export const useGetApi = {
   },
 
   /* 여행일정 조회 */
-  useGetTravelPlan: () => {
-    return useQuery(["travelplan"], async () => {
+  useGetTravelPlan2: () => {
+    return useQuery(["travelplan2"], async () => {
       const { data } = await instance.get<IGetTravelPlan>(`/camps`);
 
       return data;

@@ -38,7 +38,6 @@ export default function Subject() {
 
   const isModal = () => {
     setIsWeather((prev) => !prev);
-    console.log("modal", "modal");
   };
 
   return (

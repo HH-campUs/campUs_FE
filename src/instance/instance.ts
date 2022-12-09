@@ -5,9 +5,7 @@ import { getCamperToken } from "./cookies";
 import { getRefreshToken } from "./cookies";
 
 const accessToken = getCamperToken();
-console.log(accessToken);
 const refreshToken = getRefreshToken();
-console.log(refreshToken);
 
 const baseURL = process.env.REACT_APP_API;
 

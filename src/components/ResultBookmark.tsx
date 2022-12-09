@@ -16,13 +16,16 @@ export default function ResultBookmark({ camp }: { camp: IGetCampResult }) {
 
   const pick = (campId: number) => {
     campick.mutate(campId);
-    /* window.alert("찜하기 완료"); */
-    setToastState(true);
+    if (!isLogin) return setToastState(true);
+    else {
+      window.alert("찜하기 완료");
+    }
   };
 
   const unpick = (campId: number) => {
     campick.mutate(campId);
-    /* window.alert("찜하기 취소"); */
+    window.alert("찜하기 취소");
+    setToastState(false);
   };
 
   const isLogin = getCamperToken();
@@ -30,19 +33,14 @@ export default function ResultBookmark({ camp }: { camp: IGetCampResult }) {
   //onclick한번 / icon 3항.
   return (
     <>
-      {isLogin == true ? (
-        <NoIdPickToast
-          text={"로그인 후 찜하기가 가능해요."}
-          toastState={toastState}
-          setToastState={setToastState}
-        />
-      ) : toastState == true ? (
-        <NavToast
-          text={"찜목록에 추가되었어요."}
-          url={"/mypage/mypick"}
-          toastState={toastState}
-          setToastState={setToastState}
-        />
+      {!isLogin ? (
+        toastState == true ? (
+          <NoIdPickToast
+            text={"로그인 후 찜하기가 가능해요."}
+            toastState={toastState}
+            setToastState={setToastState}
+          />
+        ) : null
       ) : null}
       {camp.status ? (
         <CampImgBox>

@@ -183,6 +183,7 @@ const Container = styled.div`
   bottom: 0;
   flex-direction: column;
   align-items: center;
+  /* fixed 하면 같이 올라감 폰에서 */
   position: fixed;
   display: flex;
   overflow: hidden;

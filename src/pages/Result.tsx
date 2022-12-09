@@ -12,7 +12,6 @@ import styled from "styled-components";
 import { useGetCamp, useGetWeather } from "../APIs/getApi";
 import { IGetCampResult } from "../interfaces/get";
 import ResultBookmark from "../components/ResultBookmark";
-import { InfoToast, NoIdPickToast, NavToast } from "../components/Toast/Toast";
 import { getCamperToken } from "../instance/cookies";
 
 function Result() {
@@ -433,6 +432,7 @@ const Wrapper = styled.div`
   width: 100%;
   max-width: ${(props) => props.theme.pixelToRem(425)};
   min-width: ${(props) => props.theme.pixelToRem(375)};
+  position: relative;
   flex-direction: column;
 `;
 

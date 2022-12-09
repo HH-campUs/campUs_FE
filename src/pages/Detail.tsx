@@ -271,7 +271,6 @@ const TopNavContainer = styled.div`
 
 const UpperWrapper = styled.div`
   display: flex;
-
   justify-content: space-between;
 `;
 

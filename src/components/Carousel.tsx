@@ -15,9 +15,9 @@ export default function Carousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [transX, setTransX] = useState(0);
 
-  const campLook = useGetApi.useGetSort().data?.MostList[0]?.look;
-  const campReview = useGetApi.useGetSort().data?.MostList[1]?.review;
-  const campPick = useGetApi.useGetSort().data?.MostList[2]?.pick;
+  const campLook = useGetApi.useGetSort()?.data?.MostList[0]?.look;
+  const campReview = useGetApi.useGetSort()?.data?.MostList[1]?.review;
+  const campPick = useGetApi.useGetSort()?.data?.MostList[2]?.pick;
 
   const { ref, width, height } = useCarouselSize();
 

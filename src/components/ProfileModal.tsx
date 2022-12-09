@@ -6,7 +6,7 @@ import { useMyPageApi } from "../APIs/myPageApi";
 import { useNavigate } from "react-router-dom";
 
 //Login
-import { idState, LoginState, userInfo } from "../store/loginAtom";
+import { LoginState, userInfo } from "../store/loginAtom";
 import { removeAccessToken, removeRefreshToken } from "../instance/cookies";
 import { useRecoilState } from "recoil";
 
@@ -63,7 +63,6 @@ export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
     closeModal();
   };
 
-  // window.location.replace("/mypage");
   const modalPop = () => {
     setIsPopUp((prev) => !prev);
   };

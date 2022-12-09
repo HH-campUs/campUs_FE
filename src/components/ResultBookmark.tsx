@@ -1,34 +1,54 @@
 import React, { useState } from "react";
 import { usePostsApi } from "../APIs/postsApi";
+import { getCamperToken } from "../instance/cookies";
 
 //css
 import styled from "styled-components";
 import { IGetCampResult } from "../interfaces/get";
+import { InfoToast, NoIdPickToast, NavToast } from "../components/Toast/Toast";
 
-export default function TopicMap({ Camp }: { Camp: IGetCampResult }) {
-  const campick = usePostsApi?.useCampingPicked();
-  console.log("찜캠프", Camp);
+import { ToastProps } from "../interfaces/props";
+
+export default function ResultBookmark({ camp }: { camp: IGetCampResult }) {
+  const [toastState, setToastState] = useState(false);
+
+  const campick = usePostsApi.useCampingPicked();
+
   const pick = (campId: number) => {
     campick.mutate(campId);
-    window.alert("찜하기 완료");
-    console.log("좋아요", Camp.status);
+    if (!isLogin) return setToastState(true);
+    else {
+      window.alert("찜하기 완료");
+    }
   };
 
   const unpick = (campId: number) => {
     campick.mutate(campId);
     window.alert("찜하기 취소");
+    setToastState(false);
   };
+
+  const isLogin = getCamperToken();
 
   //onclick한번 / icon 3항.
   return (
     <>
-      {Camp.status ? (
+      {!isLogin ? (
+        toastState == true ? (
+          <NoIdPickToast
+            text={"로그인 후 찜하기가 가능해요."}
+            toastState={toastState}
+            setToastState={setToastState}
+          />
+        ) : null
+      ) : null}
+      {camp.status ? (
         <CampImgBox>
           <BookmarkBorderIcon
-            onClick={() => {
-              unpick(Camp.campId);
-            }}
-          >
+            onClick={(e) => {
+              e.stopPropagation();
+              unpick(camp.campId);
+            }}>
             <img
               src="/images/picked2.svg"
               alt="Bookmarked"
@@ -39,10 +59,10 @@ export default function TopicMap({ Camp }: { Camp: IGetCampResult }) {
       ) : (
         <CampImgBox>
           <Bookmark
-            onClick={() => {
-              pick(Camp.campId);
-            }}
-          >
+            onClick={(e) => {
+              e.stopPropagation();
+              pick(camp.campId);
+            }}>
             <img
               src="/images/pick1.svg"
               alt="Bookmark"
@@ -66,4 +86,6 @@ const BookmarkBorderIcon = styled.div`
   right: 10px;
 `;
 
-const CampImgBox = styled.div``;
+const CampImgBox = styled.div`
+  z-index: 1;
+`;

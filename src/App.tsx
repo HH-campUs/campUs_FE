@@ -112,6 +112,10 @@ const GlobalStyle = createGlobalStyle`
 const queryClient = new QueryClient();
 
 function App() {
+  if (process.env.NODE_ENV === "production") {
+    console.log = function no_console() {};
+    console.warn = function no_console() {};
+  }
   const isDark = useRecoilValue(isDarkAtom);
 
   return (
@@ -121,7 +125,7 @@ function App() {
         <ErrorBoundary FallbackComponent={Error}>
           <Router />
         </ErrorBoundary>
-        <ReactQueryDevtools initialIsOpen={true}></ReactQueryDevtools>
+        {/* <ReactQueryDevtools initialIsOpen={true}></ReactQueryDevtools> */}
       </ThemeProvider>
     </QueryClientProvider>
   );

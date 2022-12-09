@@ -59,16 +59,27 @@ export const usePostsApi = {
   },
 
   /* 여행일정삭제 / delete */
-  useDeleteTravelPlan: (tripId: number) => {
+  useDeleteTravelPlan: () => {
     return useMutation((payload: IPostTravelPlan) =>
-      instance.delete(`/users/${tripId}`)
+      instance.delete(`/camps/${payload}`)
+    );
+  },
+
+  /* 여행일정수정/ put */
+  useUpdateTravelPlan: () => {
+    return useMutation((payload: IPostTravelPlan) =>
+      instance.put(`/camps/${payload}`, {
+        date: payload.date,
+        memo: payload.memo,
+      })
     );
   },
 
   // ** 캠핑장 찜하기 , payload값없이 header로 access/refresh토큰만보내면됨 / POST ** /
   useCampingPicked: () => {
-    return useMutation((payload: ICampingPicked) =>
-      instance.put(`/camps/${payload}/pick`)
+    return useMutation(
+      async (payload: ICampingPicked) =>
+        await instance.put(`/camps/${payload}/pick`)
     );
   },
 };

@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { isModal } from "../store/searchAtom";
 import Search from "../components/withSearch/Search";
 import { Link, Outlet, useMatch, useNavigate } from "react-router-dom";
 import ProfileModal from "../components/ProfileModal";
 
 //Login
-import { LoginState } from "../store/loginAtom";
+
 import { useMyPageApi } from "../APIs/myPageApi";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { getCamperToken } from "../instance/cookies";
 
 //css
@@ -34,7 +34,9 @@ function Mypage() {
           <>
             <UserProfile>
               <LoginProfile>
-                <HeadText>campUs</HeadText>
+                <HeadText>
+                  <img src="/images/mypage/campUs logo.svg" alt="" />{" "}
+                </HeadText>
                 <ProfileBox>
                   <ProfileCircle>
                     <img src={checkPf?.profileImg} alt="PFP" />
@@ -68,7 +70,10 @@ function Mypage() {
           <>
             <UserProfile>
               <Profile>
-                <HeadText>campUs</HeadText>
+                <HeadText>
+                  {" "}
+                  <img src="/images/mypage/campUs logo.svg" alt="" />
+                </HeadText>
                 <ProfileText>
                   <Welcome>
                     로그인 하고 더 많은 <br></br>기능을 사용해 보세요!
@@ -123,8 +128,9 @@ function Mypage() {
 
 export default Mypage;
 
+// ${(props) => props.theme.pixelToRem(375)};
 const Wrapper = styled.div`
-  width: ${(props) => props.theme.pixelToRem(375)};
+  width: 100%;
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -146,7 +152,7 @@ const UserProfile = styled.div`
 `;
 
 const Profile = styled.div`
-  width: ${(props) => props.theme.pixelToRem(375)};
+  width: 100%;
   height: ${(props) => props.theme.pixelToRem(286)};
   background-color: #f5f5f5;
 `;
@@ -197,14 +203,15 @@ const Welcome = styled.div`
 `;
 
 const LoginBox = styled.div`
+  width: 100%;
   display: flex;
   margin-top: 30px;
   margin-left: 20px;
   gap: ${(props) => props.theme.pixelToRem(11)};
 `;
-
+// ${(props) => props.theme.pixelToRem(162)};
 const LoginBtn = styled.button`
-  width: ${(props) => props.theme.pixelToRem(162)};
+  width: 44%;
   height: ${(props) => props.theme.pixelToRem(48)};
   font-size: ${(props) => props.theme.pixelToRem(16)};
   border: 1px solid #024873;
@@ -213,9 +220,9 @@ const LoginBtn = styled.button`
   color: #024873;
   cursor: pointer;
 `;
-
+// ${(props) => props.theme.pixelToRem(162)};
 const SignBtn = styled.button`
-  width: ${(props) => props.theme.pixelToRem(162)};
+  width: 44%;
   height: ${(props) => props.theme.pixelToRem(48)};
   font-size: ${(props) => props.theme.pixelToRem(16)};
   border: 1px solid #024873;

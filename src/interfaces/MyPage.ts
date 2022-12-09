@@ -11,6 +11,26 @@ export interface IGetMyReview {
   data: IGetMyReview[];
 }
 
+export interface IGetTravelPlan {
+  tripId: number | undefined;
+  campId: number;
+  memo?: string;
+  ImageUrl: string;
+  campName: string;
+  address?: string;
+  date: string;
+  setOpenSemi: React.Dispatch<React.SetStateAction<boolean>>;
+  Camp?: IGetTravelPlan;
+}
+
+/* interface IGetMyCamp {
+  campId: number;
+  memo?:   string;
+  ImageUrl: string;
+  campName: string;
+  address?: string;
+} */
+
 export interface IGetMyPage {}
 
 //api용

@@ -38,7 +38,6 @@ export default function Subject() {
 
   const isModal = () => {
     setIsWeather((prev) => !prev);
-    console.log("modal", "modal");
   };
 
   return (
@@ -226,7 +225,7 @@ const WeatherModal = styled.div`
     height: ${(props) => props.theme.pixelToRem(488)};
     width: ${(props) => props.theme.pixelToRem(375)};
     bottom: 0;
-    position: relative;
+    margin: 0 auto;
     z-index: 100;
     animation: ${slideIn};
     animation-duration: 0.7s;

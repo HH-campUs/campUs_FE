@@ -19,12 +19,8 @@ const DetailMap = () => {
 
   const detailItem = useGetApi.useGetCampDetail(state.campId).data;
   const checkItem = detailItem?.detailCamp![0];
-  console.log(checkItem);
 
-  function itemCall() {
-    console.log(checkItem?.X);
-    console.log(checkItem?.Y);
-  }
+  function itemCall() {}
 
   setTimeout(itemCall, 3000);
 
@@ -33,15 +29,12 @@ const DetailMap = () => {
 
     var X = +checkItem?.X;
     var Y = +checkItem?.Y;
-    console.log("X", +checkItem?.X);
-    console.log("Y", +checkItem?.Y);
 
     const mapContainer = document.getElementById("KaKaomap"),
       mapOption = {
         center: new kakao.maps.LatLng(X, Y),
         level: 4,
       };
-    console.log(mapOption);
 
     const map = new kakao.maps.Map(mapContainer, mapOption);
 

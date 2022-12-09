@@ -1,26 +1,27 @@
-import React from "react";
 import { useForm } from "react-hook-form";
 import { useRecoilState } from "recoil";
 import { useNavigate } from "react-router";
 import { ILoginForm } from "../interfaces/inLogin";
-import axios from "axios";
 
 /* import { KAKAO_AUTH_URL } from "../components/KaKaoAuth"; */
-import { idState, LoginState, userInfo } from "../store/loginAtom";
+import { LoginState, userInfo } from "../store/loginAtom";
 import { instance } from "../instance/instance";
 import { setAccessToken, setRefreshToken } from "../instance/cookies";
 //css
 import styled from "styled-components";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
+import { InfoToast } from "../components/Toast/Toast";
+import { useState } from "react";
 
 function Login() {
   const serverUrl = process.env.REACT_APP_API;
   const navigate = useNavigate();
+  const [toastState, setToastState] = useState(false);
 
   const [toKen, setToken] = useRecoilState(LoginState);
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(userInfo);
-  const [useId, setUseId] = useRecoilState(idState);
+
   const {
     register,
     handleSubmit,
@@ -35,34 +36,35 @@ function Login() {
     return data;
   };
 
-  // window.location.replace("/");
-
   const handleValid = async (data: ILoginForm) => {
     const response = await loginApi(data);
 
     if (response.status === 200) {
-      //리스폰스확인필!
       setAccessToken(response.data.Tokens.AccessToken);
       setRefreshToken(response.data.Tokens.RefreshToken);
       setToken(response.data.Tokens.AccessToken);
 
       setIsLoggedIn(true);
-
-      setUseId(response.data.Tokens.userId);
       window.location.replace("/");
+      setToastState(true);
     }
   };
 
   const KaKaoLogin = async () => {
-    window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${"7aa957f9a1bc0790d8e39735b92eee63"}&redirect_uri=${"http://localhost:3000/kakao/callback"}&response_type=code`;
-    /* const res = await instance.get("/kakao");
-    console.log(res);
-    return res; */
+    window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_REDIRECT_URL}&response_type=code`;
   };
 
   return (
     <LoginWrap>
-      {/* component화 할수잇음. */}
+      <Toast>
+        {toastState == true ? (
+          <InfoToast
+            text={"환영합니다"}
+            toastState={toastState}
+            setToastState={setToastState}
+          />
+        ) : null}
+      </Toast>
       <LoginTitle>
         <div>
           <KeyboardArrowLeftIcon
@@ -72,11 +74,13 @@ function Login() {
         </div>
         <LoginText>로그인</LoginText>
       </LoginTitle>
-
+      <Logo>
+        <img src="/images/mypage/_campUs logo_5.svg" alt="" />
+      </Logo>
       <LoginForm onSubmit={handleSubmit(handleValid)}>
         <StInput
           {...register("email", {
-            required: "Emial을 입력해 주세요.",
+            required: "mail을 입력해 주세요.",
             pattern: {
               value: /^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w+[.]?\w{2,3}/,
               message: "올바른 이메일 형식을 입력해주세요.",
@@ -137,25 +141,47 @@ function Login() {
 
 export default Login;
 
+// ${(props) => props.theme.pixelToRem(375)};
 const LoginWrap = styled.div`
-  width: ${(props) => props.theme.pixelToRem(375)};
+  width: 100%;
   height: 105vh;
 `;
 
 const LoginTitle = styled.div`
+  width: 100%;
   display: flex;
   align-items: center;
+  justify-content: center;
+  /* margin: 44px auto 0 auto; */
   margin-top: 44px;
+  position: relative;
 
   div {
-    margin-left: 20px;
-    margin-right: 95px;
+    margin-left: -20px;
+    margin-right: 145px;
   }
+`;
+
+const Toast = styled.div`
+  margin-left: 65px;
+  /* transform: translateY(200px); */
 `;
 
 const LoginText = styled.div`
   font-size: ${(props) => props.theme.pixelToRem(18)};
   color: #222;
+`;
+
+const Logo = styled.div`
+  width: ${(props) => props.theme.pixelToRem(375)};
+  max-width: ${(props) => props.theme.pixelToRem(475)};
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  /* margin: auto; */
+  margin: auto;
+  display: flex;
+  transform: translateY(50px);
 `;
 
 const LoginForm = styled.form`
@@ -165,7 +191,7 @@ const LoginForm = styled.form`
   align-items: center;
   align-content: center;
   gap: ${(props) => props.theme.pixelToRem(14)};
-  margin-top: 95px;
+  margin-top: 85px;
   span {
     color: var(--point-color);
   }
@@ -189,15 +215,12 @@ const ErrorMessage = styled.p`
   color: red;
 `;
 
-//  #5185A6 #024873;
-
 const TextBox = styled.div`
   display: flex;
   font-size: ${(props) => props.theme.pixelToRem(14)};
   position: relative;
   margin-top: 12px;
   left: ${(props) => props.theme.pixelToRem(100)};
-  /* text-align: right; */
   color: #909090;
   span {
     cursor: pointer;
@@ -207,7 +230,7 @@ const TextBox = styled.div`
 const FindUserInfo = styled.p`
   color: ${(props) => props.theme.textColor};
 `;
-//로그인버튼색변경?
+
 const StBtn = styled.button`
   width: ${(props) => props.theme.pixelToRem(327)};
   height: ${(props) => props.theme.pixelToRem(60)};

@@ -6,7 +6,7 @@ import { useMyPageApi } from "../APIs/myPageApi";
 import { useNavigate } from "react-router-dom";
 
 //Login
-import { idState, LoginState, userInfo } from "../store/loginAtom";
+import { LoginState, userInfo } from "../store/loginAtom";
 import { removeAccessToken, removeRefreshToken } from "../instance/cookies";
 import { useRecoilState } from "recoil";
 
@@ -17,12 +17,13 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { IEditProfile } from "../interfaces/MyPage";
 import { postInstance } from "../instance/instance";
+import { InfoToast } from "./Toast/Toast";
 
 export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
-  //
+  const checkPf = useMyPageApi.useGetMyPage().data?.data;
+  const [toastState, setToastState] = useState(false);
   const queryClient = useQueryClient();
   const mutateFn = async (payload: IEditProfile) => {
-    console.log(payload);
     const { data } = await postInstance.put("/users/myPage", {
       profileImg: payload.profileImg,
       nickname: payload.nickname,
@@ -34,7 +35,6 @@ export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
     onError: () => console.log("파일전송에 실패했습니다."),
   });
 
-  const [toKen, setToken] = useRecoilState(LoginState);
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(userInfo);
   const navigate = useNavigate();
 
@@ -59,11 +59,10 @@ export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
   const handleValid = (data: IEditPfForm) => {
     const body = { nickname: data.nickname, profileImg: data.profileImg[0] };
     profileMutate.mutate(body);
-    console.log(data);
+
     closeModal();
   };
 
-  // window.location.replace("/mypage");
   const modalPop = () => {
     setIsPopUp((prev) => !prev);
   };
@@ -73,10 +72,11 @@ export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
   };
 
   const logOut = () => {
+    setToastState(true);
     removeAccessToken();
     removeRefreshToken();
-    setToken(null);
     setIsLoggedIn(false);
+    window.alert("다음에 또 봐요!");
     navigate("/");
   };
 
@@ -95,6 +95,15 @@ export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
               <PfText>프로필 수정</PfText>
               <CloseBtn src="/images/closeBtn.svg" onClick={closeModal} />
             </HeadText>
+            <Toast>
+              {toastState == true ? (
+                <InfoToast
+                  text={"다음에 만나요!"}
+                  toastState={toastState}
+                  setToastState={setToastState}
+                />
+              ) : null}
+            </Toast>
 
             <NickForm onSubmit={handleSubmit(handleValid)}>
               <PfBox>
@@ -106,7 +115,7 @@ export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
                     />
                   )}
                   <img
-                    src="/images/kakaopf.jpeg"
+                    src={checkPf?.profileImg}
                     alt="PFP"
                     style={{
                       height: "90px",
@@ -125,8 +134,8 @@ export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
                       />
                       <PhotoCameraIcon
                         sx={{
-                          marginLeft: "1px",
-                          marginTop: "3.5px",
+                          marginLeft: "0.5px",
+                          marginTop: "5.5px",
                         }}
                       />
                     </label>
@@ -138,10 +147,6 @@ export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
                 placeholder="닉네임"
                 {...register("nickname", {
                   required: "8자 이내로 적어주세요.",
-                  // pattern: {
-                  //   value: /^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w+[.]?\w{2,3}/,
-                  //   message: "형식에 맞지 않는 닉네임입니다.",
-                  // },
                 })}
               />
               <ErrorNick>{errors.nickname?.message}</ErrorNick>
@@ -219,6 +224,10 @@ const Container = styled.div`
   transition: all 0.5s ease-in-out;
 `;
 
+const Toast = styled.div`
+  margin: 0 auto;
+`;
+
 const HeadText = styled.div`
   text-align: left;
   font-size: ${(props) => props.theme.pixelToRem(20)};
@@ -236,17 +245,14 @@ const CloseBtn = styled.img`
   width: ${(props) => props.theme.pixelToRem(20)};
   height: ${(props) => props.theme.pixelToRem(20)};
   margin-left: 160px;
-  /* background-color: red; */
-  /* display: inline-block; */
 `;
 
 const PfCircle = styled.div`
   width: ${(props) => props.theme.pixelToRem(90)};
   height: ${(props) => props.theme.pixelToRem(90)};
-  border-radius: ${(props) => props.theme.pixelToRem(100)};
+  border-radius: ${(props) => props.theme.pixelToRem(50)};
   margin-top: 17px;
   margin-left: 113px;
-  position: relative;
 `;
 const ImgPreview = styled.img`
   width: ${(props) => props.theme.pixelToRem(90)};

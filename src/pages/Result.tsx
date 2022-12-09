@@ -9,9 +9,10 @@ import { StrMonth, StrDay, DateState } from "../store/dateAtom";
 import Search from "../components/withSearch/Search";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { useGetCamp, useGetWeather, useSearchCamp } from "../APIs/getApi";
+import { useGetCamp, useGetWeather } from "../APIs/getApi";
 import { IGetCampResult } from "../interfaces/get";
-import { InfoToast, NoIdPickToast, NavToast } from "../components/Toast/Toast";
+import ResultBookmark from "../components/ResultBookmark";
+import { getCamperToken } from "../instance/cookies";
 
 function Result() {
   const nav = useNavigate();
@@ -22,7 +23,6 @@ function Result() {
   const [isActive, setIsActive] = useState(false);
   const [isWeather, setIsWeather] = useState(false);
   const [isSearch, setIsSearch] = useRecoilState(isModal);
-  const [bookmarking, setBookMarking] = useState(false);
   const [sortState, setSortState] = useState("lookUp");
 
   const Month = useRecoilValue(StrMonth);
@@ -32,6 +32,8 @@ function Result() {
   const pardo = useRecoilValue(selectLo);
   const date = useRecoilValue(DateState);
   const keyword = useRecoilValue(textValue);
+
+  const isLogin = getCamperToken();
 
   /* weather api */
   const { WeatherData, isLoading, isError } = useGetWeather(pardo, date);
@@ -52,11 +54,6 @@ function Result() {
     setIsWeather(!isWeather);
   };
 
-  const picking = () => {
-    setBookMarking((prev) => !prev);
-    console.log("asdfads");
-  };
-
   useEffect(() => {
     if (inView && hasNextPage) {
       fetchNextPage();
@@ -64,343 +61,367 @@ function Result() {
   }, [inView]);
 
   return (
-    <Wrapper>
-      {toastState == true ? (
-        <InfoToast
-          text={"검색조건이 부족해요."}
-          toastState={toastState}
-          setToastState={setToastState}
-        />
-      ) : null}
-      {isSearch == false ? undefined : <Search />}
-
-      <ReSearch>
-        <div
-          onClick={() => {
-            nav("/");
-          }}>
-          <div style={{ position: "relative" }}>
-            <img src="/images/back.svg" alt="back" />
-            <span style={{ width: "60px" }}>검색조건</span>
+    <>
+      <Wrapper>
+        {isSearch == false ? undefined : <Search />}
+        <ReSearch>
+          <div
+            onClick={() => {
+              nav("/");
+            }}
+          >
+            <div style={{ position: "relative" }}>
+              <img src="/images/back.svg" alt="back" />
+              <span style={{ width: "60px" }}>검색조건</span>
+            </div>
           </div>
-        </div>
-        <div>
-          <span style={{ width: "160px", marginLeft: "-150px" }}>
-            {Month}월 {Day}일 &nbsp; | &nbsp; {doNm}
-          </span>
-        </div>
-      </ReSearch>
-
-      {/* Weather modal */}
-
-      {/* 여기서 문제... pardo값을 받게 되었을 때 잘나오지만 만약 pardo 값을 인자로 넣지
-      않는다면..?  => undefined 값이 나오게 된다잉.. 그렇다고 이 값을 여기에 맞추기엔 pardo
-      값을 정확히 입력하고, 날짜가 날씨를 지원하지 않는 거라면 Query Option 으로 isError일때, 
-      다른 컴포넌트가 나오게 처리해야된다.. 그렇다면?? 조건문을 중첩해서 써도 되지 않을까?
-      => 이거 질문해야겠다 시부레,.. */}
-
-      {/* 일단 키워드가 있고 없고 해도 잘 안됩니당 */}
-
-      {isError == false ? (
-        <WeatherModal
-          isWeather={isWeather}
-          onClick={WeatherHandler}
-          style={{ transition: "all 0.5 ease-in-out" }}>
-          <div className="top">
-            <span>날씨</span>
-            <span>{isWeather ? "펼치기" : "접기"}</span>
+          <div>
+            <span style={{ width: "160px", marginLeft: "-150px" }}>
+              {Month}월 {Day}일 &nbsp; | &nbsp; {doNm}
+            </span>
           </div>
-          {/* 펼치기 전 */}
-          <div className="isNotActive">
-            <div className="secondSeparate">
-              {/* 날씨 정보에 따른 조건부 이미지 로직 */}
+        </ReSearch>
 
-              {/* 구름이 많이 낄 때 */}
-              {WeatherData?.weather[0].clouds > 50 &&
-              WeatherData?.weather[0].rain == null ? (
-                <img
-                  src="/images/weatherIcon/img-cloudy.svg"
-                  alt="weather-img"
-                />
-              ) : /* 구름이 적게 낄 때 */
-              WeatherData?.weather[0].clouds > 29 &&
-                WeatherData?.weather[0].clouds < 50 ? (
-                <img
-                  src="/images/weatherIcon/img-cloud.svg"
-                  alt="weather-img"
-                />
-              ) : /* 적은 비가 내릴 때 */
-              WeatherData?.weather[0].rain < 0.29 &&
-                WeatherData?.weather[0].rain > 0.01 ? (
-                <img
-                  src="/images/weatherIcon/img-sunRain.svg"
-                  alt="weather-img"
-                />
-              ) : /* 많은 비가 내릴 때 */
-              WeatherData?.weather[0].rain > 0.3 ? (
-                <img src="/images/weatherIcon/img-rain.svg" alt="weather-img" />
-              ) : /* 눈이 내릴 떄 */
-              WeatherData?.weather[0].snow !== null ? (
-                <img src="/images/weatherIcon/img-snow.svg" alt="weather-img" />
-              ) : /* 눈과 비가 내릴 때 */
-              WeatherData?.weather[0].snow !== null &&
-                WeatherData?.weather[0].rain !== null ? (
-                <img src="/images/weatherIcon/img-snow.svg" alt="weather-img" />
-              ) : (
-                /* 구름이 거의 끼지 않아 밝을 떄 */
-                <img
-                  src="/images/weatherIcon/img-sunny.svg"
-                  alt="weather-img"
-                />
-              )}
-              <div className="infoBox">
-                <span>{doNm}</span>
+        {/* Weather modal */}
+
+        {isError == false ? (
+          <WeatherModal
+            isWeather={isWeather}
+            onClick={WeatherHandler}
+            style={{ transition: "all 0.5 ease-in-out" }}
+          >
+            <div className="top">
+              <span>날씨</span>
+              <span>{isWeather ? "펼치기" : "접기"}</span>
+            </div>
+            {/* 펼치기 전 */}
+            <div className="isNotActive">
+              <div className="secondSeparate">
+                {/* 날씨 정보에 따른 조건부 이미지 로직 */}
+
+                {/* 구름이 많이 낄 때 */}
+                {WeatherData?.weather[0].clouds > 50 &&
+                WeatherData?.weather[0].rain == null ? (
+                  <img
+                    src="/images/weatherIcon/img-cloudy.svg"
+                    alt="weather-img"
+                  />
+                ) : /* 구름이 적게 낄 때 */
+                WeatherData?.weather[0].clouds > 29 &&
+                  WeatherData?.weather[0].clouds < 50 ? (
+                  <img
+                    src="/images/weatherIcon/img-cloud.svg"
+                    alt="weather-img"
+                  />
+                ) : /* 적은 비가 내릴 때 */
+                WeatherData?.weather[0].rain < 0.29 &&
+                  WeatherData?.weather[0].rain > 0.01 ? (
+                  <img
+                    src="/images/weatherIcon/img-sunRain.svg"
+                    alt="weather-img"
+                  />
+                ) : /* 많은 비가 내릴 때 */
+                WeatherData?.weather[0].rain > 0.3 ? (
+                  <img
+                    src="/images/weatherIcon/img-rain.svg"
+                    alt="weather-img"
+                  />
+                ) : /* 눈이 내릴 떄 */
+                WeatherData?.weather[0].snow !== null ? (
+                  <img
+                    src="/images/weatherIcon/img-snow.svg"
+                    alt="weather-img"
+                  />
+                ) : /* 눈과 비가 내릴 때 */
+                WeatherData?.weather[0].snow !== null &&
+                  WeatherData?.weather[0].rain !== null ? (
+                  <img
+                    src="/images/weatherIcon/img-snow.svg"
+                    alt="weather-img"
+                  />
+                ) : (
+                  /* 구름이 거의 끼지 않아 밝을 떄 */
+                  <img
+                    src="/images/weatherIcon/img-sunny.svg"
+                    alt="weather-img"
+                  />
+                )}
+                <div className="infoBox">
+                  <span>{doNm}</span>
+                  <span>
+                    비올확률 {WeatherData?.weather[0].pop.toFixed(1) * 100}%
+                  </span>
+                </div>
+              </div>
+              <div className="thirdSeparate">
+                <div className="temBox">
+                  <div className="lowHigh">
+                    <p>{WeatherData?.weather[0].min.toFixed(0)}</p>
+                    <p>{WeatherData?.weather[0].max.toFixed(0)}</p>
+                  </div>
+                  <span>{WeatherData?.weather[0].day.toFixed(0)}</span>
+                  <b>°</b>
+                </div>
                 <span>
-                  비올확률 {WeatherData?.weather[0].pop.toFixed(1) * 100}%
+                  {Month}월 {Day}일 낮 기준
                 </span>
               </div>
             </div>
-            <div className="thirdSeparate">
-              <div className="temBox">
-                <div className="lowHigh">
-                  <p>{WeatherData?.weather[0].min.toFixed(0)}</p>
-                  <p>{WeatherData?.weather[0].max.toFixed(0)}</p>
-                </div>
-                <span>{WeatherData?.weather[0].day.toFixed(0)}</span>
-                <b>°</b>
-              </div>
-              <span>
-                {Month}월 {Day}일 낮 기준
-              </span>
-            </div>
-          </div>
 
-          {/* 펼치기 후 */}
-          <div className="isActive">
-            {/* 1층 */}
-            <div className="firstFloor">
-              <hr />
-              <div className="tempGraph">
-                <img
-                  src="/images/weatherIcon/icon-circleline.svg"
-                  alt="circleline"
-                />
-                <img src="/images/weatherIcon/icon-morning.svg" alt="morning" />
-                <img src="/images/weatherIcon/icon-lunch.svg" alt="lunch" />
-                <img src="/images/weatherIcon/icon-night.svg" alt="night" />
-                <span>{WeatherData?.weather[0].morn.toFixed(0)}°</span>
-                <span>{WeatherData?.weather[0].day.toFixed(0)}°</span>
-                <span>{WeatherData?.weather[0].night.toFixed(0)}°</span>
-              </div>
-              <div className="infoBox">
-                <div className="left">
-                  <div className="climate">
-                    <p>바람</p>
-                    <p>습도</p>
-                    <p>자외선지수</p>
-                  </div>
-                  <div className="climateNum">
-                    <div>
-                      <p>{WeatherData?.weather[0].wind_speed.toFixed(0)}m/s</p>
-                      <p>{WeatherData?.weather[0].humidity}%</p>
-                      <p>{WeatherData?.weather[0].uvi}</p>
+            {/* 펼치기 후 */}
+            <div className="isActive">
+              {/* 1층 */}
+              <div className="firstFloor">
+                <hr />
+                <div className="tempGraph">
+                  <img
+                    src="/images/weatherIcon/icon-circleline.svg"
+                    alt="circleline"
+                  />
+                  <img
+                    src="/images/weatherIcon/icon-morning.svg"
+                    alt="morning"
+                  />
+                  <img src="/images/weatherIcon/icon-lunch.svg" alt="lunch" />
+                  <img src="/images/weatherIcon/icon-night.svg" alt="night" />
+                  <span>{WeatherData?.weather[0].morn.toFixed(0)}°</span>
+                  <span>{WeatherData?.weather[0].day.toFixed(0)}°</span>
+                  <span>{WeatherData?.weather[0].night.toFixed(0)}°</span>
+                </div>
+                <div className="infoBox">
+                  <div className="left">
+                    <div className="climate">
+                      <p>바람</p>
+                      <p>습도</p>
+                      <p>자외선지수</p>
+                    </div>
+                    <div className="climateNum">
+                      <div>
+                        <p>
+                          {WeatherData?.weather[0].wind_speed.toFixed(0)}m/s
+                        </p>
+                        <p>{WeatherData?.weather[0].humidity}%</p>
+                        <p>{WeatherData?.weather[0].uvi}</p>
+                      </div>
                     </div>
                   </div>
+                  <div className="right">
+                    {/* wind_speed */}
+                    {WeatherData?.weather[0].wind_speed.toFixed(0) > 5 ? (
+                      <p style={{ color: "#eb4343" }}>
+                        <b>·</b> 강풍으로 체감온도가 낮아요
+                      </p>
+                    ) : WeatherData?.weather[0].wind_speed.toFixed(0) < 5 &&
+                      WeatherData?.weather[0].wind_speed.toFixed(0) > 2.9 ? (
+                      <p style={{ color: "#fc9701" }}>
+                        <b>·</b> 선선한 바람이 불어요
+                      </p>
+                    ) : (
+                      <p style={{ color: "#27a80c" }}>
+                        <b>·</b> 바람이 거의 불지 않아요
+                      </p>
+                    )}
+
+                    {/* humidity */}
+                    {WeatherData?.weather[0].humidity > 60 ? (
+                      <p style={{ color: "#eb4343" }}>
+                        <b>·</b> 습해서 불쾌지수가 올라가요
+                      </p>
+                    ) : WeatherData?.weather[0].humidity < 60 &&
+                      WeatherData?.weather[0].humidity > 30 ? (
+                      <p style={{ color: "#27a80c" }}>
+                        <b>·</b> 캠프파이어 하기 딱 좋아요
+                      </p>
+                    ) : (
+                      <p style={{ color: "#fc9701" }}>
+                        <b>·</b> 수분크림을 꼭 챙기세요
+                      </p>
+                    )}
+
+                    {/* uvi */}
+                    {WeatherData?.weather[0].uvi > 4.9 ? (
+                      <p style={{ color: "#eb4343" }}>
+                        <b>·</b> 야외활동을 추천하지 않아요
+                      </p>
+                    ) : WeatherData?.weather[0].uvi < 5 &&
+                      WeatherData?.weather[0].uvi == 3 ? (
+                      <p style={{ color: "#fc9701" }}>
+                        <b>·</b> 선크림은 꼭 발라주세요
+                      </p>
+                    ) : (
+                      <p style={{ color: "#27a80c" }}>
+                        <b>·</b> 활동하기 좋은 햇볕이에요
+                      </p>
+                    )}
+                  </div>
                 </div>
-                <div className="right">
-                  {/* wind_speed */}
-                  {WeatherData?.weather[0].wind_speed.toFixed(0) > 5 ? (
-                    <p style={{ color: "#eb4343" }}>
-                      <b>·</b> 강풍으로 체감온도가 낮아요
-                    </p>
-                  ) : WeatherData?.weather[0].wind_speed.toFixed(0) < 5 &&
-                    WeatherData?.weather[0].wind_speed.toFixed(0) > 2.9 ? (
-                    <p style={{ color: "#fc9701" }}>
-                      <b>·</b> 다소 선선한 바람이 불어요
-                    </p>
-                  ) : (
-                    <p style={{ color: "#27a80c" }}>
-                      <b>·</b> 바람이 거의 불지 않아요
-                    </p>
-                  )}
-
-                  {/* humidity */}
-                  {WeatherData?.weather[0].humidity > 60 ? (
-                    <p style={{ color: "#eb4343" }}>
-                      <b>·</b> 많이 습해서 불쾌지수가 올라가요
-                    </p>
-                  ) : WeatherData?.weather[0].humidity < 60 &&
-                    WeatherData?.weather[0].humidity > 30 ? (
-                    <p style={{ color: "#27a80c" }}>
-                      <b>·</b> 캠프파이어 하기 딱 좋아요
-                    </p>
-                  ) : (
-                    <p style={{ color: "#fc9701" }}>
-                      <b>·</b> 수분크림을 꼭 챙기세요
-                    </p>
-                  )}
-
-                  {/* uvi */}
-                  {WeatherData?.weather[0].uvi > 4.9 ? (
-                    <p style={{ color: "#eb4343" }}>
-                      <b>·</b> 야외활동을 추천하지 않아요
-                    </p>
-                  ) : WeatherData?.weather[0].uvi < 5 &&
-                    WeatherData?.weather[0].uvi == 3 ? (
-                    <p style={{ color: "#fc9701" }}>
-                      <b>·</b> 썬크림은 꼭 발라주세요
-                    </p>
-                  ) : (
-                    <p style={{ color: "#27a80c" }}>
-                      <b>·</b> 활동하기 좋은 햇볕이에요
-                    </p>
-                  )}
+              </div>
+              {/* 2층 */}
+              <hr />
+              <div className="secondFloor">
+                <div className="iconBox">
+                  <img
+                    src="/images/weatherIcon/icon-sunrise.svg"
+                    alt="sunrise"
+                  />
+                  <span>{WeatherData?.weather[0].sunrise.slice(-7, -3)}am</span>
+                  <span>일출</span>
                 </div>
-              </div>
-            </div>
-            {/* 2층 */}
-            <hr />
-            <div className="secondFloor">
-              <div className="iconBox">
-                <img src="/images/weatherIcon/icon-sunrise.svg" alt="sunrise" />
-                <span>{WeatherData?.weather[0].sunrise.slice(-7, -3)}am</span>
-                <span>일출</span>
-              </div>
-              <div className="iconBox">
-                <img src="/images/weatherIcon/icon-sunset.svg" alt="sunset" />
-                <span>{WeatherData?.weather[0].sunset.slice(-7, -3)}pm</span>
-                <span>일몰</span>
-              </div>
-              <div className="iconBox">
-                {WeatherData?.weather[0].snow !== null &&
-                WeatherData?.weather[0].rain == null ? (
-                  <>
-                    <img src="/images/weatherIcon/icon-snow.svg" alt="snow" />
-                    <span>{WeatherData?.weather[0].snow}mm</span>
-                    <span>적설량</span>
-                  </>
-                ) : (
-                  <>
-                    <img src="/images/weatherIcon/icon-snow.svg" alt="snow" />
-                    <span>
-                      {WeatherData?.weather[0].rain == null
-                        ? 0
-                        : WeatherData?.weather[0].rain}
-                      mm
-                    </span>
-                    <span>강수량</span>
-                  </>
-                )}
-              </div>
-              <div className="iconBox">
-                <img src="/images/weatherIcon/icon-cloud.svg" alt="cloud" />
-                <span>{WeatherData?.weather[0].clouds}%</span>
-                <span>구름</span>
-              </div>
-            </div>
-          </div>
-        </WeatherModal>
-      ) : (
-        <NoWeather>
-          <div className="top">
-            <span>날씨</span>
-          </div>
-          <div className="isNotActive">
-            <div className="inline">
-              <img src="/images/icon-warning.svg" alt="warning" />
-              날씨정보를 제공하지 않는 날짜입니다.
-            </div>
-            <span>(당일 +8일까지만 제공)</span>
-          </div>
-        </NoWeather>
-      )}
-
-      {/* Camp results */}
-
-      <ResultContainer>
-        <ResultTop>
-          <div>
-            <span className="result"> 검색결과 </span>
-            <span className="total"> ({campData?.pages[0].camps.total}개)</span>
-          </div>
-          <div>
-            {sortState == "lookUp" ? (
-              <span
-                className="popular"
-                onClick={() => setSortState("pickCount")}>
-                {" "}
-                조회순{" "}
-              </span>
-            ) : sortState == "pickCount" ? (
-              <span
-                className="popular"
-                onClick={() => setSortState("reviewCount")}>
-                {" "}
-                인기순{" "}
-              </span>
-            ) : (
-              <span className="popular" onClick={() => setSortState("lookUp")}>
-                {" "}
-                리뷰순{" "}
-              </span>
-            )}
-          </div>
-        </ResultTop>
-        {isSuccess && campData?.pages ? (
-          /* page별로 map을 한 번 돌려서 2차원배열 구조로 되어있는~ */
-          campData?.pages.map((page) => (
-            <React.Fragment key={page.currentPage}>
-              {page?.camps.camp.map((item: IGetCampResult) => (
-                <ResultBox key={item.campId}>
-                  <ResultItem
-                    onClick={() =>
-                      nav(`/detail/:${item.campId}`, {
-                        state: {
-                          campId: `${item.campId}`,
-                        },
-                      })
-                    }>
-                    <ResultImg src={item.ImageUrl} alt={item.ImageUrl} />
-                    <InnerBg>
+                <div className="iconBox">
+                  <img src="/images/weatherIcon/icon-sunset.svg" alt="sunset" />
+                  <span>{WeatherData?.weather[0].sunset.slice(-7, -3)}pm</span>
+                  <span>일몰</span>
+                </div>
+                <div className="iconBox">
+                  {WeatherData?.weather[0].snow !== null &&
+                  WeatherData?.weather[0].rain == null ? (
+                    <>
+                      <img src="/images/weatherIcon/icon-snow.svg" alt="snow" />
+                      <span>{WeatherData?.weather[0].snow}mm</span>
+                      <span>적설량</span>
+                    </>
+                  ) : (
+                    <>
+                      <img src="/images/weatherIcon/icon-rain.svg" alt="rain" />
                       <span>
-                        찜({item.pickCount}) 리뷰({item.reviewCount})
+                        {WeatherData?.weather[0].rain == null
+                          ? 0
+                          : WeatherData?.weather[0].rain}
+                        mm
                       </span>
-                    </InnerBg>
-                  </ResultItem>
-                  <CampSpan>
-                    <span>{item.campName}</span>
-                    <span>{item.induty}</span>
-                  </CampSpan>
-                  <DetailAddress>
-                    <img src="/images/location.svg" alt="location" />
-                    <span>
-                      {item.address == ""
-                        ? "등록된 주소가 없습니다"
-                        : item.address}
-                    </span>
-                  </DetailAddress>
-                  {/* 시설 태그들 (max: 4) */}
-                  <TagContainer>
-                    {item.sbrsCl == ""
-                      ? null
-                      : item.sbrsCl
-                          .split(",")
-                          .slice(0, 4)
-                          .map((word) => <div className="tag"> {word} </div>)}
-                  </TagContainer>
-                </ResultBox>
-              ))}
-            </React.Fragment>
-          ))
+                      <span>강수량</span>
+                    </>
+                  )}
+                </div>
+                <div className="iconBox">
+                  <img src="/images/weatherIcon/icon-cloud.svg" alt="cloud" />
+                  <span>{WeatherData?.weather[0].clouds}%</span>
+                  <span>구름</span>
+                </div>
+              </div>
+            </div>
+          </WeatherModal>
         ) : (
-          <div>데이터가 없습니다</div>
+          <NoWeather>
+            <div className="top">
+              <span>날씨</span>
+            </div>
+            <div className="isNotActive">
+              <div className="inline">
+                <img src="/images/icon-warning.svg" alt="warning" />
+                날씨정보를 제공하지 않는 날짜입니다.
+              </div>
+              <span>(당일 +8일까지만 제공)</span>
+            </div>
+          </NoWeather>
         )}
-      </ResultContainer>
-      <div
-        ref={ref}
-        style={{ width: "inherit", height: "auto", bottom: "20" }}></div>
-      <Up />
-    </Wrapper>
+
+        {/* Camp results */}
+
+        <ResultContainer>
+          <ResultTop>
+            <div>
+              <span className="result"> 검색결과 </span>
+              <span className="total">
+                {" "}
+                ({campData?.pages[0].camps.total}개)
+              </span>
+            </div>
+            <div>
+              {sortState == "lookUp" ? (
+                <span
+                  className="popular"
+                  onClick={() => setSortState("pickCount")}
+                >
+                  {" "}
+                  조회순{" "}
+                </span>
+              ) : sortState == "pickCount" ? (
+                <span
+                  className="popular"
+                  onClick={() => setSortState("reviewCount")}
+                >
+                  {" "}
+                  인기순{" "}
+                </span>
+              ) : (
+                <span
+                  className="popular"
+                  onClick={() => setSortState("lookUp")}
+                >
+                  {" "}
+                  리뷰순{" "}
+                </span>
+              )}
+            </div>
+          </ResultTop>
+          {isSuccess && campData?.pages ? (
+            /* page별로 map을 한 번 돌려서 2차원배열 구조로 되어있는~ */
+            campData?.pages.map((page) => (
+              <React.Fragment key={page.currentPage}>
+                {page?.camps.regionCamp.map((item: IGetCampResult) => (
+                  <ResultBox key={item.campId}>
+                    <ResultItem
+                      onClick={() =>
+                        nav(`/detail/:${item.campId}/detail`, {
+                          state: {
+                            campId: `${item.campId}`,
+                          },
+                        })
+                      }
+                    >
+                      <ResultBookmark camp={item} />
+                      <ResultImg src={item.ImageUrl} alt={item.ImageUrl} />
+                      <InnerBg>
+                        <span>
+                          찜({item.pickCount}) 리뷰({item.reviewCount})
+                        </span>
+                      </InnerBg>
+                    </ResultItem>
+                    <CampSpan>
+                      <span>{item.campName}</span>
+                      <span>{item.induty}</span>
+                    </CampSpan>
+                    <DetailAddress>
+                      <img src="/images/location.svg" alt="location" />
+                      <span>
+                        {item.address == ""
+                          ? "등록된 주소가 없습니다"
+                          : item.address}
+                      </span>
+                    </DetailAddress>
+                    {/* 시설 태그들 (max: 4) */}
+                    <TagContainer onClick={() => setToastState(true)}>
+                      {item.sbrsCl == ""
+                        ? null
+                        : item.sbrsCl
+                            .split(",")
+                            .slice(0, 4)
+                            .map((word) => <div className="tag"> {word} </div>)}
+                    </TagContainer>
+                  </ResultBox>
+                ))}
+                <div
+                  ref={ref}
+                  style={{
+                    width: "inherit",
+                    height: "auto",
+                    bottom: "20",
+                  }}
+                ></div>
+              </React.Fragment>
+            ))
+          ) : (
+            <div>데이터가 없습니다</div>
+          )}
+        </ResultContainer>
+        <div
+          ref={ref}
+          style={{ width: "inherit", height: "auto", bottom: "20" }}
+        ></div>
+        <Up />
+      </Wrapper>
+    </>
   );
 }
 
@@ -411,6 +432,7 @@ const Wrapper = styled.div`
   width: 100%;
   max-width: ${(props) => props.theme.pixelToRem(425)};
   min-width: ${(props) => props.theme.pixelToRem(375)};
+  position: relative;
   flex-direction: column;
 `;
 
@@ -945,7 +967,7 @@ const InnerBg = styled.div`
   height: ${(props) => props.theme.pixelToRem(24)};
   padding: 2px;
   margin-top: -34px;
-  margin-left: 230px;
+  margin-left: 246px;
   border-radius: 4px;
   background-color: #000000;
   position: relative;

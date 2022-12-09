@@ -40,9 +40,9 @@ export default function SignUp() {
         password: data.password,
       });
       if (response.status === 201) {
-      setToastState(true);
+        setToastState(true);
         const timer = setTimeout(() => {
-          navigate("/welcome");     
+          navigate("/welcome");
         }, 1600);
         return () => {
           clearTimeout(timer);
@@ -75,7 +75,7 @@ export default function SignUp() {
     <LoginWrap>
       {toastState == true ? (
         <InfoToast
-          text={`사용가능한 메일입니다.`}
+          text={`환영합니다.`}
           toastState={toastState}
           setToastState={setToastState}
         />
@@ -170,7 +170,6 @@ const LoginWrap = styled.div`
   width: 100%;
   height: 95vh;
   position: relative;
-
 `;
 
 const LoginTitle = styled.div`

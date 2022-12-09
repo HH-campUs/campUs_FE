@@ -1,4 +1,3 @@
-import { toastState } from "../store/toastAtom";
 export interface IGetCampCatInfo {
   keyword: string;
 }

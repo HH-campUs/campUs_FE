@@ -135,13 +135,11 @@ const ToastAlert = styled.div<{ toastState: boolean }>`
   align-items: center;
   justify-content: center;
   display: flex;
-  position: fixed;
+  position: absolute;
   z-index: 1000;
   animation-name: ${(props) => (props.toastState == true ? fadeIn : fadeOut)};
   animation-duration: 0.2s;
 `;
-
-const InfoAlert = styled(ToastAlert)``;
 
 const CenterAlert = styled(ToastAlert)`
   width: ${(props) => props.theme.pixelToRem(245)};
@@ -174,8 +172,7 @@ const CenterAlert = styled(ToastAlert)`
 
 const NaviToast = styled(ToastAlert)`
   width: ${(props) => props.theme.pixelToRem(351)};
-  bottom: 10%;
-  transform: translateX(6%);
+  bottom: 0;
   padding: 20px;
   border-radius: 10px;
   justify-content: space-between !important;

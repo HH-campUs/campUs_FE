@@ -23,17 +23,8 @@ import { Link, useNavigate } from "react-router-dom";
 import styled, { keyframes, css } from "styled-components";
 import Datepicker from "./Datepicker";
 import { semiOpenProps } from "../../interfaces/props";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 function SemiSearch({ openSemi, setOpenSemi }: semiOpenProps) {
-  const notify = () => {
-    toast.success("This is a test success", {
-      position: toast.POSITION.BOTTOM_CENTER,
-      autoClose: 2000,
-      hideProgressBar: true,
-    });
-  };
   const [openDate, setOpenDate] = useState(false);
   const [startDate, setStartDate] = useRecoilState(StartDate);
 
@@ -56,10 +47,9 @@ function SemiSearch({ openSemi, setOpenSemi }: semiOpenProps) {
         />
         {/* 모달창 밖 blur background 토글 기능 부여 (event bubbling 해결) */}
         <SearchModal openSemi={openSemi} className="isSearch">
-          <ToastContainer />
           {/* Headline + close btn */}
           <TopContainer>
-            <SearchTitle>어디로 가시나요?</SearchTitle>
+            <SearchTitle>날짜를 언제로 바꿀까요?</SearchTitle>
             <CloseBtn
               src="/images/closeBtn.svg"
               onClick={() => {

@@ -7,6 +7,7 @@ import SemiSearch from "../components/withSearch/SemiSearch";
 import Search from "../components/withSearch/Search";
 import PlanWrite from "../components/withPlan/PlanWrite";
 import { isModal } from "../store/searchAtom";
+import { isToast } from "../store/toastAtom";
 import { useGetApi } from "../APIs/getApi";
 import { StrDay } from "../store/dateAtom";
 import getIcons from "../utils/getIcons";
@@ -15,7 +16,7 @@ import { getCamperToken } from "../instance/cookies";
 import { InfoToast, NoIdPickToast, NavToast } from "../components/Toast/Toast";
 
 function Detail() {
-  const [toastState, setToastState] = useState(false);
+  const [toastState, setToastState] = useRecoilState(isToast);
   const copyLinkRef = useRef();
   const navigate = useNavigate();
   const [isSearch, setIsSearch] = useRecoilState(isModal);
@@ -69,32 +70,35 @@ function Detail() {
 
   return (
     <>
-      {isLogin == true ? (
-        <NoIdPickToast
-          text={"로그인 후 여행등록이 가능해요."}
-          toastState={toastState}
-          setToastState={setToastState}
-        />
-      ) : toastState == true ? (
-        <NavToast
-          text={"내 여행일정에 추가되었어요."}
-          url={"/mypage/myplan"}
-          toastState={toastState}
-          setToastState={setToastState}
-        />
-      ) : null}
-
       {openSemi == false ? null : (
         <SemiSearch openSemi={openSemi} setOpenSemi={setOpenSemi} />
       )}
       {isSearch == false ? null : <Search />}
 
       {isPlan == false ? null : (
-        <PlanWrite isPlan={isPlan} setIsPlan={setIsPlan} />
+        <PlanWrite
+          isPlan={isPlan}
+          setIsPlan={setIsPlan}
+          toastState={toastState}
+          setToastState={setToastState}
+        />
       )}
       <Wrapper>
         {/* 최상단 이미지*/}
-
+        {isLogin ? (
+          <NoIdPickToast
+            text={"로그인 후 여행등록이 가능해요."}
+            toastState={toastState}
+            setToastState={setToastState}
+          />
+        ) : toastState == true ? (
+          <NavToast
+            text={"내 여행일정에 추가되었어요."}
+            url={"/mypage/myplan"}
+            toastState={toastState}
+            setToastState={setToastState}
+          />
+        ) : null}
         <MainImage>
           <TopNavContainer>
             <div style={{ display: "flex" }}>
@@ -189,9 +193,15 @@ function Detail() {
             </span>
             <Plan> 일정을 저장해 보세요!</Plan>
           </div>
-          <div className="rightBtn" onClick={openPlan}>
-            여행일정 저장
-          </div>
+          {isLogin ? (
+            <div className="rightBtn" onClick={openPlan}>
+              여행일정 저장
+            </div>
+          ) : (
+            <div className="rightBtn" onClick={() => setToastState(true)}>
+              여행일정 저장
+            </div>
+          )}
         </AddtripBtn>
 
         <WFcBox>
@@ -366,7 +376,7 @@ const Review = styled.p`
 `;
 
 const AddtripBtn = styled.button`
-  width: 80%;
+  width: 93%;
   height: ${(props) => props.theme.pixelToRem(46)};
   margin: ${(props) => props.theme.pixelToRem(4)} auto;
   flex-grow: 0;
@@ -463,6 +473,7 @@ const FcBox = styled.div`
 `;
 
 const FcTextBox = styled.div`
+  width: 100%;
   margin-top: 10px;
   display: flex;
   justify-content: space-between;

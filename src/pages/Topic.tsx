@@ -96,13 +96,12 @@ function Topic() {
                     <TopicBookmark Camp={item} />
                     <ResultItem
                       onClick={() =>
-                        navigate(`/detail/${item.campId}`, {
+                        navigate(`/detail/${item.campId}/detail`, {
                           state: {
                             campId: `${item.campId}`,
                           },
                         })
-                      }
-                    >
+                      }>
                       <CampImg>
                         <img src={item.ImageUrl} alt={item.campName} />
                         <ReviewInfo>

@@ -215,7 +215,7 @@ function Result() {
                     ) : WeatherData?.weather[0].wind_speed.toFixed(0) < 5 &&
                       WeatherData?.weather[0].wind_speed.toFixed(0) > 2.9 ? (
                       <p style={{ color: "#fc9701" }}>
-                        <b>·</b> 다소 선선한 바람이 불어요
+                        <b>·</b> 선선한 바람이 불어요
                       </p>
                     ) : (
                       <p style={{ color: "#27a80c" }}>
@@ -226,7 +226,7 @@ function Result() {
                     {/* humidity */}
                     {WeatherData?.weather[0].humidity > 60 ? (
                       <p style={{ color: "#eb4343" }}>
-                        <b>·</b> 많이 습해서 불쾌지수가 올라가요
+                        <b>·</b> 습해서 불쾌지수가 올라가요
                       </p>
                     ) : WeatherData?.weather[0].humidity < 60 &&
                       WeatherData?.weather[0].humidity > 30 ? (
@@ -247,7 +247,7 @@ function Result() {
                     ) : WeatherData?.weather[0].uvi < 5 &&
                       WeatherData?.weather[0].uvi == 3 ? (
                       <p style={{ color: "#fc9701" }}>
-                        <b>·</b> 썬크림은 꼭 발라주세요
+                        <b>·</b> 선크림은 꼭 발라주세요
                       </p>
                     ) : (
                       <p style={{ color: "#27a80c" }}>
@@ -364,7 +364,7 @@ function Result() {
                   <ResultBox key={item.campId}>
                     <ResultItem
                       onClick={() =>
-                        nav(`/detail/:${item.campId}`, {
+                        nav(`/detail/:${item.campId}/detail`, {
                           state: {
                             campId: `${item.campId}`,
                           },

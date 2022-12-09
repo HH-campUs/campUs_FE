@@ -59,9 +59,19 @@ export const usePostsApi = {
   },
 
   /* 여행일정삭제 / delete */
-  useDeleteTravelPlan: (tripId: number) => {
+  useDeleteTravelPlan: () => {
     return useMutation((payload: IPostTravelPlan) =>
-      instance.delete(`/users/${tripId}`)
+      instance.delete(`/camps/${payload}`)
+    );
+  },
+
+  /* 여행일정수정/ put */
+  useUpdateTravelPlan: () => {
+    return useMutation((payload: IPostTravelPlan) =>
+      instance.put(`/camps/${payload}`, {
+        date: payload.date,
+        memo: payload.memo,
+      })
     );
   },
 

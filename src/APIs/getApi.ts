@@ -36,11 +36,11 @@ export const useSearchCamp = (keyword: string, sort: string) => {
     isSuccess,
     hasNextPage,
     refetch,
-  } = useInfiniteQuery(["searchCamp", keyword, sort], useData, {
+  } = useInfiniteQuery(["searchCamp", keyword], useData, {
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     getNextPageParam: (lastPage) => {
-      return lastPage.camps.campName ? lastPage.currentPage + 1 : undefined;
+      return lastPage.camps ? lastPage.currentPage + 1 : undefined;
     },
   });
   console.log(campData);
@@ -226,8 +226,8 @@ export const useGetApi = {
   },
 
   /* 여행일정 조회 */
-  useGetTravelPlan: () => {
-    return useQuery(["travelplan"], async () => {
+  useGetTravelPlan2: () => {
+    return useQuery(["travelplan2"], async () => {
       const { data } = await instance.get<IGetTravelPlan>(`/camps`);
 
       return data;

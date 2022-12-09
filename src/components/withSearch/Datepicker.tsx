@@ -58,6 +58,7 @@ function Datepicker({ openDate }: isDateProps) {
           addDays(new Date(), 7),
         ]}
         /* 선택 못하는 날들 (= 지난 날들) */
+
         minDate={new Date()}
         scrollableMonthYearDropdown={true}
         /* inline : 바로 달력 나오게 */

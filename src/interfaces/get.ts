@@ -166,9 +166,10 @@ export interface campArray extends IGetCampResult {
   total: number;
   topicCamp: IGetCampResult[];
   campTopic: IGetCampResult[];
-  searchSort?: IGetCampResult[];
+  searchCamp?: IGetCampResult[];
   detailCamp?: IGetCampResult[];
   camp: IGetCampResult[];
+  regionCamp: IGetCampResult[];
   nextPage?: number;
   lastPage?: boolean;
   isLast?: boolean;

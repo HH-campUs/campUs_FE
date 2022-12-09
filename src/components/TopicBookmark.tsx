@@ -6,11 +6,12 @@ import styled from "styled-components";
 import { IGetCampResult } from "../interfaces/get";
 
 export default function TopicMap({ Camp }: { Camp: IGetCampResult }) {
-  const campick = usePostsApi.useCampingPicked();
-
+  const campick = usePostsApi?.useCampingPicked();
+  console.log("찜캠프", Camp);
   const pick = (campId: number) => {
     campick.mutate(campId);
     window.alert("찜하기 완료");
+    console.log("좋아요", Camp.status);
   };
 
   const unpick = (campId: number) => {

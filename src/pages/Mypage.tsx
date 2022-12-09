@@ -128,8 +128,9 @@ function Mypage() {
 
 export default Mypage;
 
+// ${(props) => props.theme.pixelToRem(375)};
 const Wrapper = styled.div`
-  width: ${(props) => props.theme.pixelToRem(375)};
+  width: 100%;
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -151,7 +152,7 @@ const UserProfile = styled.div`
 `;
 
 const Profile = styled.div`
-  width: ${(props) => props.theme.pixelToRem(375)};
+  width: 100%;
   height: ${(props) => props.theme.pixelToRem(286)};
   background-color: #f5f5f5;
 `;
@@ -202,14 +203,15 @@ const Welcome = styled.div`
 `;
 
 const LoginBox = styled.div`
+  width: 100%;
   display: flex;
   margin-top: 30px;
   margin-left: 20px;
   gap: ${(props) => props.theme.pixelToRem(11)};
 `;
-
+// ${(props) => props.theme.pixelToRem(162)};
 const LoginBtn = styled.button`
-  width: ${(props) => props.theme.pixelToRem(162)};
+  width: 44%;
   height: ${(props) => props.theme.pixelToRem(48)};
   font-size: ${(props) => props.theme.pixelToRem(16)};
   border: 1px solid #024873;
@@ -218,9 +220,9 @@ const LoginBtn = styled.button`
   color: #024873;
   cursor: pointer;
 `;
-
+// ${(props) => props.theme.pixelToRem(162)};
 const SignBtn = styled.button`
-  width: ${(props) => props.theme.pixelToRem(162)};
+  width: 44%;
   height: ${(props) => props.theme.pixelToRem(48)};
   font-size: ${(props) => props.theme.pixelToRem(16)};
   border: 1px solid #024873;

@@ -51,7 +51,6 @@ function Detail() {
   const detailItem = useGetApi.useGetCampDetail(state.campId).data;
   console.log(detailItem);
   const checkItem = detailItem?.detailCamp![0];
-  // console.log(detailItem);
 
   const icons = useMemo<string[]>(() => {
     if (!detailItem?.detailCamp) return [];

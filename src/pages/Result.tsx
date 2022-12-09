@@ -68,7 +68,8 @@ function Result() {
           <div
             onClick={() => {
               nav("/");
-            }}>
+            }}
+          >
             <div style={{ position: "relative" }}>
               <img src="/images/back.svg" alt="back" />
               <span style={{ width: "60px" }}>검색조건</span>
@@ -87,7 +88,8 @@ function Result() {
           <WeatherModal
             isWeather={isWeather}
             onClick={WeatherHandler}
-            style={{ transition: "all 0.5 ease-in-out" }}>
+            style={{ transition: "all 0.5 ease-in-out" }}
+          >
             <div className="top">
               <span>날씨</span>
               <span>{isWeather ? "펼치기" : "접기"}</span>
@@ -329,21 +331,24 @@ function Result() {
               {sortState == "lookUp" ? (
                 <span
                   className="popular"
-                  onClick={() => setSortState("pickCount")}>
+                  onClick={() => setSortState("pickCount")}
+                >
                   {" "}
                   조회순{" "}
                 </span>
               ) : sortState == "pickCount" ? (
                 <span
                   className="popular"
-                  onClick={() => setSortState("reviewCount")}>
+                  onClick={() => setSortState("reviewCount")}
+                >
                   {" "}
                   인기순{" "}
                 </span>
               ) : (
                 <span
                   className="popular"
-                  onClick={() => setSortState("lookUp")}>
+                  onClick={() => setSortState("lookUp")}
+                >
                   {" "}
                   리뷰순{" "}
                 </span>
@@ -363,7 +368,8 @@ function Result() {
                             campId: `${item.campId}`,
                           },
                         })
-                      }>
+                      }
+                    >
                       <ResultBookmark camp={item} />
                       <ResultImg src={item.ImageUrl} alt={item.ImageUrl} />
                       <InnerBg>
@@ -401,7 +407,8 @@ function Result() {
                     width: "inherit",
                     height: "auto",
                     bottom: "20",
-                  }}></div>
+                  }}
+                ></div>
               </React.Fragment>
             ))
           ) : (
@@ -410,7 +417,8 @@ function Result() {
         </ResultContainer>
         <div
           ref={ref}
-          style={{ width: "inherit", height: "auto", bottom: "20" }}></div>
+          style={{ width: "inherit", height: "auto", bottom: "20" }}
+        ></div>
         <Up />
       </Wrapper>
     </>

@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { ISignUpForm } from "../interfaces/inLogin";
 import { instance } from "../instance/instance";
+
 import { useRecoilState, useRecoilValue } from "recoil";
 import { isToast } from "../store/toastAtom";
+
 import { InfoToast } from "../components/Toast/Toast";
 
 //css
@@ -12,7 +14,6 @@ import styled from "styled-components";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import CheckIcon from "@mui/icons-material/Check";
 
-// #024873(회원가입), #5185A6(중복검사)
 export default function SignUp() {
   const [toastState, setToastState] = useState(false);
 
@@ -29,22 +30,19 @@ export default function SignUp() {
 
   const password = watch("password");
   const mailwatch = watch("email");
-  console.log(mailwatch);
-  console.log(password);
 
   const handleValid = async (data: ISignUpForm) => {
-    if (mailCK === false) return window.alert("중복확인을 다시 해주세요.");
+    if (mailCK === false) return;
+
     try {
       const response = await instance.post(`/users/signup`, {
         email: data.email,
         password: data.password,
       });
-      console.log(data);
       if (response.status === 201) {
-        setToastState(true);
-        window.alert(`${data?.email}님\n반갑습니다.`);
+      setToastState(true);
         const timer = setTimeout(() => {
-          navigate("/login");
+          navigate("/welcome");     
         }, 1600);
         return () => {
           clearTimeout(timer);
@@ -54,10 +52,6 @@ export default function SignUp() {
       window.alert("가입에 실패했습니다.");
     }
   };
-
-  // 1.정규식(errors.email?) 에러발생하면 중복검사 버튼 돌아감.
-  // 2. 이 함수는 useEffect로 mailCK가 트루가 되었을때 사용.
-  // 3.useEffect사용으로 구현.
 
   useEffect(() => {
     if (errors.email) {
@@ -73,7 +67,7 @@ export default function SignUp() {
         setMailCk(true);
       })
       .catch(() => {
-        window.alert("중복된 메일입니다.");
+        window.alert("사용이 불가능한 메일입니다.");
       });
   };
 
@@ -81,7 +75,7 @@ export default function SignUp() {
     <LoginWrap>
       {toastState == true ? (
         <InfoToast
-          text={`반갑습니다.`}
+          text={`사용가능한 메일입니다.`}
           toastState={toastState}
           setToastState={setToastState}
         />
@@ -96,8 +90,7 @@ export default function SignUp() {
         <LoginText>회원가입</LoginText>
       </LoginTitle>
       <HeadText>
-        {" "}
-        <img src="/images/mypage/campUs logo.svg" alt="" />
+        <img src="/images/mypage/_campUs logo_5.svg" alt="" />
       </HeadText>
       {/* Form Start */}
       <LoginForm onSubmit={handleSubmit(handleValid)}>
@@ -177,16 +170,21 @@ const LoginWrap = styled.div`
   width: 100%;
   height: 95vh;
   position: relative;
+
 `;
 
 const LoginTitle = styled.div`
+  width: 100%;
   display: flex;
   align-items: center;
+  justify-content: center;
+  /* margin: 44px auto 0 auto; */
   margin-top: 44px;
+  position: relative;
 
   div {
-    margin-left: 20px;
-    margin-right: 95px;
+    margin-left: -20px;
+    margin-right: 145px;
   }
 `;
 
@@ -196,19 +194,27 @@ const LoginText = styled.div`
 `;
 
 const HeadText = styled.div`
-  position: absolute;
-  font-size: ${(props) => props.theme.pixelToRem(22)};
-  margin-top: 23px;
-  margin-left: 24px;
+  width: ${(props) => props.theme.pixelToRem(375)};
+  max-width: ${(props) => props.theme.pixelToRem(475)};
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  /* margin: auto; */
+  margin: auto;
+  display: flex;
+  transform: translateY(50px);
 `;
 
 const LoginForm = styled.form`
-  position: relative;
+  position: absolute;
+  /* background-color: blue; */
+  /* position: relative; */
   display: flex;
   flex-direction: column;
-  align-content: center;
-  /* gap: 20px; */
-  margin-top: 40px;
+  margin-top: 50px;
+
+  left: 50%;
+  transform: translateX(-50%);
 
   span {
     color: var(--point-color);
@@ -219,7 +225,7 @@ const LoginForm = styled.form`
 // #024873
 const EmailText = styled.div`
   margin-top: 40px;
-  margin-left: 26px;
+  margin-left: 16px;
   font-size: ${(props) => props.theme.pixelToRem(14)};
   font-weight: 500;
   color: #909090;
@@ -227,7 +233,7 @@ const EmailText = styled.div`
 
 const PasswordText = styled.div`
   margin-top: 30px;
-  margin-left: 26px;
+  margin-left: 16px;
   font-size: ${(props) => props.theme.pixelToRem(14)};
   font-weight: 500;
   color: #909090;
@@ -241,7 +247,7 @@ const EmailInputBox = styled.div`
 const StInputMail = styled.input<{ unValid: boolean }>`
   width: ${(props) => props.theme.pixelToRem(232)};
   height: ${(props) => props.theme.pixelToRem(54)};
-  margin-left: 24px;
+  margin-left: 4px;
   font-size: ${(props) => props.theme.pixelToRem(16)};
   border: 1px solid ${(props) => (props.unValid ? "red" : "grey")};
   border-radius: 8px;
@@ -269,7 +275,7 @@ const StInput = styled.input<{ unValid: boolean }>`
   width: ${(props) => props.theme.pixelToRem(327)};
   height: ${(props) => props.theme.pixelToRem(54)};
   font-size: ${(props) => props.theme.pixelToRem(16)};
-  margin-left: ${(props) => props.theme.pixelToRem(24)};
+  margin-left: ${(props) => props.theme.pixelToRem(4)};
   margin-top: 9px;
   border: 1px solid ${(props) => (props.unValid ? "red" : "grey")};
   border-radius: 8px;
@@ -285,7 +291,7 @@ const StBtn = styled.button`
   width: ${(props) => props.theme.pixelToRem(327)};
   height: ${(props) => props.theme.pixelToRem(60)};
   font-size: ${(props) => props.theme.pixelToRem(18)};
-  margin-left: 24px;
+  margin-left: 4px;
   margin-top: 32px;
   border: 1px solid #adc2ce;
   border-radius: ${(props) => props.theme.pixelToRem(10)};

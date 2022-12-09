@@ -101,6 +101,7 @@ export default function Review() {
       campId: campId,
     };
     reviewPost.mutate(body);
+    window.alert("리뷰를 남겼습니다.");
     navigate(-1);
   };
 
@@ -236,7 +237,7 @@ export default function Review() {
       </ReviewTip>
       <WriteHead>
         <p>리뷰 쓰기</p>
-        <p style={{ color: "#5185A6" }}>최소 10자</p>
+        <p style={{ color: "#5185A6" }}>최소 10자 | 최대 40자</p>
       </WriteHead>
       <ReviewForm onSubmit={handleSubmit(handleValid)}>
         <StTextArea
@@ -245,6 +246,10 @@ export default function Review() {
             minLength: {
               value: 10,
               message: "10자 이상 작성해주세요.",
+            },
+            maxLength: {
+              value: 40,
+              message: "40자 이하로 작성해주세요.",
             },
           })}
         />

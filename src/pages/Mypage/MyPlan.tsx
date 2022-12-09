@@ -77,6 +77,7 @@ export default function MyPlan() {
                         <Memo></Memo>
                       </div>
 
+
                       <Kebop tripId={trip.tripId} setIsPlan={setIsPlan} />
                     </PlanBox>
                   ))}
@@ -106,6 +107,7 @@ export default function MyPlan() {
 }
 
 const TotalContainer = styled.div`
+  width: 100%;
   position: absolute;
 `;
 

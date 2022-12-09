@@ -18,6 +18,7 @@ import { NoIdPickToast } from "../components/Toast/Toast";
 
 import { IGetCampResult } from "../interfaces/get";
 import TopicBookmark from "../components/TopicBookmark";
+import { getCamperToken } from "../instance/cookies";
 
 function Topic() {
   /* toast boolean */
@@ -35,6 +36,8 @@ function Topic() {
   const loca = useLocation();
   const state = loca.state as { topicImg: string; id: number };
   const bg = state.topicImg;
+
+  const isLogin = getCamperToken();
 
   //infiniteScroll
   const { campTopic, fetchNextPage, isSuccess, hasNextPage, refetch } =
@@ -57,10 +60,9 @@ function Topic() {
         <NoIdPickToast toastState={toastState} setToastState={setToastState} />
       ) : null}
 
-      <ImgCover onClick={() => navigate(`/`)} />
-
       <TopContainer bg={bg}>
-        <BackBtn>
+        <ImgCover />
+        <BackBtn onClick={() => navigate(`/`)}>
           <img src="/images/back.svg" alt="back" />
         </BackBtn>
       </TopContainer>
@@ -83,8 +85,7 @@ function Topic() {
             <img src="/images/topic/openclose.svg" alt="downArrow" />
           </div>
         </ResultTop>
-        {/*
-         */}
+
         <CampMap>
           {isSuccess && campTopic?.pages ? (
             campTopic?.pages.map((page) => (
@@ -99,7 +100,8 @@ function Topic() {
                             campId: `${item.campId}`,
                           },
                         })
-                      }>
+                      }
+                    >
                       <CampImg>
                         <img src={item.ImageUrl} alt={item.campName} />
                         <ReviewInfo>
@@ -136,7 +138,7 @@ function Topic() {
 export default Topic;
 
 const TopContainer = styled.div<{ bg: string }>`
-  width: 100%;
+  /* width: 100%; */
   height: ${(props) => props.theme.pixelToRem(266)};
   border-bottom-left-radius: ${(props) => props.theme.pixelToRem(12)};
   border-bottom-right-radius: ${(props) => props.theme.pixelToRem(12)};
@@ -145,8 +147,13 @@ const TopContainer = styled.div<{ bg: string }>`
   /* background-repeat: no-repeat; */
   object-fit: cover;
 `;
+
+// ${(props) => props.theme.pixelToRem(375)};
+// ${(props) => props.theme.pixelToRem(266)};
 const ImgCover = styled.div`
-  width: ${(props) => props.theme.pixelToRem(375)};
+  width: ${(props) => props.theme.pixelToRem(475)};
+  /* max-width: ${(props) => props.theme.pixelToRem(475)}; */
+  min-width: ${(props) => props.theme.pixelToRem(375)};
   height: ${(props) => props.theme.pixelToRem(266)};
   background-color: rgba(0, 0, 0, 0.2);
   border-radius: ${(props) => props.theme.pixelToRem(15)};
@@ -163,6 +170,7 @@ const BackBtn = styled.div`
   background-color: rgba(255, 255, 255, 0.5);
   object-fit: contain;
   position: absolute;
+  z-index: 2;
 
   img {
     display: inline-block;
@@ -179,11 +187,13 @@ const NextPage = styled.div``;
 
 const ResultContainer = styled.div``;
 
+// ${(props) => props.theme.pixelToRem(335)};
 const ResultTop = styled.div`
-  width: ${(props) => props.theme.pixelToRem(335)};
+  width: 90%;
   height: ${(props) => props.theme.pixelToRem(22)};
   margin-top: ${(props) => props.theme.pixelToRem(24)};
   margin-left: ${(props) => props.theme.pixelToRem(20)};
+  /* margin-right: ${(props) => props.theme.pixelToRem(40)}; */
   justify-content: space-between;
   display: flex;
 

@@ -21,7 +21,7 @@ export default function NewReview() {
     return v;
   };
 
-  const imageList = [0, 1, 2, 3, 4];
+  const imageList = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   return (
     <>
       <CarouselViewer
@@ -43,7 +43,7 @@ export default function NewReview() {
               setTransX(inrange(deltaX, -width, width));
             },
             onDragEnd: (deltaX) => {
-              const maxIndex = imageList.length - 1;
+              const maxIndex = imageList.length;
 
               if (deltaX < -100)
                 setCurrentIndex(inrange(currentIndex + 1, 0, maxIndex));
@@ -174,12 +174,14 @@ const ReviewBox = styled.div`
   margin-left: 18px;
   line-height: 1.57;
   word-break: normal;
+`;
+
+const ReviewText = styled.div`
+  width: 240px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 `;
-
-const ReviewText = styled.div``;
 
 const ImgFlex = styled.div`
   margin-top: 14px;

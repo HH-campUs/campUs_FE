@@ -4,13 +4,12 @@ import { useNavigate } from "react-router-dom";
 import { IPickedCamp } from "../../interfaces/Posts";
 import { getCamperToken } from "../../instance/cookies";
 import MyPickDelete from "../../components/MyPickDelete";
-import { InfoToast } from "../../components/Toast/Toast";
-import { useState } from "react";
+
 
 export default function MyPick() {
   const navigate = useNavigate();
   const isLogin = getCamperToken();
-  const [toastState, setToastState] = useState(false);
+  
 
   const myPick = useMyPageApi.useGetMyPick().data?.data.Pick;
   const picked = myPick?.map((picks: IPickedCamp) => picks.Camp) || [];
@@ -18,15 +17,7 @@ export default function MyPick() {
 
   return (
     <Wrapper>
-      <div>
-        {toastState == true ? (
-          <InfoToast
-            text={"검색조건이 불충분해요"}
-            toastState={toastState}
-            setToastState={setToastState}
-          />
-        ) : null}
-      </div>
+    
 
       {isLogin ? (
         <MapBox>

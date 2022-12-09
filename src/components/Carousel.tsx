@@ -15,15 +15,12 @@ export default function Carousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [transX, setTransX] = useState(0);
 
-  const campLook = useGetApi.useGetSort()?.data?.MostList[0]?.look;
-  const campReview = useGetApi.useGetSort()?.data?.MostList[1]?.review;
-  const campPick = useGetApi.useGetSort()?.data?.MostList[2]?.pick;
+  const campLook: any = useGetApi.useGetSort()?.data?.MostList[0]?.look || [];
+  const campReview: any =
+    useGetApi.useGetSort()?.data?.MostList[1]?.review || [];
+  const campPick: any = useGetApi.useGetSort()?.data?.MostList[2]?.pick || [];
 
   const { ref, width, height } = useCarouselSize();
-
-  // const handleClick = () => {
-  //   navigate(`/detail/${campLook?.campId}`);
-  // };
 
   const inrange = (v: number, min: number, max: number) => {
     if (v < min) return min;
@@ -63,8 +60,6 @@ export default function Carousel() {
             },
           })}
         >
-          {/* 맵사용가능여부 확인해서 맵사용해야함. */}
-          {/* 조회수나 리뷰 우선순위 겹치면 똑같은게나옴. */}
           <CarouselSlide>
             <Outline>
               <ImgCover />

@@ -19,20 +19,7 @@ function Home() {
     document.body.style.overflow = "hidden";
   };
 
-  const backgroundArr = [
-    "꿀보이스 김지원",
-    "문공 어찌하여 목만오셨소",
-    "갈고리 수집가 이민기",
-    "리액트의 황제 임요한",
-    "차에 안치영",
-    "꿀벌대소동",
-    "이상원말고 김상원",
-    "재주많은 제주도민 최원선",
-    "10세 20세 1세준",
-    "김정현(박정현아님)",
-  ];
-
-  // sbrscl === 전기 ? 아이콘 : null;
+  const backgroundArr = ["겨울캠핑은"];
 
   const randomIndex = Math.floor(Math.random() * backgroundArr.length);
   const backgroundPhrase = backgroundArr[randomIndex];

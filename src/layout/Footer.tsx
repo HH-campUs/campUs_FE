@@ -9,12 +9,12 @@ import { useNavigate } from "react-router";
 export default function Footer() {
   const [value, setValue] = React.useState(0);
   const [isSearch, setIsSearch] = useRecoilState(isModal);
-
+  // ${(props) => props.theme.pixelToRem(375)}
   const navigate = useNavigate();
   return (
     <Box
       sx={{
-        width: "${(props) => props.theme.pixelToRem(375)}",
+        width: "100%",
         position: "fixed",
         bottom: 0,
         // left: "50%",

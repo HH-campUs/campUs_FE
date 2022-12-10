@@ -183,6 +183,7 @@ const Container = styled.div`
   bottom: 0;
   flex-direction: column;
   align-items: center;
+  /* fixed 하면 같이 올라감 폰에서 */
   position: fixed;
   display: flex;
   overflow: hidden;
@@ -202,7 +203,9 @@ const ModalBg = styled.div<{ isSearch: boolean }>`
 
 /* Search bar */
 const SearchModal = styled.div<{ isSearch: boolean }>`
-  width: 23.438rem;
+  width: 100%;
+  max-width: ${(props) => props.theme.pixelToRem(385)};
+  max-width: ${(props) => props.theme.pixelToRem(375)};
   background-color: #ffffff;
   border-top-left-radius: 13px;
   border-top-right-radius: 13px;
@@ -214,7 +217,9 @@ const SearchModal = styled.div<{ isSearch: boolean }>`
   position: relative;
   z-index: 1000;
   &.isSearch {
-    height: 43rem;
+    height: 90%;
+    max-height: 43rem;
+
     left: 10;
     bottom: 0;
     padding: 25px 20px 39px;

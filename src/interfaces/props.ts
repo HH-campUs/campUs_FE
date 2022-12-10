@@ -20,6 +20,8 @@ export interface semiOpenProps {
 export interface planOpenProps {
   isPlan: boolean;
   setIsPlan: React.Dispatch<React.SetStateAction<boolean>>;
+  toastState?: boolean;
+  setToastState?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface ToastProps {

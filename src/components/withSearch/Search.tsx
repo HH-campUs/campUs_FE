@@ -215,7 +215,8 @@ const SearchModal = styled.div<{ isSearch: boolean }>`
   position: relative;
   z-index: 1000;
   &.isSearch {
-    height: 43rem;
+    height: 90%;
+    max-height: 43rem;
     left: 10;
     bottom: 0;
     padding: 25px 20px 39px;

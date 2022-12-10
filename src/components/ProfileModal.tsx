@@ -121,7 +121,7 @@ export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
                       width:"90px",
                       height: "90px",
                       borderRadius: "90px",
-                      objectFit: "contain",
+                      objectFit: "cover",
                     }}
                   />
                   <CameraCircle>

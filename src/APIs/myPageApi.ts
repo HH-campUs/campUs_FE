@@ -24,7 +24,6 @@ export const useMyPageApi = {
   useGetMyPage: () => {
     return useQuery(["mypagefo"], async () => {
       if (!isLogin) return;
-
       const data = await instance.get("/users/myPage");
       return data;
     });

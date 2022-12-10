@@ -1,20 +1,16 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 function Error() {
-  const nav = useNavigate();
   return (
     <Wrapper>
-      음. 뭔가 문제가 생긴 것 같아요
       <Circle>
         <img src="/images/signup/icon-check.svg" alt="check" />
       </Circle>
       <Welcomee>
         <h2>음. 뭔가 문제가 생긴 것 같아요</h2>
-        <p className="sub">다시 돌아가실 수 있게 도와드릴게요</p>
+        <p className="sub">브라우저의 뒤로가기 버튼을 눌러주세요</p>
       </Welcomee>
-      <MainBtn onClick={() => nav("/")}>메인으로 가기</MainBtn>
     </Wrapper>
   );
 }

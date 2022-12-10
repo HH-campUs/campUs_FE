@@ -15,10 +15,13 @@ export default function Carousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [transX, setTransX] = useState(0);
 
-  const campLook: any = useGetApi.useGetSort()?.data?.MostList[0]?.look || [];
+  const x = useGetApi.useGetSort()?.data;
+  console.log(x);
+
+  const campLook: any = useGetApi.useGetSort()?.data?.MostList?.[0].look || [];
   const campReview: any =
-    useGetApi.useGetSort()?.data?.MostList[1]?.review || [];
-  const campPick: any = useGetApi.useGetSort()?.data?.MostList[2]?.pick || [];
+    useGetApi.useGetSort()?.data?.MostList?.[1]?.review || [];
+  const campPick: any = useGetApi.useGetSort()?.data?.MostList?.[2]?.pick || [];
 
   const { ref, width, height } = useCarouselSize();
 
@@ -36,8 +39,7 @@ export default function Carousel() {
         style={{
           height,
           overflow: hide ? "hidden" : "visible",
-        }}
-      >
+        }}>
         <CarouselSlider
           className="flex"
           style={{
@@ -58,8 +60,7 @@ export default function Carousel() {
 
               setTransX(0);
             },
-          })}
-        >
+          })}>
           <CarouselSlide>
             <Outline>
               <ImgCover />

@@ -50,11 +50,11 @@ function Detail() {
 
   const detailItem = useGetApi.useGetCampDetail(state.campId).data;
   console.log(detailItem);
-  const checkItem = detailItem?.detailCamp![0];
+  const checkItem = detailItem?.detailCamp?.[0];
 
   const icons = useMemo<string[]>(() => {
     if (!detailItem?.detailCamp) return [];
-    return detailItem?.detailCamp[0]?.sbrsCl?.split(",");
+    return detailItem?.detailCamp?.[0]?.sbrsCl?.split(",");
   }, [detailItem]);
 
   console.log(icons);

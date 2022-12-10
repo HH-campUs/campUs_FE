@@ -26,7 +26,7 @@ function Welcome() {
         만나보세요!
       </Sub>
 
-      <MainBtn onClick={() => nav("/")}>메인으로 가기</MainBtn>
+      <MainBtn onClick={() => nav("/login")}>로그인하러 가기</MainBtn>
     </Wrapper>
   );
 }

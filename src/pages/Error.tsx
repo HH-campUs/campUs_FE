@@ -2,9 +2,16 @@ import React from "react";
 import styled from "styled-components";
 
 function Error() {
-  const nav = useNavigate();
   return (
-<div>error<div/>
+    <Wrapper>
+      <Circle>
+        <img src="/images/signup/icon-check.svg" alt="check" />
+      </Circle>
+      <Welcomee>
+        <h2>음. 뭔가 문제가 생긴 것 같아요</h2>
+        <p className="sub">브라우저의 뒤로가기 버튼을 눌러주세요</p>
+      </Welcomee>
+    </Wrapper>
   );
 }
 

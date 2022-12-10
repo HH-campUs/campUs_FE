@@ -12,7 +12,7 @@ function Ddetail() {
   const state = loca.state as { campId: number };
 
   const detailItem = useGetApi.useGetCampDetail(state.campId).data;
-  const checkItem = detailItem?.detailCamp![0];
+  const checkItem = detailItem?.detailCamp?.[0];
 
   return (
     <Wrapper>

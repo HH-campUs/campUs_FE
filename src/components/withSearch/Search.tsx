@@ -203,7 +203,8 @@ const ModalBg = styled.div<{ isSearch: boolean }>`
 
 /* Search bar */
 const SearchModal = styled.div<{ isSearch: boolean }>`
-  width: 93%;
+  width: 100%;
+  max-width: ${(props) => props.theme.pixelToRem(385)};
   background-color: #ffffff;
   border-top-left-radius: 13px;
   border-top-right-radius: 13px;
@@ -216,6 +217,7 @@ const SearchModal = styled.div<{ isSearch: boolean }>`
   z-index: 1000;
   &.isSearch {
     height: 75%;
+    max-height: ${(props) => props.theme.pixelToRem(700)};
     left: 10;
     bottom: 0;
     padding: 25px 20px 39px;

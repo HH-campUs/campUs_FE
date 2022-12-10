@@ -203,7 +203,7 @@ const ModalBg = styled.div<{ isSearch: boolean }>`
 
 /* Search bar */
 const SearchModal = styled.div<{ isSearch: boolean }>`
-  width: 23.438rem;
+  width: 93%;
   background-color: #ffffff;
   border-top-left-radius: 13px;
   border-top-right-radius: 13px;
@@ -215,7 +215,7 @@ const SearchModal = styled.div<{ isSearch: boolean }>`
   position: relative;
   z-index: 1000;
   &.isSearch {
-    height: 43rem;
+    height: 75%;
     left: 10;
     bottom: 0;
     padding: 25px 20px 39px;

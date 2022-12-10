@@ -195,7 +195,7 @@ export const useGetApi = {
       const { data } = await instance.get<IGetDistance>(
         `users/nearCamp?campX=${campX}&campY=${campY}`
       );
-      // console.log(data);
+
       return data;
     });
   },
@@ -216,6 +216,7 @@ export const useGetApi = {
   useGetSort: () => {
     return useQuery(["topicSort"], async () => {
       const { data } = await instance.get<IMostList>(`/camps/sort`);
+      console.log("mostList", data);
       return data;
     });
   },

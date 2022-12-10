@@ -26,8 +26,8 @@ export default function Review() {
   const { campId } = useParams();
 
   //useQuery사용.
-  const detailItem = useGetApi.useGetCampDetail(state.campId).data;
-  const checkItem = detailItem?.detailCamp![0];
+  const detailItem: any = useGetApi.useGetCampDetail(state.campId).data;
+  const checkItem = detailItem?.[0];
 
   //버튼클릭 색상 변경
   const [bestStatus, setBestStatus] = useState(false);

@@ -1,4 +1,3 @@
-import { toastState } from "../store/toastAtom";
 export interface IGetCampCatInfo {
   keyword: string;
 }
@@ -121,6 +120,7 @@ export interface IMostList extends IGetCampResult {
   pick: IGetCampResult;
   review: IGetCampResult;
   MostList: IGetCampResult[];
+  // data: string[] = ["look", "pick", "review"];
 }
 
 export interface RecoWeather extends IGetWeather {
@@ -162,6 +162,7 @@ export interface IGetCampResult {
   review: IGetCampResult;
   pick: IGetCampResult;
   camp: IGetCampResult[];
+  // 0: IGetCampResult;
 
   /* toast */
   toastState?: boolean;

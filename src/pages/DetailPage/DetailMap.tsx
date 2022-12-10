@@ -17,8 +17,8 @@ const DetailMap = () => {
 
   const state = loca.state as { campId: number };
 
-  const detailItem = useGetApi.useGetCampDetail(state.campId).data;
-  const checkItem = detailItem?.detailCamp![0];
+  const detailItem = useGetApi.useGetCampDetail(state.campId)?.data;
+  const checkItem = detailItem?.detailCamp?.[0];
 
   function itemCall() {}
 

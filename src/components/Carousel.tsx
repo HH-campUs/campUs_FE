@@ -10,12 +10,24 @@ import { useNavigate } from "react-router-dom";
 const imageList = [0, 1, 2, 3];
 
 export default function Carousel() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [hide, setHide] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [transX, setTransX] = useState(0);
+  // ?.data?.MostList[0]?.look;
 
-  const campLook: any = useGetApi.useGetSort()?.data?.MostList[0]?.look || [];
+  // interface data {
+  // data: string[] = ["look", "pick", "review"];
+  // }
+
+  // if (campLook) {
+  // console.log("look", campLook.data![0].look);
+  // }
+
+  // console.log("look", campLook);
+  const campLook: any = useGetApi.useGetSort()?.data?.MostList?.[0].look || [];
+  // console.log(campLook.induty);
+
   const campReview: any =
     useGetApi.useGetSort()?.data?.MostList[1]?.review || [];
   const campPick: any = useGetApi.useGetSort()?.data?.MostList[2]?.pick || [];

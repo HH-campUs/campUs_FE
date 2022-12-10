@@ -1,18 +1,19 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { useGetApi } from "../../APIs/getApi";
 
 import DetailMap from "./DetailMap";
 
-// 1rem 16px <
-
 function Ddetail() {
   const loca = useLocation();
   const state = loca.state as { campId: number };
 
-  const detailItem = useGetApi.useGetCampDetail(state.campId).data;
-  const checkItem = detailItem?.detailCamp![0];
+  const detailItem: any = useGetApi.useGetCampDetail(state.campId)?.data;
+  console.log("detailItem", detailItem);
+
+  const checkItem = detailItem?.[0];
+  console.log("checkItem", checkItem);
 
   return (
     <Wrapper>
@@ -59,9 +60,6 @@ function Ddetail() {
   );
 }
 
-// {checkItem?.eqpmnLendCl
-//   ? checkItem?.eqpmnLendCl
-//   : "대여 가능한 장비가 없습니다."}
 export default Ddetail;
 
 const Wrapper = styled.div`

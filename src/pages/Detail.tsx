@@ -7,11 +7,12 @@ import SemiSearch from "../components/withSearch/SemiSearch";
 import Search from "../components/withSearch/Search";
 import PlanWrite from "../components/withPlan/PlanWrite";
 import { isModal } from "../store/searchAtom";
+
 import { useGetApi } from "../APIs/getApi";
 import { StrDay } from "../store/dateAtom";
 import getIcons from "../utils/getIcons";
 import { getCamperToken } from "../instance/cookies";
-
+import { isToast } from "../store/toastAtom";
 import { InfoToast, NoIdPickToast, NavToast } from "../components/Toast/Toast";
 
 function Detail() {
@@ -47,13 +48,20 @@ function Detail() {
     setIsPlan(true);
   };
 
-  const detailItem = useGetApi.useGetCampDetail(state.campId).data;
-  console.log(detailItem);
-  const checkItem = detailItem?.detailCamp![0];
+  const warnAlert = () => {
+    window.alert("로그인 후 사용해주세요!");
+  };
+
+  // useEffect로 detail아이템이 바꺄ㅕㅅ을때 checkitem으로 state값으로관리
+
+  const detailItem: any = useGetApi.useGetCampDetail(state.campId)?.data;
+  console.log("detailItem", detailItem);
+  const checkItem = detailItem?.[0];
+  console.log("checkitem", checkItem);
 
   const icons = useMemo<string[]>(() => {
-    if (!detailItem?.detailCamp) return [];
-    return detailItem?.detailCamp[0]?.sbrsCl?.split(",");
+    if (!checkItem) return [];
+    return checkItem.sbrsCl?.split(",");
   }, [detailItem]);
 
   console.log(icons);
@@ -69,32 +77,37 @@ function Detail() {
 
   return (
     <>
-      {isLogin == true ? (
-        <NoIdPickToast
-          text={"로그인 후 여행등록이 가능해요."}
-          toastState={toastState}
-          setToastState={setToastState}
-        />
-      ) : toastState == true ? (
-        <NavToast
-          text={"내 여행일정에 추가되었어요."}
-          url={"/mypage/myplan"}
-          toastState={toastState}
-          setToastState={setToastState}
-        />
-      ) : null}
-
       {openSemi == false ? null : (
         <SemiSearch openSemi={openSemi} setOpenSemi={setOpenSemi} />
       )}
       {isSearch == false ? null : <Search />}
 
       {isPlan == false ? null : (
-        <PlanWrite isPlan={isPlan} setIsPlan={setIsPlan} />
+        <PlanWrite
+          isPlan={isPlan}
+          setIsPlan={setIsPlan}
+          // toastState={toastState}
+          // setToastState={setToastState}
+        />
       )}
       <Wrapper>
         {/* 최상단 이미지*/}
-
+        {/* {isLogin ? (
+          <NoIdPickToast
+            text={"로그인 후 여행등록이 가능해요."}
+            toastState={toastState}
+            setToastState={setToastState}
+          />
+        ) : toastState == true ? (
+          <NavToast
+            text={"내 여행일정에 추가되었어요."}
+            url={"/mypage/myplan"}
+            toastState={toastState}
+            setToastState={setToastState}
+          />
+        ) : (
+          "실패"
+        )} */}
         <MainImage>
           <TopNavContainer>
             <div style={{ display: "flex" }}>
@@ -155,7 +168,7 @@ function Detail() {
           <UpperWrapper>
             <Left>{checkItem?.campName}</Left>
             <Right>
-              {checkItem?.induty.split(",").map((duty, i) => (
+              {checkItem?.induty.split(",").map((duty: string, i: number) => (
                 <DutyBox key={i}>
                   <Duties>{duty}</Duties>
                 </DutyBox>
@@ -184,14 +197,21 @@ function Detail() {
                 fontSize: "1rem",
                 marginTop: "-4px",
                 marginLeft: "4px",
-              }}>
+              }}
+            >
               |
             </span>
             <Plan> 일정을 저장해 보세요!</Plan>
           </div>
-          <div className="rightBtn" onClick={openPlan}>
-            여행일정 저장
-          </div>
+          {isLogin ? (
+            <div className="rightBtn" onClick={openPlan}>
+              여행일정 저장
+            </div>
+          ) : (
+            <div className="rightBtn" onClick={warnAlert}>
+              여행일정 저장
+            </div>
+          )}
         </AddtripBtn>
 
         <WFcBox>
@@ -222,7 +242,8 @@ function Detail() {
                     campId: `${state.campId}`,
                   },
                 })
-              }>
+              }
+            >
               상세정보
             </TabClick>
           </Tab>
@@ -234,7 +255,8 @@ function Detail() {
                     campId: `${state.campId}`,
                   },
                 })
-              }>
+              }
+            >
               리뷰
             </TabClick>
           </Tab>
@@ -366,7 +388,7 @@ const Review = styled.p`
 `;
 
 const AddtripBtn = styled.button`
-  width: 80%;
+  width: 93%;
   height: ${(props) => props.theme.pixelToRem(46)};
   margin: ${(props) => props.theme.pixelToRem(4)} auto;
   flex-grow: 0;
@@ -463,6 +485,7 @@ const FcBox = styled.div`
 `;
 
 const FcTextBox = styled.div`
+  width: 100%;
   margin-top: 10px;
   display: flex;
   justify-content: space-between;

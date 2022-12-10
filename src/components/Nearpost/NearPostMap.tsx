@@ -1,7 +1,5 @@
-import axios from "axios";
 import { useEffect } from "react";
 import styled from "styled-components";
-import { useGetApi } from "../../APIs/getApi";
 
 declare global {
   interface Window {

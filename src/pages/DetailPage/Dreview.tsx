@@ -10,7 +10,7 @@ function Dreview() {
   const state = loca.state as { campId: number };
 
   const detailItem = useGetApi?.useGetCampDetail(state.campId).data;
-  const checkItem = detailItem?.detailCamp![0];
+  const checkItem = detailItem?.detailCamp?.[0];
 
   //1. 타입 옵셔널 체이닝 확인
   //2. 쿼리문의 타입 확인

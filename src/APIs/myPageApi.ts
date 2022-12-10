@@ -32,7 +32,7 @@ export const useMyPageApi = {
 
   // ** myPick조회 ** //
   useGetMyPick: () => {
-    return useQuery(["mypageinfo"], async () => {
+    return useQuery(["mypick"], async () => {
       const data = await instance.get("/users/myPage/myPick");
       // console.log(data.data);
       return data;

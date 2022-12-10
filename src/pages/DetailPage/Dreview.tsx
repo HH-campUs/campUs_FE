@@ -16,6 +16,8 @@ function Dreview() {
   //2. 쿼리문의 타입 확인
   //3. undefiend = !로 해결
 
+  /* 문제 해결 중 */
+
   const reviewItem = useGetApi?.useGetCampReview(state.campId);
   const reviewMap = reviewItem?.data?.data || [];
 

@@ -39,8 +39,8 @@ export default function Nearby() {
     }
   };
 
-  const nearPost = useGetApi.useGetDistance(campX!, campY!).data;
-  console.log("가까운캠프", nearPost?.nearCamp);
+  const nearPost: any = useGetApi.useGetDistance(campX!, campY!).data || [];
+  // console.log("가까운캠프", nearPost?.nearCamp);
   // console.log(nearPost?.data?.nearCamp?.);
 
   return (

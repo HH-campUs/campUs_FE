@@ -118,6 +118,7 @@ export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
                     src={checkPf?.profileImg}
                     alt="PFP"
                     style={{
+                      width:"90px",
                       height: "90px",
                       borderRadius: "90px",
                       objectFit: "contain",

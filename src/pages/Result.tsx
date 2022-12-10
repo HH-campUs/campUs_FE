@@ -380,7 +380,7 @@ function Result() {
                       <img src="/images/location.svg" alt="location" />
                       <span>
                         {item.address == ""
-                          ? "등록된 주소가 없습니다"
+                          ? "등록된 주소가 없습니다.."
                           : item.address}
                       </span>
                     </DetailAddress>

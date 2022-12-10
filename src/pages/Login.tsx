@@ -50,9 +50,10 @@ function Login() {
     }
   };
 
+  /* 반영 중 */
+
   const KaKaoLogin = async () => {
     window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}&response_type=code`;
-
   };
 
   return (

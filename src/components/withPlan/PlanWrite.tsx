@@ -69,14 +69,8 @@ function PlanWrite(
       memo: data.memo,
     };
     planPost.mutate(body);
-    setToastState(true);
-    const timer = setTimeout(() => {
-      setIsPlan(false);
-    }, 1600);
-    return () => {
-      clearTimeout(timer);
-    };
-
+    alert("일정 등록이 완료되었어요.");
+    setIsPlan(false);
     console.log(body);
   };
 

@@ -25,12 +25,8 @@ export default function Carousel() {
   // }
 
   // console.log("look", campLook);
-  const campLook: any = useGetApi.useGetSort()?.data?.MostList?.[0].look || [];
+
   // console.log(campLook.induty);
-
-
-  const x = useGetApi.useGetSort()?.data;
-
 
   const campLook: any = useGetApi.useGetSort()?.data?.MostList?.[0].look || [];
 

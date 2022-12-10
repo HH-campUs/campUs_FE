@@ -7,12 +7,12 @@ import SemiSearch from "../components/withSearch/SemiSearch";
 import Search from "../components/withSearch/Search";
 import PlanWrite from "../components/withPlan/PlanWrite";
 import { isModal } from "../store/searchAtom";
-import { isToast } from "../store/toastAtom";
+
 import { useGetApi } from "../APIs/getApi";
 import { StrDay } from "../store/dateAtom";
 import getIcons from "../utils/getIcons";
 import { getCamperToken } from "../instance/cookies";
-
+import { isToast } from "../store/toastAtom";
 import { InfoToast, NoIdPickToast, NavToast } from "../components/Toast/Toast";
 
 function Detail() {
@@ -48,13 +48,22 @@ function Detail() {
     setIsPlan(true);
   };
 
-  const detailItem = useGetApi.useGetCampDetail(state.campId).data;
-  console.log(detailItem);
-  const checkItem = detailItem?.detailCamp?.[0];
+
+  const warnAlert = () => {
+    window.alert("로그인 후 사용해주세요!");
+  };
+
+
+
+  const detailItem: any = useGetApi.useGetCampDetail(state.campId)?.data;
+  console.log("detailItem", detailItem);
+  const checkItem = detailItem?.[0];
+  console.log("checkitem", checkItem);
 
   const icons = useMemo<string[]>(() => {
-    if (!detailItem?.detailCamp) return [];
-    return detailItem?.detailCamp?.[0]?.sbrsCl?.split(",");
+    if (!checkItem) return [];
+    return checkItem.sbrsCl?.split(",");
+
   }, [detailItem]);
 
   console.log(icons);
@@ -79,13 +88,17 @@ function Detail() {
         <PlanWrite
           isPlan={isPlan}
           setIsPlan={setIsPlan}
-          toastState={toastState}
-          setToastState={setToastState}
+
+          // toastState={toastState}
+          // setToastState={setToastState}
+
         />
       )}
       <Wrapper>
         {/* 최상단 이미지*/}
-        {isLogin ? (
+
+        {/* {isLogin ? (
+
           <NoIdPickToast
             text={"로그인 후 여행등록이 가능해요."}
             toastState={toastState}
@@ -98,7 +111,11 @@ function Detail() {
             toastState={toastState}
             setToastState={setToastState}
           />
-        ) : null}
+
+        ) : (
+          "실패"
+        )} */}
+
         <MainImage>
           <TopNavContainer>
             <div style={{ display: "flex" }}>
@@ -159,7 +176,7 @@ function Detail() {
           <UpperWrapper>
             <Left>{checkItem?.campName}</Left>
             <Right>
-              {checkItem?.induty.split(",").map((duty, i) => (
+              {checkItem?.induty.split(",").map((duty: string, i: number) => (
                 <DutyBox key={i}>
                   <Duties>{duty}</Duties>
                 </DutyBox>
@@ -188,7 +205,8 @@ function Detail() {
                 fontSize: "1rem",
                 marginTop: "-4px",
                 marginLeft: "4px",
-              }}>
+              }}
+            >
               |
             </span>
             <Plan> 일정을 저장해 보세요!</Plan>
@@ -198,7 +216,9 @@ function Detail() {
               여행일정 저장
             </div>
           ) : (
-            <div className="rightBtn" onClick={() => setToastState(true)}>
+
+            <div className="rightBtn" onClick={warnAlert}>
+
               여행일정 저장
             </div>
           )}
@@ -232,7 +252,8 @@ function Detail() {
                     campId: `${state.campId}`,
                   },
                 })
-              }>
+              }
+            >
               상세정보
             </TabClick>
           </Tab>
@@ -244,7 +265,8 @@ function Detail() {
                     campId: `${state.campId}`,
                   },
                 })
-              }>
+              }
+            >
               리뷰
             </TabClick>
           </Tab>

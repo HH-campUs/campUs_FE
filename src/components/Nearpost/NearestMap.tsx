@@ -17,6 +17,7 @@ export default function NearestMap(
   { campX }: { campX: number | undefined },
   { campY }: { campY: number | undefined }
 ) {
+  if (!campX) return;
   useEffect(() => {
     //지도 담을 영역 지정.
     const container = document.getElementById("nearestmap");

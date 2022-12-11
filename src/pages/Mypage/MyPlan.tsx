@@ -76,8 +76,6 @@ export default function MyPlan() {
                         </span>
                         <Memo></Memo>
                       </div>
-
-
                       <Kebop tripId={trip.tripId} setIsPlan={setIsPlan} />
                     </PlanBox>
                   ))}
@@ -88,13 +86,14 @@ export default function MyPlan() {
             <>
               <NotiBox>
                 <div>
-                  <img src="/images/mypage/myplan.svg" alt="tent" />
+                  <img src="/images/mypage/newplan.svg" alt="tent" />
                 </div>
                 <PickText>아직 저장한 여행이 없어요!</PickText>
                 <PickBtn
                   onClick={() => {
                     navigate("/topic/1");
-                  }}>
+                  }}
+                >
                   가장 가까운 캠핑장 구경가기
                 </PickBtn>
               </NotiBox>

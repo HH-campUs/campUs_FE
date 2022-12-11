@@ -65,7 +65,7 @@ export default function MyReview() {
         <>
           <NotiBox>
             <div>
-              <img src="/images/mypage/reviewramp1.svg" alt="tent" />
+              <img src="/images/mypage/newreview.svg" alt="tent" />
             </div>
             <PickText>아직 작성한 리뷰가 없어요!</PickText>
             <PickBtn

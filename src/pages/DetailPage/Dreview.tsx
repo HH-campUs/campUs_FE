@@ -97,7 +97,7 @@ const ReviewBox = styled.div`
 
 const ReviewText = styled.div`
   margin-left: ${(props) => props.theme.pixelToRem(20)};
-  font-size: ${(props) => props.theme.pixelToRem(14)};
+  font-size: ${(props) => props.theme.pixelToRem(18)};
 `;
 
 const ReviewNum = styled.div`

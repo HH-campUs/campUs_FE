@@ -299,6 +299,8 @@ const ReviewInfo = styled.div`
   background-color: #000;
   right: ${(props) => props.theme.pixelToRem(8)};
   top: ${(props) => props.theme.pixelToRem(164)};
+  justify-content: center;
+  display: flex;
 
   div {
     font-size: ${(props) => props.theme.pixelToRem(12)};

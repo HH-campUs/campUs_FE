@@ -24,8 +24,8 @@ function Detail() {
   const [openSemi, setOpenSemi] = useState(false);
   const [isPlan, setIsPlan] = useState(false);
 
-  const detailMatch = useMatch("/detail/id/detail");
-  const reviewMatch = useMatch("/detail/id/review");
+  const detailMatch = useMatch("/detail/campId/detail");
+  const reviewMatch = useMatch("/detail/campId/review");
 
   const day = useRecoilValue(StrDay);
   console.log(day);
@@ -52,8 +52,8 @@ function Detail() {
     window.alert("로그인 후 사용해주세요!");
   };
 
-  // useEffect로 detail아이템이 바꺄ㅕㅅ을때 checkitem으로 state값으로관리
-
+  // useEffect로 detail아이템이 바꼈을때 checkitem으로 state값으로관리
+  // setquerydata
   const detailItem: any = useGetApi.useGetCampDetail(state.campId)?.data;
   console.log("detailItem", detailItem);
   const checkItem = detailItem?.[0];
@@ -234,31 +234,30 @@ function Detail() {
         <GrayHr />
 
         <Tabs>
-          <Tab isActive={Boolean(detailMatch)}>
-            <TabClick
-              onClick={() =>
-                navigate(`/detail/${state.campId}/detail`, {
-                  state: {
-                    campId: `${state.campId}`,
-                  },
-                })
-              }
-            >
-              상세정보
-            </TabClick>
+          <Tab
+            isLine={Boolean(detailMatch)}
+            onClick={() =>
+              navigate(`/detail/${state.campId}/detail`, {
+                state: {
+                  campId: `${state.campId}`,
+                },
+              })
+            }
+          >
+            상세정보
           </Tab>
-          <Tab isActive={Boolean(reviewMatch)}>
-            <TabClick
-              onClick={() =>
-                navigate(`/detail/${state.campId}/review`, {
-                  state: {
-                    campId: `${state.campId}`,
-                  },
-                })
-              }
-            >
-              리뷰
-            </TabClick>
+
+          <Tab
+            isLine={Boolean(reviewMatch)}
+            onClick={() =>
+              navigate(`/detail/${state.campId}/review`, {
+                state: {
+                  campId: `${state.campId}`,
+                },
+              })
+            }
+          >
+            리뷰
           </Tab>
         </Tabs>
         <div>
@@ -555,24 +554,22 @@ const GrayHr = styled.hr`
 
 const Tabs = styled.div`
   width: 100%;
+  /* height: 20px; */
   display: flex;
   justify-content: center;
   align-content: center;
   margin: 5px;
+  /* background-color: red; */
 `;
 
-const Tab = styled.span<{ isActive: boolean }>`
+const Tab = styled.span<{ isLine: boolean }>`
   width: 50%;
   text-align: center;
-  font-size: 15px;
+  font-size: ${(props) => props.theme.pixelToRem(15)};
   font-weight: 500;
-  background-color: ${(props) => props.theme.bgColor};
   padding: 7px 0px;
-  border-bottom: ${(props) => (props.isActive ? "3px solid black" : "none")};
-  color: ${(props) =>
-    props.isActive ? props.theme.accentColor : props.theme.textColor};
-`;
-
-const TabClick = styled.div`
   cursor: pointer;
+  /* border-bottom: 3px solid black; */
+  border-bottom: ${(props) => (props.isLine ? "3px solid black" : "none")};
+  color: ${(props) => (props.isLine ? "#222" : "#ccc")};
 `;

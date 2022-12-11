@@ -5,20 +5,15 @@ import { IPickedCamp } from "../../interfaces/Posts";
 import { getCamperToken } from "../../instance/cookies";
 import MyPickDelete from "../../components/MyPickDelete";
 
-
 export default function MyPick() {
   const navigate = useNavigate();
   const isLogin = getCamperToken();
-  
 
   const myPick = useMyPageApi.useGetMyPick().data?.data.Pick;
   const picked = myPick?.map((picks: IPickedCamp) => picks.Camp) || [];
-  console.log("id안나와요", picked);
 
   return (
     <Wrapper>
-    
-
       {isLogin ? (
         <MapBox>
           {picked.map((pick: IPickedCamp, campId: IPickedCamp) => (
@@ -43,7 +38,7 @@ export default function MyPick() {
         <>
           <NotiBox>
             <div>
-              <img src="/images/mypage/tent.svg" alt="tent" />
+              <img src="/images/mypage/newtent.svg" alt="tent" />
             </div>
             <PickText>아직 찜한 캠핑장이 없어요!</PickText>
             <PickBtn

@@ -27,7 +27,7 @@ function Splash() {
 
     setTimeout(() => {
       setIsShow(false);
-    }, 3000);
+    }, 2500);
   }, []);
 
   return isShow ? (

@@ -14,19 +14,8 @@ export default function Carousel() {
   const [hide, setHide] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [transX, setTransX] = useState(0);
-  // ?.data?.MostList[0]?.look;
 
-  // interface data {
-  // data: string[] = ["look", "pick", "review"];
-  // }
-
-  // if (campLook) {
-  // console.log("look", campLook.data![0].look);
-  // }
-
-  // console.log("look", campLook);
   const campLook: any = useGetApi.useGetSort()?.data?.MostList?.[0].look || [];
-  // console.log(campLook.induty);
 
   const campReview: any =
     useGetApi.useGetSort()?.data?.MostList[1]?.review || [];
@@ -198,7 +187,7 @@ const CarouselImg = styled.img`
 const CrTextBox = styled.div`
   padding: 5px;
   position: absolute;
-  top: 190px;
+  top: 175px;
   margin-left: 10px;
   color: #ffffff;
   z-index: 5;

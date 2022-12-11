@@ -18,8 +18,8 @@ export default function Carousel() {
   const campLook: any = useGetApi.useGetSort()?.data?.MostList?.[0].look || [];
 
   const campReview: any =
-    useGetApi.useGetSort()?.data?.MostList[1]?.review || [];
-  const campPick: any = useGetApi.useGetSort()?.data?.MostList[2]?.pick || [];
+    useGetApi.useGetSort()?.data?.MostList?.[1]?.review || [];
+  const campPick: any = useGetApi.useGetSort()?.data?.MostList?.[2]?.pick || [];
 
   const { ref, width, height } = useCarouselSize();
 

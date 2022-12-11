@@ -4,6 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { ISignUpForm } from "../interfaces/inLogin";
 import { instance } from "../instance/instance";
 
+import { useRecoilState, useRecoilValue } from "recoil";
+import { isToast } from "../store/toastAtom";
+
 import { InfoToast } from "../components/Toast/Toast";
 
 //css
@@ -37,9 +40,9 @@ export default function SignUp() {
         password: data.password,
       });
       if (response.status === 201) {
+        setToastState(true);
         const timer = setTimeout(() => {
-          navigate("/login");
-          setToastState(true);
+          navigate("/welcome");
         }, 1600);
         return () => {
           clearTimeout(timer);
@@ -72,7 +75,7 @@ export default function SignUp() {
     <LoginWrap>
       {toastState == true ? (
         <InfoToast
-          text={`사용가능한 메일입니다.`}
+          text={`환영합니다.`}
           toastState={toastState}
           setToastState={setToastState}
         />
@@ -167,7 +170,6 @@ const LoginWrap = styled.div`
   width: 100%;
   height: 95vh;
   position: relative;
-  /* background-color: red; */
 `;
 
 const LoginTitle = styled.div`

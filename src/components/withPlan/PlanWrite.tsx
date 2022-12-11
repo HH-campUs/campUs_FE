@@ -25,13 +25,15 @@ import styled, { keyframes, css } from "styled-components";
 import Datepicker from "../withSearch/Datepicker";
 import { usePostsApi } from "../../APIs/postsApi";
 import { getCamperToken } from "../../instance/cookies";
-import { planOpenProps } from "../../interfaces/props";
+import { planOpenProps, ToastProps } from "../../interfaces/props";
 import { IPostTravelPlan } from "../../interfaces/Posts";
 import { NavToast } from "../Toast/Toast";
 
-function PlanWrite({ isPlan, setIsPlan }: planOpenProps) {
+function PlanWrite(
+  { isPlan, setIsPlan }: planOpenProps,
+  { toastState, setToastState }: ToastProps
+) {
   /* toast boolean */
-  const [toastState, setToastState] = useState(false);
 
   const [openDate, setOpenDate] = useState(false);
 
@@ -67,7 +69,7 @@ function PlanWrite({ isPlan, setIsPlan }: planOpenProps) {
       memo: data.memo,
     };
     planPost.mutate(body);
-    setToastState(true);
+    alert("일정 등록이 완료되었어요.");
     setIsPlan(false);
     console.log(body);
   };

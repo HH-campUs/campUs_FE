@@ -16,7 +16,7 @@ import { isToast } from "../store/toastAtom";
 import { InfoToast, NoIdPickToast, NavToast } from "../components/Toast/Toast";
 
 function Detail() {
-  const [toastState, setToastState] = useState(false);
+  const [toastState, setToastState] = useRecoilState(isToast);
   const copyLinkRef = useRef();
   const navigate = useNavigate();
   const [isSearch, setIsSearch] = useRecoilState(isModal);
@@ -86,13 +86,16 @@ function Detail() {
         <PlanWrite
           isPlan={isPlan}
           setIsPlan={setIsPlan}
+
           // toastState={toastState}
           // setToastState={setToastState}
         />
       )}
       <Wrapper>
         {/* 최상단 이미지*/}
+
         {/* {isLogin ? (
+
           <NoIdPickToast
             text={"로그인 후 여행등록이 가능해요."}
             toastState={toastState}
@@ -105,9 +108,11 @@ function Detail() {
             toastState={toastState}
             setToastState={setToastState}
           />
+
         ) : (
           "실패"
         )} */}
+
         <MainImage>
           <TopNavContainer>
             <div style={{ display: "flex" }}>

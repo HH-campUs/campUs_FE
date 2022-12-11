@@ -9,11 +9,13 @@ function Ddetail() {
   const loca = useLocation();
   const state = loca.state as { campId: number };
 
+
   const detailItem: any = useGetApi.useGetCampDetail(state.campId)?.data;
   console.log("detailItem", detailItem);
 
   const checkItem = detailItem?.[0];
   console.log("checkItem", checkItem);
+
 
   return (
     <Wrapper>

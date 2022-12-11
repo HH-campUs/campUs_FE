@@ -7,7 +7,7 @@ import { IGetCampResult } from "../interfaces/get";
 
 export default function TopicMap({ Camp }: { Camp: IGetCampResult }) {
   const campick = usePostsApi?.useCampingPicked();
-  console.log("찜캠프", Camp);
+
   const pick = (campId: number) => {
     campick.mutate(campId);
     window.alert("찜하기 완료");
@@ -27,8 +27,7 @@ export default function TopicMap({ Camp }: { Camp: IGetCampResult }) {
           <BookmarkBorderIcon
             onClick={() => {
               unpick(Camp.campId);
-            }}
-          >
+            }}>
             <img
               src="/images/picked2.svg"
               alt="Bookmarked"
@@ -41,8 +40,7 @@ export default function TopicMap({ Camp }: { Camp: IGetCampResult }) {
           <Bookmark
             onClick={() => {
               pick(Camp.campId);
-            }}
-          >
+            }}>
             <img
               src="/images/pick1.svg"
               alt="Bookmark"

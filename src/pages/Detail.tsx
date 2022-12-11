@@ -12,11 +12,13 @@ import { useGetApi } from "../APIs/getApi";
 import { StrDay } from "../store/dateAtom";
 import getIcons from "../utils/getIcons";
 import { getCamperToken } from "../instance/cookies";
-import { isToast } from "../store/toastAtom";
+import { isToast, isToast2 } from "../store/toastAtom";
 import { InfoToast, NoIdPickToast, NavToast } from "../components/Toast/Toast";
 
 function Detail() {
   const [toastState, setToastState] = useRecoilState(isToast);
+  const [toastState2, setToastState2] = useRecoilState(isToast2);
+
   const copyLinkRef = useRef();
   const navigate = useNavigate();
   const [isSearch, setIsSearch] = useRecoilState(isModal);
@@ -34,7 +36,7 @@ function Detail() {
   const loca = useLocation();
   const state = loca.state as { campId: number };
   const goBack = () => {
-    navigate(-1);
+    navigate("/result");
   };
 
   //1. 타입 옵셔널 체이닝 확인
@@ -48,12 +50,9 @@ function Detail() {
     setIsPlan(true);
   };
 
-
   const warnAlert = () => {
-    window.alert("로그인 후 사용해주세요!");
+    setToastState(true);
   };
-
-
 
   const detailItem: any = useGetApi.useGetCampDetail(state.campId)?.data;
   console.log("detailItem", detailItem);
@@ -63,7 +62,6 @@ function Detail() {
   const icons = useMemo<string[]>(() => {
     if (!checkItem) return [];
     return checkItem.sbrsCl?.split(",");
-
   }, [detailItem]);
 
   console.log(icons);
@@ -91,31 +89,19 @@ function Detail() {
 
           // toastState={toastState}
           // setToastState={setToastState}
-
         />
       )}
       <Wrapper>
         {/* 최상단 이미지*/}
 
-        {/* {isLogin ? (
-
+        {/* 로그인 없이 일정버튼 누를 때 */}
+        {toastState == true ? (
           <NoIdPickToast
-            text={"로그인 후 여행등록이 가능해요."}
+            text={"로그인 후 일정등록을 할 수 있어요."}
             toastState={toastState}
             setToastState={setToastState}
           />
-        ) : toastState == true ? (
-          <NavToast
-            text={"내 여행일정에 추가되었어요."}
-            url={"/mypage/myplan"}
-            toastState={toastState}
-            setToastState={setToastState}
-          />
-
-        ) : (
-          "실패"
-        )} */}
-
+        ) : null}
         <MainImage>
           <TopNavContainer>
             <div style={{ display: "flex" }}>
@@ -205,8 +191,7 @@ function Detail() {
                 fontSize: "1rem",
                 marginTop: "-4px",
                 marginLeft: "4px",
-              }}
-            >
+              }}>
               |
             </span>
             <Plan> 일정을 저장해 보세요!</Plan>
@@ -216,9 +201,7 @@ function Detail() {
               여행일정 저장
             </div>
           ) : (
-
-            <div className="rightBtn" onClick={warnAlert}>
-
+            <div className="rightBtn none" onClick={warnAlert}>
               여행일정 저장
             </div>
           )}
@@ -252,8 +235,7 @@ function Detail() {
                     campId: `${state.campId}`,
                   },
                 })
-              }
-            >
+              }>
               상세정보
             </TabClick>
           </Tab>
@@ -265,8 +247,7 @@ function Detail() {
                     campId: `${state.campId}`,
                   },
                 })
-              }
-            >
+              }>
               리뷰
             </TabClick>
           </Tab>
@@ -469,6 +450,10 @@ const AddtripBtn = styled.button`
     line-height: normal;
     letter-spacing: normal;
     position: absolute;
+
+    &.none {
+      background-color: ${(props) => props.theme.colorTheme.border};
+    }
   }
 `;
 

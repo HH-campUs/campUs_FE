@@ -3,8 +3,11 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { useInView } from "react-intersection-observer";
 
 import Up from "../components/Up";
+import { InfoToast2, NoIdPickToast, NavToast } from "../components/Toast/Toast";
+
 import { isModal, textValue } from "../store/searchAtom";
 import { showLo, selectLo } from "../store/locationAtom";
+import { isToast, isToast2 } from "../store/toastAtom";
 import { StrMonth, StrDay, DateState } from "../store/dateAtom";
 import Search from "../components/withSearch/Search";
 import { useNavigate } from "react-router-dom";
@@ -17,7 +20,8 @@ import { getCamperToken } from "../instance/cookies";
 function Result() {
   const nav = useNavigate();
   /* toast boolean */
-  const [toastState, setToastState] = useState(false);
+  const [toastState, setToastState] = useRecoilState(isToast);
+  const [toastState2, setToastState2] = useRecoilState(isToast2);
 
   /* data */
   const [isActive, setIsActive] = useState(false);
@@ -63,6 +67,35 @@ function Result() {
   return (
     <>
       <Wrapper>
+        {toastState == true ? (
+          !isLogin ? (
+            <NoIdPickToast
+              text={"로그인 후 찜하기가 가능해요."}
+              toastState={toastState}
+              setToastState={setToastState}
+            />
+          ) : (
+            <NavToast
+              text={"찜목록에 추가되었어요."}
+              url={"/mypage/mypick"}
+              toastState={toastState}
+              setToastState={setToastState}
+            />
+          )
+        ) : null}
+        {/* <InfoToast2
+          text={"찜목록에 제거되었어요."}
+          toastState2={toastState2}
+          setToastState2={setToastState2}
+        /> */}
+        {toastState2 == true ? (
+          <InfoToast2
+            text={"찜목록에 제거되었어요."}
+            toastState2={toastState2}
+            setToastState2={setToastState2}
+          />
+        ) : null}
+
         {isSearch == false ? undefined : <Search />}
         <ReSearch>
           <div
@@ -385,7 +418,7 @@ function Result() {
                       </span>
                     </DetailAddress>
                     {/* 시설 태그들 (max: 4) */}
-                    <TagContainer onClick={() => setToastState(true)}>
+                    <TagContainer>
                       {item.sbrsCl == ""
                         ? null
                         : item.sbrsCl

@@ -32,3 +32,12 @@ export interface ToastProps {
   toastState: boolean;
   setToastState: React.Dispatch<React.SetStateAction<boolean>>;
 }
+
+export interface ToastProps2 {
+  url?: string;
+  imgUrl?: string;
+  text?: string;
+  setText?: React.Dispatch<React.SetStateAction<string>>;
+  toastState2: boolean;
+  setToastState2: React.Dispatch<React.SetStateAction<boolean>>;
+}

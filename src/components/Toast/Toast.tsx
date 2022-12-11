@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
-import { ToastProps } from "../../interfaces/props";
+import { ToastProps, ToastProps2 } from "../../interfaces/props";
 
 /* toast (just info) custom hook */
 export const InfoToast = ({ text, toastState, setToastState }: ToastProps) => {
-  const [toastAni, setToastAni] = useState(false);
   useEffect(() => {
     const timer = setTimeout(() => {
       setToastState(false);
@@ -19,6 +18,28 @@ export const InfoToast = ({ text, toastState, setToastState }: ToastProps) => {
     <ToastAlert toastState={toastState}>
       <p>{text}</p>
     </ToastAlert>
+  );
+};
+
+/* 한페이지에 토스트 2개 */
+export const InfoToast2 = ({
+  text,
+  toastState2,
+  setToastState2,
+}: ToastProps2) => {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setToastState2(false);
+    }, 1500);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
+  return (
+    <ToastAlert2 toastState2={toastState2}>
+      <p>{text}</p>
+    </ToastAlert2>
   );
 };
 
@@ -45,7 +66,10 @@ export const NavToast = ({
       <img
         src="/images/whiteBack.svg"
         alt="nav"
-        onClick={() => nav(`${url}`)}
+        onClick={(e) => {
+          e.stopPropagation();
+          nav(`${url}`);
+        }}
       />
     </NaviToast>
   );
@@ -71,44 +95,17 @@ export const NoIdPickToast = ({
       <img src="/images/icons/icon-info.svg" />
 
       <p>{text}</p>
-      <span>
+      <span
+        onClick={(e) => {
+          e.stopPropagation();
+          nav("/login");
+        }}>
         로그인
-        <img
-          src="/images/whiteBack.svg"
-          alt="nav"
-          onClick={() => nav("/login")}
-        />
+        <img src="/images/whiteBack.svg" alt="nav" />
       </span>
     </CenterAlert>
   );
 };
-/* 여행일정 */
-/* export const NavPlanToast = ({
-  text,
-  toastState,
-  setToastState,
-}: ToastProps) => {
-  const nav = useNavigate();
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setToastState(false);
-    }, 1500);
-
-    return () => {
-      clearTimeout(timer);
-    };
-  }, []);
-  return (
-    <NaviToast toastState={toastState}>
-      <p>여행일정 등록을 완료했어요.</p>
-      <img
-        src="/images/whiteBack.svg"
-        alt="nav"
-        onClick={() => nav(`/mypage/myplan`)}
-      />
-    </NaviToast>
-  );
-}; */
 
 const fadeIn = keyframes`
   from {opacity: 0} 
@@ -135,9 +132,29 @@ const ToastAlert = styled.div<{ toastState: boolean }>`
   align-items: center;
   justify-content: center;
   display: flex;
-  position: absolute;
+  position: fixed;
   z-index: 1000;
   animation-name: ${(props) => (props.toastState == true ? fadeIn : fadeOut)};
+  animation-duration: 0.2s;
+`;
+
+const ToastAlert2 = styled.div<{ toastState2: boolean }>`
+  width: ${(props) => props.theme.pixelToRem(243)};
+  height: ${(props) => props.theme.pixelToRem(48)};
+  margin: 0 auto;
+  bottom: ${(props) => props.theme.pixelToRem(30)};
+  ${(props) => props.theme.fontTheme.Caption2};
+  line-height: 1.29;
+  letter-spacing: normal;
+  color: ${(props) => props.theme.colorTheme.textWhite};
+  background-color: #272727d8;
+  border-radius: 25px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  position: fixed;
+  z-index: 1000;
+  animation-name: ${(props) => (props.toastState2 == true ? fadeIn : fadeOut)};
   animation-duration: 0.2s;
 `;
 
@@ -172,8 +189,10 @@ const CenterAlert = styled(ToastAlert)`
 
 const NaviToast = styled(ToastAlert)`
   width: ${(props) => props.theme.pixelToRem(351)};
-  bottom: 0;
   padding: 20px;
+  left: ${(props) => props.theme.pixelToRem(21)};
+  bottom: 10%;
+  position: absoulte;
   border-radius: 10px;
   justify-content: space-between !important;
 

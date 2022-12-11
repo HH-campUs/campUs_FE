@@ -17,18 +17,20 @@ import {
   StrMonth,
   StrYear,
 } from "../../store/dateAtom";
+import { isToast, isToast2 } from "../../store/toastAtom";
 import { selectLo, showLo } from "../../store/locationAtom";
 import { isModal, textValue } from "../../store/searchAtom";
 import { Link, useNavigate } from "react-router-dom";
-import styled, { keyframes, css } from "styled-components";
+import styled, { keyframes } from "styled-components";
 import Datepicker from "./Datepicker";
 import Location from "./Location";
 import { isProps, searchData } from "../../interfaces/inSearch";
-import { InfoToast } from "../Toast/Toast";
+import { InfoToast, InfoToast2 } from "../Toast/Toast";
 
 function Search() {
   /* toast boolean */
-  const [toastState, setToastState] = useState(false);
+  const [toastState, setToastState] = useRecoilState(isToast);
+  const [toastState2, setToastState2] = useRecoilState(isToast2);
 
   /* search Modal 여닫는 boolean */
   const [isSearch, setIsSearch] = useRecoilState(isModal);
@@ -71,6 +73,7 @@ function Search() {
     setLocationValue("");
     setSendLocation("");
     setStartDate(new Date());
+    setToastState2(true);
   };
 
   return (
@@ -83,6 +86,15 @@ function Search() {
             setToastState={setToastState}
           />
         ) : null}
+
+        {toastState2 == true ? (
+          <InfoToast2
+            text={"검색조건들이 초기화됬어요."}
+            toastState2={toastState2}
+            setToastState2={setToastState2}
+          />
+        ) : null}
+
         <ModalBg isSearch={isSearch} onClick={closeModal} />
         {/* 모달창 밖 blur background 토글 기능 부여 (event bubbling 해결) */}
         <SearchModal isSearch={isSearch} className="isSearch">

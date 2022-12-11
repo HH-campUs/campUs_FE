@@ -13,7 +13,7 @@ import { StrDay } from "../store/dateAtom";
 import getIcons from "../utils/getIcons";
 import { getCamperToken } from "../instance/cookies";
 import { isToast, isToast2 } from "../store/toastAtom";
-import { InfoToast, NoIdPickToast, NavToast } from "../components/Toast/Toast";
+import { InfoToast, NoIdPickToast, NavToast2 } from "../components/Toast/Toast";
 
 function Detail() {
   const [toastState, setToastState] = useRecoilState(isToast);
@@ -83,17 +83,10 @@ function Detail() {
       {isSearch == false ? null : <Search />}
 
       {isPlan == false ? null : (
-        <PlanWrite
-          isPlan={isPlan}
-          setIsPlan={setIsPlan}
-
-          // toastState={toastState}
-          // setToastState={setToastState}
-        />
+        <PlanWrite isPlan={isPlan} setIsPlan={setIsPlan} />
       )}
       <Wrapper>
         {/* 최상단 이미지*/}
-
         {/* 로그인 없이 일정버튼 누를 때 */}
         {toastState == true ? (
           <NoIdPickToast
@@ -102,6 +95,17 @@ function Detail() {
             setToastState={setToastState}
           />
         ) : null}
+
+        {/* 일정버튼 눌러서 저장 완료 했을 때 */}
+        {toastState2 == true ? (
+          <NavToast2
+            text={"여행일정 등록을 완료했어요."}
+            url={"/mypage/myplan"}
+            toastState2={toastState2}
+            setToastState2={setToastState2}
+          />
+        ) : null}
+
         <MainImage>
           <TopNavContainer>
             <div style={{ display: "flex" }}>
@@ -156,7 +160,6 @@ function Detail() {
           </TopNavContainer>
           <MainCampImg src={checkItem?.ImageUrl} alt="campImg" />
         </MainImage>
-
         {/* 중앙 : 정보 + 찜 리뷰 + 일정 저장 버튼 */}
         <MiddleContainer>
           <UpperWrapper>
@@ -206,7 +209,6 @@ function Detail() {
             </div>
           )}
         </AddtripBtn>
-
         <WFcBox>
           <FcBox>
             <FcTextBox>
@@ -225,7 +227,6 @@ function Detail() {
           </FcBox>
         </WFcBox>
         <GrayHr />
-
         <Tabs>
           <Tab isActive={Boolean(detailMatch)}>
             <TabClick

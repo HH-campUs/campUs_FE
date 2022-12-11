@@ -25,12 +25,12 @@ import styled, { keyframes } from "styled-components";
 import Datepicker from "./Datepicker";
 import Location from "./Location";
 import { isProps, searchData } from "../../interfaces/inSearch";
-import { InfoToast, InfoToast2 } from "../Toast/Toast";
+import { ResetToast, SearchToast } from "../Toast/Toast";
 
 function Search() {
   /* toast boolean */
-  const [toastState, setToastState] = useRecoilState(isToast);
-  const [toastState2, setToastState2] = useRecoilState(isToast2);
+  const [toastState3, setToastState3] = useState(false);
+  const [toastState4, setToastState4] = useState(false);
 
   /* search Modal 여닫는 boolean */
   const [isSearch, setIsSearch] = useRecoilState(isModal);
@@ -73,25 +73,25 @@ function Search() {
     setLocationValue("");
     setSendLocation("");
     setStartDate(new Date());
-    setToastState2(true);
+    setToastState4(true);
   };
 
   return (
     <>
       <Container>
-        {toastState == true ? (
-          <InfoToast
+        {toastState3 == true ? (
+          <SearchToast
             text={"검색어가 부족해요."}
-            toastState={toastState}
-            setToastState={setToastState}
+            toastState3={toastState3}
+            setToastState3={setToastState3}
           />
         ) : null}
 
-        {toastState2 == true ? (
-          <InfoToast2
+        {toastState4 == true ? (
+          <ResetToast
             text={"검색조건들이 초기화됬어요."}
-            toastState2={toastState2}
-            setToastState2={setToastState2}
+            toastState4={toastState4}
+            setToastState4={setToastState4}
           />
         ) : null}
 
@@ -143,7 +143,7 @@ function Search() {
             {inputValue == "" && sendLocation == "" ? (
               <DisabledBtn
                 onClick={() => {
-                  setToastState(true);
+                  setToastState3(true);
                 }}>
                 검색하기
               </DisabledBtn>

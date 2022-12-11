@@ -3,6 +3,8 @@ import { isModal } from "../store/searchAtom";
 import Search from "../components/withSearch/Search";
 import { Link, Outlet, useMatch, useNavigate } from "react-router-dom";
 import ProfileModal from "../components/ProfileModal";
+import { InfoToast } from "../components/Toast/Toast";
+import { isToast, isToast2 } from "../store/toastAtom";
 
 //Login
 
@@ -17,6 +19,8 @@ import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 function Mypage() {
   const checkPf = useMyPageApi.useGetMyPage().data?.data;
   const [isSearch, setIsSearch] = useRecoilState(isModal);
+  const [toastState, setToastState] = useRecoilState(isToast);
+  const [toastState2, setToastState2] = useRecoilState(isToast2);
 
   const [isPopUp, setIsPopUp] = useState(false);
   const myReviewMatch = useMatch("/mypage/myreview");
@@ -30,6 +34,14 @@ function Mypage() {
     <>
       {isSearch == false ? null : <Search />}
       <Wrapper>
+        {toastState == true ? (
+          <InfoToast
+            text={"프로필이 변경되었어요."}
+            toastState={toastState}
+            setToastState={setToastState}
+          />
+        ) : null}
+
         {isLogin ? (
           <>
             <UserProfile>
@@ -84,16 +96,14 @@ function Mypage() {
                     onClick={(e) => {
                       e.preventDefault();
                       navigate("/login");
-                    }}
-                  >
+                    }}>
                     로그인
                   </LoginBtn>
                   <SignBtn
                     onClick={(e) => {
                       e.preventDefault();
                       navigate("/signup");
-                    }}
-                  >
+                    }}>
                     회원가입
                   </SignBtn>
                 </LoginBox>
@@ -114,8 +124,7 @@ function Mypage() {
                 style={{
                   // height: "100vh",
                   marginTop: "20px",
-                }}
-              >
+                }}>
                 <Outlet />
               </div>
             </UserProfile>

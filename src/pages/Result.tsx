@@ -83,11 +83,7 @@ function Result() {
             />
           )
         ) : null}
-        {/* <InfoToast2
-          text={"찜목록에 제거되었어요."}
-          toastState2={toastState2}
-          setToastState2={setToastState2}
-        /> */}
+
         {toastState2 == true ? (
           <InfoToast2
             text={"찜목록에 제거되었어요."}

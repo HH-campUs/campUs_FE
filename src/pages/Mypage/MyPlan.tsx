@@ -190,7 +190,8 @@ const Container = styled.div`
 `;
 
 const PlanBox = styled.div`
-  width: 90%;
+  width: 100%;
+  max-width: ${(props) => props.theme.pixelToRem(360)};
   height: ${(props) => props.theme.pixelToRem(150)};
   margin: 0 auto 18px;
   border-radius: 10px;

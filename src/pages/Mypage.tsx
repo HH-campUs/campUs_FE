@@ -14,7 +14,6 @@ import { getCamperToken } from "../instance/cookies";
 
 //css
 import styled from "styled-components";
-import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 
 function Mypage() {
   const checkPf = useMyPageApi.useGetMyPage().data?.data;
@@ -33,6 +32,7 @@ function Mypage() {
   return (
     <>
       {isSearch == false ? null : <Search />}
+
       <Wrapper>
         {toastState == true ? (
           <InfoToast

@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 
 import styled from "styled-components";
 import { useGetApi } from "../APIs/getApi";
@@ -10,12 +10,16 @@ import PreviewImgDelete from "../components/PreviewImgDelete";
 import { getCamperToken } from "../instance/cookies";
 import { IReviewPosts } from "../interfaces/Posts";
 import { StrDay, StrMonth } from "../store/dateAtom";
+import { isToast } from "../store/toastAtom";
+import { InfoToast } from "../components/Toast/Toast";
 
 export default function Review() {
   // interface Props {
   //   setImagePreview: React.Dispatch<React.SetStateAction<string[]>>;
   //   setImageFiles: React.Dispatch<React.SetStateAction<File[]>>;
   // }
+  /* toast */
+  const [toastState, setToastState] = useState(false);
 
   const isLogin = getCamperToken();
   const Month = useRecoilValue(StrMonth);
@@ -29,7 +33,6 @@ export default function Review() {
 
   const detailItem: any = useGetApi.useGetCampDetail(state.campId).data;
   const checkItem = detailItem?.[0];
-
 
   //버튼클릭 색상 변경
   const [bestStatus, setBestStatus] = useState(false);
@@ -103,8 +106,14 @@ export default function Review() {
       campId: campId,
     };
     reviewPost.mutate(body);
-    window.alert("리뷰를 남겼습니다.");
-    navigate(-1);
+    setToastState(true);
+    const timer = setTimeout(() => {
+      navigate(-1);
+    }, 1530);
+
+    return () => {
+      clearTimeout(timer);
+    };
   };
 
   // const handleDeleteImage = useCallback((idx: number) => {
@@ -130,6 +139,13 @@ export default function Review() {
 
   return (
     <Wrapper>
+      {toastState == true ? (
+        <InfoToast
+          text={"리뷰 쓰기 완료"}
+          toastState={toastState}
+          setToastState={setToastState}
+        />
+      ) : null}
       <Head>
         <div>
           <img

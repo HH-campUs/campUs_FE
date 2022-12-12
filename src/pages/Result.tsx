@@ -119,7 +119,7 @@ function Result() {
             style={{ transition: "all 0.5 ease-in-out" }}>
             <div className="top">
               <span>날씨</span>
-              <span>{isWeather ? "펼치기" : "접기"}</span>
+              <span>{isWeather ? "접기" : "펼치기"}</span>
             </div>
             {/* 펼치기 전 */}
             <div className="isNotActive">
@@ -646,24 +646,23 @@ const WeatherModal = styled.div<{ isWeather: boolean }>`
       height: ${(props) => props.theme.pixelToRem(193)};
 
       .tempGraph {
-        width: inherit;
+        width: 375px;
         height: ${(props) => props.theme.pixelToRem(97)};
         margin-top: 15px;
         margin-bottom: 5px;
         padding: 20px;
-
         img {
           display: flex;
 
           &:first-child {
             width: ${(props) => props.theme.pixelToRem(247)};
-            margin: 0 auto;
+            margin: 0 13px 0;
             position: relative;
           }
           &:nth-child(2) {
             width: ${(props) => props.theme.pixelToRem(24)};
             margin-top: -12px;
-            margin-left: -5px;
+            margin-left: 5px;
             position: absoulte;
           }
           &:nth-child(3) {
@@ -691,17 +690,17 @@ const WeatherModal = styled.div<{ isWeather: boolean }>`
           &:nth-child(5) {
             width: ${(props) => props.theme.pixelToRem(30)};
             margin-top: 3px;
-            margin-left: -6px;
+            margin-left: 13px;
           }
           &:nth-child(6) {
             width: ${(props) => props.theme.pixelToRem(30)};
             margin-top: -44px;
-            margin-left: 123px;
+            margin-left: 132px;
           }
           &:nth-child(7) {
             width: ${(props) => props.theme.pixelToRem(30)};
             margin-top: -1px;
-            margin-left: 255px;
+            margin-left: 262px;
           }
         }
       }

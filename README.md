@@ -16,13 +16,14 @@
 <br/>
 
 ## Contents | 목차
-1. [TimeLine | 타임라인](#timeline-|-타임라인)
-2. [Architecture | 아키텍쳐](#architecture-|-아키텍쳐)
-3. [ERD | 데이터 구조도](#erd-|-데이터-구조도)
-4. [Feature | 구현 기능](#feature-|-구현-기능)
-5. [Stacks | 사용 스택](#stacks-|-사용-스택)
-6. [PATCH NOTES | 패치 노트](#patch-notes-|-패치-노트)
-7. [Who Made It | 서비스를 가꾼 사람들](#who-made-it-|-서비스를-가꾼-사람들)
+1. [TimeLine | 타임라인](#1-timeline-|-타임라인)
+2. [Architecture | 아키텍쳐](#2-architecture-|-아키텍쳐)
+3. [ERD | 데이터 구조도](#3-erd-|-데이터-구조도)
+4. [Feature | 구현 기능](#4-feature-|-구현-기능)
+5. [Stacks | 사용 스택](#5-stacks-|-사용-스택)
+6. [Trouble Shooting | 트러블 슈팅](#6-trouble-shooting-|-트러블-슈팅)
+7. [PATCH NOTES | 패치 노트](#7-patch-notes-|-패치-노트)
+8. [Who Made It | 서비스를 가꾼 사람들](#8-who-made-it-|-서비스를-가꾼-사람들)
 
 
 

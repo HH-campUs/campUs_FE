@@ -17,7 +17,6 @@ export default function NearestMap(
   { campX }: { campX: number | undefined },
   { campY }: { campY: number | undefined }
 ) {
-  if (!campX) return;
   useEffect(() => {
     //지도 담을 영역 지정.
     const container = document.getElementById("nearestmap");
@@ -49,7 +48,7 @@ export default function NearestMap(
       // 지도 중심좌표를 접속위치로 변경합니다
       map.setCenter(locPosition);
     }
-    var locPosition = new kakao.maps.LatLng(campX, campY),
+    var locPosition = new kakao.maps.LatLng(campY, campX),
       message = "";
     displayMarker(locPosition, message);
     const map = new kakao.maps.Map(container, options);

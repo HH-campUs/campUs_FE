@@ -5,7 +5,7 @@ import useCarouselSize from "./useCarouselSize";
 //css
 import styled from "styled-components";
 import { useGetApi } from "../APIs/getApi";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const imageList = [0, 1, 2, 3];
 
@@ -14,24 +14,8 @@ export default function Carousel() {
   const [hide, setHide] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [transX, setTransX] = useState(0);
-  // ?.data?.MostList[0]?.look;
-
-  // interface data {
-  // data: string[] = ["look", "pick", "review"];
-  // }
-
-  // if (campLook) {
-  // console.log("look", campLook.data![0].look);
-  // }
-
-  // console.log("look", campLook);
-
-  // console.log(campLook.induty);
-
-  const x = useGetApi.useGetSort()?.data;
-
-
-  // console.log(campLook.induty);
+  const navigate = useNavigate();
+  const { campId } = useParams();
 
   const campLook: any = useGetApi.useGetSort()?.data?.MostList?.[0].look || [];
 
@@ -39,12 +23,17 @@ export default function Carousel() {
     useGetApi.useGetSort()?.data?.MostList?.[1]?.review || [];
   const campPick: any = useGetApi.useGetSort()?.data?.MostList?.[2]?.pick || [];
 
+  console.log(campLook);
   const { ref, width, height } = useCarouselSize();
 
   const inrange = (v: number, min: number, max: number) => {
     if (v < min) return min;
     if (v > max) return max;
     return v;
+  };
+
+  const handleClick = (campId: string | undefined) => () => {
+    navigate(`/detail/${campId}/detail`);
   };
 
   return (
@@ -55,7 +44,8 @@ export default function Carousel() {
         style={{
           height,
           overflow: hide ? "hidden" : "visible",
-        }}>
+        }}
+      >
         <CarouselSlider
           className="flex"
           style={{
@@ -76,11 +66,12 @@ export default function Carousel() {
 
               setTransX(0);
             },
-          })}>
+          })}
+        >
           <CarouselSlide>
             <Outline>
-              <ImgCover />
-              {/* onClick={handleClick} */}
+              <ImgCover onClick={handleClick(campLook?.campId)} />
+
               <CarouselImg
                 draggable={false}
                 src={campLook?.ImageUrl}
@@ -97,7 +88,7 @@ export default function Carousel() {
               </ReviewInfo>
             </Outline>
             <Outline>
-              <ImgCover />
+              <ImgCover onClick={handleClick(campReview?.campId)} />
               <CarouselImg
                 draggable={false}
                 src={campReview?.ImageUrl}
@@ -114,7 +105,7 @@ export default function Carousel() {
               </ReviewInfo>
             </Outline>
             <Outline>
-              <ImgCover />
+              <ImgCover onClick={handleClick(campPick?.campId)} />
               <CarouselImg
                 draggable={false}
                 src={campPick?.ImageUrl}
@@ -189,6 +180,7 @@ const ImgCover = styled.div`
   border-radius: ${(props) => props.theme.pixelToRem(15)};
   z-index: 1;
   position: absolute;
+  cursor: pointer;
 `;
 
 const CarouselImg = styled.img`
@@ -203,7 +195,7 @@ const CarouselImg = styled.img`
 const CrTextBox = styled.div`
   padding: 5px;
   position: absolute;
-  top: 190px;
+  top: 175px;
   margin-left: 10px;
   color: #ffffff;
   z-index: 5;

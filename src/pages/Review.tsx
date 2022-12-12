@@ -21,15 +21,14 @@ export default function Review() {
   const Month = useRecoilValue(StrMonth);
   const Day = useRecoilValue(StrDay);
   //campId확인.
-  const loca = useLocation();
-  const state = loca.state as { campId: number };
+  // const loca = useLocation();
+  // const state = loca.state as { campId: number };
   const { campId } = useParams();
 
   //useQuery사용.
 
-  const detailItem: any = useGetApi.useGetCampDetail(state.campId).data;
+  const detailItem: any = useGetApi.useGetCampDetail(campId).data;
   const checkItem = detailItem?.[0];
-
 
   //버튼클릭 색상 변경
   const [bestStatus, setBestStatus] = useState(false);
@@ -92,7 +91,6 @@ export default function Review() {
   const handleValid = (data: IReviewPosts) => {
     if (!campId) return;
     const formData = new FormData();
-    console.log(imageFiles);
     for (let i = 0; i < imageFiles.length; i++) {
       formData.append("reviewImg", imageFiles[i]);
     }
@@ -124,10 +122,6 @@ export default function Review() {
     }
   }, [imagePreview]);
 
-  const warning = () => {
-    window.alert("로그인 후 이용해주세요!");
-  };
-
   return (
     <Wrapper>
       <Head>
@@ -144,13 +138,17 @@ export default function Review() {
 
         <HeadText>리뷰쓰기</HeadText>
       </Head>
-      <TextBox></TextBox>
+
       <ReviewImgBox>
         <img
           src={checkItem?.ImageUrl}
           alt="test"
           style={{ objectFit: "cover" }}
         />
+        <TextBox>
+          <CampName>{checkItem?.campName}</CampName>
+          <CampLoca>{checkItem?.address}</CampLoca>
+        </TextBox>
       </ReviewImgBox>
 
       <VisitDay>
@@ -239,7 +237,7 @@ export default function Review() {
       </ReviewTip>
       <WriteHead>
         <p>리뷰 쓰기</p>
-        <p style={{ color: "#5185A6" }}>최소 10자 | 최대 40자</p>
+        <p style={{ color: "#5185A6" }}>최소 10자 | 최대 80자</p>
       </WriteHead>
       <ReviewForm onSubmit={handleSubmit(handleValid)}>
         <StTextArea
@@ -250,8 +248,8 @@ export default function Review() {
               message: "10자 이상 작성해주세요.",
             },
             maxLength: {
-              value: 40,
-              message: "40자 이하로 작성해주세요.",
+              value: 80,
+              message: "80자 이하로 작성해주세요.",
             },
           })}
         />
@@ -295,13 +293,14 @@ export default function Review() {
             </PreviewDiv>
           ))}
         </ImgList>
-        {/* 여기 toast알람 들어가야함. */}
+
         {isLogin ? (
           <StBtn>리뷰 남기기</StBtn>
         ) : (
-          <StBtn onClick={warning}>로그인 후 이용해주세요</StBtn>
+          <StBtn style={{ backgroundColor: "#CCCCCC" }} disabled>
+            로그인 후 이용해주세요
+          </StBtn>
         )}
-        {/* 여기 toast알람 들어가야함. */}
       </ReviewForm>
     </Wrapper>
   );
@@ -330,6 +329,7 @@ const HeadText = styled.div`
 `;
 
 const ReviewImgBox = styled.div`
+  position: relative;
   width: ${(props) => props.theme.pixelToRem(375)};
   height: ${(props) => props.theme.pixelToRem(170)};
   margin-top: 10px;
@@ -346,13 +346,28 @@ const ReviewImgBox = styled.div`
 `;
 
 const TextBox = styled.div`
-  background-color: red;
-  /* justify-content: center; */
+  /* background-color: red; */
+  width: ${(props) => props.theme.pixelToRem(375)};
+  justify-content: center;
   align-items: center;
   display: flex;
   flex-direction: column;
   position: absolute;
-  margin-top: 55px;
+  margin-top: -110px;
+  gap: 5px;
+  /* margin-top: 55px; */
+`;
+
+const CampName = styled.div`
+  font-size: ${(props) => props.theme.pixelToRem(22)};
+  font-weight: 600;
+  color: #fff;
+`;
+
+const CampLoca = styled.div`
+  font-size: ${(props) => props.theme.pixelToRem(14)};
+  font-weight: 500;
+  color: #fff;
 `;
 
 const VisitDay = styled.div`
@@ -389,7 +404,7 @@ const BestImgDiv = styled.label<{ isBest: Boolean }>`
   width: ${(props) => props.theme.pixelToRem(62)};
   height: ${(props) => props.theme.pixelToRem(62)};
   border-radius: ${(props) => props.theme.pixelToRem(62)};
-  background-color: ${(props) => (props.isBest ? "#024873" : "lightgray")};
+  background-color: ${(props) => (props.isBest ? "#024873" : "#EFEFEF")};
   align-items: center;
   justify-content: center;
   display: flex;
@@ -431,7 +446,7 @@ const BestBtnDiv = styled.div<{ isBest: Boolean }>`
   position: absolute;
   margin-top: 100px;
   font-size: ${(props) => props.theme.pixelToRem(14)};
-  color: ${(props) => (props.isBest ? "#024873" : "lightgray")};
+  color: ${(props) => (props.isBest ? "#024873" : "#CCCCCC")};
 `;
 
 const GoodInput = styled.input`
@@ -461,7 +476,7 @@ const GoodImgDiv = styled.label<{ isGood: Boolean }>`
   width: ${(props) => props.theme.pixelToRem(62)};
   height: ${(props) => props.theme.pixelToRem(62)};
   border-radius: ${(props) => props.theme.pixelToRem(62)};
-  background-color: ${(props) => (props.isGood ? "#024873" : "lightgray")};
+  background-color: ${(props) => (props.isGood ? "#024873" : "#EFEFEF")};
 
   align-items: center;
   justify-content: center;
@@ -476,7 +491,7 @@ const GoodImgDiv = styled.label<{ isGood: Boolean }>`
 const GoodBtnDiv = styled.div<{ isGood: Boolean }>`
   margin-top: 100px;
   font-size: ${(props) => props.theme.pixelToRem(14)};
-  color: ${(props) => (props.isGood ? "#024873" : "lightgray")};
+  color: ${(props) => (props.isGood ? "#024873" : "#CCCCCC")};
 `;
 
 const BadInput = styled.input`
@@ -501,7 +516,7 @@ const BadImgDiv = styled.label<{ isBad: Boolean }>`
   width: ${(props) => props.theme.pixelToRem(62)};
   height: ${(props) => props.theme.pixelToRem(62)};
   border-radius: ${(props) => props.theme.pixelToRem(62)};
-  background-color: ${(props) => (props.isBad ? "#024873" : "lightgray")};
+  background-color: ${(props) => (props.isBad ? "#024873" : "#EFEFEF")};
 
   align-items: center;
   justify-content: center;
@@ -522,7 +537,7 @@ const BadBtnDiv = styled.div<{ isBad: Boolean }>`
   margin-top: 100px;
   margin-left: 5px;
   font-size: ${(props) => props.theme.pixelToRem(14)};
-  color: ${(props) => (props.isBad ? "#024873" : "lightgray")};
+  color: ${(props) => (props.isBad ? "#024873" : "#CCCCCC")};
 `;
 
 //** RecoBtn tab 끝 */

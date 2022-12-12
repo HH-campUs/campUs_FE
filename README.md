@@ -22,36 +22,37 @@
 4. [Feature | 구현 기능](#feature-|-구현-기능)
 5. [Stacks | 사용 스택](#stacks-|-사용-스택)
 6. [PATCH NOTES | 패치 노트](#patch-notes-|-패치-노트)
+7. [Who Made It | 서비스를 가꾼 사람들](#who-made-it-|-서비스를-가꾼-사람들)
 
-## About Project
 
-### ⌛ TimeLine | 타임라인
+
+## ⌛ TimeLine | 타임라인
 - 총 프로젝트 기간 11월 4일 ~ 12월 15일 (6주)
 - 12월 10일 배포 및 런칭
 
 <br>
 
-<hr/>
 
-### 🪛 Architecture | 아키텍쳐
+
+## 🪛 Architecture | 아키텍쳐
 <br>
 
 ![title](https://github.com/HH-campUs/campUs_FE/blob/master/public/Architecture.png)   
 
-<hr/>
 
-### 🖼️ ERD | 데이터 구조도
+
+## 🖼️ ERD | 데이터 구조도
 <br>
-<hr/>
 
-### 💡Feature | 구현 기능
+
+##💡Feature | 구현 기능
 
 
 ☝️ 
 
-<hr/>
 
-### 🛠️ Stacks | 사용 스택
+
+## 🛠️ Stacks | 사용 스택
 **Front End**
 <br/>
 <br/>
@@ -72,16 +73,14 @@
 
 <img src="https://img.shields.io/badge/Github-181717?style=for-the-badge&logo=GITHUB&logoColor=white"> <img src="https://img.shields.io/badge/VISUAL STUDIO CODE-007ACC?style=for-the-badge&logo=VISUAL STUDIO CODE&logoColor=white"> <img src="https://img.shields.io/badge/AMAZON EC2-ff9900?style=for-the-badge&logo=AMAZON EC2&logoColor=white"> <img src="https://img.shields.io/badge/AMAZON S3-569A31?style=for-the-badge&logo=AMAZON S3&logoColor=white">
 
-<hr/>
-
-### 🪛 PATCH NOTES | 패치 노트
 
 
+## 🪛 PATCH NOTES | 패치 노트
 
 
-<hr/>
 
-### 👨‍💻👩‍💻How Made It
+
+## 👨‍💻👩‍💻Who Made It | 서비스를 가꾼 사람들
 |이름|포지션|Github or Email|
 |------|---|----------|
 |김지헌|`BackEnd (Leader)`|https://github.com/KJIHEON|

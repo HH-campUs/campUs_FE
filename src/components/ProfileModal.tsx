@@ -118,11 +118,7 @@ export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
                     src={checkPf?.profileImg}
                     alt="PFP"
                     style={{
-<<<<<<< HEAD
                       width: "90px",
-=======
-                      width:"90px",
->>>>>>> 4566560591e8f486ed69ecc6b8bfce3de86d429f
                       height: "90px",
                       borderRadius: "90px",
                       objectFit: "cover",
@@ -152,6 +148,14 @@ export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
                 placeholder="닉네임"
                 {...register("nickname", {
                   required: "8자 이내로 적어주세요.",
+                  minLength: {
+                    value: 1,
+                    message: "1자 이상 적어주세요.",
+                  },
+                  maxLength: {
+                    value: 8,
+                    message: "8자 이하로 적어주세요",
+                  },
                 })}
               />
               <ErrorNick>{errors.nickname?.message}</ErrorNick>

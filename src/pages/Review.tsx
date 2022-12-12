@@ -21,15 +21,14 @@ export default function Review() {
   const Month = useRecoilValue(StrMonth);
   const Day = useRecoilValue(StrDay);
   //campId확인.
-  const loca = useLocation();
-  const state = loca.state as { campId: number };
+  // const loca = useLocation();
+  // const state = loca.state as { campId: number };
   const { campId } = useParams();
 
   //useQuery사용.
 
-  const detailItem: any = useGetApi.useGetCampDetail(state.campId).data;
+  const detailItem: any = useGetApi.useGetCampDetail(campId).data;
   const checkItem = detailItem?.[0];
-
 
   //버튼클릭 색상 변경
   const [bestStatus, setBestStatus] = useState(false);
@@ -92,7 +91,6 @@ export default function Review() {
   const handleValid = (data: IReviewPosts) => {
     if (!campId) return;
     const formData = new FormData();
-    console.log(imageFiles);
     for (let i = 0; i < imageFiles.length; i++) {
       formData.append("reviewImg", imageFiles[i]);
     }
@@ -123,10 +121,6 @@ export default function Review() {
       setImageFiles((prev: File[]) => prev.slice(0, 3));
     }
   }, [imagePreview]);
-
-  const warning = () => {
-    window.alert("로그인 후 이용해주세요!");
-  };
 
   return (
     <Wrapper>
@@ -243,7 +237,7 @@ export default function Review() {
       </ReviewTip>
       <WriteHead>
         <p>리뷰 쓰기</p>
-        <p style={{ color: "#5185A6" }}>최소 10자 | 최대 40자</p>
+        <p style={{ color: "#5185A6" }}>최소 10자 | 최대 80자</p>
       </WriteHead>
       <ReviewForm onSubmit={handleSubmit(handleValid)}>
         <StTextArea
@@ -254,8 +248,8 @@ export default function Review() {
               message: "10자 이상 작성해주세요.",
             },
             maxLength: {
-              value: 40,
-              message: "40자 이하로 작성해주세요.",
+              value: 80,
+              message: "80자 이하로 작성해주세요.",
             },
           })}
         />
@@ -299,13 +293,14 @@ export default function Review() {
             </PreviewDiv>
           ))}
         </ImgList>
-        {/* 여기 toast알람 들어가야함. */}
+
         {isLogin ? (
           <StBtn>리뷰 남기기</StBtn>
         ) : (
-          <StBtn onClick={warning}>로그인 후 이용해주세요</StBtn>
+          <StBtn style={{ backgroundColor: "#CCCCCC" }} disabled>
+            로그인 후 이용해주세요
+          </StBtn>
         )}
-        {/* 여기 toast알람 들어가야함. */}
       </ReviewForm>
     </Wrapper>
   );

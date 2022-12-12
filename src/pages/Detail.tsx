@@ -1,13 +1,12 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
-
 import styled from "styled-components";
-import { Outlet, useMatch, useLocation, useNavigate } from "react-router-dom";
+import { Outlet, useMatch, useNavigate, useParams } from "react-router-dom";
 import SemiSearch from "../components/withSearch/SemiSearch";
 import Search from "../components/withSearch/Search";
 import PlanWrite from "../components/withPlan/PlanWrite";
 import { isModal } from "../store/searchAtom";
-
+import { CopyToClipboard } from "react-copy-to-clipboard";
 import { useGetApi } from "../APIs/getApi";
 import { StrDay } from "../store/dateAtom";
 import getIcons from "../utils/getIcons";
@@ -17,22 +16,29 @@ import { InfoToast, NoIdPickToast, NavToast } from "../components/Toast/Toast";
 
 function Detail() {
   const [toastState, setToastState] = useRecoilState(isToast);
-  const copyLinkRef = useRef();
+
+  const url = window.location.href;
+  //toast
+  const copied = () => {
+    window.alert("복사완료");
+  };
   const navigate = useNavigate();
   const [isSearch, setIsSearch] = useRecoilState(isModal);
 
   const [openSemi, setOpenSemi] = useState(false);
   const [isPlan, setIsPlan] = useState(false);
+  const [openIcon, setOpenIcon] = useState(false);
 
-  const detailMatch = useMatch("/detail/campId/detail");
-  const reviewMatch = useMatch("/detail/campId/review");
+  const detailMatch = useMatch("/detail/:campId/detail");
+  const reviewMatch = useMatch("/detail/:campId/review");
 
   const day = useRecoilValue(StrDay);
-  console.log(day);
   const isLogin = getCamperToken();
 
-  const loca = useLocation();
-  const state = loca.state as { campId: number };
+  const { campId } = useParams();
+
+  // const loca = useLocation();
+  // const state = loca.state as { campId: number };
   const goBack = () => {
     navigate(-1);
   };
@@ -48,23 +54,26 @@ function Detail() {
     setIsPlan(true);
   };
 
+  const fullIcon = () => {
+    setOpenIcon((prev) => !prev);
+  };
+
   const warnAlert = () => {
     window.alert("로그인 후 사용해주세요!");
   };
 
   // useEffect로 detail아이템이 바꼈을때 checkitem으로 state값으로관리
   // setquerydata
-  const detailItem: any = useGetApi.useGetCampDetail(state.campId)?.data;
+  const detailItem: any = useGetApi.useGetCampDetail(campId)?.data;
   console.log("detailItem", detailItem);
+
   const checkItem = detailItem?.[0];
-  console.log("checkitem", checkItem);
+  console.log("checkItem", checkItem);
 
   const icons = useMemo<string[]>(() => {
     if (!checkItem) return [];
     return checkItem.sbrsCl?.split(",");
   }, [detailItem]);
-
-  console.log(icons);
 
   const [bookmark, setBookMark] = useState(true);
   const marking = () => {
@@ -127,16 +136,22 @@ function Detail() {
                 />
               </div>
             </div>
+
             <div style={{ display: "flex" }}>
               <div className="buttonBg" style={{ marginRight: "14px" }}>
-                <img
-                  src="/images/icon-share.svg"
-                  alt="share"
-                  style={{
-                    marginLeft: "2px",
-                    marginTop: "1px",
-                  }}
-                />
+                <CopyToClipboard text={url}>
+                  <ClipBoardBtn onClick={copied}>
+                    <img
+                      src="/images/icon-share.svg"
+                      alt="share"
+                      style={{
+                        top: 12,
+                        right: 69.5,
+                        position: "absolute",
+                      }}
+                    />
+                  </ClipBoardBtn>
+                </CopyToClipboard>
               </div>
               <div className="buttonBg">
                 <PickImg onClick={marking}>
@@ -223,9 +238,9 @@ function Detail() {
           <FcBox>
             <FcTextBox>
               <FcLeft>시설 요약</FcLeft>
-              <FcRight>전체보기</FcRight>
+              <FcRight onClick={fullIcon}>전체보기</FcRight>
             </FcTextBox>
-            <FcIconBox>
+            <FcIconBox isActive={openIcon}>
               {icons.length > 0 &&
                 icons?.map((item, i) => (
                   <TheIcon key={i}>
@@ -237,30 +252,16 @@ function Detail() {
           </FcBox>
         </WFcBox>
         <GrayHr />
-
         <Tabs>
           <Tab
             isLine={Boolean(detailMatch)}
-            onClick={() =>
-              navigate(`/detail/${state.campId}/detail`, {
-                state: {
-                  campId: `${state.campId}`,
-                },
-              })
-            }
+            onClick={() => navigate(`/detail/${campId}/detail`)}
           >
             상세정보
           </Tab>
-
           <Tab
             isLine={Boolean(reviewMatch)}
-            onClick={() =>
-              navigate(`/detail/${state.campId}/review`, {
-                state: {
-                  campId: `${state.campId}`,
-                },
-              })
-            }
+            onClick={() => navigate(`/detail/${campId}/review`)}
           >
             리뷰
           </Tab>
@@ -312,6 +313,12 @@ const TopNavContainer = styled.div`
     border-radius: 25px;
     background-color: rgba(255, 255, 255, 0.7);
   }
+`;
+
+const ClipBoardBtn = styled.button`
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
 `;
 
 const UpperWrapper = styled.div`
@@ -477,9 +484,10 @@ const PickImg = styled.div`
 `;
 
 const WFcBox = styled.div`
-  width: ${(props) => props.theme.pixelToRem(335)};
+  width: ${(props) => props.theme.pixelToRem(355)};
   margin: auto;
   justify-content: space-around;
+  /* background-color: red; */
 `;
 
 const FcBox = styled.div`
@@ -513,21 +521,33 @@ const FcRight = styled.div`
   letter-spacing: normal;
   text-align: right;
   display: flex;
+  cursor: pointer;
 `;
 
-const FcIconBox = styled.div`
+const FcIconBox = styled.div<{ isActive: boolean }>`
   width: 100%;
   height: ${(props) => props.theme.pixelToRem(80)};
-  margin-top: 20px;
+  margin-top: 10px;
+  justify-content: center;
   display: flex;
+  transition: all 0.3s linear;
+  display: flex;
+  flex-wrap: wrap;
+  overflow: hidden;
+  padding: 5px;
+
+  height: ${(props) =>
+    props.isActive == false
+      ? props.theme.pixelToRem(70)
+      : props.theme.pixelToRem(150)};
 `;
 
 const TheIcon = styled.div`
-  width: ${(props) => props.theme.pixelToRem(55)};
-  height: ${(props) => props.theme.pixelToRem(50)};
-  margin-top: -4px;
-  margin-right: 10px;
+  width: ${(props) => props.theme.pixelToRem(60)};
+  height: ${(props) => props.theme.pixelToRem(60)};
+  margin-right: 5px;
   flex-direction: column;
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -541,9 +561,6 @@ const TheIcon = styled.div`
     line-height: normal;
     letter-spacing: normal;
 
-    /* align-items: center; */
-    /* text-align: center; */
-    /* justify-content: center; */
     color: ${(props) => props.theme.colorTheme.text2} !important;
     font-size: ${(props) => props.theme.pixelToRem(12)};
   }
@@ -568,6 +585,7 @@ const Tabs = styled.div`
 `;
 
 const Tab = styled.span<{ isLine: boolean }>`
+  /* background-color: red; */
   width: 50%;
   text-align: center;
   font-size: ${(props) => props.theme.pixelToRem(15)};

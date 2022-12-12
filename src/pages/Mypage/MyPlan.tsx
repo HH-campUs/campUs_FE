@@ -61,7 +61,7 @@ export default function MyPlan() {
           {isLogin ? (
             <>
               {onOff == false ? (
-                <>
+                <Container>
                   {Trips?.map((trip: IGetTravelPlan) => (
                     <PlanBox key={trip.Camp?.tripId}>
                       <img src={trip.Camp?.ImageUrl} alt="img" />
@@ -79,7 +79,7 @@ export default function MyPlan() {
                       <Kebop tripId={trip.tripId} setIsPlan={setIsPlan} />
                     </PlanBox>
                   ))}
-                </>
+                </Container>
               ) : null}
             </>
           ) : (
@@ -99,24 +99,41 @@ export default function MyPlan() {
               </NotiBox>
             </>
           )}
+          <FloatingBtn>
+            <img src="/images/travelplan/plusbtn.svg" />
+          </FloatingBtn>
         </Wrapper>
       </TotalContainer>
     </>
   );
 }
+// ${(props) => props.theme.pixelToRem(45)};
+const FloatingBtn = styled.button`
+  position: fixed;
+  right: 13%;
+  bottom: 13%;
+  width: ${(props) => props.theme.pixelToRem(50)};
+  height: ${(props) => props.theme.pixelToRem(50)};
+  border-radius: ${(props) => props.theme.pixelToRem(50)};
+  background-color: #adc2ce;
+  cursor: pointer;
+  z-index: 10;
+  border: 1px solid #eee;
+`;
 
 const TotalContainer = styled.div`
   width: 100%;
+  /* background-color: red; */
   position: absolute;
 `;
 
 const ToggleBtn = styled.div<{ onOff: boolean }>`
-  margin-top: -20px;
-  margin-left: -10px;
+  width: 100%;
+  margin-left: -20px;
 
   .toggleSwitch {
-    width: 335px;
-    height: 48px;
+    width: ${(props) => props.theme.pixelToRem(335)};
+    height: ${(props) => props.theme.pixelToRem(48)};
     display: block;
     position: relative;
     border-radius: 26px;
@@ -161,6 +178,7 @@ const ToggleBtn = styled.div<{ onOff: boolean }>`
     z-index: 2;
     position: absolute;
     transition: color 0.2s ease-in-out;
+    /* background-color: red; */
   }
 
   .onSpan {
@@ -183,9 +201,11 @@ const ToggleBtn = styled.div<{ onOff: boolean }>`
 const Container = styled.div`
   width: 100%;
   height: 100vh;
-  margin-top: -20px;
+  /* margin-top: -20px; */
   padding: 20px;
   overflow-y: scroll;
+  margin-bottom: 1500px;
+  /* background-color: blue; */
 `;
 
 const PlanBox = styled.div`
@@ -198,6 +218,7 @@ const PlanBox = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  /* background-color: red; */
 
   img {
     width: ${(props) => props.theme.pixelToRem(118)};
@@ -291,11 +312,6 @@ const Memo = styled.div`
 
 const Wrapper = styled.div`
   width: 100%;
-  /* background-color: red; */
-  /* margin-top: 130px; */
-
-  /* margin-bottom: 500px; */
-
   overflow-y: scroll;
 `;
 

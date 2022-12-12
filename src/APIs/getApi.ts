@@ -166,8 +166,8 @@ export const useGetApi = {
     });
   },
 
-  useGetCampDetail: (campId: number) => {
-    return useQuery<campArray>(
+  useGetCampDetail: (campId: string | undefined) => {
+    return useQuery<campArray[]>(
       ["campDetail", campId],
       async () => {
         const { data } = await instance.get(`/camps/detail/${campId}`);
@@ -181,7 +181,7 @@ export const useGetApi = {
   },
 
   // ** 캠핑장 리뷰 조회 / get ** //
-  useGetCampReview: (campId: number) => {
+  useGetCampReview: (campId: string | undefined) => {
     return useQuery(["reviewinfo"], async () => {
       const { data } = await instance.get<IGetCampReview>(`/reviews/${campId}`);
 

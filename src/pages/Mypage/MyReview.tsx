@@ -32,7 +32,14 @@ export default function MyReview() {
                 <PfImg>
                   <img src={checkPf?.profileImg} alt="pfImg" />
                 </PfImg>
-                <div style={{ flexDirection: "column", marginLeft: "6.5px" }}>
+                <div
+                  style={{
+                    flexDirection: "column",
+                    marginLeft: "6.5px",
+                    display: "flex",
+                    width: "100%",
+                  }}
+                >
                   <NickBox>
                     <PfNick>{checkPf?.nickname}</PfNick>
                     <ReviewUpdate>수정</ReviewUpdate>
@@ -98,6 +105,7 @@ const ReviewHead = styled.div`
   margin-left: 20px;
   display: flex;
   justify-content: space-between;
+  width: 85%;
 `;
 
 const LeftText = styled.div`
@@ -111,7 +119,8 @@ const LeftText = styled.div`
 `;
 
 const RightIcon = styled.img`
-  margin-right: 20px;
+  /* right: 100; */
+  /* margin-right: 40px; */
 `;
 // ${(props) => props.theme.pixelToRem(335)};
 const ReviewMap = styled.div`
@@ -128,10 +137,11 @@ const ReviewMap = styled.div`
 `;
 // ${(props) => props.theme.pixelToRem(300)};
 const PfBox = styled.div`
-  width: 91%;
+  width: 100%;
   height: ${(props) => props.theme.pixelToRem(40)};
-  margin: 18px 18px 0 22px;
+  margin: 18px 0 0 20px;
   display: flex;
+  /* background-color: blue; */
 `;
 
 const PfImg = styled.div`
@@ -145,6 +155,7 @@ const PfImg = styled.div`
 //${(props) => props.theme.pixelToRem(250)}; */
 const NickBox = styled.div`
   width: 100%;
+  /* background-color: red; */
   /* max-width: ${(props) => props.theme.pixelToRem(340)}; */
   justify-content: space-between;
   display: flex;
@@ -157,6 +168,7 @@ const PfNick = styled.div`
 
 const ReviewUpdate = styled.div`
   color: #5185a6;
+  margin-right: 40px;
 `;
 
 const LocaBox = styled.div`

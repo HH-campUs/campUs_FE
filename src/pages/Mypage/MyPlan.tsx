@@ -41,8 +41,12 @@ export default function MyPlan() {
   const DdayCalculator = (date: string) => {
     const planDay = new Date(
       date.slice(0, 4) + "-" + date.slice(4, 6) + "-" + date.slice(6, 8)
-    );
-    const today = new Date();
+    ).getDate();
+    const today = new Date().getDate();
+    const result = planDay - today;
+
+    console.log(result, new Date());
+    return result;
   };
 
   return (
@@ -72,7 +76,7 @@ export default function MyPlan() {
                   {Trips?.map((trip: IGetTravelPlan) => (
                     <PlanBox key={trip.Camp?.tripId}>
                       <img src={trip.Camp?.ImageUrl} alt="img" />
-                      <Dday>D-{trip.date.slice(6, 8)}</Dday>
+                      <Dday>D - {DdayCalculator(trip.date)}</Dday>
                       <div className="infoBox">
                         <span>{trip.Camp?.address}</span>
                         <span>{trip.Camp?.campName}</span>
@@ -88,7 +92,29 @@ export default function MyPlan() {
                     </PlanBox>
                   ))}
                 </>
-              ) : null}
+              ) : (
+                <>
+                  {" "}
+                  {Trips?.map((trip: IGetTravelPlan) => (
+                    <PlanBox key={trip.Camp?.tripId}>
+                      <img src={trip.Camp?.ImageUrl} alt="img" />
+
+                      <div className="infoBox">
+                        <span>{trip.Camp?.address}</span>
+                        <span>{trip.Camp?.campName}</span>
+                        <span>떠나는 날짜</span>
+                        <span>
+                          {trip.date.slice(2, 4)}.{trip.date.slice(4, 6)}.
+                          {trip.date.slice(6, 8)}
+                        </span>
+                        <Memo></Memo>
+                      </div>
+
+                      <Kebop tripId={trip.tripId} setIsPlan={setIsPlan} />
+                    </PlanBox>
+                  ))}{" "}
+                </>
+              )}
             </>
           ) : (
             <>
@@ -263,7 +289,7 @@ const Dday = styled.div`
   height: ${(props) => props.theme.pixelToRem(26)};
   flex-grow: 0;
   margin: 10px 0px 0 25px;
-  padding: 2px 11.2px;
+  padding: 3px 16px;
   border-radius: 17px;
   border: solid 2px #fff;
   background-color: #024873;
@@ -300,11 +326,6 @@ const Memo = styled.div`
 
 const Wrapper = styled.div`
   width: 100%;
-  /* background-color: red; */
-  /* margin-top: 130px; */
-
-  /* margin-bottom: 500px; */
-
   overflow-y: scroll;
 `;
 

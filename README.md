@@ -16,7 +16,7 @@
 <br/>
 
 ## Contents | 목차
-1. [TimeLine |  타임라인](#timeline-|-타임라인)
+1. [TimeLine | 타임라인](#timeline-|-타임라인)
 2. [Architecture | 아키텍쳐](#architecture-|-아키텍쳐)
 3. [ERD | 데이터 구조도](#erd-|-데이터-구조도)
 4. [Feature | 구현 기능](#feature-|-구현-기능)

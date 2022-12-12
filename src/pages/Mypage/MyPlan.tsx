@@ -38,6 +38,13 @@ export default function MyPlan() {
     }
   };
 
+  const DdayCalculator = (date: string) => {
+    const planDay = new Date(
+      date.slice(0, 4) + "-" + date.slice(4, 6) + "-" + date.slice(6, 8)
+    );
+    const today = new Date();
+  };
+
   return (
     <>
       {isPlan == false ? null : (
@@ -65,7 +72,7 @@ export default function MyPlan() {
                   {Trips?.map((trip: IGetTravelPlan) => (
                     <PlanBox key={trip.Camp?.tripId}>
                       <img src={trip.Camp?.ImageUrl} alt="img" />
-                      <Dday>D-day</Dday>
+                      <Dday>D-{trip.date.slice(6, 8)}</Dday>
                       <div className="infoBox">
                         <span>{trip.Camp?.address}</span>
                         <span>{trip.Camp?.campName}</span>

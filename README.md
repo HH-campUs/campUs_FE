@@ -16,14 +16,14 @@
 <br/>
 
 ## Contents | 목차
-1. [TimeLine | 타임라인](#1-timeline-|-타임라인)
-2. [Architecture | 아키텍쳐](#2-architecture-|-아키텍쳐)
-3. [ERD | 데이터 구조도](#3-erd-|-데이터-구조도)
-4. [Feature | 구현 기능](#4-feature-|-구현-기능)
-5. [Stacks | 사용 스택](#5-stacks-|-사용-스택)
-6. [Trouble Shooting | 트러블 슈팅](#6-trouble-shooting-|-트러블-슈팅)
-7. [PATCH NOTES | 패치 노트](#7-patch-notes-|-패치-노트)
-8. [Who Made It | 서비스를 가꾼 사람들](#8-who-made-it-|-서비스를-가꾼-사람들)
+1. [⌛ TimeLine | 타임라인](#-timeline-|-타임라인)
+2. [🪛 Architecture | 아키텍쳐](#-architecture-|-아키텍쳐)
+3. [🖼️ ERD | 데이터 구조도](#-erd-|-데이터-구조도)
+4. [💡Feature | 구현 기능](#-feature-|-구현-기능)
+5. [🛠️ Stacks | 사용 스택](#-stacks-|-사용-스택)
+6. [Trouble Shooting | 트러블 슈팅](#-trouble-shooting-|-트러블-슈팅)
+7. [🪛 PATCH NOTES | 패치 노트](#-patch-notes-|-패치-노트)
+8. [👨‍💻👩‍💻Who Made It | 서비스를 가꾼 사람들](#-who-made-it-|-서비스를-가꾼-사람들)
 
 
 
@@ -45,6 +45,7 @@
 ## 🖼️ ERD | 데이터 구조도
 <br>
 
+![title](https://github.com/HH-campUs/campUs_FE/blob/master/public/ERD.png)
 
 ##💡Feature | 구현 기능
 
@@ -74,6 +75,7 @@
 
 <img src="https://img.shields.io/badge/Github-181717?style=for-the-badge&logo=GITHUB&logoColor=white"> <img src="https://img.shields.io/badge/VISUAL STUDIO CODE-007ACC?style=for-the-badge&logo=VISUAL STUDIO CODE&logoColor=white"> <img src="https://img.shields.io/badge/AMAZON EC2-ff9900?style=for-the-badge&logo=AMAZON EC2&logoColor=white"> <img src="https://img.shields.io/badge/AMAZON S3-569A31?style=for-the-badge&logo=AMAZON S3&logoColor=white">
 
+## ⚽ Trouble Shooting | 트러블 슈팅
 
 
 ## 🪛 PATCH NOTES | 패치 노트

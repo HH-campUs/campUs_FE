@@ -3,6 +3,9 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { useInView } from "react-intersection-observer";
 
 import Up from "../components/Up";
+import { isToast, isToast2 } from "../store/toastAtom";
+import { InfoToast2, NoIdPickToast, NavToast } from "../components/Toast/Toast";
+
 import { isModal, textValue } from "../store/searchAtom";
 import { showLo, selectLo } from "../store/locationAtom";
 import { StrMonth, StrDay, DateState } from "../store/dateAtom";
@@ -11,10 +14,12 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useSearchCamp } from "../APIs/getApi";
 import { IGetCampResult } from "../interfaces/get";
+import { getCamperToken } from "../instance/cookies";
 
 function Keyword() {
   const nav = useNavigate();
-
+  const [toastState, setToastState] = useRecoilState(isToast);
+  const [toastState2, setToastState2] = useRecoilState(isToast2);
   /* data */
   const [isSearch, setIsSearch] = useRecoilState(isModal);
   const [inputValue, setInputValue] = useRecoilState(textValue);
@@ -28,6 +33,8 @@ function Keyword() {
   const pardo = useRecoilValue(selectLo);
   const date = useRecoilValue(DateState);
   const keyword = useRecoilValue(textValue);
+
+  const isLogin = getCamperToken();
 
   /* camp result 무한스크롤 */
 
@@ -52,130 +59,161 @@ function Keyword() {
 
   return (
     <>
-      {isSearch == false ? undefined : <Search />}
+      <Wrapper>
+        {isSearch == false ? undefined : <Search />}
 
-      <ReSearch>
-        <div
-          onClick={() => {
-            nav("/");
-          }}>
-          <div style={{ position: "relative" }}>
-            <img src="/images/back.svg" alt="back" />
-            <span style={{ width: "60px" }}>검색조건</span>
+        {toastState == true ? (
+          !isLogin ? (
+            <NoIdPickToast
+              text={"로그인 후 찜하기가 가능해요."}
+              toastState={toastState}
+              setToastState={setToastState}
+            />
+          ) : (
+            <NavToast
+              text={"찜목록에 추가되었어요."}
+              url={"/mypage/mypick"}
+              toastState={toastState}
+              setToastState={setToastState}
+            />
+          )
+        ) : null}
+
+        {toastState2 == true ? (
+          <InfoToast2
+            text={"찜목록에 제거되었어요."}
+            toastState2={toastState2}
+            setToastState2={setToastState2}
+          />
+        ) : null}
+        <ReSearch>
+          <div
+            onClick={() => {
+              nav("/");
+            }}>
+            <div style={{ position: "relative" }}>
+              <img src="/images/back.svg" alt="back" />
+              <span style={{ width: "60px" }}>검색조건</span>
+            </div>
           </div>
-        </div>
-        <div>
-          <span style={{ width: "160px", marginLeft: "-150px" }}>
-            {Month}월 {Day}일 &nbsp; | &nbsp; {inputValue}
-          </span>
-        </div>
-      </ReSearch>
+          <div>
+            <span style={{ width: "160px", marginLeft: "-150px" }}>
+              {Month}월 {Day}일 &nbsp; | &nbsp; {inputValue}
+            </span>
+          </div>
+        </ReSearch>
 
-      {/* Weather modal */}
+        {/* Weather modal */}
 
-      {/* 여기서 문제... pardo값을 받게 되었을 때 잘나오지만 만약 pardo 값을 인자로 넣지
+        {/* 여기서 문제... pardo값을 받게 되었을 때 잘나오지만 만약 pardo 값을 인자로 넣지
       않는다면..?  => undefined 값이 나오게 된다잉.. 그렇다고 이 값을 여기에 맞추기엔 pardo
       값을 정확히 입력하고, 날짜가 날씨를 지원하지 않는 거라면 Query Option 으로 isError일때, 
       다른 컴포넌트가 나오게 처리해야된다.. 그렇다면?? 조건문을 중첩해서 써도 되지 않을까?
       => 이거 질문해야겠다 시부레,.. */}
 
-      {/* 일단 키워드가 있고 없고 해도 잘 안됩니당 */}
+        {/* 일단 키워드가 있고 없고 해도 잘 안됩니당 */}
 
-      <NoWeather>
-        <div className="top">
-          <span>날씨</span>
-        </div>
-        <div className="isNotActive">
-          <div className="inline">
-            <img src="/images/icon-warning.svg" alt="warning" />
-            키워드 검색은 날씨 정보를 제공하지 않습니다.
+        <NoWeather>
+          <div className="top">
+            <span>날씨</span>
           </div>
-          <span>(지역 검색을 이용해 보세요!)</span>
-        </div>
-      </NoWeather>
+          <div className="isNotActive">
+            <div className="inline">
+              <img src="/images/icon-warning.svg" alt="warning" />
+              키워드 검색은 날씨 정보를 제공하지 않습니다.
+            </div>
+            <span>(지역 검색을 이용해 보세요!)</span>
+          </div>
+        </NoWeather>
 
-      {/* Camp results */}
+        {/* Camp results */}
 
-      <ResultContainer>
-        <ResultTop>
-          <div>
-            <span className="result"> 검색결과 </span>
-            <span className="total"> ({campData?.pages[0].camps.total}개)</span>
-          </div>
-          <div>
-            {sortState == "lookUp" ? (
-              <span
-                className="popular"
-                onClick={() => setSortState("pickCount")}>
+        <ResultContainer>
+          <ResultTop>
+            <div>
+              <span className="result"> 검색결과 </span>
+              <span className="total">
                 {" "}
-                조회순{" "}
+                ({campData?.pages[0].camps.total}개)
               </span>
-            ) : sortState == "pickCount" ? (
-              <span
-                className="popular"
-                onClick={() => setSortState("reviewCount")}>
-                {" "}
-                인기순{" "}
-              </span>
-            ) : (
-              <span className="popular" onClick={() => setSortState("lookUp")}>
-                {" "}
-                리뷰순{" "}
-              </span>
-            )}
-          </div>
-        </ResultTop>
-        {isSuccess && campData?.pages ? (
-          campData?.pages.map((page) => (
-            <React.Fragment key={page.currentPage}>
-              {page?.camps.searchCamp?.map((item: IGetCampResult) => (
-                <ResultBox key={item.campId}>
-                  <ResultItem
-                    onClick={() =>
-                      nav(`/detail/:${item.campId}/detail`, {
-                        state: {
-                          campId: `${item.campId}`,
-                        },
-                      })
-                    }>
-                    <ResultImg src={item.ImageUrl} alt={item.ImageUrl} />
-                    <InnerBg>
+            </div>
+            <div>
+              {sortState == "lookUp" ? (
+                <span
+                  className="popular"
+                  onClick={() => setSortState("pickCount")}>
+                  {" "}
+                  조회순{" "}
+                </span>
+              ) : sortState == "pickCount" ? (
+                <span
+                  className="popular"
+                  onClick={() => setSortState("reviewCount")}>
+                  {" "}
+                  인기순{" "}
+                </span>
+              ) : (
+                <span
+                  className="popular"
+                  onClick={() => setSortState("lookUp")}>
+                  {" "}
+                  리뷰순{" "}
+                </span>
+              )}
+            </div>
+          </ResultTop>
+          {isSuccess && campData?.pages ? (
+            campData?.pages.map((page) => (
+              <React.Fragment key={page.currentPage}>
+                {page?.camps.searchCamp?.map((item: IGetCampResult) => (
+                  <ResultBox key={item.campId}>
+                    <ResultItem
+                      onClick={() =>
+                        nav(`/detail/:${item.campId}/detail`, {
+                          state: {
+                            campId: `${item.campId}`,
+                          },
+                        })
+                      }>
+                      <ResultImg src={item.ImageUrl} alt={item.ImageUrl} />
+                      <InnerBg>
+                        <span>
+                          찜({item.pickCount}) 리뷰({item.reviewCount})
+                        </span>
+                      </InnerBg>
+                    </ResultItem>
+                    <CampSpan>
+                      <span>{item.campName}</span>
+                      <span>{item.induty}</span>
+                    </CampSpan>
+                    <DetailAddress>
+                      <img src="/images/location.svg" alt="location" />
                       <span>
-                        찜({item.pickCount}) 리뷰({item.reviewCount})
+                        {item.address == ""
+                          ? "등록된 주소가 없습니다"
+                          : item.address}
                       </span>
-                    </InnerBg>
-                  </ResultItem>
-                  <CampSpan>
-                    <span>{item.campName}</span>
-                    <span>{item.induty}</span>
-                  </CampSpan>
-                  <DetailAddress>
-                    <img src="/images/location.svg" alt="location" />
-                    <span>
-                      {item.address == ""
-                        ? "등록된 주소가 없습니다"
-                        : item.address}
-                    </span>
-                  </DetailAddress>
-                  {/* 시설 태그들 (max: 4) */}
-                  <TagContainer>
-                    {item.sbrsCl == ""
-                      ? null
-                      : item.sbrsCl
-                          .split(",")
-                          .slice(0, 4)
-                          .map((word) => <div className="tag"> {word} </div>)}
-                  </TagContainer>
-                </ResultBox>
-              ))}
-            </React.Fragment>
-          ))
-        ) : (
-          <div>데이터가 없습니다</div>
-        )}
-        <div ref={ref} style={{ width: "inherit", height: "auto" }}></div>
-      </ResultContainer>
-      <Up />
+                    </DetailAddress>
+                    {/* 시설 태그들 (max: 4) */}
+                    <TagContainer>
+                      {item.sbrsCl == ""
+                        ? null
+                        : item.sbrsCl
+                            .split(",")
+                            .slice(0, 4)
+                            .map((word) => <div className="tag"> {word} </div>)}
+                    </TagContainer>
+                  </ResultBox>
+                ))}
+              </React.Fragment>
+            ))
+          ) : (
+            <div>데이터가 없습니다</div>
+          )}
+          <div ref={ref} style={{ width: "inherit", height: "auto" }}></div>
+        </ResultContainer>
+        <Up />
+      </Wrapper>
     </>
   );
 }
@@ -183,6 +221,14 @@ function Keyword() {
 export default Keyword;
 
 /* result */
+
+const Wrapper = styled.div`
+  width: 100%;
+  max-width: ${(props) => props.theme.pixelToRem(425)};
+  min-width: ${(props) => props.theme.pixelToRem(375)};
+  position: relative;
+  flex-direction: column;
+`;
 
 const ReSearch = styled.div`
   width: 89%;

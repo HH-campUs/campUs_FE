@@ -4,6 +4,8 @@ import { isPop } from "../interfaces/Modal";
 import { IEditPfForm } from "../interfaces/MyPage";
 import { useMyPageApi } from "../APIs/myPageApi";
 import { useNavigate } from "react-router-dom";
+import { isToast, isToast2 } from "../store/toastAtom";
+import { InfoToast2 } from "../components/Toast/Toast";
 
 //Login
 import { LoginState, userInfo } from "../store/loginAtom";
@@ -17,11 +19,12 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { IEditProfile } from "../interfaces/MyPage";
 import { postInstance } from "../instance/instance";
-import { InfoToast } from "./Toast/Toast";
 
 export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
   const checkPf = useMyPageApi.useGetMyPage().data?.data;
-  const [toastState, setToastState] = useState(false);
+  const [toastState, setToastState] = useRecoilState(isToast);
+  const [toastState2, setToastState2] = useState(false);
+
   const queryClient = useQueryClient();
   const mutateFn = async (payload: IEditProfile) => {
     const { data } = await postInstance.put("/users/myPage", {
@@ -59,7 +62,7 @@ export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
   const handleValid = (data: IEditPfForm) => {
     const body = { nickname: data.nickname, profileImg: data.profileImg[0] };
     profileMutate.mutate(body);
-
+    setToastState(true);
     closeModal();
   };
 
@@ -72,12 +75,18 @@ export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
   };
 
   const logOut = () => {
-    setToastState(true);
+    setToastState2(true);
     removeAccessToken();
     removeRefreshToken();
     setIsLoggedIn(false);
-    window.alert("다음에 또 봐요!");
-    navigate("/");
+    const timer = setTimeout(() => {
+      setToastState2(false);
+      navigate("/");
+    }, 1500);
+
+    return () => {
+      clearTimeout(timer);
+    };
   };
 
   return (
@@ -85,6 +94,18 @@ export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
       <PfModalWrap className="setIsPopUp" onClick={modalPop}>
         수정
       </PfModalWrap>
+      {/* <InfoToast2
+        text={"다음에 또 봐요!"}
+        toastState2={toastState2}
+        setToastState2={setToastState2}
+      /> */}
+      {toastState2 == true ? (
+        <InfoToast2
+          text={"다음에 또 봐요!"}
+          toastState2={toastState2}
+          setToastState2={setToastState2}
+        />
+      ) : null}
 
       {isPopUp && (
         <Container>
@@ -95,16 +116,6 @@ export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
               <PfText>프로필 수정</PfText>
               <CloseBtn src="/images/closeBtn.svg" onClick={closeModal} />
             </HeadText>
-            <Toast>
-              {toastState == true ? (
-                <InfoToast
-                  text={"다음에 만나요!"}
-                  toastState={toastState}
-                  setToastState={setToastState}
-                />
-              ) : null}
-            </Toast>
-
             <NickForm onSubmit={handleSubmit(handleValid)}>
               <PfBox>
                 <PfCircle>
@@ -299,6 +310,7 @@ const NickBtn = styled.button`
   margin-top: 18px;
   border-radius: 0.8rem;
   border: 1px solid grey;
+  ${(props) => props.theme.fontTheme.Body2}
   width: ${(props) => props.theme.pixelToRem(295)};
   height: ${(props) => props.theme.pixelToRem(52)};
   background-color: #024873;

@@ -18,7 +18,8 @@ import {
   StrMonth,
   StrYear,
 } from "../../store/dateAtom";
-import { selectLo, showLo } from "../../store/locationAtom";
+import { isToast2 } from "../../store/toastAtom";
+
 import { isModal, textValue } from "../../store/searchAtom";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import styled, { keyframes, css } from "styled-components";
@@ -27,14 +28,10 @@ import { usePostsApi } from "../../APIs/postsApi";
 import { getCamperToken } from "../../instance/cookies";
 import { planOpenProps, ToastProps } from "../../interfaces/props";
 import { IPostTravelPlan } from "../../interfaces/Posts";
-import { NavToast } from "../Toast/Toast";
 
-function PlanWrite(
-  { isPlan, setIsPlan }: planOpenProps,
-  { toastState, setToastState }: ToastProps
-) {
+function PlanWrite({ isPlan, setIsPlan }: planOpenProps) {
   /* toast boolean */
-
+  const [toastState2, setToastState2] = useRecoilState(isToast2);
   const [openDate, setOpenDate] = useState(false);
 
   /* search api 에 사용될  keyword */
@@ -69,28 +66,13 @@ function PlanWrite(
       memo: data.memo,
     };
     planPost.mutate(body);
-    setToastState(true);
-    const timer = setTimeout(() => {
-      setIsPlan(false);
-    }, 1600);
-    return () => {
-      clearTimeout(timer);
-    };
-
-    console.log(body);
+    setToastState2(true);
+    setIsPlan(false);
   };
 
   return (
     <>
       <Container>
-        {toastState == true ? (
-          <NavToast
-            text={"여행일정 등록을 완료했어요."}
-            url={"/mypage/myplan"}
-            toastState={toastState}
-            setToastState={setToastState}
-          />
-        ) : null}
         <ModalBg
           isPlan={isPlan}
           onClick={() => {

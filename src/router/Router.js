@@ -2,7 +2,6 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 /* import { ReactQueryDevtools } from "react-query/devtools"; */
 import { TransitionGroup, CSSTransition } from "react-transition-group";
-import { toast, ToastContainer } from "react-toastify";
 /* import "./style/transition.css"; */
 
 import Home from "../pages/Home";
@@ -11,6 +10,7 @@ import SignUp from "../pages/SignUp";
 import Welcome from "../pages/Welcome";
 import Splash from "../pages/Splash";
 import KaKaoAuth from "../pages/OAuth/KaKaoAuth";
+import GoogleAuth from "../pages/OAuth/GoogleAuth";
 
 import Topic from "../pages/Topic";
 import Detail from "../pages/Detail";
@@ -43,6 +43,7 @@ function Router() {
               <Route path="topic/:topicId" element={<Topic />} />
               <Route path="login" element={<Login />} />
               <Route path="/kakao/callback" element={<KaKaoAuth />} />
+              <Route path="/google/callback" element={<GoogleAuth />} />
               <Route path="signup" element={<SignUp />} />
               <Route path="Welcome" element={<Welcome />} />
               <Route path="/detail/:campId" element={<Detail />}>

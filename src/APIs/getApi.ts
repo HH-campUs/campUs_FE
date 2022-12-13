@@ -224,8 +224,8 @@ export const useGetApi = {
   /* 여행일정 조회 */
   useGetTravelPlan2: () => {
     return useQuery(["travelplan2"], async () => {
-      const { data } = await instance.get<IGetTravelPlan>(`/camps`);
-
+      const { data } = await instance.get<IGetTravelPlan>(`/trip`);
+      console.log(data);
       return data;
     });
   },

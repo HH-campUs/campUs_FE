@@ -49,6 +49,7 @@ function PlanWrite({ isPlan, setIsPlan }: planOpenProps) {
 
   const isLogin = getCamperToken();
   //campId확인.
+  /* const { campId } = useParams(); */
   const loca = useLocation();
   const state = loca.state as { campId: number };
 

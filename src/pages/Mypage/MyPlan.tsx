@@ -247,6 +247,7 @@ const PlanBox = styled.div`
   border-radius: 10px;
   border: solid 1px #eee;
   display: flex;
+  position: relative;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -266,7 +267,7 @@ const PlanBox = styled.div`
     position: absolute;
     display: flex;
     span {
-      :first-child {
+      &:first-child {
         width: ${(props) => props.theme.pixelToRem(106)};
         height: ${(props) => props.theme.pixelToRem(14)};
         ${(props) => props.theme.fontTheme.Caption4};
@@ -274,7 +275,7 @@ const PlanBox = styled.div`
         line-height: normal;
         letter-spacing: normal;
       }
-      :nth-child(2) {
+      &:nth-child(2) {
         width: ${(props) => props.theme.pixelToRem(140)};
         height: ${(props) => props.theme.pixelToRem(18)};
         margin-top: 4px;
@@ -282,7 +283,7 @@ const PlanBox = styled.div`
         line-height: normal;
         letter-spacing: normal;
       }
-      :nth-child(3) {
+      &:nth-child(3) {
         width: auto;
         height: ${(props) => props.theme.pixelToRem(14)};
         margin-top: 12px;
@@ -292,7 +293,7 @@ const PlanBox = styled.div`
         line-height: normal;
         letter-spacing: normal;
       }
-      :last-child {
+      &:last-child {
         width: ${(props) => props.theme.pixelToRem(106)};
         height: ${(props) => props.theme.pixelToRem(14)};
         margin-top: 40px;
@@ -309,7 +310,7 @@ const Dday = styled.div`
   height: ${(props) => props.theme.pixelToRem(26)};
   flex-grow: 0;
   margin: 10px 0px 0 25px;
-  padding: 3px 15px;
+  padding: 3px 13px;
   border-radius: 17px;
   border: solid 2px #fff;
   background-color: #024873;

@@ -10,8 +10,9 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 
 export default function MytravelPlan() {
   // const isLogin = useRecoilValue(LoginState);
-  /* const data = useGetApi.useGetTravelPlan(); */
+  const data = useGetApi.useGetTravelPlan2();
 
+  console.log(data.data);
   const navigate = useNavigate();
   const isLogin = getCamperToken();
   return (
@@ -21,8 +22,7 @@ export default function MytravelPlan() {
         <AllList
           onClick={() => {
             navigate("/mypage/myplan");
-          }}
-        >
+          }}>
           전체보기
         </AllList>
       </TextBox>
@@ -54,8 +54,7 @@ export default function MytravelPlan() {
                 onClick={() => {
                   navigate("/login");
                 }}
-                style={{ textDecoration: "underline", cursor: "pointer" }}
-              >
+                style={{ textDecoration: "underline", cursor: "pointer" }}>
                 로그인하고
               </p>
               &nbsp;

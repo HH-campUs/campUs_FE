@@ -22,7 +22,12 @@ function Kebop({ tripId }: any) {
       <img
         src="/images/icon-more.svg"
         alt="more"
-        style={{ width: "6%", marginTop: "-52px", marginLeft: "40px" }}
+        style={{
+          width: "6%",
+          marginTop: "-52px",
+          marginLeft: "328px",
+          position: "relative",
+        }}
         onClick={() => setOpenMore(!openMore)}
       />
       {openMore == true ? (

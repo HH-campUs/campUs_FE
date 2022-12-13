@@ -51,9 +51,17 @@ export default function MyPlan() {
     return result;
   };
 
+  /* const before = Trips?.map((trip: IGetTravelPlan) => {
+    if (DdayCalculator(trip.date) > -1) {
+      return before;
+    } else {
+      return null;
+    }
+  }); */
+
   return (
     <>
-     {isPlan == false ? null : (
+      {isPlan == false ? null : (
         <PlanUpdate isPlan={isPlan} setIsPlan={setIsPlan} />
       )}
       <TotalContainer>
@@ -74,17 +82,20 @@ export default function MyPlan() {
           {isLogin ? (
             <>
               {onOff == false ? (
-                <>
+                <Container>
                   {Trips?.map((trip: IGetTravelPlan) => (
                     <PlanBox key={trip.Camp?.tripId}>
-                      <img
-                        src={trip.Camp?.ImageUrl}
-                        alt="img"
-                        onClick={() => {
-                          navigate(`/detail/${trip.Camp?.campId}/detail`);
-                        }}
-                      />
-                      <Dday>D - {DdayCalculator(trip.date)}</Dday>
+                      <div style={{ position: "relative" }}>
+                        <img
+                          src={trip.Camp?.ImageUrl}
+                          alt="img"
+                          onClick={() => {
+                            navigate(`/detail/${trip.Camp?.campId}/detail`);
+                          }}
+                        />
+                        <Dday>D - {DdayCalculator(trip.date)}</Dday>
+                      </div>
+                      <Kebop tripId={trip.tripId} setIsPlan={setIsPlan} />
                       <div className="infoBox">
                         <span>{trip.Camp?.address}</span>
                         <span>{trip.Camp?.campName}</span>
@@ -95,13 +106,11 @@ export default function MyPlan() {
                         </span>
                         <Memo>{trip.memo}</Memo>
                       </div>
-
-                      <Kebop tripId={trip.tripId} setIsPlan={setIsPlan} />
                     </PlanBox>
                   ))}
-                </>
+                </Container>
               ) : (
-                <>
+                <Container>
                   {" "}
                   {Trips?.map((trip: IGetTravelPlan) => (
                     <PlanBox key={trip.Camp?.tripId}>
@@ -121,7 +130,7 @@ export default function MyPlan() {
                       <Kebop tripId={trip.tripId} setIsPlan={setIsPlan} />
                     </PlanBox>
                   ))}{" "}
-                </>
+                </Container>
               )}
             </>
           ) : (
@@ -145,32 +154,20 @@ export default function MyPlan() {
     </>
   );
 }
-// ${(props) => props.theme.pixelToRem(45)};
-const FloatingBtn = styled.button`
-  position: fixed;
-  right: 13%;
-  bottom: 13%;
-  width: ${(props) => props.theme.pixelToRem(50)};
-  height: ${(props) => props.theme.pixelToRem(50)};
-  border-radius: ${(props) => props.theme.pixelToRem(50)};
-  background-color: #adc2ce;
-  cursor: pointer;
-  z-index: 10;
-  border: 1px solid #eee;
-`;
 
 const TotalContainer = styled.div`
   width: 100%;
+  margin-top: 20px;
   position: absolute;
 `;
 
 const ToggleBtn = styled.div<{ onOff: boolean }>`
-  width: 100%;
-  margin-left: -20px;
+  margin-top: -20px;
+  margin-left: -10px;
 
   .toggleSwitch {
-    width: ${(props) => props.theme.pixelToRem(335)};
-    height: ${(props) => props.theme.pixelToRem(48)};
+    width: 335px;
+    height: 48px;
     display: block;
     position: relative;
     border-radius: 26px;
@@ -215,7 +212,6 @@ const ToggleBtn = styled.div<{ onOff: boolean }>`
     z-index: 2;
     position: absolute;
     transition: color 0.2s ease-in-out;
-    /* background-color: red; */
   }
 
   .onSpan {
@@ -238,8 +234,7 @@ const ToggleBtn = styled.div<{ onOff: boolean }>`
 const Container = styled.div`
   width: 100%;
   height: 100vh;
-  max-height: 63vh;
-
+  margin-top: -20px;
   padding: 20px;
   overflow-y: scroll;
 `;
@@ -260,13 +255,15 @@ const PlanBox = styled.div`
     width: ${(props) => props.theme.pixelToRem(118)};
     height: ${(props) => props.theme.pixelToRem(150)};
     border-radius: 10px;
-    position: relative;
+    position: absolute;
   }
 
   .infoBox {
+    margin: 0 112px;
     padding: 14px 14px 10px 14px;
     text-align: left;
     flex-direction: column;
+    position: absolute;
     display: flex;
     span {
       :first-child {
@@ -329,7 +326,7 @@ const Dday = styled.div`
 const Memo = styled.div`
   width: ${(props) => props.theme.pixelToRem(198)};
   height: ${(props) => props.theme.pixelToRem(32)};
-  margin: 94px 0 0 0;
+  margin: 14px 0 0 0;
   font-family: Pretendard;
   ${(props) => props.theme.fontTheme.Caption4};
   line-height: 1.33;
@@ -343,7 +340,7 @@ const Memo = styled.div`
   -webkit-line-clamp: 2; /* 라인수 */
   -webkit-box-orient: vertical;
   word-wrap: break-word;
-  position: absolute;
+  position: relative;
 `;
 
 const Wrapper = styled.div`

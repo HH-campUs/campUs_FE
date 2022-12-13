@@ -29,7 +29,7 @@ import { getCamperToken } from "../../instance/cookies";
 import { planOpenProps, ToastProps } from "../../interfaces/props";
 import { IPostTravelPlan } from "../../interfaces/Posts";
 
-function PlanWrite({ isPlan, setIsPlan }: planOpenProps) {
+function PlanWrite({ isPlan, setIsPlan, campId }: planOpenProps) {
   /* toast boolean */
   const [toastState2, setToastState2] = useRecoilState(isToast2);
   const [openDate, setOpenDate] = useState(false);
@@ -48,10 +48,6 @@ function PlanWrite({ isPlan, setIsPlan }: planOpenProps) {
   };
 
   const isLogin = getCamperToken();
-  //campId확인.
-  /* const { campId } = useParams(); */
-  const loca = useLocation();
-  const state = loca.state as { campId: number };
 
   const planPost = usePostsApi.usePostTravelPlan();
   const {
@@ -62,7 +58,7 @@ function PlanWrite({ isPlan, setIsPlan }: planOpenProps) {
 
   const handleValid = (data: IPostTravelPlan) => {
     const body = {
-      campId: state.campId,
+      campId: campId,
       date: sendDate,
       memo: data.memo,
     };

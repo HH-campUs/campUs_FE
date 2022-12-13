@@ -2,7 +2,7 @@ import { useRecoilValue } from "recoil";
 import { LoginState } from "../store/loginAtom";
 import { useNavigate } from "react-router-dom";
 import { getCamperToken } from "../instance/cookies";
-import { useGetApi } from "../APIs/getApi";
+import { useGetApi, useGetTravelPlan2 } from "../APIs/getApi";
 
 //css
 import styled from "styled-components";
@@ -10,9 +10,9 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 
 export default function MytravelPlan() {
   // const isLogin = useRecoilValue(LoginState);
-  const data = useGetApi.useGetTravelPlan2();
+  const data = useGetTravelPlan2();
 
-  console.log(data.data);
+  console.log(data);
   const navigate = useNavigate();
   const isLogin = getCamperToken();
   return (

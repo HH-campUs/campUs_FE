@@ -22,7 +22,7 @@ export interface planOpenProps {
   setIsPlan: React.Dispatch<React.SetStateAction<boolean>>;
   toastState?: boolean;
   setToastState?: React.Dispatch<React.SetStateAction<boolean>>;
-  campId?: number;
+  campId?: number | string;
 }
 
 export interface ToastProps {

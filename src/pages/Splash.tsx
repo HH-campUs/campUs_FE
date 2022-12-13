@@ -36,11 +36,12 @@ function Splash() {
       <RightTemplate>
         <SplashBg>
           <SplashLogo>
-            <div style={{ top: "-60%", left: "-41%", position: "absolute" }}>
-              <Lottie options={defaultOptions} height={600} width={600} />
+            <div style={{ top: "-10%", left: "10%", position: "absolute" }}>
+              <Lottie options={defaultOptions} height={300} width={300} />
             </div>
-            <img src="/images/logo.svg" alt="logo" />
+            <img src="/images/mypage/campUs logo-white.svg" alt="logo" />
           </SplashLogo>
+          <SpanBottom>모바일 환경 사용을 권장합니다. </SpanBottom>
         </SplashBg>
       </RightTemplate>
     </Root>
@@ -67,11 +68,24 @@ const SplashLogo = styled.div`
   display: flex;
 
   img {
-    width: 10rem;
-    top: 80%;
-    left: 34%;
+    width: ${(props) => props.theme.pixelToRem(90)};
+    top: 70%;
+    left: 46%;
     position: absolute;
   }
+`;
+const SpanBottom = styled.div`
+  top: 86%;
+  left: 34%;
+  font-size: ${(props) => props.theme.pixelToRem(13)};
+  font-weight: regular;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.29;
+  letter-spacing: normal;
+  text-align: center;
+  color: #fff;
+  position: absolute;
 `;
 
 const Root = styled.div`

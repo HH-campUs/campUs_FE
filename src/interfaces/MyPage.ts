@@ -12,7 +12,7 @@ export interface IGetMyReview {
 }
 
 export interface IGetTravelPlan {
-  tripId: number | undefined;
+  tripId: number | string;
   campId: number;
   memo: string;
   ImageUrl: string;

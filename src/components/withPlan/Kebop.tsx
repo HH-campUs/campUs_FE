@@ -15,6 +15,7 @@ function Kebop({ tripId }: any) {
   const unPlan = () => {
     deleteId.mutate(tripId);
     setOpenMore(false);
+    alert(`${tripId} 번이 지워졌습니다.`);
     console.log(tripId);
   };
   return (
@@ -24,7 +25,8 @@ function Kebop({ tripId }: any) {
         alt="more"
         style={{
           width: "6%",
-          marginTop: "-52px",
+          height: "40px",
+          marginTop: "2px",
           marginLeft: "328px",
           position: "relative",
         }}

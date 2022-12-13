@@ -10,20 +10,16 @@ import { useNavigate, useParams } from "react-router-dom";
 const imageList = [0, 1, 2, 3];
 
 export default function Carousel() {
-  // const navigate = useNavigate();
   const [hide, setHide] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [transX, setTransX] = useState(0);
   const navigate = useNavigate();
   const { campId } = useParams();
 
-  const campLook: any = useGetApi.useGetSort()?.data?.MostList?.[0].look || [];
+  const campLook = useGetApi.useGetSort()?.data?.MostList?.[0].look || [];
+  const campReview = useGetApi.useGetSort()?.data?.MostList?.[1]?.review || [];
+  const campPick = useGetApi.useGetSort()?.data?.MostList?.[2]?.pick || [];
 
-  const campReview: any =
-    useGetApi.useGetSort()?.data?.MostList?.[1]?.review || [];
-  const campPick: any = useGetApi.useGetSort()?.data?.MostList?.[2]?.pick || [];
-
-  console.log(campLook);
   const { ref, width, height } = useCarouselSize();
 
   const inrange = (v: number, min: number, max: number) => {
@@ -127,25 +123,6 @@ export default function Carousel() {
     </>
   );
 }
-
-// {imageList.map((url, i) => (
-//   <CarouselSlide key={i} className="flex-shrink-0">
-//     <Outline>
-//       <CarouselImg
-//         draggable={false}
-//         src={url}
-//         alt="img"
-//         width={width}
-//       />
-//       <CrTextBox>
-//         <CampName>캠핑장 이름자리</CampName>
-//       </CrTextBox>
-//       <ReviewInfo>
-//         <NumText>찜(32) 리뷰(790)</NumText>
-//       </ReviewInfo>
-//     </Outline>
-//   </CarouselSlide>
-// ))}
 
 const CarouselViewer = styled.div`
   width: ${(props) => props.theme.pixelToRem(475)};

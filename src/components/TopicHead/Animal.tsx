@@ -14,7 +14,9 @@ export default function Animal() {
         <TextBox>
           <TextTitle>애견동반</TextTitle>
           <MidTextBox>
-            <MidText>일몰 명소 캠핑장 추천</MidText>
+            <MidText>
+              뽀삐야 같이가자, 댕댕이랑 여행갈 캠핑장을 찾는다면?
+            </MidText>
             <NextPage onClick={onClick}>
               <span>장비대여</span>
               <KeyboardArrowRight sx={{ color: "white", cursor: "pointer" }} />
@@ -75,6 +77,7 @@ const MidTextBox = styled.div`
 const MidText = styled.div`
   font-size: ${(props) => props.theme.pixelToRem(16)};
   color: #f5f5f5;
+  width: ${(props) => props.theme.pixelToRem(200)};
 `;
 
 const NextPage = styled.div`

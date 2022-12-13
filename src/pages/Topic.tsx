@@ -21,6 +21,7 @@ import Sunset from "../components/TopicHead/Sunset";
 import Animal from "../components/TopicHead/Animal";
 import Equipment from "../components/TopicHead/Equipment";
 import Fishing from "../components/TopicHead/Fishing";
+import Circle from "../components/TopicHead/Circle";
 
 function Topic() {
   /* toast boolean */
@@ -31,21 +32,42 @@ function Topic() {
   };
   const navigate = useNavigate();
   const [isSearch, setIsSearch] = useRecoilState(isModal);
+  const [sortState, setSortState] = useState("lookUp");
   const { topicId } = useParams();
-  console.log(topicId);
-
-  // const loca = useLocation();
-  // const state = loca.state as { topicImg: string; id: number };
-  // const bg = state.topicImg;
 
   const isLogin = getCamperToken();
 
   //infiniteScroll
   const { campTopic, fetchNextPage, isSuccess, hasNextPage, refetch } =
-    useGetTopicInfinite(topicId!);
+    useGetTopicInfinite(topicId!, sortState);
 
-  console.log("camp", campTopic);
+  console.log("campTopic", campTopic);
+
   const [ref, isView] = useInView();
+
+  // <div>
+  // {sortState == "lookUp" ? (
+  //   <span
+  //     className="popular"
+  //     onClick={() => setSortState("pickCount")}
+  //   >
+  //     조회순
+  //   </span>
+  // ) : sortState == "pickCount" ? (
+  //   <span
+  //     className="popular"
+  //     onClick={() => setSortState("reviewCount")}
+  //   >
+  //     인기순
+  //   </span>
+  // ) : (
+  //   <span
+  //     className="popular"
+  //     onClick={() => setSortState("lookUp")}
+  //   >
+  //     리뷰순
+  //   </span>
+  // )}
 
   useEffect(() => {
     if (isView && hasNextPage) {
@@ -63,9 +85,11 @@ function Topic() {
 
       <TopContainer>
         <ImgCover />
+
         <BackBtn onClick={() => navigate(`/`)}>
           <img src="/images/back.svg" alt="back" />
         </BackBtn>
+
         <div>
           {topicId == "1" ? (
             <Sunset />
@@ -77,6 +101,7 @@ function Topic() {
             <Fishing />
           )}
         </div>
+        <Circle />
       </TopContainer>
 
       <ResultContainer>
@@ -138,20 +163,15 @@ function Topic() {
 export default Topic;
 
 const TopContainer = styled.div`
-  /* width: 100%; */
   height: ${(props) => props.theme.pixelToRem(266)};
   border-bottom-left-radius: ${(props) => props.theme.pixelToRem(12)};
   border-bottom-right-radius: ${(props) => props.theme.pixelToRem(12)};
   background-size: cover;
-  /* background-repeat: no-repeat; */
   object-fit: cover;
 `;
 
-// ${(props) => props.theme.pixelToRem(375)};
-// ${(props) => props.theme.pixelToRem(266)};
 const ImgCover = styled.div`
   width: ${(props) => props.theme.pixelToRem(475)};
-  /* max-width: ${(props) => props.theme.pixelToRem(475)}; */
   min-width: ${(props) => props.theme.pixelToRem(375)};
   height: ${(props) => props.theme.pixelToRem(266)};
   background-color: rgba(0, 0, 0, 0.2);

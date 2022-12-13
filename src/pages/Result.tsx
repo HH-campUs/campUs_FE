@@ -3,8 +3,11 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { useInView } from "react-intersection-observer";
 
 import Up from "../components/Up";
+import { InfoToast2, NoIdPickToast, NavToast } from "../components/Toast/Toast";
+
 import { isModal, textValue } from "../store/searchAtom";
 import { showLo, selectLo } from "../store/locationAtom";
+import { isToast, isToast2 } from "../store/toastAtom";
 import { StrMonth, StrDay, DateState } from "../store/dateAtom";
 import Search from "../components/withSearch/Search";
 import { useNavigate } from "react-router-dom";
@@ -17,7 +20,8 @@ import { getCamperToken } from "../instance/cookies";
 function Result() {
   const nav = useNavigate();
   /* toast boolean */
-  const [toastState, setToastState] = useState(false);
+  const [toastState, setToastState] = useRecoilState(isToast);
+  const [toastState2, setToastState2] = useRecoilState(isToast2);
 
   /* data */
   const [isActive, setIsActive] = useState(false);
@@ -45,8 +49,6 @@ function Result() {
   const { campData, fetchNextPage, isSuccess, hasNextPage, refetch } =
     useGetCamp(doNm, sortState);
 
-  console.log("campData", campData);
-
   const { ref, inView } = useInView();
 
   /* handler */
@@ -64,6 +66,31 @@ function Result() {
   return (
     <>
       <Wrapper>
+        {toastState == true ? (
+          !isLogin ? (
+            <NoIdPickToast
+              text={"로그인 후 찜하기가 가능해요."}
+              toastState={toastState}
+              setToastState={setToastState}
+            />
+          ) : (
+            <NavToast
+              text={"찜목록에 추가되었어요."}
+              url={"/mypage/mypick"}
+              toastState={toastState}
+              setToastState={setToastState}
+            />
+          )
+        ) : null}
+
+        {toastState2 == true ? (
+          <InfoToast2
+            text={"찜목록에 제거되었어요."}
+            toastState2={toastState2}
+            setToastState2={setToastState2}
+          />
+        ) : null}
+
         {isSearch == false ? undefined : <Search />}
         <ReSearch>
           <div
@@ -93,7 +120,7 @@ function Result() {
           >
             <div className="top">
               <span>날씨</span>
-              <span>{isWeather ? "펼치기" : "접기"}</span>
+              <span>{isWeather ? "접기" : "펼치기"}</span>
             </div>
             {/* 펼치기 전 */}
             <div className="isNotActive">
@@ -382,7 +409,7 @@ function Result() {
                       </span>
                     </DetailAddress>
                     {/* 시설 태그들 (max: 4) */}
-                    <TagContainer onClick={() => setToastState(true)}>
+                    <TagContainer>
                       {item.sbrsCl == ""
                         ? null
                         : item.sbrsCl
@@ -616,24 +643,23 @@ const WeatherModal = styled.div<{ isWeather: boolean }>`
       height: ${(props) => props.theme.pixelToRem(193)};
 
       .tempGraph {
-        width: inherit;
+        width: 375px;
         height: ${(props) => props.theme.pixelToRem(97)};
         margin-top: 15px;
         margin-bottom: 5px;
         padding: 20px;
-
         img {
           display: flex;
 
           &:first-child {
             width: ${(props) => props.theme.pixelToRem(247)};
-            margin: 0 auto;
+            margin: 0 13px 0;
             position: relative;
           }
           &:nth-child(2) {
             width: ${(props) => props.theme.pixelToRem(24)};
             margin-top: -12px;
-            margin-left: -5px;
+            margin-left: 5px;
             position: absoulte;
           }
           &:nth-child(3) {
@@ -661,17 +687,17 @@ const WeatherModal = styled.div<{ isWeather: boolean }>`
           &:nth-child(5) {
             width: ${(props) => props.theme.pixelToRem(30)};
             margin-top: 3px;
-            margin-left: -6px;
+            margin-left: 13px;
           }
           &:nth-child(6) {
             width: ${(props) => props.theme.pixelToRem(30)};
             margin-top: -44px;
-            margin-left: 123px;
+            margin-left: 132px;
           }
           &:nth-child(7) {
             width: ${(props) => props.theme.pixelToRem(30)};
             margin-top: -1px;
-            margin-left: 255px;
+            margin-left: 262px;
           }
         }
       }

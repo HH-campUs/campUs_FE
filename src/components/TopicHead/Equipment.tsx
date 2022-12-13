@@ -14,7 +14,10 @@ export default function Equipment() {
         <TextBox>
           <TextTitle>장비대여</TextTitle>
           <MidTextBox>
-            <MidText>일몰 명소 캠핑장 추천</MidText>
+            <MidText>
+              몸만 오세요! <br />
+              필요한 건 다 있어요
+            </MidText>
             <NextPage onClick={onClick}>
               <span>겨울낚시</span>
               <KeyboardArrowRight sx={{ color: "white", cursor: "pointer" }} />
@@ -75,6 +78,8 @@ const MidTextBox = styled.div`
 `;
 const MidText = styled.div`
   font-size: ${(props) => props.theme.pixelToRem(16)};
+
+  width: ${(props) => props.theme.pixelToRem(200)};
   color: #f5f5f5;
 `;
 

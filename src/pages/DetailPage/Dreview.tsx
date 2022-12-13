@@ -11,36 +11,22 @@ function Dreview() {
 
   const { campId } = useParams();
 
-  const detailItem = useGetApi?.useGetCampDetail(campId).data;
+  const detailItem = useGetApi?.useGetCampDetail(campId).data?.[0];
 
-  const checkItem = detailItem?.[0];
-  console.log(checkItem);
-  //1. 타입 옵셔널 체이닝 확인
-  //2. 쿼리문의 타입 확인
-  //3. undefiend = !로 해결
+  /* 문제 해결 중 리뷰카운트 새로고침해야적용됨*/
 
-  /* 문제 해결 중 */
+  const reviewItem = useGetApi?.useGetCampReview(campId).data?.data || [];
 
-  const reviewItem = useGetApi?.useGetCampReview(campId);
-  const reviewMap = reviewItem?.data?.data || [];
-
-  // onClick={() =>
-  //   navigate(`/review/${state.campId}/`, {
-  //     state: {
-  //       campId: `${state.campId}`,
-  //     },
-  //   })
-  // }
   return (
     <Wrapper>
       <ReviewBox>
         <ReviewText>전체리뷰</ReviewText>
-        <ReviewNum>{checkItem?.reviewCount}</ReviewNum>
+        <ReviewNum>{detailItem?.reviewCount}</ReviewNum>
         <ReviewIcon onClick={() => navigate(`/review/${campId}/`)}>
           <img src="/images/mypage/reviewwrite.svg" />
         </ReviewIcon>
       </ReviewBox>
-      {reviewMap?.map((item: IGetCampReview, i: number) => (
+      {reviewItem?.map((item: IGetCampReview, i: number) => (
         <ReviewMap key={i}>
           <PfBox>
             <PfImg>
@@ -73,9 +59,8 @@ function Dreview() {
               .map((image: string, campId: number) => (
                 <ImgBox>
                   {item?.reviewImg ? (
-                    <img src={image} alt="" key={campId} />
+                    <img src={image} alt="reviewImg" key={campId} />
                   ) : null}
-                  {/* <img src={image} alt="reviewImg" key={i} /> */}
                 </ImgBox>
               ))}
           </ImgFlex>

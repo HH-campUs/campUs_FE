@@ -38,6 +38,13 @@ export default function MyPlan() {
     }
   };
 
+  const DdayCalculator = (date: string) => {
+    const planDay = new Date(
+      date.slice(0, 4) + "-" + date.slice(4, 6) + "-" + date.slice(6, 8)
+    );
+    const today = new Date();
+  };
+
   return (
     <>
       {isPlan == false ? null : (
@@ -65,7 +72,7 @@ export default function MyPlan() {
                   {Trips?.map((trip: IGetTravelPlan) => (
                     <PlanBox key={trip.Camp?.tripId}>
                       <img src={trip.Camp?.ImageUrl} alt="img" />
-                      <Dday>D-day</Dday>
+                      <Dday>D-{trip.date.slice(6, 8)}</Dday>
                       <div className="infoBox">
                         <span>{trip.Camp?.address}</span>
                         <span>{trip.Camp?.campName}</span>
@@ -76,6 +83,7 @@ export default function MyPlan() {
                         </span>
                         <Memo></Memo>
                       </div>
+
                       <Kebop tripId={trip.tripId} setIsPlan={setIsPlan} />
                     </PlanBox>
                   ))}
@@ -123,7 +131,6 @@ const FloatingBtn = styled.button`
 
 const TotalContainer = styled.div`
   width: 100%;
-  /* background-color: red; */
   position: absolute;
 `;
 
@@ -201,15 +208,15 @@ const ToggleBtn = styled.div<{ onOff: boolean }>`
 const Container = styled.div`
   width: 100%;
   height: 100vh;
-  /* margin-top: -20px; */
+  max-height: 63vh;
+
   padding: 20px;
   overflow-y: scroll;
-  margin-bottom: 1500px;
-  /* background-color: blue; */
 `;
 
 const PlanBox = styled.div`
-  width: 90%;
+  width: 100%;
+  max-width: ${(props) => props.theme.pixelToRem(360)};
   height: ${(props) => props.theme.pixelToRem(150)};
   margin: 0 auto 18px;
   border-radius: 10px;
@@ -218,7 +225,6 @@ const PlanBox = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  /* background-color: red; */
 
   img {
     width: ${(props) => props.theme.pixelToRem(118)};

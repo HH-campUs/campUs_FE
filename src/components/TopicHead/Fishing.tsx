@@ -8,29 +8,15 @@ export default function Fishing() {
     navigation(`/topic/1`);
   };
 
-  // {[1, 2, 3, 4].map((_, i) => (
-  //   <div
-  //   key={i}
-  //   className={cls(
-  //   "w-9 sm:w-16 transition-all duration-300 lg:h-12",
-  //   contrastColorNos.includes(contentNo)
-  //   ? contentNo === i
-  //   ? "bg-slate-100 h-1 lg:w-1"
-  //   : "bg-slate-500 h-0.5 lg:w-0.5"
-  //   : contentNo === i
-  //   ? "bg-slate-400 h-1 lg:w-1"
-  //   : "bg-slate-200 h-0.5 lg:w-0.5"
-  //   )}
-  //   ></div>
-  //   ))}
-
   return (
     <Wrapper>
       <BackImg>
         <TextBox>
           <TextTitle>겨울낚시</TextTitle>
           <MidTextBox>
-            <MidText>일몰 명소 캠핑장 추천</MidText>
+            <MidText>
+              이한치한! 가족, 연인, 친구들과 즐거운 추억을 쌓아봐요
+            </MidText>
             <NextPage onClick={onClick}>
               <span>일몰명소</span>
               <KeyboardArrowRight sx={{ color: "white", cursor: "pointer" }} />
@@ -79,7 +65,6 @@ const TextTitle = styled.div`
 `;
 
 const MidTextBox = styled.div`
-  /* background-color: red; */
   width: 100%;
   display: flex;
   margin-left: 24px;
@@ -92,6 +77,7 @@ const MidTextBox = styled.div`
 const MidText = styled.div`
   font-size: ${(props) => props.theme.pixelToRem(16)};
   color: #f5f5f5;
+  width: ${(props) => props.theme.pixelToRem(200)};
 `;
 
 const NextPage = styled.div`

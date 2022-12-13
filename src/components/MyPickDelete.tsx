@@ -8,15 +8,6 @@ export default function MyPickDelete({ pick }: { pick: IPickedCamp }) {
   const campick = usePostsApi.useCampingPicked();
   const [toastState, setToastState] = useState(false);
 
-  //   <Toast>
-  //   {toastState == true ? (
-  //     <InfoToast
-  //       text={"찜하기 삭제"}
-  //       toastState={toastState}
-  //       setToastState={setToastState}
-  //     />
-  //   ) : null}
-  // </Toast>
   const unpick = (campId: number) => {
     campick.mutate(campId);
     window.alert("찜하기삭제");

@@ -53,7 +53,7 @@ export default function MyPlan() {
 
   return (
     <>
-      {isPlan == false ? null : (
+     {isPlan == false ? null : (
         <PlanUpdate isPlan={isPlan} setIsPlan={setIsPlan} />
       )}
       <TotalContainer>
@@ -76,7 +76,6 @@ export default function MyPlan() {
               {onOff == false ? (
                 <>
                   {Trips?.map((trip: IGetTravelPlan) => (
-                    /* {DdayCalculator(trip.date) > -1 ? :} */
                     <PlanBox key={trip.Camp?.tripId}>
                       <img
                         src={trip.Camp?.ImageUrl}
@@ -146,20 +145,32 @@ export default function MyPlan() {
     </>
   );
 }
+// ${(props) => props.theme.pixelToRem(45)};
+const FloatingBtn = styled.button`
+  position: fixed;
+  right: 13%;
+  bottom: 13%;
+  width: ${(props) => props.theme.pixelToRem(50)};
+  height: ${(props) => props.theme.pixelToRem(50)};
+  border-radius: ${(props) => props.theme.pixelToRem(50)};
+  background-color: #adc2ce;
+  cursor: pointer;
+  z-index: 10;
+  border: 1px solid #eee;
+`;
 
 const TotalContainer = styled.div`
   width: 100%;
-  margin-top: 20px;
   position: absolute;
 `;
 
 const ToggleBtn = styled.div<{ onOff: boolean }>`
-  margin-top: -20px;
-  margin-left: -10px;
+  width: 100%;
+  margin-left: -20px;
 
   .toggleSwitch {
-    width: 335px;
-    height: 48px;
+    width: ${(props) => props.theme.pixelToRem(335)};
+    height: ${(props) => props.theme.pixelToRem(48)};
     display: block;
     position: relative;
     border-radius: 26px;
@@ -204,6 +215,7 @@ const ToggleBtn = styled.div<{ onOff: boolean }>`
     z-index: 2;
     position: absolute;
     transition: color 0.2s ease-in-out;
+    /* background-color: red; */
   }
 
   .onSpan {
@@ -226,7 +238,8 @@ const ToggleBtn = styled.div<{ onOff: boolean }>`
 const Container = styled.div`
   width: 100%;
   height: 100vh;
-  margin-top: -20px;
+  max-height: 63vh;
+
   padding: 20px;
   overflow-y: scroll;
 `;

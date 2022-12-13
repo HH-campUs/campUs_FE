@@ -86,7 +86,7 @@ const HeadText = styled.div`
 `;
 
 const SearchBar = styled.div<{ isSearch: Boolean }>`
-  width: 84%;
+  width: 91.5%;
   height: ${(props) => props.theme.pixelToRem(54)};
   margin: 20px 20px 0 20px;
   padding: 16px 32px 16px 20px;

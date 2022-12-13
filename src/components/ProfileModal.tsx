@@ -129,9 +129,10 @@ export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
                     src={checkPf?.profileImg}
                     alt="PFP"
                     style={{
+                      width: "90px",
                       height: "90px",
                       borderRadius: "90px",
-                      objectFit: "contain",
+                      objectFit: "cover",
                     }}
                   />
                   <CameraCircle>
@@ -158,6 +159,14 @@ export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
                 placeholder="닉네임"
                 {...register("nickname", {
                   required: "8자 이내로 적어주세요.",
+                  minLength: {
+                    value: 1,
+                    message: "1자 이상 적어주세요.",
+                  },
+                  maxLength: {
+                    value: 8,
+                    message: "8자 이하로 적어주세요",
+                  },
                 })}
               />
               <ErrorNick>{errors.nickname?.message}</ErrorNick>
@@ -244,7 +253,10 @@ const HeadText = styled.div`
   font-size: ${(props) => props.theme.pixelToRem(20)};
   margin-left: 20px;
 `;
-const PfBox = styled.div``;
+const PfBox = styled.div`
+  /* position: relative; */
+  /* position: absolute; */
+`;
 
 const PfText = styled.span`
   font-weight: 500;
@@ -264,11 +276,12 @@ const PfCircle = styled.div`
   border-radius: ${(props) => props.theme.pixelToRem(50)};
   margin-top: 17px;
   margin-left: 113px;
+  /* position: absolute; */
 `;
 const ImgPreview = styled.img`
   width: ${(props) => props.theme.pixelToRem(90)};
   height: ${(props) => props.theme.pixelToRem(90)};
-  border-radius: ${(props) => props.theme.pixelToRem(100)};
+  border-radius: ${(props) => props.theme.pixelToRem(50)};
   position: absolute;
 `;
 

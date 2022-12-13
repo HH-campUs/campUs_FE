@@ -8,7 +8,7 @@ import { useMyPageApi } from "../../APIs/myPageApi";
 
 export default function NewReview() {
   const NewReview = useGetApi.useGetNewReview().data?.data || [];
-  const checkPf = useMyPageApi.useGetMyPage().data?.data;
+  console.log(NewReview);
   const [hide, setHide] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [transX, setTransX] = useState(0);
@@ -74,7 +74,9 @@ export default function NewReview() {
                     </div>
                   </PfBox>
                   <ReviewBox>
-                    <ReviewText>{item?.reviewComment}</ReviewText>
+                    <ReviewText title={item?.reviewComment}>
+                      {item?.reviewComment}
+                    </ReviewText>
                   </ReviewBox>
                   <ImgFlex>
                     {item?.reviewImg
@@ -167,7 +169,7 @@ const LocaBox = styled.div`
 const Date = styled.div``;
 
 const ReviewBox = styled.div`
-  width: ${(props) => props.theme.pixelToRem(300)};
+  width: ${(props) => props.theme.pixelToRem(240)};
   color: #666;
   font-size: ${(props) => props.theme.pixelToRem(14)};
   margin-top: 15px;
@@ -178,9 +180,13 @@ const ReviewBox = styled.div`
 
 const ReviewText = styled.div`
   width: 240px;
+  word-break: break-all;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
+  /* white-space: nowrap; */
 `;
 
 const ImgFlex = styled.div`
@@ -199,7 +205,7 @@ const ImgBox = styled.div`
   img {
     width: ${(props) => props.theme.pixelToRem(70)};
     height: ${(props) => props.theme.pixelToRem(84)};
-    aspect-ratio: 1/1;
     border-radius: 8px;
+    object-fit: cover;
   }
 `;

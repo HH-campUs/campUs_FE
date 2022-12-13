@@ -5,39 +5,20 @@ import useCarouselSize from "./useCarouselSize";
 //css
 import styled from "styled-components";
 import { useGetApi } from "../APIs/getApi";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const imageList = [0, 1, 2, 3];
 
 export default function Carousel() {
-  // const navigate = useNavigate();
   const [hide, setHide] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [transX, setTransX] = useState(0);
-  // ?.data?.MostList[0]?.look;
+  const navigate = useNavigate();
+  const { campId } = useParams();
 
-  // interface data {
-  // data: string[] = ["look", "pick", "review"];
-  // }
-
-  // if (campLook) {
-  // console.log("look", campLook.data![0].look);
-  // }
-
-  // console.log("look", campLook);
-
-  // console.log(campLook.induty);
-
-  const x = useGetApi.useGetSort()?.data;
-
-
-  // console.log(campLook.induty);
-
-  const campLook: any = useGetApi.useGetSort()?.data?.MostList?.[0].look || [];
-
-  const campReview: any =
-    useGetApi.useGetSort()?.data?.MostList?.[1]?.review || [];
-  const campPick: any = useGetApi.useGetSort()?.data?.MostList?.[2]?.pick || [];
+  const campLook = useGetApi.useGetSort()?.data?.MostList?.[0].look || [];
+  const campReview = useGetApi.useGetSort()?.data?.MostList?.[1]?.review || [];
+  const campPick = useGetApi.useGetSort()?.data?.MostList?.[2]?.pick || [];
 
   const { ref, width, height } = useCarouselSize();
 
@@ -45,6 +26,10 @@ export default function Carousel() {
     if (v < min) return min;
     if (v > max) return max;
     return v;
+  };
+
+  const handleClick = (campId: string | undefined) => () => {
+    navigate(`/detail/${campId}/detail`);
   };
 
   return (
@@ -55,7 +40,8 @@ export default function Carousel() {
         style={{
           height,
           overflow: hide ? "hidden" : "visible",
-        }}>
+        }}
+      >
         <CarouselSlider
           className="flex"
           style={{
@@ -76,11 +62,12 @@ export default function Carousel() {
 
               setTransX(0);
             },
-          })}>
+          })}
+        >
           <CarouselSlide>
             <Outline>
-              <ImgCover />
-              {/* onClick={handleClick} */}
+              <ImgCover onClick={handleClick(campLook?.campId)} />
+
               <CarouselImg
                 draggable={false}
                 src={campLook?.ImageUrl}
@@ -97,7 +84,7 @@ export default function Carousel() {
               </ReviewInfo>
             </Outline>
             <Outline>
-              <ImgCover />
+              <ImgCover onClick={handleClick(campReview?.campId)} />
               <CarouselImg
                 draggable={false}
                 src={campReview?.ImageUrl}
@@ -114,7 +101,7 @@ export default function Carousel() {
               </ReviewInfo>
             </Outline>
             <Outline>
-              <ImgCover />
+              <ImgCover onClick={handleClick(campPick?.campId)} />
               <CarouselImg
                 draggable={false}
                 src={campPick?.ImageUrl}
@@ -136,25 +123,6 @@ export default function Carousel() {
     </>
   );
 }
-
-// {imageList.map((url, i) => (
-//   <CarouselSlide key={i} className="flex-shrink-0">
-//     <Outline>
-//       <CarouselImg
-//         draggable={false}
-//         src={url}
-//         alt="img"
-//         width={width}
-//       />
-//       <CrTextBox>
-//         <CampName>캠핑장 이름자리</CampName>
-//       </CrTextBox>
-//       <ReviewInfo>
-//         <NumText>찜(32) 리뷰(790)</NumText>
-//       </ReviewInfo>
-//     </Outline>
-//   </CarouselSlide>
-// ))}
 
 const CarouselViewer = styled.div`
   width: ${(props) => props.theme.pixelToRem(475)};
@@ -189,6 +157,7 @@ const ImgCover = styled.div`
   border-radius: ${(props) => props.theme.pixelToRem(15)};
   z-index: 1;
   position: absolute;
+  cursor: pointer;
 `;
 
 const CarouselImg = styled.img`
@@ -203,7 +172,7 @@ const CarouselImg = styled.img`
 const CrTextBox = styled.div`
   padding: 5px;
   position: absolute;
-  top: 190px;
+  top: 175px;
   margin-left: 10px;
   color: #ffffff;
   z-index: 5;

@@ -182,7 +182,8 @@ export const NoIdPickToast = ({
         onClick={(e) => {
           e.stopPropagation();
           nav("/login");
-        }}>
+        }}
+      >
         로그인
         <img src="/images/whiteBack.svg" alt="nav" />
       </span>

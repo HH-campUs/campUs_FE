@@ -79,10 +79,10 @@ export const useGetCamp = (doNm: string, sort: string) => {
 };
 
 //infiniteQuery for Topic
-export const useGetTopicInfinite = (topicId: string) => {
+export const useGetTopicInfinite = (topicId: string, sort: string) => {
   const topicData = async ({ pageParam = 0 }) => {
     const { data } = await instanceTopic.get<pickedCamp>(
-      `/camps/${topicId}?&numOfRows=10&pageNo=${pageParam}&sort=lookUp`
+      `/camps/${topicId}?&numOfRows=10&pageNo=${pageParam}&sort=${sort}`
     );
     return {
       campTopic: data,
@@ -160,8 +160,8 @@ export const useRecommendWeather = () => {
 export const useGetApi = {
   // ** 캠핑장 새로운 리뷰 ** //
   useGetNewReview: () => {
-    return useQuery(["reviewnew"], async () => {
-      const { data } = await instance.get<IGetNewReview>(`/reviews`);
+    return useQuery<IGetNewReview>(["reviewnew"], async () => {
+      const { data } = await instance.get(`/reviews`);
       return data;
     });
   },
@@ -182,8 +182,8 @@ export const useGetApi = {
 
   // ** 캠핑장 리뷰 조회 / get ** //
   useGetCampReview: (campId: string | undefined) => {
-    return useQuery(["reviewinfo"], async () => {
-      const { data } = await instance.get<IGetCampReview>(`/reviews/${campId}`);
+    return useQuery<IGetCampReview>(["reviewinfo", campId], async () => {
+      const { data } = await instance.get(`/reviews/${campId}`);
 
       return data;
     });
@@ -203,8 +203,8 @@ export const useGetApi = {
   /* topic 별 캠핑장 결과 조회 */
   useGetTopicResult: () => {
     const params = 2;
-    return useQuery(["topicResult"], async () => {
-      const { data } = await instance.get<pickedCamp[]>(
+    return useQuery<pickedCamp[]>(["topicResult"], async () => {
+      const { data } = await instance.get(
         `/camps/${params}?numOfRows=20&pageNo=1`
       );
 
@@ -215,8 +215,8 @@ export const useGetApi = {
   // ** LOOK, PICK, REVIEW ** //
   useGetSort: () => {
     return useQuery(["topicSort"], async () => {
-      const { data } = await instance.get<IMostList>(`/camps/sort`);
-      console.log("mostList", data);
+      const { data } = await instance.get(`/camps/sort`);
+      console.log("mostList", data.MostList[0].look);
       return data;
     });
   },

@@ -25,9 +25,7 @@ function Ddetail() {
 
   const { campId } = useParams();
 
-  const detailItem: any = useGetApi.useGetCampDetail(campId)?.data;
-
-  const checkItem = detailItem?.[0];
+  const detailItem: any = useGetApi.useGetCampDetail(campId)?.data?.[0];
 
   return (
     <Wrapper>
@@ -39,14 +37,14 @@ function Ddetail() {
         <CampTitle>캠핑장 정보</CampTitle>
         <InfoBasic>
           <Basic>
-            <li>환경 : {checkItem?.featureNm}</li>
-            <li>유형 : {checkItem?.induty}</li>
-            <li>운영기간 : {checkItem?.operPdCl}</li>
-            <li>운영일 : {checkItem?.operDeCl} </li>
+            <li>환경 : {detailItem?.featureNm}</li>
+            <li>유형 : {detailItem?.induty}</li>
+            <li>운영기간 : {detailItem?.operPdCl}</li>
+            <li>운영일 : {detailItem?.operDeCl} </li>
           </Basic>
         </InfoBasic>
         <HomeTitle>홈페이지 주소</HomeTitle>
-        <HomeInfo>{checkItem?.homePage}</HomeInfo>
+        <HomeInfo>{detailItem?.homePage}</HomeInfo>
 
         <IntroTitle>한줄소개</IntroTitle>
         <IntroDuce>정보가 없습니다.</IntroDuce>
@@ -56,14 +54,15 @@ function Ddetail() {
         <FcInfoTitle>편의시설/주변 정보</FcInfoTitle>
         <FclDetail>편의시설 상세</FclDetail>
         <FclInfo>
-          화장실 {checkItem?.toiletCo}개, 개수대 {checkItem?.wtrplCo}개 , 샤워실
-          {checkItem?.swrmCo}개
+          화장실 {detailItem?.toiletCo}개, 개수대 {detailItem?.wtrplCo}개 ,
+          샤워실
+          {detailItem?.swrmCo}개
         </FclInfo>
         <ThemEnv>테마환경</ThemEnv>
-        <Theminfo>{checkItem?.themaEnvrnCl}</Theminfo>
+        <Theminfo>{detailItem?.themaEnvrnCl}</Theminfo>
 
         <NearTitle>주변 이용 시설</NearTitle>
-        <NearInfo>{checkItem?.posblFcltyCl}</NearInfo>
+        <NearInfo>{detailItem?.posblFcltyCl}</NearInfo>
         <AdTitle>체험 프로그램</AdTitle>
         <Adven>이용 가능한 체험프로그램이 없습니다.</Adven>
         <MidLane></MidLane>

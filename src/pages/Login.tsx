@@ -56,6 +56,11 @@ function Login() {
     window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}&response_type=code`;
   };
 
+  const GoogleLogin = async () => {
+    window.location.href = `
+https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.REACT_APP_GOOGLE_CLIENT_ID}&response_type=token&redirect_uri=${process.env.REACT_APP_GOOGLE_REDIRECT_URI}&scope=email+profile`;
+  };
+
   return (
     <LoginWrap>
       <Toast>
@@ -127,7 +132,7 @@ function Login() {
           <KakaoBtn onClick={KaKaoLogin}>
             <img src="/images/kakaoCircle.svg" alt="kakaoLogin" />
           </KakaoBtn>
-          <GoogleBtn>
+          <GoogleBtn onClick={GoogleLogin}>
             <img src="/images/GoogleCircle.svg" alt="GoogleLogin" />
           </GoogleBtn>
         </SocialBtnBox>

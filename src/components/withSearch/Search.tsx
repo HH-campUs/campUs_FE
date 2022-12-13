@@ -17,18 +17,20 @@ import {
   StrMonth,
   StrYear,
 } from "../../store/dateAtom";
+import { isToast, isToast2 } from "../../store/toastAtom";
 import { selectLo, showLo } from "../../store/locationAtom";
 import { isModal, textValue } from "../../store/searchAtom";
 import { Link, useNavigate } from "react-router-dom";
-import styled, { keyframes, css } from "styled-components";
+import styled, { keyframes } from "styled-components";
 import Datepicker from "./Datepicker";
 import Location from "./Location";
 import { isProps, searchData } from "../../interfaces/inSearch";
-import { InfoToast } from "../Toast/Toast";
+import { ResetToast, SearchToast } from "../Toast/Toast";
 
 function Search() {
   /* toast boolean */
-  const [toastState, setToastState] = useState(false);
+  const [toastState3, setToastState3] = useState(false);
+  const [toastState4, setToastState4] = useState(false);
 
   /* search Modal 여닫는 boolean */
   const [isSearch, setIsSearch] = useRecoilState(isModal);
@@ -71,18 +73,28 @@ function Search() {
     setLocationValue("");
     setSendLocation("");
     setStartDate(new Date());
+    setToastState4(true);
   };
 
   return (
     <>
       <Container>
-        {toastState == true ? (
-          <InfoToast
+        {toastState3 == true ? (
+          <SearchToast
             text={"검색어가 부족해요."}
-            toastState={toastState}
-            setToastState={setToastState}
+            toastState3={toastState3}
+            setToastState3={setToastState3}
           />
         ) : null}
+
+        {toastState4 == true ? (
+          <ResetToast
+            text={"검색조건들이 초기화됬어요."}
+            toastState4={toastState4}
+            setToastState4={setToastState4}
+          />
+        ) : null}
+
         <ModalBg isSearch={isSearch} onClick={closeModal} />
         {/* 모달창 밖 blur background 토글 기능 부여 (event bubbling 해결) */}
         <SearchModal isSearch={isSearch} className="isSearch">
@@ -131,7 +143,7 @@ function Search() {
             {inputValue == "" && sendLocation == "" ? (
               <DisabledBtn
                 onClick={() => {
-                  setToastState(true);
+                  setToastState3(true);
                 }}>
                 검색하기
               </DisabledBtn>

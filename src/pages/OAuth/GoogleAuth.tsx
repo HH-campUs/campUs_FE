@@ -4,36 +4,33 @@ import React, { useEffect } from "react";
 import { setAccessToken, setRefreshToken } from "../../instance/cookies";
 import { instance } from "../../instance/instance";
 
-function KakaoLogin() {
-  const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
-  const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URI;
+function GoogleAuth() {
+  const CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+  const REDIRECT_URI = process.env.REACT_APP_GOOGLE_REDIRECT_URI;
+  const SECRET_KEY = process.env.REACT_APP_GOOGLE_SECRET_KEY;
 
-  const code = new URL(window.location.href).searchParams.get("code");
-  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${process.env.REACT_APP_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}&code=${code}`;
-  console.log(code);
+  /* const parsedHash = new URLSearchParams(window.location.hash.substring(1));
+  const accessToken = parsedHash.get("access_token"); */
+
+  //const GOOGLE_AUTH_URL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&response_type=token&redirect_uri=${REDIRECT_URI}&scope=email+profile`;
+  //console.log(accessToken);
+
+  const parsedHash = new URLSearchParams(window.location.hash.substring(1));
+  const Token = parsedHash.get("access_token");
 
   useEffect(() => {
     (async () => {
       try {
-        const kakaoResult = await axios.post(KAKAO_AUTH_URL, {
-          headers: {
-            "Content-type": "application/x-www-form-urlencoded;charset=utf-8",
-          },
-        });
-        if (kakaoResult.status !== 200) console.log("연결실패");
-        if (kakaoResult.status == 200) {
-        }
-        const token = kakaoResult.data.access_token;
         const response = await axios.post(
-          process.env.REACT_APP_API + "/kakao",
-          kakaoResult.data,
+          process.env.REACT_APP_API + "/google",
+          Token,
           {
             headers: {
-              Authorization: token,
+              Authorization: Token,
             },
           }
         );
-        console.log(token, kakaoResult.data);
+        console.log(Token);
         const {
           status,
           data: { accessToken, refreshToken },
@@ -50,15 +47,16 @@ function KakaoLogin() {
           return window.location.replace(`/`);
         } else {
           console.log(accessToken, refreshToken);
+          /*  return window.location.replace("/"); */
         }
       } catch (e) {
         console.error(e);
         /* window.location.replace("/"); */
       }
     })();
-  }, [code]);
+  }, [Token]);
 
   return <div></div>;
 }
 
-export default KakaoLogin;
+export default GoogleAuth;

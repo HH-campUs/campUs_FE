@@ -42,12 +42,18 @@ export default function MyPlan() {
     const planDay = new Date(
       date.slice(0, 4) + "-" + date.slice(4, 6) + "-" + date.slice(6, 8)
     );
+
     const today = new Date();
+    const gap = planDay.getTime() - today.getTime();
+    const result = Math.floor(gap / (1000 * 60 * 60 * 24) + 1);
+
+    console.log(result, typeof result);
+    return result;
   };
 
   return (
     <>
-      {isPlan == false ? null : (
+     {isPlan == false ? null : (
         <PlanUpdate isPlan={isPlan} setIsPlan={setIsPlan} />
       )}
       <TotalContainer>
@@ -68,11 +74,17 @@ export default function MyPlan() {
           {isLogin ? (
             <>
               {onOff == false ? (
-                <Container>
+                <>
                   {Trips?.map((trip: IGetTravelPlan) => (
                     <PlanBox key={trip.Camp?.tripId}>
-                      <img src={trip.Camp?.ImageUrl} alt="img" />
-                      <Dday>D-{trip.date.slice(6, 8)}</Dday>
+                      <img
+                        src={trip.Camp?.ImageUrl}
+                        alt="img"
+                        onClick={() => {
+                          navigate(`/detail/${trip.Camp?.campId}/detail`);
+                        }}
+                      />
+                      <Dday>D - {DdayCalculator(trip.date)}</Dday>
                       <div className="infoBox">
                         <span>{trip.Camp?.address}</span>
                         <span>{trip.Camp?.campName}</span>
@@ -81,35 +93,53 @@ export default function MyPlan() {
                           {trip.date.slice(2, 4)}.{trip.date.slice(4, 6)}.
                           {trip.date.slice(6, 8)}
                         </span>
-                        <Memo></Memo>
+                        <Memo>{trip.memo}</Memo>
                       </div>
 
                       <Kebop tripId={trip.tripId} setIsPlan={setIsPlan} />
                     </PlanBox>
                   ))}
-                </Container>
-              ) : null}
+                </>
+              ) : (
+                <>
+                  {" "}
+                  {Trips?.map((trip: IGetTravelPlan) => (
+                    <PlanBox key={trip.Camp?.tripId}>
+                      <img src={trip.Camp?.ImageUrl} alt="img" />
+
+                      <div className="infoBox">
+                        <span>{trip.Camp?.address}</span>
+                        <span>{trip.Camp?.campName}</span>
+                        <span>떠나는 날짜</span>
+                        <span>
+                          {trip.date.slice(2, 4)}.{trip.date.slice(4, 6)}.
+                          {trip.date.slice(6, 8)}
+                        </span>
+                        <Memo>{trip.memo}</Memo>
+                      </div>
+
+                      <Kebop tripId={trip.tripId} setIsPlan={setIsPlan} />
+                    </PlanBox>
+                  ))}{" "}
+                </>
+              )}
             </>
           ) : (
             <>
               <NotiBox>
                 <div>
-                  <img src="/images/mypage/newplan.svg" alt="tent" />
+                  <img src="/images/mypage/myplan.svg" alt="tent" />
                 </div>
                 <PickText>아직 저장한 여행이 없어요!</PickText>
                 <PickBtn
                   onClick={() => {
                     navigate("/topic/1");
-                  }}
-                >
+                  }}>
                   가장 가까운 캠핑장 구경가기
                 </PickBtn>
               </NotiBox>
             </>
           )}
-          <FloatingBtn>
-            <img src="/images/travelplan/plusbtn.svg" />
-          </FloatingBtn>
         </Wrapper>
       </TotalContainer>
     </>
@@ -259,6 +289,7 @@ const PlanBox = styled.div`
         width: auto;
         height: ${(props) => props.theme.pixelToRem(14)};
         margin-top: 12px;
+        margin-bottom: 3px;
         ${(props) => props.theme.fontTheme.Caption4};
         color: ${(props) => props.theme.colorTheme.text2};
         line-height: normal;
@@ -281,7 +312,7 @@ const Dday = styled.div`
   height: ${(props) => props.theme.pixelToRem(26)};
   flex-grow: 0;
   margin: 10px 0px 0 25px;
-  padding: 2px 11.2px;
+  padding: 3px 15px;
   border-radius: 17px;
   border: solid 2px #fff;
   background-color: #024873;
@@ -298,8 +329,7 @@ const Dday = styled.div`
 const Memo = styled.div`
   width: ${(props) => props.theme.pixelToRem(198)};
   height: ${(props) => props.theme.pixelToRem(32)};
-  top: 75%;
-  margin: 4px 0;
+  margin: 94px 0 0 0;
   font-family: Pretendard;
   ${(props) => props.theme.fontTheme.Caption4};
   line-height: 1.33;

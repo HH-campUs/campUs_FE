@@ -6,39 +6,31 @@ import { instance } from "../../instance/instance";
 
 function GoogleAuth() {
   const CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+  const REDIRECT_URI = process.env.REACT_APP_GOOGLE_REDIRECT_URI;
   const SECRET_KEY = process.env.REACT_APP_GOOGLE_SECRET_KEY;
 
+  /* const parsedHash = new URLSearchParams(window.location.hash.substring(1));
+  const accessToken = parsedHash.get("access_token"); */
+
+  //const GOOGLE_AUTH_URL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&response_type=token&redirect_uri=${REDIRECT_URI}&scope=email+profile`;
+  //console.log(accessToken);
+
   const parsedHash = new URLSearchParams(window.location.hash.substring(1));
-  const accessToken = parsedHash.get("access_token");
-
-  /*  const { data } = await Api.post("oauth/google", { accessToken }); */
-
-  const code = new URL(window.location.href).searchParams.get("code");
-  const GOOGLE_AUTH_URL = `https://accounts.google.com/o/oauth2/v2/auth?scope=profile&response_type=code&state=security_token%3D138r5719ru3e1%26url%3Dhttps%3A%2F%2Foauth2.example.com%2Ftoken&redirect_uri=${"http://localhost:3000/google/callback"}&client_id=${"495084276046-fm2mkolqihqio0iv1al1i6ddbqg4t6dg.apps.googleusercontent.com"}`;
-  console.log(code);
+  const Token = parsedHash.get("access_token");
 
   useEffect(() => {
     (async () => {
       try {
-        const googleResult = await axios.post(GOOGLE_AUTH_URL, {
-          headers: {
-            "Content-type": "application/x-www-form-urlencoded;charset=utf-8",
-          },
-        });
-        if (googleResult.status !== 200) console.log("연결실패");
-        if (googleResult.status == 200) {
-        }
-        const token = googleResult.data.access_token;
         const response = await axios.post(
           process.env.REACT_APP_API + "/google",
-          googleResult.data,
+          Token,
           {
             headers: {
-              Authorization: token,
+              Authorization: Token,
             },
           }
         );
-        console.log(token, googleResult.data);
+        console.log(Token);
         const {
           status,
           data: { accessToken, refreshToken },
@@ -62,7 +54,7 @@ function GoogleAuth() {
         /* window.location.replace("/"); */
       }
     })();
-  }, [code]);
+  }, [Token]);
 
   return <div></div>;
 }

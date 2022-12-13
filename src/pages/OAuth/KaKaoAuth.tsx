@@ -50,7 +50,6 @@ function KakaoLogin() {
           return window.location.replace(`/`);
         } else {
           console.log(accessToken, refreshToken);
-          /*  return window.location.replace("/"); */
         }
       } catch (e) {
         console.error(e);

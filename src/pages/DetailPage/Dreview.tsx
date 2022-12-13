@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useGetApi } from "../../APIs/getApi";
 
@@ -6,38 +6,27 @@ import { IGetCampReview } from "../../interfaces/get";
 
 function Dreview() {
   const navigate = useNavigate();
-  const loca = useLocation();
-  const state = loca.state as { campId: number };
+  // const loca = useLocation();
+  // const state = loca.state as { campId: number };
 
-  const detailItem = useGetApi?.useGetCampDetail(state.campId).data;
-  const checkItem = detailItem?.detailCamp?.[0];
+  const { campId } = useParams();
 
-  //1. 타입 옵셔널 체이닝 확인
-  //2. 쿼리문의 타입 확인
-  //3. undefiend = !로 해결
+  const detailItem = useGetApi?.useGetCampDetail(campId).data?.[0];
 
-  /* 문제 해결 중 */
+  /* 문제 해결 중 리뷰카운트 새로고침해야적용됨*/
 
-  const reviewItem = useGetApi?.useGetCampReview(state.campId);
-  const reviewMap = reviewItem?.data?.data || [];
+  const reviewItem = useGetApi?.useGetCampReview(campId).data?.data || [];
 
   return (
     <Wrapper>
       <ReviewBox>
         <ReviewText>전체리뷰</ReviewText>
-        <ReviewNum>{checkItem?.reviewCount}</ReviewNum>
-        <ReviewIcon
-          onClick={() =>
-            navigate(`/review/${state.campId}/`, {
-              state: {
-                campId: `${state.campId}`,
-              },
-            })
-          }>
+        <ReviewNum>{detailItem?.reviewCount}</ReviewNum>
+        <ReviewIcon onClick={() => navigate(`/review/${campId}/`)}>
           <img src="/images/mypage/reviewwrite.svg" />
         </ReviewIcon>
       </ReviewBox>
-      {reviewMap?.map((item: IGetCampReview, i: number) => (
+      {reviewItem?.map((item: IGetCampReview, i: number) => (
         <ReviewMap key={i}>
           <PfBox>
             <PfImg>
@@ -67,9 +56,11 @@ function Dreview() {
             {item?.reviewImg
               .toString()
               .split(",")
-              .map((image: string, i: number) => (
+              .map((image: string, campId: number) => (
                 <ImgBox>
-                  <img src={image} alt="reviewImg" key={i} />
+                  {item?.reviewImg ? (
+                    <img src={image} alt="reviewImg" key={campId} />
+                  ) : null}
                 </ImgBox>
               ))}
           </ImgFlex>
@@ -98,7 +89,7 @@ const ReviewBox = styled.div`
 
 const ReviewText = styled.div`
   margin-left: ${(props) => props.theme.pixelToRem(20)};
-  font-size: ${(props) => props.theme.pixelToRem(14)};
+  font-size: ${(props) => props.theme.pixelToRem(18)};
 `;
 
 const ReviewNum = styled.div`

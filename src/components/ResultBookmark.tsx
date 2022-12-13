@@ -21,14 +21,12 @@ export default function ResultBookmark({ camp }: { camp: IGetCampResult }) {
     campick.mutate(campId);
     if (!isLogin) return setToastState(true);
     else {
-      /* window.alert("찜하기 완료"); */
       setToastState(true);
     }
   };
 
   const unpick = (campId: number) => {
     campick.mutate(campId);
-    /* window.alert("찜하기 취소"); */
     setToastState2(true);
   };
 
@@ -43,7 +41,8 @@ export default function ResultBookmark({ camp }: { camp: IGetCampResult }) {
             onClick={(e) => {
               e.stopPropagation();
               unpick(camp.campId);
-            }}>
+            }}
+          >
             <img
               src="/images/picked2.svg"
               alt="Bookmarked"
@@ -57,7 +56,8 @@ export default function ResultBookmark({ camp }: { camp: IGetCampResult }) {
             onClick={(e) => {
               e.stopPropagation();
               pick(camp.campId);
-            }}>
+            }}
+          >
             <img
               src="/images/pick1.svg"
               alt="Bookmark"

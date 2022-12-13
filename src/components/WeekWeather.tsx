@@ -45,7 +45,9 @@ export default function Subject() {
       <WeatherModal>
         <WeatherModal>
           <img src="/images/mainSunRain.svg" alt="weather" />
-          <ContentText>이번주 날씨 가장 좋은 곳 어디지? </ContentText>
+          <ContentText onClick={isModal}>
+            이번주 날씨 가장 좋은 곳 어디지?{" "}
+          </ContentText>
           <KeyboardArrowRightIcon
             sx={{ color: "white", cursor: "pointer" }}
             onClick={isModal}
@@ -202,7 +204,8 @@ const slideIn = keyframes`
 
 const ContentText = styled.div`
   margin-left: 10px;
-  color: whitesmoke;
+  color: #ffffff;
+  cursor: pointer;
 `;
 
 const Wrapper = styled.div`
@@ -513,11 +516,11 @@ const GoCampBtn = styled(Link)`
   color: white;
   background-color: #024873;
   cursor: pointer;
-  
-  div{
-    font-size:font-size: ${(props) => props.theme.pixelToRem(16)} ;
+
+  div {
+    font-size: ${(props) => props.theme.pixelToRem(16)};
     color: #fff;
     text-align: center;
     margin: 0 auto;
   }
-  `;
+`;

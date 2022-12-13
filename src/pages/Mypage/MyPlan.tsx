@@ -41,11 +41,13 @@ export default function MyPlan() {
   const DdayCalculator = (date: string) => {
     const planDay = new Date(
       date.slice(0, 4) + "-" + date.slice(4, 6) + "-" + date.slice(6, 8)
-    ).getDate();
-    const today = new Date().getDate();
-    const result = planDay - today;
+    );
 
-    console.log(result, new Date());
+    const today = new Date();
+    const gap = planDay.getTime() - today.getTime();
+    const result = Math.floor(gap / (1000 * 60 * 60 * 24) + 1);
+
+    console.log(result, typeof result);
     return result;
   };
 
@@ -74,8 +76,15 @@ export default function MyPlan() {
               {onOff == false ? (
                 <>
                   {Trips?.map((trip: IGetTravelPlan) => (
+                    /* {DdayCalculator(trip.date) > -1 ? :} */
                     <PlanBox key={trip.Camp?.tripId}>
-                      <img src={trip.Camp?.ImageUrl} alt="img" />
+                      <img
+                        src={trip.Camp?.ImageUrl}
+                        alt="img"
+                        onClick={() => {
+                          navigate(`/detail/${trip.Camp?.campId}/detail`);
+                        }}
+                      />
                       <Dday>D - {DdayCalculator(trip.date)}</Dday>
                       <div className="infoBox">
                         <span>{trip.Camp?.address}</span>
@@ -85,7 +94,7 @@ export default function MyPlan() {
                           {trip.date.slice(2, 4)}.{trip.date.slice(4, 6)}.
                           {trip.date.slice(6, 8)}
                         </span>
-                        <Memo></Memo>
+                        <Memo>{trip.memo}</Memo>
                       </div>
 
                       <Kebop tripId={trip.tripId} setIsPlan={setIsPlan} />
@@ -107,7 +116,7 @@ export default function MyPlan() {
                           {trip.date.slice(2, 4)}.{trip.date.slice(4, 6)}.
                           {trip.date.slice(6, 8)}
                         </span>
-                        <Memo></Memo>
+                        <Memo>{trip.memo}</Memo>
                       </div>
 
                       <Kebop tripId={trip.tripId} setIsPlan={setIsPlan} />
@@ -267,6 +276,7 @@ const PlanBox = styled.div`
         width: auto;
         height: ${(props) => props.theme.pixelToRem(14)};
         margin-top: 12px;
+        margin-bottom: 3px;
         ${(props) => props.theme.fontTheme.Caption4};
         color: ${(props) => props.theme.colorTheme.text2};
         line-height: normal;
@@ -289,7 +299,7 @@ const Dday = styled.div`
   height: ${(props) => props.theme.pixelToRem(26)};
   flex-grow: 0;
   margin: 10px 0px 0 25px;
-  padding: 3px 16px;
+  padding: 3px 15px;
   border-radius: 17px;
   border: solid 2px #fff;
   background-color: #024873;
@@ -306,8 +316,7 @@ const Dday = styled.div`
 const Memo = styled.div`
   width: ${(props) => props.theme.pixelToRem(198)};
   height: ${(props) => props.theme.pixelToRem(32)};
-  top: 75%;
-  margin: 4px 0;
+  margin: 94px 0 0 0;
   font-family: Pretendard;
   ${(props) => props.theme.fontTheme.Caption4};
   line-height: 1.33;

@@ -76,7 +76,7 @@ const SplashLogo = styled.div`
 `;
 const SpanBottom = styled.div`
   top: 86%;
-  left: 33%;
+  left: 32%;
   font-size: ${(props) => props.theme.pixelToRem(13)};
   font-weight: regular;
   font-stretch: normal;

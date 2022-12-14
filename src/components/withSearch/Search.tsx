@@ -389,7 +389,7 @@ const BtnContainer = styled.button<{ isSearch: boolean }>`
   background: transparent;
   border: none;
   justify-content: space-between;
-  position: fixed;
+  position: absolute;
   display: flex;
   animation: ${(props) => (props.isSearch == false ? slideOut : slideIn)};
 `;

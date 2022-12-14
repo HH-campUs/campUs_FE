@@ -67,12 +67,14 @@ export const usePostsApi = {
 
   /* 여행일정수정/ put */
   useUpdateTravelPlan: () => {
-    return useMutation((payload: IPostTravelPlan) =>
-      instance.put(`/camps/${payload}`, {
+    return useMutation(async (payload: IPostTravelPlan) => {
+      console.log(payload);
+      const { data } = await instance.put(`/camps/${payload.tripId}/`, {
         date: payload.date,
         memo: payload.memo,
-      })
-    );
+      });
+      return data;
+    });
   },
 
   // ** 캠핑장 찜하기 , payload값없이 header로 access/refresh토큰만보내면됨 / POST ** /

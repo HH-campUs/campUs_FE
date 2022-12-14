@@ -20,7 +20,7 @@ export default function Carousel() {
   const campReview = useGetApi.useGetSort()?.data?.MostList?.[1]?.review || [];
   const campPick = useGetApi.useGetSort()?.data?.MostList?.[2]?.pick || [];
 
-  const { ref, width, height } = useCarouselSize();
+  /* const { ref, width, height } = useCarouselSize(); */
 
   const inrange = (v: number, min: number, max: number) => {
     if (v < min) return min;
@@ -32,25 +32,27 @@ export default function Carousel() {
     navigate(`/detail/${campId}/detail`);
   };
 
+  const SLIDER_WIDTH = 400;
+  const SLIDER_HEIGHT = 400;
+
   return (
     <>
       <CarouselViewer
-        ref={ref}
-        className="w-full max-w-lg"
+        /* ref={ref} */
+
         style={{
-          height,
+          /* height, */
           overflow: hide ? "hidden" : "visible",
-        }}
-      >
+        }}>
         <CarouselSlider
           className="flex"
           style={{
-            transform: `translateX(${-currentIndex * width + transX}px)`,
+            transform: `translateX(${-currentIndex * SLIDER_WIDTH + transX}px)`,
             transition: `transform ${transX ? 0 : 300}ms ease-in-out 0s`,
           }}
           {...registDragEvent({
             onDragChange: (deltaX) => {
-              setTransX(inrange(deltaX, -width, width));
+              setTransX(inrange(deltaX, -SLIDER_WIDTH, SLIDER_WIDTH));
             },
             onDragEnd: (deltaX) => {
               const maxIndex = imageList.length - 1;
@@ -62,8 +64,7 @@ export default function Carousel() {
 
               setTransX(0);
             },
-          })}
-        >
+          })}>
           <CarouselSlide>
             <Outline>
               <ImgCover onClick={handleClick(campLook?.campId)} />
@@ -72,7 +73,7 @@ export default function Carousel() {
                 draggable={false}
                 src={campLook?.ImageUrl}
                 alt="img"
-                width={width}
+                width={SLIDER_WIDTH}
               />
               <CrTextBox>
                 <CampName>{campLook?.campName}</CampName>
@@ -89,7 +90,7 @@ export default function Carousel() {
                 draggable={false}
                 src={campReview?.ImageUrl}
                 alt="img"
-                width={width}
+                width={SLIDER_WIDTH}
               />
               <CrTextBox>
                 <CampName>{campReview?.campName}</CampName>
@@ -106,7 +107,7 @@ export default function Carousel() {
                 draggable={false}
                 src={campPick?.ImageUrl}
                 alt="img"
-                width={width}
+                width={SLIDER_WIDTH}
               />
               <CrTextBox>
                 <CampName>{campPick?.campName}</CampName>

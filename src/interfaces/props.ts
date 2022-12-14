@@ -23,6 +23,7 @@ export interface planOpenProps {
   toastState?: boolean;
   setToastState?: React.Dispatch<React.SetStateAction<boolean>>;
   campId?: number | string;
+  tripId?: number | string;
 }
 
 export interface ToastProps {

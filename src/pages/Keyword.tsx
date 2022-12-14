@@ -90,8 +90,7 @@ function Keyword() {
           <div
             onClick={() => {
               nav("/");
-            }}
-          >
+            }}>
             <div style={{ position: "relative" }}>
               <img src="/images/back.svg" alt="back" />
               <span style={{ width: "60px" }}>검색조건</span>
@@ -142,22 +141,19 @@ function Keyword() {
               {sortState == "lookUp" ? (
                 <span
                   className="popular"
-                  onClick={() => setSortState("pickCount")}
-                >
+                  onClick={() => setSortState("pickCount")}>
                   조회순
                 </span>
               ) : sortState == "pickCount" ? (
                 <span
                   className="popular"
-                  onClick={() => setSortState("reviewCount")}
-                >
+                  onClick={() => setSortState("reviewCount")}>
                   인기순
                 </span>
               ) : (
                 <span
                   className="popular"
-                  onClick={() => setSortState("lookUp")}
-                >
+                  onClick={() => setSortState("lookUp")}>
                   리뷰순
                 </span>
               )}
@@ -175,8 +171,7 @@ function Keyword() {
                             campId: `${item.campId}`,
                           },
                         })
-                      }
-                    >
+                      }>
                       <ResultImg src={item.ImageUrl} alt={item.ImageUrl} />
                       <InnerBg>
                         <span>
@@ -421,18 +416,18 @@ const BookmarkBorderIcon = styled.div`
 `;
 
 const InnerBg = styled.div`
-  width: ${(props) => props.theme.pixelToRem(90)};
+  width: 80px;
   height: ${(props) => props.theme.pixelToRem(24)};
+  padding: 2px;
   margin-top: -34px;
-  margin-left: 230px;
+  left: 73%;
   border-radius: 4px;
-  background-color: #0000005e;
+  background-color: #000000;
   position: relative;
 
   span {
     margin-top: 3px;
     margin-left: 6px;
-    font-family: Pretendard;
     font-size: 12px;
     font-weight: 500;
     font-stretch: normal;

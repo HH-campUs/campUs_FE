@@ -26,7 +26,7 @@ const FloatingBtn = styled.button`
   /* justify-content: center; */
   /* align-items: center; */
   cursor: pointer;
-  z-index: 10;
+  z-index: 1;
   border: 1px solid #eee;
 `;
 

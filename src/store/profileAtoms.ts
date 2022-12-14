@@ -9,3 +9,8 @@ export const profileState = atom<IEditProfile>({
     nickname: "",
   },
 });
+
+export const updateState = atom<boolean>({
+  key: "editProfile",
+  default: false,
+});

@@ -76,7 +76,7 @@ const SplashLogo = styled.div`
 `;
 const SpanBottom = styled.div`
   top: 86%;
-  left: 34%;
+  left: 33%;
   font-size: ${(props) => props.theme.pixelToRem(13)};
   font-weight: regular;
   font-stretch: normal;
@@ -99,6 +99,7 @@ const Root = styled.div`
   position: relative;
   overflow: hidden;
   overflow-y: scroll;
+  background-color: #e2e7eb;
   touch-action: none;
   -ms-overflow-style: none;
   z-index: 100;
@@ -118,10 +119,9 @@ const Root = styled.div`
 `;
 //left
 const LeftTemplate = styled.div`
-  width: 475px;
+  width: ${(props) => props.theme.pixelToRem(475)};
   min-height: 650px;
   border: soild 1px black;
-  background-color: white;
 
   @media screen and (max-width: 915px) {
     display: none;

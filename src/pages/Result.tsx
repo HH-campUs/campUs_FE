@@ -96,8 +96,7 @@ function Result() {
           <div
             onClick={() => {
               nav("/");
-            }}
-          >
+            }}>
             <div style={{ position: "relative" }}>
               <img src="/images/back.svg" alt="back" />
               <span style={{ width: "60px" }}>검색조건</span>
@@ -116,8 +115,7 @@ function Result() {
           <WeatherModal
             isWeather={isWeather}
             onClick={WeatherHandler}
-            style={{ transition: "all 0.5 ease-in-out" }}
-          >
+            style={{ transition: "all 0.5 ease-in-out" }}>
             <div className="top">
               <span>날씨</span>
               <span>{isWeather ? "접기" : "펼치기"}</span>
@@ -358,22 +356,19 @@ function Result() {
               {sortState == "lookUp" ? (
                 <span
                   className="popular"
-                  onClick={() => setSortState("pickCount")}
-                >
+                  onClick={() => setSortState("pickCount")}>
                   조회순
                 </span>
               ) : sortState == "pickCount" ? (
                 <span
                   className="popular"
-                  onClick={() => setSortState("reviewCount")}
-                >
+                  onClick={() => setSortState("reviewCount")}>
                   인기순
                 </span>
               ) : (
                 <span
                   className="popular"
-                  onClick={() => setSortState("lookUp")}
-                >
+                  onClick={() => setSortState("lookUp")}>
                   리뷰순
                 </span>
               )}
@@ -386,8 +381,7 @@ function Result() {
                 {page?.camps.regionCamp.map((item: IGetCampResult) => (
                   <ResultBox key={item.campId}>
                     <ResultItem
-                      onClick={() => nav(`/detail/${item.campId}/detail`)}
-                    >
+                      onClick={() => nav(`/detail/${item.campId}/detail`)}>
                       <ResultBookmark camp={item} />
                       <ResultImg src={item.ImageUrl} alt={item.ImageUrl} />
                       <InnerBg>
@@ -425,8 +419,7 @@ function Result() {
                     width: "inherit",
                     height: "auto",
                     bottom: "20",
-                  }}
-                ></div>
+                  }}></div>
               </React.Fragment>
             ))
           ) : (
@@ -435,8 +428,7 @@ function Result() {
         </ResultContainer>
         <div
           ref={ref}
-          style={{ width: "inherit", height: "auto", bottom: "20" }}
-        ></div>
+          style={{ width: "inherit", height: "auto", bottom: "20" }}></div>
         <Up />
       </Wrapper>
     </>
@@ -569,19 +561,19 @@ const WeatherModal = styled.div<{ isWeather: boolean }>`
 
       .temBox {
         padding-right: 8px;
+        position: relative;
 
         .lowHigh {
           width: ${(props) => props.theme.pixelToRem(20)};
           height: ${(props) => props.theme.pixelToRem(34)};
           margin-top: 8px;
-          margin-left: 78px;
+          margin-left: 42%;
           flex-direction: row;
           position: absolute;
 
           p:nth-child(1) {
             display: inline;
             position: absolute;
-
             ${(props) => props.theme.fontTheme.Caption2};
             color: ${(props) => props.theme.colorTheme.cold};
           }
@@ -984,7 +976,7 @@ const InnerBg = styled.div`
   height: ${(props) => props.theme.pixelToRem(24)};
   padding: 2px;
   margin-top: -34px;
-  margin-left: 246px;
+  left: 73%;
   border-radius: 4px;
   background-color: #000000;
   position: relative;

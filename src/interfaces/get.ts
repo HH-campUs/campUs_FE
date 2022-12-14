@@ -3,7 +3,24 @@ export interface IGetCampCatInfo {
 }
 
 export interface IGetTravelPlan {
-  campId: number;
+  campId?: number;
+  tripId: number;
+  Camp?: IGetTravelPlan;
+  ImageUrl: string;
+  address?: string;
+  campName?: string;
+  dDay?: number;
+  date: string;
+  trip: IGetMainTrip[];
+  myTrip: IGetTravelPlan[];
+}
+
+export interface IGetMainTrip {
+  ImageUrl: string;
+  address: string;
+  campName: string;
+  dDay: number;
+  date: string;
   tripId: number;
 }
 

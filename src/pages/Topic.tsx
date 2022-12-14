@@ -125,8 +125,7 @@ function Topic() {
                   <ResultBox key={item.campId}>
                     <TopicBookmark Camp={item} />
                     <ResultItem
-                      onClick={() => navigate(`/detail/${item.campId}/detail`)}
-                    >
+                      onClick={() => navigate(`/detail/${item.campId}/detail`)}>
                       <CampImg>
                         <img src={item.ImageUrl} alt={item.campName} />
                         <ReviewInfo>

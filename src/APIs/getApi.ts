@@ -156,6 +156,28 @@ export const useRecommendWeather = () => {
   return { RecommendData, isLoading, isError };
 };
 
+export const useGetTravelPlan2 = () => {
+  const useData = async () => {
+    const { data } = await instance.get<IGetTravelPlan>("/trip");
+    return data;
+  };
+
+  const {
+    data: myTrip,
+    isLoading,
+    isError,
+  } = useQuery(["myTrip"], useData, {
+    onError: (err) => {
+      console.error(err);
+    },
+
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+  });
+
+  return { myTrip, isLoading, isError };
+};
+
 /* 정보 get Api 모음 */
 
 export const useGetApi = {
@@ -231,12 +253,11 @@ export const useGetApi = {
       return data;
     });
   },
-
   /* 여행일정 조회 */
   useGetTravelPlan2: () => {
     return useQuery(["travelplan2"], async () => {
-      const { data } = await instance.get<IGetTravelPlan>(`/camps`);
-
+      const { data } = await instance.get<IGetTravelPlan>(`/trip`);
+      console.log(data);
       return data;
     });
   },

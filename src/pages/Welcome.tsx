@@ -36,7 +36,6 @@ export default Welcome;
 const Wrapper = styled.div`
   width: 100%;
   min-width: ${(props) => props.theme.pixelToRem(375)};
-  height: calc(100vh - 3rem);
   overflow-x: hidden;
   flex-direction: column;
 `;
@@ -45,7 +44,7 @@ const Circle = styled.div`
   width: ${(props) => props.theme.pixelToRem(64)};
   height: ${(props) => props.theme.pixelToRem(64)};
   border-radius: 35px;
-  margin: 180px auto 0;
+  margin: 160px auto 0;
   padding: 26px 18px 20px;
   background-color: #adc2ce;
   position: relative;
@@ -79,7 +78,6 @@ const Welcomee = styled.div`
     letter-spacing: normal;
     text-align: center;
     color: #666;
-    position: absolute;
   }
 `;
 
@@ -123,7 +121,7 @@ const Sub = styled.span`
 `;
 
 const MainBtn = styled.button`
-  margin: 80px auto 0;
+  margin: 40px auto 10px;
   width: 327px;
   height: 60px;
   display: flex;

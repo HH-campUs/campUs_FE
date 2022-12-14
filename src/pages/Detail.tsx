@@ -107,7 +107,7 @@ function Detail() {
       {isSearch == false ? null : <Search />}
 
       {isPlan == false ? null : (
-        <PlanWrite isPlan={isPlan} setIsPlan={setIsPlan} />
+        <PlanWrite isPlan={isPlan} setIsPlan={setIsPlan} campId={campId} />
       )}
       <Wrapper>
         {/* 최상단 이미지*/}

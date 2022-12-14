@@ -21,7 +21,7 @@ const serverUrl = process.env.REACT_APP_API;
 export const useSearchCamp = (keyword: string, sort: string) => {
   const useData = async ({ pageParam = 1 }) => {
     const { data } = await instanceTopic.get<campArray>(
-      `/searchSort?keyword=${keyword}&numOfRows=20&pageNo=${pageParam}&sort=${sort}`
+      `/searchSort?keyword=${keyword}&numOfRows=15&pageNo=${pageParam}&sort=${sort}`
     );
     console.log(data, keyword);
     return {
@@ -52,7 +52,7 @@ export const useSearchCamp = (keyword: string, sort: string) => {
 export const useGetCamp = (doNm: string, sort: string) => {
   const useData = async ({ pageParam = 1 }) => {
     const { data } = await instance.get<campArray>(
-      `/camps?doNm=${doNm}&numOfRows=20&pageNo=${pageParam}&sort=${sort}`
+      `/camps?doNm=${doNm}&numOfRows=15&pageNo=${pageParam}&sort=${sort}`
     );
 
     return {

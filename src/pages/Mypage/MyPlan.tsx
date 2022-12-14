@@ -3,16 +3,19 @@ import styled from "styled-components";
 import Kebop from "../../components/withPlan/Kebop";
 import SemiSearch from "../../components/withSearch/SemiSearch";
 import PlanUpdate from "../../components/withPlan/PlanUpdate";
+import { useRecoilState } from "recoil";
 
 import { usePostsApi } from "../../APIs/postsApi";
+
 import { useNavigate } from "react-router-dom";
 import { getCamperToken } from "../../instance/cookies";
 import { IGetTravelPlan } from "../../interfaces/MyPage";
 import { useMyPageApi } from "../../APIs/myPageApi";
+import { updateState } from "../../store/profileAtoms";
 
 export default function MyPlan() {
   const [onOff, setOnOff] = useState(false);
-  const [isPlan, setIsPlan] = useState(false);
+  const [isPlan, setIsPlan] = useRecoilState(updateState);
 
   const isLogin = getCamperToken();
   const navigate = useNavigate();
@@ -39,10 +42,7 @@ export default function MyPlan() {
   };
 
   const DdayCalculator = (date: string) => {
-    const planDay = new Date(
-      date.slice(0, 4) + "-" + date.slice(4, 6) + "-" + date.slice(6, 8)
-    );
-
+    const planDay = new Date(date);
     const today = new Date();
     const gap = planDay.getTime() - today.getTime();
     const result = Math.floor(gap / (1000 * 60 * 60 * 24) + 1);
@@ -51,19 +51,11 @@ export default function MyPlan() {
     return result;
   };
 
-  /* const before = Trips?.map((trip: IGetTravelPlan) => {
-    if (DdayCalculator(trip.date) > -1) {
-      return before;
-    } else {
-      return null;
-    }
-  }); */
-
   return (
     <>
-      {isPlan == false ? null : (
+      {/* {isPlan == false ? null : (
         <PlanUpdate isPlan={isPlan} setIsPlan={setIsPlan} />
-      )}
+      )} */}
       <TotalContainer>
         <ToggleBtn onOff={onOff}>
           <input type="checkbox" id="toggle" onChange={onChangeText} hidden />
@@ -83,8 +75,11 @@ export default function MyPlan() {
             <>
               {onOff == false ? (
                 <Container>
-                  {Trips?.map((trip: IGetTravelPlan) => (
-                    <PlanBox key={trip.Camp?.tripId}>
+                  {/* 다녀올 여행일 때는 Dday가 0 이상일 때 */}
+                  {Trips.filter(
+                    (trip: IGetTravelPlan) => DdayCalculator(trip.date) > -1
+                  ).map((trip: IGetTravelPlan) => (
+                    <PlanBox key={trip.tripId}>
                       <div style={{ position: "relative" }}>
                         <img
                           src={trip.Camp?.ImageUrl}
@@ -95,14 +90,14 @@ export default function MyPlan() {
                         />
                         <Dday>D - {DdayCalculator(trip.date)}</Dday>
                       </div>
-                      <Kebop tripId={trip.tripId} setIsPlan={setIsPlan} />
+                      <Kebop tripId={trip.tripId} />
                       <div className="infoBox">
                         <span>{trip.Camp?.address}</span>
                         <span>{trip.Camp?.campName}</span>
                         <span>떠나는 날짜</span>
                         <span>
-                          {trip.date.slice(2, 4)}.{trip.date.slice(4, 6)}.
-                          {trip.date.slice(6, 8)}
+                          {trip.date.slice(2, 4)}.{trip.date.slice(5, 7)}.
+                          {trip.date.slice(8, 10)}
                         </span>
                         <Memo>{trip.memo}</Memo>
                       </div>
@@ -111,25 +106,34 @@ export default function MyPlan() {
                 </Container>
               ) : (
                 <Container>
-                  {" "}
-                  {Trips?.map((trip: IGetTravelPlan) => (
-                    <PlanBox key={trip.Camp?.tripId}>
-                      <img src={trip.Camp?.ImageUrl} alt="img" />
-
+                  {/* 가독성의 단점이 있음... 
+                  지난여행일 때 Dday가 0 미만일 때만 filter */}
+                  {Trips.filter(
+                    (trip: IGetTravelPlan) => DdayCalculator(trip.date) < 0
+                  ).map((trip: IGetTravelPlan) => (
+                    <PlanBox key={trip.tripId}>
+                      <div style={{ position: "relative" }}>
+                        <img
+                          src={trip.Camp?.ImageUrl}
+                          alt="img"
+                          onClick={() => {
+                            navigate(`/detail/${trip.Camp?.campId}/detail`);
+                          }}
+                        />
+                      </div>
+                      <Kebop tripId={trip.tripId} />
                       <div className="infoBox">
                         <span>{trip.Camp?.address}</span>
                         <span>{trip.Camp?.campName}</span>
                         <span>떠나는 날짜</span>
                         <span>
-                          {trip.date.slice(2, 4)}.{trip.date.slice(4, 6)}.
-                          {trip.date.slice(6, 8)}
+                          {trip.date.slice(2, 4)}.{trip.date.slice(5, 7)}.
+                          {trip.date.slice(8, 10)}
                         </span>
                         <Memo>{trip.memo}</Memo>
                       </div>
-
-                      <Kebop tripId={trip.tripId} setIsPlan={setIsPlan} />
                     </PlanBox>
-                  ))}{" "}
+                  ))}
                 </Container>
               )}
             </>
@@ -241,12 +245,14 @@ const Container = styled.div`
 
 const PlanBox = styled.div`
   width: 100%;
-  max-width: ${(props) => props.theme.pixelToRem(360)};
+  min-width: ${(props) => props.theme.pixelToRem(350)};
+  max-width: ${(props) => props.theme.pixelToRem(380)};
   height: ${(props) => props.theme.pixelToRem(150)};
   margin: 0 auto 18px;
   border-radius: 10px;
   border: solid 1px #eee;
   display: flex;
+  position: relative;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -266,7 +272,7 @@ const PlanBox = styled.div`
     position: absolute;
     display: flex;
     span {
-      :first-child {
+      &:first-child {
         width: ${(props) => props.theme.pixelToRem(106)};
         height: ${(props) => props.theme.pixelToRem(14)};
         ${(props) => props.theme.fontTheme.Caption4};
@@ -274,7 +280,7 @@ const PlanBox = styled.div`
         line-height: normal;
         letter-spacing: normal;
       }
-      :nth-child(2) {
+      &:nth-child(2) {
         width: ${(props) => props.theme.pixelToRem(140)};
         height: ${(props) => props.theme.pixelToRem(18)};
         margin-top: 4px;
@@ -282,7 +288,7 @@ const PlanBox = styled.div`
         line-height: normal;
         letter-spacing: normal;
       }
-      :nth-child(3) {
+      &:nth-child(3) {
         width: auto;
         height: ${(props) => props.theme.pixelToRem(14)};
         margin-top: 12px;
@@ -292,7 +298,7 @@ const PlanBox = styled.div`
         line-height: normal;
         letter-spacing: normal;
       }
-      :last-child {
+      &:last-child {
         width: ${(props) => props.theme.pixelToRem(106)};
         height: ${(props) => props.theme.pixelToRem(14)};
         margin-top: 40px;
@@ -309,7 +315,7 @@ const Dday = styled.div`
   height: ${(props) => props.theme.pixelToRem(26)};
   flex-grow: 0;
   margin: 10px 0px 0 25px;
-  padding: 3px 15px;
+  padding: 3px 13px;
   border-radius: 17px;
   border: solid 2px #fff;
   background-color: #024873;

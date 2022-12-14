@@ -9,10 +9,11 @@ export interface IGetMyReview {
   createdAt: string;
   updatedAt: string;
   data: IGetMyReview[];
+  reviewId: number;
 }
 
 export interface IGetTravelPlan {
-  tripId: number | undefined;
+  tripId: number | string;
   campId: number;
   memo: string;
   ImageUrl: string;

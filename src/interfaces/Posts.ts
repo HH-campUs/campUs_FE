@@ -21,7 +21,8 @@ export interface IEditReviewPosts {
 export interface IDeleteReviewPosts {}
 
 export interface IPostTravelPlan {
-  campId: number;
+  campId?: number | string;
+  tripId?: number | string;
   date: string;
   memo: string;
 }

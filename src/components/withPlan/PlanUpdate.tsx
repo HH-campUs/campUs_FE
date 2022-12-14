@@ -27,9 +27,9 @@ import { usePostsApi } from "../../APIs/postsApi";
 import { getCamperToken } from "../../instance/cookies";
 import { planOpenProps } from "../../interfaces/props";
 import { IPostTravelPlan } from "../../interfaces/Posts";
-import { NavToast } from "../Toast/Toast";
+import { InfoToast } from "../Toast/Toast";
 
-function PlanUpdate({ isPlan, setIsPlan }: planOpenProps) {
+function PlanUpdate({ isPlan, setIsPlan, tripId }: planOpenProps) {
   /* toast boolean */
   const [toastState, setToastState] = useState(false);
 
@@ -48,9 +48,7 @@ function PlanUpdate({ isPlan, setIsPlan }: planOpenProps) {
     setOpenDate(!openDate);
   };
 
-  //campId확인.
-  const loca = useLocation();
-  const state = loca.state as { campId: number };
+  //campId확인. -> tripId 받아야 됨 어디로? planUpdate에 근데? 찍는게 생각보다 쉽지 않네..?
 
   const planPost = usePostsApi.useUpdateTravelPlan();
   const {
@@ -61,7 +59,7 @@ function PlanUpdate({ isPlan, setIsPlan }: planOpenProps) {
 
   const handleValid = (data: IPostTravelPlan) => {
     const body = {
-      campId: state.campId,
+      tripId: tripId,
       date: sendDate,
       memo: data.memo,
     };
@@ -75,8 +73,8 @@ function PlanUpdate({ isPlan, setIsPlan }: planOpenProps) {
     <>
       <Container>
         {toastState == true ? (
-          <NavToast
-            text={"여행일정 등록을 완료했어요."}
+          <InfoToast
+            text={"여행일정 수정을 완료했어요."}
             url={"/mypage/myplan"}
             toastState={toastState}
             setToastState={setToastState}
@@ -100,31 +98,32 @@ function PlanUpdate({ isPlan, setIsPlan }: planOpenProps) {
               }}
             />
           </TopContainer>
+          <DropContainer>
+            <DateInfo openDate={openDate}>
+              <InfoBox onClick={dateFolder} />
+              <SubTitle onClick={dateFolder}>떠나고 싶은 날</SubTitle>
+              <DateText onClick={dateFolder}>
+                {selectMonth}월 {selectDay}일
+              </DateText>
 
-          <DateInfo openDate={openDate}>
-            <InfoBox onClick={dateFolder} />
-            <SubTitle onClick={dateFolder}>떠나고 싶은 날</SubTitle>
-            <DateText onClick={dateFolder}>
-              {selectMonth}월 {selectDay}일
-            </DateText>
+              {/* 데이트 피커 */}
+              <DateContainer>
+                {openDate ? (
+                  <Datepicker openDate={openDate} setOpenDate={setOpenDate} />
+                ) : null}
+              </DateContainer>
+            </DateInfo>
+            <form onSubmit={handleSubmit(handleValid)}>
+              <StTextArea
+                placeholder="자유롭게 내 일정에 메모를 입력해보세요"
+                {...register("memo")}
+              />
 
-            {/* 데이트 피커 */}
-            <DateContainer>
-              {openDate ? (
-                <Datepicker openDate={openDate} setOpenDate={setOpenDate} />
-              ) : null}
-            </DateContainer>
-          </DateInfo>
-          <form onSubmit={handleSubmit(handleValid)}>
-            <StTextArea
-              placeholder="자유롭게 내 일정에 메모를 입력해보세요"
-              {...register("memo")}
-            />
-
-            <BtnContainer isPlan={isPlan}>
-              <SearchBtn>일정 수정하기</SearchBtn>
-            </BtnContainer>
-          </form>
+              <BtnContainer isPlan={isPlan}>
+                <SearchBtn>일정 수정하기</SearchBtn>
+              </BtnContainer>
+            </form>
+          </DropContainer>
         </SearchModal>
       </Container>
     </>
@@ -215,15 +214,25 @@ const TopContainer = styled.div`
   justify-content: space-between;
 `;
 
+const DropContainer = styled.div`
+  width: 90%;
+  height: ${(props) => props.theme.pixelToRem(433)};
+  margin: 0 auto;
+  overflow: hidden;
+  position: absolute;
+`;
+
 const SearchTitle = styled.div`
   ${(props) => props.theme.fontTheme.Headerline1}
   display: inline-block;
 `;
 
 const CloseBtn = styled.img`
-  width: ${(props) => props.theme.pixelToRem(24)};
-  height: ${(props) => props.theme.pixelToRem(24)};
-  display: inline-block;
+  width: ${(props) => props.theme.pixelToRem(24)} !important;
+  height: ${(props) => props.theme.pixelToRem(24)} !important;
+  margin: -3px 310px;
+  display: flex;
+  z-index: 10;
 `;
 
 /* datepicker 열기전에 정보 보여주는 */
@@ -273,7 +282,6 @@ const SubTitle = styled.div`
 const DateText = styled.div`
   width: 124px;
   height: 20px;
-  font-family: Pretendard;
   font-size: ${(props) => props.theme.pixelToRem(16)};
   font-weight: 600;
   font-stretch: normal;
@@ -311,6 +319,11 @@ const StTextArea = styled.textarea`
   border: 1px solid lightgray;
   resize: none;
   /* letter-spacing: 0px; */
+
+  ::placeholder {
+    ${(props) => props.theme.fontTheme.Caption2};
+    color: ${(props) => props.theme.colorTheme.text3};
+  }
 `;
 
 const SearchBtn = styled.button`

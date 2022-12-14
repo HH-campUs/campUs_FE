@@ -127,6 +127,7 @@ const CampText = styled.div`
 `;
 
 const Title = styled.div`
+  margin-top: 20px;
   margin-left: 20px;
   font-size: ${(props) => props.theme.pixelToRem(20)};
   font-weight: 600;

@@ -86,8 +86,6 @@ export default function Review() {
     }
   };
 
-  //이것도 캐싱 다시해야할 수 있음. (invalidQuery - key사용)
-  //로딩에 5초정도걸림.
   const handleValid = (data: IReviewPosts) => {
     if (!campId) return;
     const formData = new FormData();
@@ -317,12 +315,10 @@ export default function Review() {
     </Wrapper>
   );
 }
-{
-  /* <Delete onClick={() => handleDeleteImage(id)} /> */
-}
 
 const Wrapper = styled.div`
   width: ${(props) => props.theme.pixelToRem(375)};
+  margin: 0 auto;
   flex-direction: column;
   height: 100vh;
   overflow-y: scroll;
@@ -332,7 +328,6 @@ const Head = styled.div`
   display: flex;
   align-items: center;
   margin-right: 45px;
-  /* margin-top: 10px; */
 `;
 
 const HeadText = styled.div`
@@ -345,20 +340,16 @@ const ReviewImgBox = styled.div`
   width: ${(props) => props.theme.pixelToRem(375)};
   height: ${(props) => props.theme.pixelToRem(170)};
   margin-top: 10px;
-  /* align-items: center; */
+
   img {
     width: 100%;
     height: 100%;
     object-fit: contain;
     filter: contrast(55%);
-
-    /* position: relative; */
-    /* z-index: 10; */
   }
 `;
 
 const TextBox = styled.div`
-  /* background-color: red; */
   width: ${(props) => props.theme.pixelToRem(375)};
   justify-content: center;
   align-items: center;
@@ -367,7 +358,6 @@ const TextBox = styled.div`
   position: absolute;
   margin-top: -110px;
   gap: 5px;
-  /* margin-top: 55px; */
 `;
 
 const CampName = styled.div`
@@ -421,7 +411,7 @@ const BestImgDiv = styled.label<{ isBest: Boolean }>`
   justify-content: center;
   display: flex;
   position: relative;
-
+  cursor: pointer;
   img {
     position: absolute;
   }
@@ -439,7 +429,6 @@ const BestInput = styled.input`
   display: flex;
   display: none;
   flex-direction: column;
-  cursor: pointer;
   :focus {
     outline: none !important;
     border: none !important;
@@ -489,7 +478,7 @@ const GoodImgDiv = styled.label<{ isGood: Boolean }>`
   height: ${(props) => props.theme.pixelToRem(62)};
   border-radius: ${(props) => props.theme.pixelToRem(62)};
   background-color: ${(props) => (props.isGood ? "#024873" : "#EFEFEF")};
-
+  cursor: pointer;
   align-items: center;
   justify-content: center;
   display: flex;
@@ -529,7 +518,7 @@ const BadImgDiv = styled.label<{ isBad: Boolean }>`
   height: ${(props) => props.theme.pixelToRem(62)};
   border-radius: ${(props) => props.theme.pixelToRem(62)};
   background-color: ${(props) => (props.isBad ? "#024873" : "#EFEFEF")};
-
+  cursor: pointer;
   align-items: center;
   justify-content: center;
   display: flex;
@@ -638,6 +627,7 @@ const ImgInput = styled.input`
 `;
 
 const Upload = styled.label`
+  cursor: pointer;
   border: 1px solid lightgray;
   display: flex;
   flex-direction: column;

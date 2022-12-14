@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 
+import SemiSearch from "../components/withSearch/SemiSearch";
 import styled from "styled-components";
 import { useGetApi } from "../APIs/getApi";
 import { usePostsApi } from "../APIs/postsApi";
@@ -10,15 +11,15 @@ import PreviewImgDelete from "../components/PreviewImgDelete";
 import { getCamperToken } from "../instance/cookies";
 import { IReviewPosts } from "../interfaces/Posts";
 import { StrDay, StrMonth } from "../store/dateAtom";
-import { InfoToast } from "../components/Toast/Toast";
+import { InfoToast, InfoToast2 } from "../components/Toast/Toast";
 
 export default function Review() {
-  // interface Props {
-  //   setImagePreview: React.Dispatch<React.SetStateAction<string[]>>;
-  //   setImageFiles: React.Dispatch<React.SetStateAction<File[]>>;
-  // }
-  /* toast */
+  /* toast State */
   const [toastState, setToastState] = useState(false);
+  const [toastState2, setToastState2] = useState(false);
+
+  /* SemiSearch State */
+  const [openSemi, setOpenSemi] = useState(false);
 
   const isLogin = getCamperToken();
   const Month = useRecoilValue(StrMonth);
@@ -109,17 +110,10 @@ export default function Review() {
     };
   };
 
-  // const handleDeleteImage = useCallback((idx: number) => {
-  //   setImagePreview((prev) => prev.filter((_, index) => index !== idx));
-  //   setImageFiles((prev) =>
-  //     prev.filter((_: string, index: number) => index !== idx)
-  //   );
-  // }, []);
-
   useEffect(() => {
     if (imagePreview.length === 0) return;
     if (imagePreview.length > 3) {
-      window.alert("이미지는 3장까지 첨부가능합니다.");
+      setToastState2(true);
       setImagePreview((prev) => prev.slice(0, 3));
       setImageFiles((prev: File[]) => prev.slice(0, 3));
     }
@@ -127,6 +121,9 @@ export default function Review() {
 
   return (
     <Wrapper>
+      {openSemi == true ? (
+        <SemiSearch openSemi={openSemi} setOpenSemi={setOpenSemi} />
+      ) : null}
       {toastState == true ? (
         <InfoToast
           text={"리뷰 쓰기 완료"}
@@ -134,6 +131,15 @@ export default function Review() {
           setToastState={setToastState}
         />
       ) : null}
+
+      {toastState2 == true ? (
+        <InfoToast2
+          text={"이미지는 3장까지 첨부가능합니다."}
+          toastState2={toastState2}
+          setToastState2={setToastState2}
+        />
+      ) : null}
+
       <Head>
         <div>
           <img
@@ -163,7 +169,9 @@ export default function Review() {
 
       <VisitDay>
         방문일선택
-        <p style={{ textDecoration: "underline", marginLeft: "160px" }}>
+        <p
+          style={{ textDecoration: "underline", marginLeft: "160px" }}
+          onClick={() => setOpenSemi(true)}>
           2022.{Month}.{Day}
         </p>
         <RightArrow src="/images/review/rightArrow.svg" />

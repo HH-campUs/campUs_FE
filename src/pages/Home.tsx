@@ -35,7 +35,11 @@ function Home() {
       {/* 찜하기 알림 토스트 */}
 
       {toastState == true ? (
-        <NoIdPickToast toastState={toastState} setToastState={setToastState} />
+        <NoIdPickToast
+          text={"로그인 후 찜하기가 가능해요."}
+          toastState={toastState}
+          setToastState={setToastState}
+        />
       ) : null}
       {isSearch == false ? null : <Search />}
 

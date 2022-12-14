@@ -9,7 +9,6 @@ import PlanUpdate from "../../components/withPlan/PlanUpdate";
 import { updateState } from "../../store/profileAtoms";
 import { InfoToast } from "../../components/Toast/Toast";
 
-
 function Kebop({ tripId }: any) {
   const [toastState, setToastState] = useState(false);
 
@@ -23,7 +22,6 @@ function Kebop({ tripId }: any) {
     setIsPlan(true);
   };
   const unPlan = () => {
-    alert(`${tripId} 번이 지워졌습니다.`);
     deleteId.mutate(tripId);
     setToastState(true);
     setOpenMore(false);

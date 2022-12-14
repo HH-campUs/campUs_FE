@@ -63,15 +63,22 @@ function PlanUpdate({ isPlan, setIsPlan, tripId }: planOpenProps) {
       date: sendDate,
       memo: data.memo,
     };
+    console.log(body);
     planPost.mutate(body);
     setToastState(true);
-    setIsPlan(false);
-    console.log(body);
+    const timer = setTimeout(() => {
+      setIsPlan(false);
+    }, 1505);
+
+    return () => {
+      clearTimeout(timer);
+    };
   };
 
   return (
     <>
       <Container>
+        {/* 여행일정 수정 완료 알림 */}
         {toastState == true ? (
           <InfoToast
             text={"여행일정 수정을 완료했어요."}

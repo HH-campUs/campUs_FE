@@ -1,6 +1,6 @@
 import axios from "axios";
-import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useEffect, useMemo } from "react";
+import { useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useGetApi } from "../../APIs/getApi";
 
@@ -13,41 +13,29 @@ declare global {
 const { kakao } = window;
 
 const DetailMap = () => {
-  const loca = useLocation();
+  const { campId } = useParams();
 
-  const state = loca.state as { campId: number };
-
-
-  const detailItem = useGetApi.useGetCampDetail(state.campId)?.data;
-
-  const checkItem = detailItem?.detailCamp?.[0];
-
-  function itemCall() {}
-
-  setTimeout(itemCall, 3000);
+  const detailItem = useGetApi.useGetCampDetail(campId)?.data?.[0];
+  const X = +detailItem?.X!;
+  const Y = +detailItem?.Y!;
 
   useEffect(() => {
-    if (!checkItem) return;
-
-    var X = +checkItem?.X;
-    var Y = +checkItem?.Y;
-
     const mapContainer = document.getElementById("KaKaomap"),
       mapOption = {
-        center: new kakao.maps.LatLng(X, Y),
+        center: new kakao.maps.LatLng(Y, X),
         level: 4,
       };
 
     const map = new kakao.maps.Map(mapContainer, mapOption);
 
-    const markerPosition = new kakao.maps.LatLng(X, 128.2965596);
+    const markerPosition = new kakao.maps.LatLng(Y, X);
 
     const marker = new kakao.maps.Marker({
       position: markerPosition,
     });
 
     marker.setMap(map);
-  }, [checkItem?.X]);
+  }, [X]);
 
   return <Wrapper id="KaKaomap"></Wrapper>;
 };

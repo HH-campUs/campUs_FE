@@ -6,19 +6,22 @@ import Search from "../components/withSearch/Search";
 import { isModal } from "../store/searchAtom";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
-import Datepicker from "../components/withSearch/Datepicker";
 
 import { useGetTopicInfinite } from "../APIs/getApi";
 import { useInView } from "react-intersection-observer";
 
 //css
-import { useLocation } from "react-router-dom";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { NoIdPickToast } from "../components/Toast/Toast";
 
 import { IGetCampResult } from "../interfaces/get";
 import TopicBookmark from "../components/TopicBookmark";
 import { getCamperToken } from "../instance/cookies";
+import Sunset from "../components/TopicHead/Sunset";
+import Animal from "../components/TopicHead/Animal";
+import Equipment from "../components/TopicHead/Equipment";
+import Fishing from "../components/TopicHead/Fishing";
+import Circle from "../components/TopicHead/Circle";
 
 function Topic() {
   /* toast boolean */
@@ -29,22 +32,42 @@ function Topic() {
   };
   const navigate = useNavigate();
   const [isSearch, setIsSearch] = useRecoilState(isModal);
+  const [sortState, setSortState] = useState("lookUp");
   const { topicId } = useParams();
-  // const userId = useRecoilValue(idState);
-  // console.log(userId);
-
-  const loca = useLocation();
-  const state = loca.state as { topicImg: string; id: number };
-  const bg = state.topicImg;
 
   const isLogin = getCamperToken();
 
   //infiniteScroll
   const { campTopic, fetchNextPage, isSuccess, hasNextPage, refetch } =
-    useGetTopicInfinite(topicId!);
+    useGetTopicInfinite(topicId!, sortState);
 
-  console.log("camp", campTopic);
+  console.log("campTopic", campTopic);
+
   const [ref, isView] = useInView();
+
+  // <div>
+  // {sortState == "lookUp" ? (
+  //   <span
+  //     className="popular"
+  //     onClick={() => setSortState("pickCount")}
+  //   >
+  //     조회순
+  //   </span>
+  // ) : sortState == "pickCount" ? (
+  //   <span
+  //     className="popular"
+  //     onClick={() => setSortState("reviewCount")}
+  //   >
+  //     인기순
+  //   </span>
+  // ) : (
+  //   <span
+  //     className="popular"
+  //     onClick={() => setSortState("lookUp")}
+  //   >
+  //     리뷰순
+  //   </span>
+  // )}
 
   useEffect(() => {
     if (isView && hasNextPage) {
@@ -60,32 +83,40 @@ function Topic() {
         <NoIdPickToast toastState={toastState} setToastState={setToastState} />
       ) : null}
 
-      <TopContainer bg={bg}>
+      <TopContainer>
         <ImgCover />
+
         <BackBtn onClick={() => navigate(`/`)}>
           <img src="/images/back.svg" alt="back" />
         </BackBtn>
+
+        <div>
+          {topicId == "1" ? (
+            <Sunset />
+          ) : topicId == "2" ? (
+            <Animal />
+          ) : topicId == "3" ? (
+            <Equipment />
+          ) : (
+            <Fishing />
+          )}
+        </div>
+        <Circle />
       </TopContainer>
-      {/* <div style={{ position: "absolute" , transform}}>
-        <TextTitle>일몰명소</TextTitle>
-        <MidTextBox>
-          <MidText>일몰 명소 캠핑장 추천</MidText>
-          <NextPage>애견동반</NextPage>
-        </MidTextBox>
-      </div> */}
 
       <ResultContainer>
         <ResultTop>
           <div>
             <span className="result"> 전체 </span>
-            <span className="total"> (개)</span>
+            <span className="total">
+              ({campTopic?.pages[0]?.campTopic?.total} 개)
+            </span>
           </div>
           <div style={{ display: "flex", alignItems: "center" }}>
             <span className="popular">인기순</span>
             <img src="/images/topic/openclose.svg" alt="downArrow" />
           </div>
         </ResultTop>
-
         <CampMap>
           {isSuccess && campTopic?.pages ? (
             campTopic?.pages.map((page) => (
@@ -94,14 +125,7 @@ function Topic() {
                   <ResultBox key={item.campId}>
                     <TopicBookmark Camp={item} />
                     <ResultItem
-                      onClick={() =>
-                        navigate(`/detail/${item.campId}/detail`, {
-                          state: {
-                            campId: `${item.campId}`,
-                          },
-                        })
-                      }
-                    >
+                      onClick={() => navigate(`/detail/${item.campId}/detail`)}>
                       <CampImg>
                         <img src={item.ImageUrl} alt={item.campName} />
                         <ReviewInfo>
@@ -137,22 +161,17 @@ function Topic() {
 
 export default Topic;
 
-const TopContainer = styled.div<{ bg: string }>`
-  /* width: 100%; */
+const TopContainer = styled.div`
   height: ${(props) => props.theme.pixelToRem(266)};
   border-bottom-left-radius: ${(props) => props.theme.pixelToRem(12)};
   border-bottom-right-radius: ${(props) => props.theme.pixelToRem(12)};
-  background-image: url(${(props) => props.bg});
   background-size: cover;
-  /* background-repeat: no-repeat; */
   object-fit: cover;
+  position: relative;
 `;
 
-// ${(props) => props.theme.pixelToRem(375)};
-// ${(props) => props.theme.pixelToRem(266)};
 const ImgCover = styled.div`
   width: ${(props) => props.theme.pixelToRem(475)};
-  /* max-width: ${(props) => props.theme.pixelToRem(475)}; */
   min-width: ${(props) => props.theme.pixelToRem(375)};
   height: ${(props) => props.theme.pixelToRem(266)};
   background-color: rgba(0, 0, 0, 0.2);
@@ -171,29 +190,20 @@ const BackBtn = styled.div`
   object-fit: contain;
   position: absolute;
   z-index: 2;
+  cursor: pointer;
 
   img {
     display: inline-block;
   }
 `;
 
-const TextTitle = styled.div``;
-
-const MidTextBox = styled.div``;
-
-const MidText = styled.div``;
-
-const NextPage = styled.div``;
-
 const ResultContainer = styled.div``;
 
-// ${(props) => props.theme.pixelToRem(335)};
 const ResultTop = styled.div`
   width: 90%;
   height: ${(props) => props.theme.pixelToRem(22)};
   margin-top: ${(props) => props.theme.pixelToRem(24)};
   margin-left: ${(props) => props.theme.pixelToRem(20)};
-  /* margin-right: ${(props) => props.theme.pixelToRem(40)}; */
   justify-content: space-between;
   display: flex;
 
@@ -238,8 +248,7 @@ const ResultTop = styled.div`
 const CampMap = styled.div`
   display: flex;
   flex-wrap: wrap;
-
-  /* width: 375px; */
+  justify-content: center;
 `;
 
 const ResultBox = styled.div`
@@ -259,12 +268,11 @@ const ResultItem = styled.div`
 `;
 
 const CampImg = styled.div`
+  cursor: pointer;
   img {
     width: 100%;
     height: ${(props) => props.theme.pixelToRem(196)};
     border-radius: ${(props) => props.theme.pixelToRem(8)};
-    /* display: block; */
-    object-fit: cover;
     object-fit: cover;
   }
 `;
@@ -299,6 +307,8 @@ const ReviewInfo = styled.div`
   background-color: #000;
   right: ${(props) => props.theme.pixelToRem(8)};
   top: ${(props) => props.theme.pixelToRem(164)};
+  justify-content: center;
+  display: flex;
 
   div {
     font-size: ${(props) => props.theme.pixelToRem(12)};
@@ -313,7 +323,7 @@ const FloatingBtn = styled.button`
   width: 45px;
   height: 45px;
   border-radius: 45px;
-  background-color: white;
+  background-color: #fff;
   cursor: pointer;
   z-index: 10;
   border: 1px solid #eee;

@@ -5,13 +5,15 @@ import ReviewSizeHook from "./ReviewSizeHook";
 
 import { useState } from "react";
 import { useMyPageApi } from "../../APIs/myPageApi";
+import { useNavigate } from "react-router-dom";
 
 export default function NewReview() {
   const NewReview = useGetApi.useGetNewReview().data?.data || [];
-  const checkPf = useMyPageApi.useGetMyPage().data?.data;
+  console.log("메인리뷰", NewReview);
   const [hide, setHide] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [transX, setTransX] = useState(0);
+  const navigation = useNavigate();
 
   const { ref, width, height } = ReviewSizeHook();
 
@@ -19,6 +21,10 @@ export default function NewReview() {
     if (v < min) return min;
     if (v > max) return max;
     return v;
+  };
+
+  const toDetail = (campId: number) => () => {
+    navigation(`/detail/${campId}/review`);
   };
 
   const imageList = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -67,6 +73,12 @@ export default function NewReview() {
                     >
                       <NickBox>
                         <PfNick>{item?.nickname}</PfNick>
+                        <PfCamp
+                          title={item?.campName}
+                          onClick={toDetail(item.campId)}
+                        >
+                          {item?.campName}
+                        </PfCamp>
                       </NickBox>
                       <LocaBox>
                         <Date>&nbsp;{item?.createdAt.slice(0, 10)}</Date>
@@ -74,7 +86,12 @@ export default function NewReview() {
                     </div>
                   </PfBox>
                   <ReviewBox>
-                    <ReviewText>{item?.reviewComment}</ReviewText>
+                    <ReviewText
+                      title={item?.reviewComment}
+                      onClick={toDetail(item.campId)}
+                    >
+                      {item?.reviewComment}
+                    </ReviewText>
                   </ReviewBox>
                   <ImgFlex>
                     {item?.reviewImg
@@ -120,7 +137,7 @@ const Wrapper = styled.div`
 const MainBox = styled.div`
   margin-top: 18px;
   margin-left: 20px;
-  transform: translateX(20px);
+  /* transform: translateX(20px); */
   width: ${(props) => props.theme.pixelToRem(268)};
   height: ${(props) => props.theme.pixelToRem(256)};
   border-radius: ${(props) => props.theme.pixelToRem(10)};
@@ -143,17 +160,29 @@ const PfImg = styled.div`
     object-fit: cover;
   }
 `;
-
+// width: ${(props) => props.theme.pixelToRem(180)};
 const NickBox = styled.div`
-  width: ${(props) => props.theme.pixelToRem(250)};
+  width: 73%;
   display: flex;
   justify-content: space-between;
   font-size: ${(props) => props.theme.pixelToRem(14)};
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 const PfNick = styled.div`
   color: #222;
   margin-left: 3px;
+`;
+
+const PfCamp = styled.div`
+  font-size: ${(props) => props.theme.pixelToRem(12)};
+  color: #222;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
 `;
 
 const LocaBox = styled.div`
@@ -167,7 +196,7 @@ const LocaBox = styled.div`
 const Date = styled.div``;
 
 const ReviewBox = styled.div`
-  width: ${(props) => props.theme.pixelToRem(300)};
+  width: ${(props) => props.theme.pixelToRem(240)};
   color: #666;
   font-size: ${(props) => props.theme.pixelToRem(14)};
   margin-top: 15px;
@@ -178,9 +207,14 @@ const ReviewBox = styled.div`
 
 const ReviewText = styled.div`
   width: 240px;
+  word-break: break-all;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
+  cursor: pointer;
+  /* white-space: nowrap; */
 `;
 
 const ImgFlex = styled.div`
@@ -199,7 +233,7 @@ const ImgBox = styled.div`
   img {
     width: ${(props) => props.theme.pixelToRem(70)};
     height: ${(props) => props.theme.pixelToRem(84)};
-    aspect-ratio: 1/1;
     border-radius: 8px;
+    object-fit: cover;
   }
 `;

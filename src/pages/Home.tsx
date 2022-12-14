@@ -86,7 +86,7 @@ const HeadText = styled.div`
 `;
 
 const SearchBar = styled.div<{ isSearch: Boolean }>`
-  width: 84%;
+  width: 91.5%;
   height: ${(props) => props.theme.pixelToRem(54)};
   margin: 20px 20px 0 20px;
   padding: 16px 32px 16px 20px;
@@ -127,6 +127,7 @@ const CampText = styled.div`
 `;
 
 const Title = styled.div`
+  margin-top: 20px;
   margin-left: 20px;
   font-size: ${(props) => props.theme.pixelToRem(20)};
   font-weight: 600;

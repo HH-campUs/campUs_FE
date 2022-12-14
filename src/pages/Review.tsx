@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 
 import styled from "styled-components";
@@ -10,26 +10,25 @@ import PreviewImgDelete from "../components/PreviewImgDelete";
 import { getCamperToken } from "../instance/cookies";
 import { IReviewPosts } from "../interfaces/Posts";
 import { StrDay, StrMonth } from "../store/dateAtom";
+import { InfoToast } from "../components/Toast/Toast";
 
 export default function Review() {
   // interface Props {
   //   setImagePreview: React.Dispatch<React.SetStateAction<string[]>>;
   //   setImageFiles: React.Dispatch<React.SetStateAction<File[]>>;
   // }
+  /* toast */
+  const [toastState, setToastState] = useState(false);
 
   const isLogin = getCamperToken();
   const Month = useRecoilValue(StrMonth);
   const Day = useRecoilValue(StrDay);
-  //campId확인.
-  const loca = useLocation();
-  const state = loca.state as { campId: number };
+
   const { campId } = useParams();
 
   //useQuery사용.
 
-  const detailItem: any = useGetApi.useGetCampDetail(state.campId).data;
-  const checkItem = detailItem?.[0];
-
+  const detailItem: any = useGetApi.useGetCampDetail(campId).data?.[0];
 
   //버튼클릭 색상 변경
   const [bestStatus, setBestStatus] = useState(false);
@@ -87,12 +86,9 @@ export default function Review() {
     }
   };
 
-  //이것도 캐싱 다시해야할 수 있음. (invalidQuery - key사용)
-  //로딩에 5초정도걸림.
   const handleValid = (data: IReviewPosts) => {
     if (!campId) return;
     const formData = new FormData();
-    console.log(imageFiles);
     for (let i = 0; i < imageFiles.length; i++) {
       formData.append("reviewImg", imageFiles[i]);
     }
@@ -103,8 +99,14 @@ export default function Review() {
       campId: campId,
     };
     reviewPost.mutate(body);
-    window.alert("리뷰를 남겼습니다.");
-    navigate(-1);
+    setToastState(true);
+    const timer = setTimeout(() => {
+      navigate(-1);
+    }, 1530);
+
+    return () => {
+      clearTimeout(timer);
+    };
   };
 
   // const handleDeleteImage = useCallback((idx: number) => {
@@ -114,7 +116,6 @@ export default function Review() {
   //   );
   // }, []);
 
-  // toast필요
   useEffect(() => {
     if (imagePreview.length === 0) return;
     if (imagePreview.length > 3) {
@@ -124,12 +125,15 @@ export default function Review() {
     }
   }, [imagePreview]);
 
-  const warning = () => {
-    window.alert("로그인 후 이용해주세요!");
-  };
-
   return (
     <Wrapper>
+      {toastState == true ? (
+        <InfoToast
+          text={"리뷰 쓰기 완료"}
+          toastState={toastState}
+          setToastState={setToastState}
+        />
+      ) : null}
       <Head>
         <div>
           <img
@@ -144,13 +148,17 @@ export default function Review() {
 
         <HeadText>리뷰쓰기</HeadText>
       </Head>
-      <TextBox></TextBox>
+
       <ReviewImgBox>
         <img
-          src={checkItem?.ImageUrl}
+          src={detailItem?.ImageUrl}
           alt="test"
           style={{ objectFit: "cover" }}
         />
+        <TextBox>
+          <CampName>{detailItem?.campName}</CampName>
+          <CampLoca>{detailItem?.address}</CampLoca>
+        </TextBox>
       </ReviewImgBox>
 
       <VisitDay>
@@ -239,7 +247,7 @@ export default function Review() {
       </ReviewTip>
       <WriteHead>
         <p>리뷰 쓰기</p>
-        <p style={{ color: "#5185A6" }}>최소 10자 | 최대 40자</p>
+        <p style={{ color: "#5185A6" }}>최소 10자 | 최대 80자</p>
       </WriteHead>
       <ReviewForm onSubmit={handleSubmit(handleValid)}>
         <StTextArea
@@ -250,8 +258,8 @@ export default function Review() {
               message: "10자 이상 작성해주세요.",
             },
             maxLength: {
-              value: 40,
-              message: "40자 이하로 작성해주세요.",
+              value: 80,
+              message: "80자 이하로 작성해주세요.",
             },
           })}
         />
@@ -295,23 +303,22 @@ export default function Review() {
             </PreviewDiv>
           ))}
         </ImgList>
-        {/* 여기 toast알람 들어가야함. */}
+
         {isLogin ? (
           <StBtn>리뷰 남기기</StBtn>
         ) : (
-          <StBtn onClick={warning}>로그인 후 이용해주세요</StBtn>
+          <StBtn style={{ backgroundColor: "#CCCCCC" }} disabled>
+            로그인 후 이용해주세요
+          </StBtn>
         )}
-        {/* 여기 toast알람 들어가야함. */}
       </ReviewForm>
     </Wrapper>
   );
 }
-{
-  /* <Delete onClick={() => handleDeleteImage(id)} /> */
-}
 
 const Wrapper = styled.div`
   width: ${(props) => props.theme.pixelToRem(375)};
+  margin: 0 auto;
   flex-direction: column;
   height: 100vh;
   overflow-y: scroll;
@@ -321,7 +328,6 @@ const Head = styled.div`
   display: flex;
   align-items: center;
   margin-right: 45px;
-  /* margin-top: 10px; */
 `;
 
 const HeadText = styled.div`
@@ -330,29 +336,40 @@ const HeadText = styled.div`
 `;
 
 const ReviewImgBox = styled.div`
+  position: relative;
   width: ${(props) => props.theme.pixelToRem(375)};
   height: ${(props) => props.theme.pixelToRem(170)};
   margin-top: 10px;
-  /* align-items: center; */
+
   img {
     width: 100%;
     height: 100%;
     object-fit: contain;
     filter: contrast(55%);
-
-    /* position: relative; */
-    /* z-index: 10; */
   }
 `;
 
 const TextBox = styled.div`
-  background-color: red;
-  /* justify-content: center; */
+  width: ${(props) => props.theme.pixelToRem(375)};
+  justify-content: center;
   align-items: center;
   display: flex;
   flex-direction: column;
   position: absolute;
-  margin-top: 55px;
+  margin-top: -110px;
+  gap: 5px;
+`;
+
+const CampName = styled.div`
+  font-size: ${(props) => props.theme.pixelToRem(22)};
+  font-weight: 600;
+  color: #fff;
+`;
+
+const CampLoca = styled.div`
+  font-size: ${(props) => props.theme.pixelToRem(14)};
+  font-weight: 500;
+  color: #fff;
 `;
 
 const VisitDay = styled.div`
@@ -389,12 +406,12 @@ const BestImgDiv = styled.label<{ isBest: Boolean }>`
   width: ${(props) => props.theme.pixelToRem(62)};
   height: ${(props) => props.theme.pixelToRem(62)};
   border-radius: ${(props) => props.theme.pixelToRem(62)};
-  background-color: ${(props) => (props.isBest ? "#024873" : "lightgray")};
+  background-color: ${(props) => (props.isBest ? "#024873" : "#EFEFEF")};
   align-items: center;
   justify-content: center;
   display: flex;
   position: relative;
-
+  cursor: pointer;
   img {
     position: absolute;
   }
@@ -412,7 +429,6 @@ const BestInput = styled.input`
   display: flex;
   display: none;
   flex-direction: column;
-  cursor: pointer;
   :focus {
     outline: none !important;
     border: none !important;
@@ -431,7 +447,7 @@ const BestBtnDiv = styled.div<{ isBest: Boolean }>`
   position: absolute;
   margin-top: 100px;
   font-size: ${(props) => props.theme.pixelToRem(14)};
-  color: ${(props) => (props.isBest ? "#024873" : "lightgray")};
+  color: ${(props) => (props.isBest ? "#024873" : "#CCCCCC")};
 `;
 
 const GoodInput = styled.input`
@@ -461,8 +477,8 @@ const GoodImgDiv = styled.label<{ isGood: Boolean }>`
   width: ${(props) => props.theme.pixelToRem(62)};
   height: ${(props) => props.theme.pixelToRem(62)};
   border-radius: ${(props) => props.theme.pixelToRem(62)};
-  background-color: ${(props) => (props.isGood ? "#024873" : "lightgray")};
-
+  background-color: ${(props) => (props.isGood ? "#024873" : "#EFEFEF")};
+  cursor: pointer;
   align-items: center;
   justify-content: center;
   display: flex;
@@ -476,7 +492,7 @@ const GoodImgDiv = styled.label<{ isGood: Boolean }>`
 const GoodBtnDiv = styled.div<{ isGood: Boolean }>`
   margin-top: 100px;
   font-size: ${(props) => props.theme.pixelToRem(14)};
-  color: ${(props) => (props.isGood ? "#024873" : "lightgray")};
+  color: ${(props) => (props.isGood ? "#024873" : "#CCCCCC")};
 `;
 
 const BadInput = styled.input`
@@ -501,8 +517,8 @@ const BadImgDiv = styled.label<{ isBad: Boolean }>`
   width: ${(props) => props.theme.pixelToRem(62)};
   height: ${(props) => props.theme.pixelToRem(62)};
   border-radius: ${(props) => props.theme.pixelToRem(62)};
-  background-color: ${(props) => (props.isBad ? "#024873" : "lightgray")};
-
+  background-color: ${(props) => (props.isBad ? "#024873" : "#EFEFEF")};
+  cursor: pointer;
   align-items: center;
   justify-content: center;
   display: flex;
@@ -522,7 +538,7 @@ const BadBtnDiv = styled.div<{ isBad: Boolean }>`
   margin-top: 100px;
   margin-left: 5px;
   font-size: ${(props) => props.theme.pixelToRem(14)};
-  color: ${(props) => (props.isBad ? "#024873" : "lightgray")};
+  color: ${(props) => (props.isBad ? "#024873" : "#CCCCCC")};
 `;
 
 //** RecoBtn tab 끝 */
@@ -611,6 +627,7 @@ const ImgInput = styled.input`
 `;
 
 const Upload = styled.label`
+  cursor: pointer;
   border: 1px solid lightgray;
   display: flex;
   flex-direction: column;

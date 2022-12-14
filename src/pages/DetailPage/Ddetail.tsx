@@ -1,37 +1,46 @@
-import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useState } from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useGetApi } from "../../APIs/getApi";
 
 import DetailMap from "./DetailMap";
+import { CopyToClipboard } from "react-copy-to-clipboard";
+import SemiSearch from "../../components/withSearch/SemiSearch";
 
 function Ddetail() {
-  const loca = useLocation();
-  const state = loca.state as { campId: number };
+  const url = window.location.href;
+  const copied = () => {
+    window.alert("복사완료");
+  };
+  const [isPlan, setIsPlan] = useState(false);
+  const [openSemi, setOpenSemi] = useState(false);
 
+  const openPlan = () => {
+    setIsPlan(true);
+  };
 
-  const detailItem: any = useGetApi.useGetCampDetail(state.campId)?.data;
-  console.log("detailItem", detailItem);
+  const { campId } = useParams();
 
-  const checkItem = detailItem?.[0];
-  console.log("checkItem", checkItem);
-
+  const detailItem = useGetApi.useGetCampDetail(campId)?.data?.[0];
 
   return (
     <Wrapper>
+      {openSemi == false ? null : (
+        <SemiSearch openSemi={openSemi} setOpenSemi={setOpenSemi} />
+      )}
       <InfoBox>
         <Title>기본 정보</Title>
         <CampTitle>캠핑장 정보</CampTitle>
         <InfoBasic>
           <Basic>
-            <li>환경 : {checkItem?.featureNm}</li>
-            <li>유형 : {checkItem?.induty}</li>
-            <li>운영기간 : {checkItem?.operPdCl}</li>
-            <li>운영일 : {checkItem?.operDeCl} </li>
+            <li>환경 : {detailItem?.featureNm}</li>
+            <li>유형 : {detailItem?.induty}</li>
+            <li>운영기간 : {detailItem?.operPdCl}</li>
+            <li>운영일 : {detailItem?.operDeCl} </li>
           </Basic>
         </InfoBasic>
         <HomeTitle>홈페이지 주소</HomeTitle>
-        <HomeInfo>{checkItem?.homePage}</HomeInfo>
+        <HomeInfo>{detailItem?.homePage}</HomeInfo>
 
         <IntroTitle>한줄소개</IntroTitle>
         <IntroDuce>정보가 없습니다.</IntroDuce>
@@ -41,22 +50,31 @@ function Ddetail() {
         <FcInfoTitle>편의시설/주변 정보</FcInfoTitle>
         <FclDetail>편의시설 상세</FclDetail>
         <FclInfo>
-          화장실 {checkItem?.toiletCo}개, 계수대 {checkItem?.wtrplCo}개 , 샤워실
-          {checkItem?.swrmCo}개
+          화장실 {detailItem?.toiletCo}개, 개수대 {detailItem?.wtrplCo}개 ,
+          샤워실
+          {detailItem?.swrmCo}개
         </FclInfo>
         <ThemEnv>테마환경</ThemEnv>
-        <Theminfo>{checkItem?.themaEnvrnCl}</Theminfo>
+        <Theminfo>{detailItem?.themaEnvrnCl}</Theminfo>
 
         <NearTitle>주변 이용 시설</NearTitle>
-        <NearInfo>{checkItem?.posblFcltyCl}</NearInfo>
+        <NearInfo>{detailItem?.posblFcltyCl}</NearInfo>
         <AdTitle>체험 프로그램</AdTitle>
         <Adven>이용 가능한 체험프로그램이 없습니다.</Adven>
         <MidLane></MidLane>
       </InfoBox>
 
+      <MapTitle>지도</MapTitle>
       <MapWrapper>
-        <MapTitle>지도</MapTitle>
         <DetailMap />
+        <BtnBox>
+          <CopyToClipboard text={url}>
+            <ClipBoardBtn onClick={copied}>
+              <img src="/images/icon-share.svg" alt="share" />
+            </ClipBoardBtn>
+          </CopyToClipboard>
+          <PlanBtn onClick={openPlan}>내 여행일정에 저장</PlanBtn>
+        </BtnBox>
       </MapWrapper>
     </Wrapper>
   );
@@ -179,26 +197,57 @@ const BasicInfo = styled.div`
 `;
 
 const AdTitle = styled.div`
-  font-size: ${(props) => props.theme.pixelToRem(14)};
   margin-top: 30px;
+  font-size: ${(props) => props.theme.pixelToRem(15)};
+  color: #222;
 `;
 
 const Adven = styled.div`
-  margin-top: 2px;
+  margin-top: 10px;
   font-size: ${(props) => props.theme.pixelToRem(14)};
   color: #666;
 `;
 
+//
 const MapWrapper = styled.div`
-  margin: 32px auto;
+  margin: 0 auto;
   width: ${(props) => props.theme.pixelToRem(355)};
+  /* max-width: ${(props) => props.theme.pixelToRem(475)}; */
   height: ${(props) => props.theme.pixelToRem(162)};
   justify-content: center;
 `;
 
 const MapTitle = styled.div`
+  margin-left: 10px;
   font-weight: 600;
   font-size: ${(props) => props.theme.pixelToRem(18)};
   color: #222;
   margin-bottom: 1rem;
+`;
+
+const BtnBox = styled.div`
+  display: flex;
+  margin: 10px;
+  width: ${(props) => props.theme.pixelToRem(355)};
+`;
+
+const ClipBoardBtn = styled.button`
+  width: ${(props) => props.theme.pixelToRem(70)};
+  height: ${(props) => props.theme.pixelToRem(54)};
+  border: 1px solid #e2e2e2;
+  border-radius: ${(props) => props.theme.pixelToRem(10)};
+  background-color: transparent;
+  cursor: pointer;
+`;
+
+const PlanBtn = styled.button`
+  margin-left: 14px;
+  width: ${(props) => props.theme.pixelToRem(251)};
+  height: ${(props) => props.theme.pixelToRem(54)};
+  border-radius: ${(props) => props.theme.pixelToRem(10)};
+  font-size: ${(props) => props.theme.pixelToRem(16)};
+  border: none;
+  background-color: #024873;
+  color: #fff;
+  cursor: pointer;
 `;

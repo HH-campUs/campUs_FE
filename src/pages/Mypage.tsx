@@ -3,6 +3,8 @@ import { isModal } from "../store/searchAtom";
 import Search from "../components/withSearch/Search";
 import { Link, Outlet, useMatch, useNavigate } from "react-router-dom";
 import ProfileModal from "../components/ProfileModal";
+import { InfoToast } from "../components/Toast/Toast";
+import { isToast, isToast2 } from "../store/toastAtom";
 
 //Login
 
@@ -12,11 +14,12 @@ import { getCamperToken } from "../instance/cookies";
 
 //css
 import styled from "styled-components";
-import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 
 function Mypage() {
   const checkPf = useMyPageApi.useGetMyPage().data?.data;
   const [isSearch, setIsSearch] = useRecoilState(isModal);
+  const [toastState, setToastState] = useRecoilState(isToast);
+  const [toastState2, setToastState2] = useRecoilState(isToast2);
 
   const [isPopUp, setIsPopUp] = useState(false);
   const myReviewMatch = useMatch("/mypage/myreview");
@@ -29,7 +32,16 @@ function Mypage() {
   return (
     <>
       {isSearch == false ? null : <Search />}
+
       <Wrapper>
+        {toastState == true ? (
+          <InfoToast
+            text={"프로필이 변경되었어요."}
+            toastState={toastState}
+            setToastState={setToastState}
+          />
+        ) : null}
+
         {isLogin ? (
           <>
             <UserProfile>
@@ -51,14 +63,14 @@ function Mypage() {
               </LoginProfile>
 
               <Tabs>
-                <Tab isActive={Boolean(myPickMatch)}>
-                  <Link to="/mypage/mypick">찜한 캠핑장</Link>
-                </Tab>
                 <Tab isActive={Boolean(myPlanMatch)}>
                   <Link to="/mypage/myplan">여행일정</Link>
                 </Tab>
                 <Tab isActive={Boolean(myReviewMatch)}>
                   <Link to="/mypage/myreview">내 리뷰</Link>
+                </Tab>
+                <Tab isActive={Boolean(myPickMatch)}>
+                  <Link to="/mypage/mypick">찜한 캠핑장</Link>
                 </Tab>
               </Tabs>
               <div>
@@ -100,19 +112,18 @@ function Mypage() {
               </Profile>
 
               <Tabs>
-                <Tab isActive={Boolean(myPickMatch)}>
-                  <Link to="/mypage/mypick">찜한 캠핑장</Link>
-                </Tab>
                 <Tab isActive={Boolean(myPlanMatch)}>
                   <Link to="/mypage/myplan">여행일정</Link>
                 </Tab>
                 <Tab isActive={Boolean(myReviewMatch)}>
                   <Link to="/mypage/myreview">내 리뷰</Link>
                 </Tab>
+                <Tab isActive={Boolean(myPickMatch)}>
+                  <Link to="/mypage/mypick">찜한 캠핑장</Link>
+                </Tab>
               </Tabs>
               <div
                 style={{
-                  // height: "100vh",
                   marginTop: "20px",
                 }}
               >
@@ -128,13 +139,11 @@ function Mypage() {
 
 export default Mypage;
 
-// ${(props) => props.theme.pixelToRem(375)};
 const Wrapper = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
   height: 100vh;
-  /* background-color: red; */
 `;
 
 const HeadText = styled.div`
@@ -153,7 +162,7 @@ const UserProfile = styled.div`
 
 const Profile = styled.div`
   width: 100%;
-  height: ${(props) => props.theme.pixelToRem(286)};
+  height: ${(props) => props.theme.pixelToRem(240)};
   background-color: #f5f5f5;
 `;
 
@@ -248,7 +257,7 @@ const Tab = styled.span<{ isActive: boolean }>`
   background-color: ${(props) => props.theme.bgColor};
   border-bottom: ${(props) => (props.isActive ? "2px solid black" : "none")};
   color: ${(props) => (props.isActive ? "#222" : "#ccc")};
-  height: 100vh;
+  /* height: 100vh; */
 `;
 
 const Line = styled.div`

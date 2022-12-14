@@ -1,26 +1,30 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React, { useState } from "react";
 import styled from "styled-components";
 import { usePostsApi } from "../APIs/postsApi";
 import { IPickedCamp } from "../interfaces/Posts";
 import { InfoToast } from "./Toast/Toast";
 
+import { ICampingPicked } from "../interfaces/Posts";
+import { instance } from "../instance/instance";
+
 export default function MyPickDelete({ pick }: { pick: IPickedCamp }) {
-  const campick = usePostsApi.useCampingPicked();
   const [toastState, setToastState] = useState(false);
 
-  //   <Toast>
-  //   {toastState == true ? (
-  //     <InfoToast
-  //       text={"찜하기 삭제"}
-  //       toastState={toastState}
-  //       setToastState={setToastState}
-  //     />
-  //   ) : null}
-  // </Toast>
+  const queryClient = useQueryClient();
+  const mutateFn = async (payload: ICampingPicked) => {
+    const { data } = await instance.put(`/camps/${payload}/pick`);
+    return data;
+  };
+
+  const pickMutate = useMutation(mutateFn, {
+    onSuccess: () => queryClient.invalidateQueries(),
+    onError: () => console.log("찜하기 실패했습니다."),
+  });
+
   const unpick = (campId: number) => {
-    campick.mutate(campId);
+    pickMutate.mutate(campId);
     window.alert("찜하기삭제");
-    // setToastState(true);
   };
 
   return (

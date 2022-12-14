@@ -1,54 +1,61 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
+
+import { isToast, isToast2 } from "../store/toastAtom";
 import { usePostsApi } from "../APIs/postsApi";
 import { getCamperToken } from "../instance/cookies";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
+import { ICampingPicked } from "../interfaces/Posts";
 
 //css
 import styled from "styled-components";
 import { IGetCampResult } from "../interfaces/get";
 import { InfoToast, NoIdPickToast, NavToast } from "../components/Toast/Toast";
-
-import { ToastProps } from "../interfaces/props";
+import { instance } from "../instance/instance";
 
 export default function ResultBookmark({ camp }: { camp: IGetCampResult }) {
-  const [toastState, setToastState] = useState(false);
+  const [toastState, setToastState] = useRecoilState(isToast);
+  const [toastState2, setToastState2] = useRecoilState(isToast2);
 
-  const campick = usePostsApi.useCampingPicked();
+  const isLogin = getCamperToken();
+
+  //찜하기 query
+  const queryClient = useQueryClient();
+  const mutateFn = async (payload: ICampingPicked) => {
+    const { data } = await instance.put(`/camps/${payload}/pick`);
+    return data;
+  };
+
+  const pickMutate = useMutation(mutateFn, {
+    onSuccess: () => queryClient.invalidateQueries(),
+    onError: () => console.log("찜하기 실패했습니다."),
+  });
 
   const pick = (campId: number) => {
-    campick.mutate(campId);
+    pickMutate.mutate(campId);
     if (!isLogin) return setToastState(true);
     else {
-      window.alert("찜하기 완료");
+      setToastState(true);
     }
   };
 
   const unpick = (campId: number) => {
-    campick.mutate(campId);
-    window.alert("찜하기 취소");
-    setToastState(false);
+    pickMutate.mutate(campId);
+    setToastState2(true);
   };
-
-  const isLogin = getCamperToken();
 
   //onclick한번 / icon 3항.
   return (
     <>
-      {!isLogin ? (
-        toastState == true ? (
-          <NoIdPickToast
-            text={"로그인 후 찜하기가 가능해요."}
-            toastState={toastState}
-            setToastState={setToastState}
-          />
-        ) : null
-      ) : null}
       {camp.status ? (
         <CampImgBox>
           <BookmarkBorderIcon
             onClick={(e) => {
               e.stopPropagation();
               unpick(camp.campId);
-            }}>
+            }}
+          >
             <img
               src="/images/picked2.svg"
               alt="Bookmarked"
@@ -62,7 +69,8 @@ export default function ResultBookmark({ camp }: { camp: IGetCampResult }) {
             onClick={(e) => {
               e.stopPropagation();
               pick(camp.campId);
-            }}>
+            }}
+          >
             <img
               src="/images/pick1.svg"
               alt="Bookmark"
@@ -76,11 +84,13 @@ export default function ResultBookmark({ camp }: { camp: IGetCampResult }) {
 }
 
 const Bookmark = styled.div`
+  cursor: pointer;
   position: absolute;
   top: 10px;
   right: 10px;
 `;
 const BookmarkBorderIcon = styled.div`
+  cursor: pointer;
   position: absolute;
   top: 10px;
   right: 10px;

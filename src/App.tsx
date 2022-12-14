@@ -2,7 +2,6 @@ import Router from "./router/Router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 /* import { ReactQueryDevtools } from "react-query/devtools"; */
 import { TransitionGroup, CSSTransition } from "react-transition-group";
-import { toast, ToastContainer } from "react-toastify";
 import "./style/transition.css";
 
 import Splash from "./pages/Splash";

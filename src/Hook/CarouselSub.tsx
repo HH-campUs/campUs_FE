@@ -19,7 +19,7 @@ export default function CarouselSub() {
     return v;
   };
 
-  // const { id } = useParams();
+  const { topicId } = useParams();
 
   const imageList = [
     {
@@ -44,11 +44,11 @@ export default function CarouselSub() {
     },
   ];
 
-  const handleClick = (id: number) => () => {
-    navigate(`/topic/${id}`, {
+  const handleClick = (topicId: number) => () => {
+    navigate(`/topic/${topicId}`, {
       state: {
-        topicImg: `${imageList[id - 1].img}`,
-        id: `${imageList[id - 1].id}`,
+        topicImg: `${imageList[topicId - 1].img}`,
+        id: `${imageList[topicId - 1].id}`,
       },
     });
   };
@@ -127,7 +127,6 @@ export default function CarouselSub() {
                 src={"/images/subject/image5.jpg"}
                 alt="img"
                 width={width}
-
               />
             </BoxEx>
           </CaroImgBox>
@@ -160,6 +159,7 @@ const ImgCover = styled.div`
   border-radius: ${(props) => props.theme.pixelToRem(10)};
   z-index: 1;
   position: absolute;
+  cursor: pointer;
 `;
 
 const CarouselImg = styled.img`

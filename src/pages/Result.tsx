@@ -3,8 +3,11 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { useInView } from "react-intersection-observer";
 
 import Up from "../components/Up";
+import { InfoToast2, NoIdPickToast, NavToast } from "../components/Toast/Toast";
+
 import { isModal, textValue } from "../store/searchAtom";
 import { showLo, selectLo } from "../store/locationAtom";
+import { isToast, isToast2 } from "../store/toastAtom";
 import { StrMonth, StrDay, DateState } from "../store/dateAtom";
 import Search from "../components/withSearch/Search";
 import { useNavigate } from "react-router-dom";
@@ -17,7 +20,8 @@ import { getCamperToken } from "../instance/cookies";
 function Result() {
   const nav = useNavigate();
   /* toast boolean */
-  const [toastState, setToastState] = useState(false);
+  const [toastState, setToastState] = useRecoilState(isToast);
+  const [toastState2, setToastState2] = useRecoilState(isToast2);
 
   /* data */
   const [isActive, setIsActive] = useState(false);
@@ -44,7 +48,6 @@ function Result() {
 
   const { campData, fetchNextPage, isSuccess, hasNextPage, refetch } =
     useGetCamp(doNm, sortState);
-  console.log(campData, sortState);
 
   const { ref, inView } = useInView();
 
@@ -63,6 +66,31 @@ function Result() {
   return (
     <>
       <Wrapper>
+        {toastState == true ? (
+          !isLogin ? (
+            <NoIdPickToast
+              text={"로그인 후 찜하기가 가능해요."}
+              toastState={toastState}
+              setToastState={setToastState}
+            />
+          ) : (
+            <NavToast
+              text={"찜목록에 추가되었어요."}
+              url={"/mypage/mypick"}
+              toastState={toastState}
+              setToastState={setToastState}
+            />
+          )
+        ) : null}
+
+        {toastState2 == true ? (
+          <InfoToast2
+            text={"찜목록에 제거되었어요."}
+            toastState2={toastState2}
+            setToastState2={setToastState2}
+          />
+        ) : null}
+
         {isSearch == false ? undefined : <Search />}
         <ReSearch>
           <div
@@ -90,7 +118,7 @@ function Result() {
             style={{ transition: "all 0.5 ease-in-out" }}>
             <div className="top">
               <span>날씨</span>
-              <span>{isWeather ? "펼치기" : "접기"}</span>
+              <span>{isWeather ? "접기" : "펼치기"}</span>
             </div>
             {/* 펼치기 전 */}
             <div className="isNotActive">
@@ -321,7 +349,6 @@ function Result() {
             <div>
               <span className="result"> 검색결과 </span>
               <span className="total">
-                {" "}
                 ({campData?.pages[0].camps.total}개)
               </span>
             </div>
@@ -330,22 +357,19 @@ function Result() {
                 <span
                   className="popular"
                   onClick={() => setSortState("pickCount")}>
-                  {" "}
-                  조회순{" "}
+                  조회순
                 </span>
               ) : sortState == "pickCount" ? (
                 <span
                   className="popular"
                   onClick={() => setSortState("reviewCount")}>
-                  {" "}
-                  인기순{" "}
+                  인기순
                 </span>
               ) : (
                 <span
                   className="popular"
                   onClick={() => setSortState("lookUp")}>
-                  {" "}
-                  리뷰순{" "}
+                  리뷰순
                 </span>
               )}
             </div>
@@ -357,13 +381,7 @@ function Result() {
                 {page?.camps.regionCamp.map((item: IGetCampResult) => (
                   <ResultBox key={item.campId}>
                     <ResultItem
-                      onClick={() =>
-                        nav(`/detail/:${item.campId}/detail`, {
-                          state: {
-                            campId: `${item.campId}`,
-                          },
-                        })
-                      }>
+                      onClick={() => nav(`/detail/${item.campId}/detail`)}>
                       <ResultBookmark camp={item} />
                       <ResultImg src={item.ImageUrl} alt={item.ImageUrl} />
                       <InnerBg>
@@ -385,7 +403,7 @@ function Result() {
                       </span>
                     </DetailAddress>
                     {/* 시설 태그들 (max: 4) */}
-                    <TagContainer onClick={() => setToastState(true)}>
+                    <TagContainer>
                       {item.sbrsCl == ""
                         ? null
                         : item.sbrsCl
@@ -543,19 +561,19 @@ const WeatherModal = styled.div<{ isWeather: boolean }>`
 
       .temBox {
         padding-right: 8px;
+        position: relative;
 
         .lowHigh {
           width: ${(props) => props.theme.pixelToRem(20)};
           height: ${(props) => props.theme.pixelToRem(34)};
           margin-top: 8px;
-          margin-left: 78px;
+          margin-left: 42%;
           flex-direction: row;
           position: absolute;
 
           p:nth-child(1) {
             display: inline;
             position: absolute;
-
             ${(props) => props.theme.fontTheme.Caption2};
             color: ${(props) => props.theme.colorTheme.cold};
           }
@@ -617,24 +635,23 @@ const WeatherModal = styled.div<{ isWeather: boolean }>`
       height: ${(props) => props.theme.pixelToRem(193)};
 
       .tempGraph {
-        width: inherit;
+        width: 375px;
         height: ${(props) => props.theme.pixelToRem(97)};
         margin-top: 15px;
         margin-bottom: 5px;
         padding: 20px;
-
         img {
           display: flex;
 
           &:first-child {
             width: ${(props) => props.theme.pixelToRem(247)};
-            margin: 0 auto;
+            margin: 0 13px 0;
             position: relative;
           }
           &:nth-child(2) {
             width: ${(props) => props.theme.pixelToRem(24)};
             margin-top: -12px;
-            margin-left: -5px;
+            margin-left: 5px;
             position: absoulte;
           }
           &:nth-child(3) {
@@ -662,17 +679,17 @@ const WeatherModal = styled.div<{ isWeather: boolean }>`
           &:nth-child(5) {
             width: ${(props) => props.theme.pixelToRem(30)};
             margin-top: 3px;
-            margin-left: -6px;
+            margin-left: 13px;
           }
           &:nth-child(6) {
             width: ${(props) => props.theme.pixelToRem(30)};
             margin-top: -44px;
-            margin-left: 123px;
+            margin-left: 132px;
           }
           &:nth-child(7) {
             width: ${(props) => props.theme.pixelToRem(30)};
             margin-top: -1px;
-            margin-left: 255px;
+            margin-left: 262px;
           }
         }
       }
@@ -959,7 +976,7 @@ const InnerBg = styled.div`
   height: ${(props) => props.theme.pixelToRem(24)};
   padding: 2px;
   margin-top: -34px;
-  margin-left: 246px;
+  left: 73%;
   border-radius: 4px;
   background-color: #000000;
   position: relative;

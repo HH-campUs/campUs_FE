@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { instance, postInstance } from "../instance/instance";
 
@@ -6,7 +6,6 @@ import {
   IReviewPosts,
   IEditReviewPosts,
   IPostTravelPlan,
-  ICampingPicked,
 } from "../interfaces/Posts";
 
 const serverUrl = process.env.REACT_APP_API;
@@ -36,12 +35,14 @@ export const usePostsApi = {
     );
   },
 
+  // const removeCommentData = {
+  //   groupId: groupId,
+  //   commentId: commentId,
+  // };
   //** 리뷰삭제 / delete ** //
   useDeleteReview: () => {
-    return useMutation(async (id: number) => {
-      const { data } = await instance.delete(
-        `${serverUrl}/camps/:campId/:reviewId`
-      );
+    return useMutation(async (reviewId: number) => {
+      const { data } = await instance.delete(`reviews/:reviewId`);
       return data;
     });
   },
@@ -67,19 +68,13 @@ export const usePostsApi = {
 
   /* 여행일정수정/ put */
   useUpdateTravelPlan: () => {
-    return useMutation((payload: IPostTravelPlan) =>
-      instance.put(`/camps/${payload}`, {
+    return useMutation(async (payload: IPostTravelPlan) => {
+      console.log(payload);
+      const { data } = await instance.put(`/camps/${payload.tripId}/`, {
         date: payload.date,
         memo: payload.memo,
-      })
-    );
-  },
-
-  // ** 캠핑장 찜하기 , payload값없이 header로 access/refresh토큰만보내면됨 / POST ** /
-  useCampingPicked: () => {
-    return useMutation(
-      async (payload: ICampingPicked) =>
-        await instance.put(`/camps/${payload}/pick`)
-    );
+      });
+      return data;
+    });
   },
 };

@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { getCamperToken } from "../../instance/cookies";
 import { useMyPageApi } from "../../APIs/myPageApi";
-import { IReviewRead } from "../../interfaces/Posts";
 import styled from "styled-components";
 import { IGetMyReview } from "../../interfaces/MyPage";
+import MyReviewUpdate from "./MyReviewUpdate";
 
 export default function MyReview() {
   const isLogin = getCamperToken();
@@ -11,9 +11,8 @@ export default function MyReview() {
 
   const myReviewDummy = useMyPageApi.useGetMyReview();
   const myReview = myReviewDummy.data?.data;
-
+  // console.log("내리뷰", myReview);
   const checkPf = useMyPageApi.useGetMyPage().data?.data;
-  const checkReview = checkPf?.Review;
 
   return (
     <Wrapper>
@@ -32,10 +31,17 @@ export default function MyReview() {
                 <PfImg>
                   <img src={checkPf?.profileImg} alt="pfImg" />
                 </PfImg>
-                <div style={{ flexDirection: "column", marginLeft: "6.5px" }}>
+                <div
+                  style={{
+                    flexDirection: "column",
+                    marginLeft: "6.5px",
+                    display: "flex",
+                    width: "100%",
+                  }}
+                >
                   <NickBox>
                     <PfNick>{checkPf?.nickname}</PfNick>
-                    <ReviewUpdate>수정</ReviewUpdate>
+                    <MyReviewUpdate review={item} />
                   </NickBox>
                   <LocaBox>
                     <CampLoca>{item?.campName} </CampLoca>
@@ -65,12 +71,12 @@ export default function MyReview() {
         <>
           <NotiBox>
             <div>
-              <img src="/images/mypage/reviewramp1.svg" alt="tent" />
+              <img src="/images/mypage/newreview.svg" alt="tent" />
             </div>
             <PickText>아직 작성한 리뷰가 없어요!</PickText>
             <PickBtn
               onClick={() => {
-                navigate("/topic/1");
+                navigate("/result");
               }}
             >
               다녀온 캠핑장 구경가기
@@ -98,6 +104,7 @@ const ReviewHead = styled.div`
   margin-left: 20px;
   display: flex;
   justify-content: space-between;
+  width: 85%;
 `;
 
 const LeftText = styled.div`
@@ -111,26 +118,29 @@ const LeftText = styled.div`
 `;
 
 const RightIcon = styled.img`
-  margin-right: 20px;
+  /* right: 100; */
+  /* margin-right: 40px; */
 `;
-// ${(props) => props.theme.pixelToRem(335)};
+
 const ReviewMap = styled.div`
   margin-top: 16px;
   margin-left: 20px;
   /* margin-bottom: 250px; */
   width: 90%;
-
-  height: ${(props) => props.theme.pixelToRem(258)};
+  height: fit-content;
+  max-height: ${(props) => props.theme.pixelToRem(258)};
+  /* height: fit-content; */
+  /* height: ${(props) => props.theme.pixelToRem(258)}; */
   border-radius: ${(props) => props.theme.pixelToRem(10)};
   border: 1px solid #eee;
   background-color: #f8f8f8;
   flex-direction: column;
 `;
-// ${(props) => props.theme.pixelToRem(300)};
+
 const PfBox = styled.div`
-  width: 91%;
+  width: 100%;
   height: ${(props) => props.theme.pixelToRem(40)};
-  margin: 18px 18px 0 22px;
+  margin: 18px 0 0 20px;
   display: flex;
 `;
 
@@ -142,10 +152,10 @@ const PfImg = styled.div`
     object-fit: cover;
   }
 `;
-//${(props) => props.theme.pixelToRem(250)}; */
+
 const NickBox = styled.div`
+  margin-top: 3px;
   width: 100%;
-  /* max-width: ${(props) => props.theme.pixelToRem(340)}; */
   justify-content: space-between;
   display: flex;
   font-size: ${(props) => props.theme.pixelToRem(14)};
@@ -155,14 +165,9 @@ const PfNick = styled.div`
   color: #222;
 `;
 
-const ReviewUpdate = styled.div`
-  color: #5185a6;
-`;
-
 const LocaBox = styled.div`
   width: ${(props) => props.theme.pixelToRem(250)};
   display: flex;
-  margin-top: 6px;
   font-size: ${(props) => props.theme.pixelToRem(14)};
   color: #666;
 `;
@@ -181,14 +186,14 @@ const ReviewBox = styled.div`
   margin-left: 18px;
   line-height: 1.57;
   word-break: normal;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
 `;
 
 const ReviewText = styled.div``;
-
-const ReviewImg = styled.div``;
 
 const ImgFlex = styled.div`
   margin-top: 14px;
@@ -196,10 +201,10 @@ const ImgFlex = styled.div`
   width: ${(props) => props.theme.pixelToRem(77)};
   height: ${(props) => props.theme.pixelToRem(84)};
   display: flex;
+  margin-bottom: 15px;
 `;
 
 const ImgBox = styled.div`
-  /* display: flex; */
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: ${(props) => props.theme.pixelToRem(5)};
@@ -208,7 +213,6 @@ const ImgBox = styled.div`
     width: ${(props) => props.theme.pixelToRem(77)};
     height: ${(props) => props.theme.pixelToRem(84)};
     aspect-ratio: 1/1;
-    /* border: 1px solid lightgray; */
   }
 `;
 

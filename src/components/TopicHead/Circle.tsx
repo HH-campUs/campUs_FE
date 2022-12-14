@@ -29,25 +29,22 @@ export default function Circle() {
 }
 
 const CircleMap = styled.div`
-  width: 100%;
   max-width: ${(props) => props.theme.pixelToRem(475)};
-  /* min-width: ${(props) => props.theme.pixelToRem(425)}; */
   height: 10px;
   display: flex;
   z-index: 1;
   gap: 5px;
   position: absolute;
-  left: 80%;
+  right: 7%;
   margin-top: -40px;
 `;
 
 const CircleNav = styled.div`
   cursor: pointer;
-  /* background-color: beige; */
 `;
 
 const Contrast = styled.div`
-  background-color: red;
+  background-color: #ffffff;
   width: 8px;
   height: 8px;
   border-radius: 8px;

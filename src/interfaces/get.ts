@@ -35,6 +35,8 @@ export interface IGetCampReview {
   updatedAt: string;
   nickname: string;
   profileImg: string;
+  userId: number;
+  reviewId: number;
 }
 
 export interface IGetNewReview {
@@ -49,7 +51,8 @@ export interface IGetNewReview {
   nickname: string;
   profileImg: string;
   data: IGetNewReview[];
-  NewReview: IGetNewReview[];
+
+  campName: string;
 }
 
 export interface IGetDistance {
@@ -179,7 +182,7 @@ export interface IGetCampResult {
   review: IGetCampResult;
   pick: IGetCampResult;
   camp: IGetCampResult[];
-  // 0: IGetCampResult;
+  distance: number;
 
   /* toast */
   toastState?: boolean;

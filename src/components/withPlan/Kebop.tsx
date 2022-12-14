@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import SemiSearch from "../withSearch/SemiSearch";
 import { usePostsApi } from "../../APIs/postsApi";
+
 import { IGetTravelPlan } from "../../interfaces/MyPage";
 import { semiOpenProps } from "../../interfaces/props";
 import PlanUpdate from "../../components/withPlan/PlanUpdate";
 import { updateState } from "../../store/profileAtoms";
 import { InfoToast } from "../../components/Toast/Toast";
+
 
 function Kebop({ tripId }: any) {
   const [toastState, setToastState] = useState(false);

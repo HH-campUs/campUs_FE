@@ -114,7 +114,11 @@ export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
           <PfModalWrap className="isPopUp">
             <HeadText>
               <PfText>프로필 수정</PfText>
-              <CloseBtn src="/images/closeBtn.svg" onClick={closeModal} />
+              <CloseBtn
+                src="/images/closeBtn.svg"
+                alt="close"
+                onClick={closeModal}
+              />
             </HeadText>
             <NickForm onSubmit={handleSubmit(handleValid)}>
               <PfBox>
@@ -123,11 +127,12 @@ export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
                     <ImgPreview
                       style={{ objectFit: "cover" }}
                       src={imagePreview}
+                      alt="image"
                     />
                   )}
                   <img
                     src={checkPf?.profileImg}
-                    alt="PFP"
+                    alt="Pfp"
                     style={{
                       width: "90px",
                       height: "90px",
@@ -198,7 +203,7 @@ const PfModalWrap = styled.button`
   border: 1px solid #bdbdbd;
   background-color: white;
   color: #474747;
-  z-index: 1;
+  /* z-index: 1; */
 
   &.setIsPopUp {
     width: ${(props) => props.theme.pixelToRem(53)};
@@ -268,6 +273,7 @@ const CloseBtn = styled.img`
   width: ${(props) => props.theme.pixelToRem(20)};
   height: ${(props) => props.theme.pixelToRem(20)};
   margin-left: 160px;
+  cursor: pointer;
 `;
 
 const PfCircle = styled.div`

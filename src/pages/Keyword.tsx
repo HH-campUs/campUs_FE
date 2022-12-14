@@ -164,14 +164,8 @@ function Keyword() {
               <React.Fragment key={page.currentPage}>
                 {page?.camps.searchCamp?.map((item: IGetCampResult) => (
                   <ResultBox key={item.campId}>
-                    <ResultItem
-                      onClick={() =>
-                        nav(`/detail/:${item.campId}/detail`, {
-                          state: {
-                            campId: `${item.campId}`,
-                          },
-                        })
-                      }>
+                    <ResultItem onClick={() => nav(`/detail/${item.campId}/detail`)} >
+
                       <ResultImg src={item.ImageUrl} alt={item.ImageUrl} />
                       <InnerBg>
                         <span>

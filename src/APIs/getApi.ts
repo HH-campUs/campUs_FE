@@ -1,4 +1,5 @@
 import { useQuery, useInfiniteQuery } from "@tanstack/react-query";
+
 import { instance, instanceTopic } from "../instance/instance";
 
 import {
@@ -50,7 +51,7 @@ export const useSearchCamp = (keyword: string, sort: string) => {
 /* 리얼 인피니티 스크롤 - 캠프 result 페이지 전용*/
 export const useGetCamp = (doNm: string, sort: string) => {
   const useData = async ({ pageParam = 1 }) => {
-    const { data } = await instanceTopic.get<campArray>(
+    const { data } = await instance.get<campArray>(
       `/camps?doNm=${doNm}&numOfRows=20&pageNo=${pageParam}&sort=${sort}`
     );
 
@@ -81,7 +82,7 @@ export const useGetCamp = (doNm: string, sort: string) => {
 //infiniteQuery for Topic
 export const useGetTopicInfinite = (topicId: string, sort: string) => {
   const topicData = async ({ pageParam = 0 }) => {
-    const { data } = await instanceTopic.get<pickedCamp>(
+    const { data } = await instance.get<pickedCamp>(
       `/camps/${topicId}?&numOfRows=10&pageNo=${pageParam}&sort=${sort}`
     );
     return {
@@ -184,6 +185,7 @@ export const useGetApi = {
   useGetNewReview: () => {
     return useQuery<IGetNewReview>(["reviewnew"], async () => {
       const { data } = await instance.get(`/reviews`);
+      console.log("review", data);
       return data;
     });
   },
@@ -213,13 +215,22 @@ export const useGetApi = {
 
   // ** 캠핑장 거리 조회 ** //
   useGetDistance: (campX: number, campY: number) => {
-    return useQuery(["distanceinfo"], async () => {
-      const { data } = await instance.get<IGetDistance>(
-        `users/nearCamp?campX=${campX}&campY=${campY}`
-      );
-
-      return data;
-    });
+    console.log("196", campX, campY);
+    return useQuery<IGetDistance>(
+      ["distanceinfo"],
+      async () => {
+        if (campX && campY) {
+          const { data } = await instance.get(
+            `users/nearCamp?campX=${campX}&campY=${campY}`
+          );
+          console.log("203", campX, campY);
+          console.log(data);
+          return data.nearCamp;
+        }
+        return [];
+      }
+      // { enabled: !!(campX && campY) }
+    );
   },
 
   /* topic 별 캠핑장 결과 조회 */

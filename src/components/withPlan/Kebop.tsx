@@ -18,7 +18,12 @@ function Kebop({ tripId }: any) {
       <img
         src="/images/icon-more.svg"
         alt="more"
-        style={{ width: "6%", marginTop: "-52px", marginLeft: "40px" }}
+        style={{
+          width: "6%",
+          marginTop: "-52px",
+          marginLeft: "328px",
+          position: "relative",
+        }}
         onClick={() => setOpenMore(!openMore)}
       />
       {openMore == true ? (
@@ -38,7 +43,7 @@ const BtnBox = styled.div`
   height: ${(props) => props.theme.pixelToRem(94)};
   flex-grow: 0;
   margin-top: 30px;
-  margin-left: 230px;
+  margin-left: 250px;
 
   border-radius: 10px;
   box-shadow: 4px 4px 15px 0 rgba(0, 0, 0, 0.18);

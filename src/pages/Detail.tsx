@@ -235,9 +235,11 @@ function Detail() {
                 fontSize: "1rem",
                 marginTop: "-4px",
                 marginLeft: "4px",
+
               }}
             ></span>
             <Plan> 일정을 저장해 보세요! </Plan>
+
           </div>
           {isLogin ? (
             <div className="rightBtn" onClick={openPlan}>
@@ -272,14 +274,12 @@ function Detail() {
         <Tabs>
           <Tab
             isLine={Boolean(detailMatch)}
-            onClick={() => navigate(`/detail/${campId}/detail`)}
-          >
+            onClick={() => navigate(`/detail/${campId}/detail`)}>
             상세정보
           </Tab>
           <Tab
             isLine={Boolean(reviewMatch)}
-            onClick={() => navigate(`/detail/${campId}/review`)}
-          >
+            onClick={() => navigate(`/detail/${campId}/review`)}>
             리뷰
           </Tab>
         </Tabs>

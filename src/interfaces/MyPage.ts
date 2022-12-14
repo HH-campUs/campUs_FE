@@ -15,7 +15,7 @@ export interface IGetMyReview {
 export interface IGetTravelPlan {
   tripId: number | undefined;
   campId: number;
-  memo?: string;
+  memo: string;
   ImageUrl: string;
   campName: string;
   address?: string;

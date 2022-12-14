@@ -4,18 +4,32 @@ import { usePostsApi } from "../APIs/postsApi";
 //css
 import styled from "styled-components";
 import { IGetCampResult } from "../interfaces/get";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
+import { ICampingPicked } from "../interfaces/Posts";
+import { instance } from "../instance/instance";
 
 export default function TopicMap({ Camp }: { Camp: IGetCampResult }) {
-  const campick = usePostsApi?.useCampingPicked();
+  //찜하기 query
+  const queryClient = useQueryClient();
+  const mutateFn = async (payload: ICampingPicked) => {
+    const { data } = await instance.put(`/camps/${payload}/pick`);
+    return data;
+  };
+
+  const pickMutate = useMutation(mutateFn, {
+    onSuccess: () => queryClient.invalidateQueries(),
+    onError: () => console.log("찜하기 실패했습니다."),
+  });
 
   const pick = (campId: number) => {
-    campick.mutate(campId);
+    pickMutate.mutate(campId);
     window.alert("찜하기 완료");
     console.log("좋아요", Camp.status);
   };
 
   const unpick = (campId: number) => {
-    campick.mutate(campId);
+    pickMutate.mutate(campId);
     window.alert("찜하기 취소");
   };
 
@@ -27,7 +41,8 @@ export default function TopicMap({ Camp }: { Camp: IGetCampResult }) {
           <BookmarkBorderIcon
             onClick={() => {
               unpick(Camp.campId);
-            }}>
+            }}
+          >
             <img
               src="/images/picked2.svg"
               alt="Bookmarked"
@@ -40,7 +55,8 @@ export default function TopicMap({ Camp }: { Camp: IGetCampResult }) {
           <Bookmark
             onClick={() => {
               pick(Camp.campId);
-            }}>
+            }}
+          >
             <img
               src="/images/pick1.svg"
               alt="Bookmark"

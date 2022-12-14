@@ -12,7 +12,11 @@ import { StrDay } from "../store/dateAtom";
 import getIcons from "../utils/getIcons";
 import { getCamperToken } from "../instance/cookies";
 import { isToast, isToast2 } from "../store/toastAtom";
-import { InfoToast, NoIdPickToast, NavToast2 } from "../components/Toast/Toast";
+import { NoIdPickToast, NavToast2 } from "../components/Toast/Toast";
+import { usePostsApi } from "../APIs/postsApi";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { ICampingPicked } from "../interfaces/Posts";
+import { instance } from "../instance/instance";
 
 function Detail() {
   const [toastState, setToastState] = useRecoilState(isToast);
@@ -40,6 +44,28 @@ function Detail() {
 
   const { campId } = useParams();
 
+  //찜하기 query
+  const queryClient = useQueryClient();
+  const mutateFn = async (payload: ICampingPicked) => {
+    const { data } = await instance.put(`/camps/${payload}/pick`);
+    return data;
+  };
+
+  const pickMutate = useMutation(mutateFn, {
+    onSuccess: () => queryClient.invalidateQueries(),
+    onError: () => console.log("찜하기 실패했습니다."),
+  });
+
+  const Mypick = (campId: number) => {
+    pickMutate.mutate(campId);
+    console.log("짬하기", campId);
+  };
+
+  const Unpick = (campId: number) => {
+    pickMutate.mutate(campId);
+    console.log("취소", campId);
+  };
+
   const goBack = () => {
     navigate(-1);
   };
@@ -62,16 +88,12 @@ function Detail() {
   // useEffect로 detail아이템이 바꼈을때 checkitem으로 state값으로관리
   // setquerydata
   const detailItem: any = useGetApi.useGetCampDetail(campId)?.data?.[0];
+  // console.log("detail", detailItem);
 
   const icons = useMemo<string[]>(() => {
     if (!detailItem) return [];
     return detailItem.sbrsCl?.split(",");
   }, [detailItem]);
-
-  const [bookmark, setBookMark] = useState(true);
-  const marking = () => {
-    setBookMark((prev) => !prev);
-  };
 
   useEffect(() => {
     window.scrollTo({ left: 0, top: 0 });
@@ -98,7 +120,6 @@ function Detail() {
           />
         ) : null}
 
-        {/* 일정버튼 눌러서 저장 완료 했을 때 */}
         {toastState2 == true ? (
           <NavToast2
             text={"여행일정 등록을 완료했어요."}
@@ -140,8 +161,30 @@ function Detail() {
                 </CopyToClipboard>
               </div>
               <div className="buttonBg">
-                <PickImg onClick={marking}>
-                  {bookmark ? (
+                {detailItem?.status ? (
+                  <PickImg
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      Mypick(detailItem.campId);
+                    }}
+                  >
+                    <img
+                      src="/images/icons/picked.svg"
+                      alt="Picked"
+                      style={{
+                        width: "17px",
+                        marginLeft: "5.5px",
+                        marginTop: "3px",
+                      }}
+                    />
+                  </PickImg>
+                ) : (
+                  <UnpickImg
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      Unpick(detailItem.campId);
+                    }}
+                  >
                     <img
                       src="/images/icons/unPicked.svg"
                       alt="unPicked"
@@ -151,18 +194,8 @@ function Detail() {
                         marginTop: "3px",
                       }}
                     />
-                  ) : (
-                    <img
-                      src="/images/icons/picked.svg"
-                      alt="Picked"
-                      style={{
-                        width: "17px",
-                        marginLeft: "5px",
-                        marginTop: "3px",
-                      }}
-                    />
-                  )}
-                </PickImg>
+                  </UnpickImg>
+                )}
               </div>
             </div>
           </TopNavContainer>
@@ -204,7 +237,7 @@ function Detail() {
                 marginLeft: "4px",
               }}
             ></span>
-            <Plan> 일정을 저장해 보세요!</Plan>
+            <Plan> 일정을 저장해 보세요! </Plan>
           </div>
           {isLogin ? (
             <div className="rightBtn" onClick={openPlan}>
@@ -296,6 +329,7 @@ const TopNavContainer = styled.div`
     padding: 2px;
     border-radius: 25px;
     background-color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
   }
 `;
 
@@ -418,13 +452,11 @@ const AddtripBtn = styled.button`
       margin-top: -2px;
       margin-left: 6px;
       border-right: 1px solid #000000;
-      /* text-underline-position: under; */
     }
 
     u {
       margin-top: -2px;
       margin-left: 5px;
-      /* text-underline-position: under; */
 
       .date {
         width: 60px;
@@ -433,7 +465,6 @@ const AddtripBtn = styled.button`
         margin-top: -2px;
         margin-left: 6px;
         border-right: 1px solid #000000;
-        /* text-underline-position: under; */
       }
     }
   }
@@ -469,6 +500,12 @@ const Plan = styled.div`
 const PickImg = styled.div`
   display: flex;
   flex-direction: column;
+  /* background-color: red; */
+`;
+const UnpickImg = styled.div`
+  display: flex;
+  flex-direction: column;
+  /* background-color: red; */
 `;
 
 const WFcBox = styled.div`
@@ -515,11 +552,9 @@ const FcRight = styled.div`
 const FcIconBox = styled.div<{ isActive: boolean }>`
   width: 100%;
   height: ${(props) => props.theme.pixelToRem(80)};
-  margin-top: 10px;
   justify-content: center;
   display: flex;
   transition: all 0.3s linear;
-  display: flex;
   flex-wrap: wrap;
   overflow: hidden;
   padding: 5px;
@@ -527,13 +562,12 @@ const FcIconBox = styled.div<{ isActive: boolean }>`
   height: ${(props) =>
     props.isActive == false
       ? props.theme.pixelToRem(70)
-      : props.theme.pixelToRem(190)};
+      : props.theme.pixelToRem(150)};
 `;
 
 const TheIcon = styled.div`
   width: ${(props) => props.theme.pixelToRem(60)};
   height: ${(props) => props.theme.pixelToRem(60)};
-  margin-right: 5px;
   flex-direction: column;
 
   display: flex;
@@ -564,23 +598,19 @@ const GrayHr = styled.hr`
 
 const Tabs = styled.div`
   width: 100%;
-  /* height: 20px; */
   display: flex;
   justify-content: center;
   align-content: center;
   margin: 5px;
-  /* background-color: red; */
 `;
 
 const Tab = styled.span<{ isLine: boolean }>`
-  /* background-color: red; */
   width: 50%;
   text-align: center;
   font-size: ${(props) => props.theme.pixelToRem(15)};
   font-weight: 500;
   padding: 7px 0px;
   cursor: pointer;
-  /* border-bottom: 3px solid black; */
   border-bottom: ${(props) => (props.isLine ? "3px solid black" : "none")};
   color: ${(props) => (props.isLine ? "#222" : "#ccc")};
 `;

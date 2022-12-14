@@ -9,6 +9,7 @@ export interface IGetMyReview {
   createdAt: string;
   updatedAt: string;
   data: IGetMyReview[];
+  reviewId: number;
 }
 
 export interface IGetTravelPlan {

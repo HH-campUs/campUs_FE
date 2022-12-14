@@ -2,11 +2,11 @@
 import axios from "axios";
 import React, { useEffect } from "react";
 import { setAccessToken, setRefreshToken } from "../../instance/cookies";
-import { instance } from "../../instance/instance";
 
 function GoogleAuth() {
-  const CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
-  const SECRET_KEY = process.env.REACT_APP_GOOGLE_SECRET_KEY;
+  const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+  // const GOOGLE_SECRET_KEY = process.env.REACT_APP_GOOGLE_SECRET_KEY;
+  const GOOGLE_REDIRECT_URI = process.env.REACT_APP_GOOGLE_REDIRECT_URI;
 
   const parsedHash = new URLSearchParams(window.location.hash.substring(1));
   const accessToken = parsedHash.get("access_token");
@@ -14,7 +14,7 @@ function GoogleAuth() {
   /*  const { data } = await Api.post("oauth/google", { accessToken }); */
 
   const code = new URL(window.location.href).searchParams.get("code");
-  const GOOGLE_AUTH_URL = `https://accounts.google.com/o/oauth2/v2/auth?scope=profile&response_type=code&state=security_token%3D138r5719ru3e1%26url%3Dhttps%3A%2F%2Foauth2.example.com%2Ftoken&redirect_uri=${"http://localhost:3000/google/callback"}&client_id=${"495084276046-fm2mkolqihqio0iv1al1i6ddbqg4t6dg.apps.googleusercontent.com"}`;
+  const GOOGLE_AUTH_URL = `https://accounts.google.com/o/oauth2/v2/auth?scope=profile&response_type=code&state=security_token%3D138r5719ru3e1%26url%3Dhttps%3A%2F%2Foauth2.example.com%2Ftoken&redirect_uri=${process.env.REACT_APP_GOOGLE_REDIRECT_URI}&client_id=${process.env.REACT_APP_GOOGLE_CLIENT_ID}`;
   console.log(code);
 
   useEffect(() => {

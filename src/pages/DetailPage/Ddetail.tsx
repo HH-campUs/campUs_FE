@@ -19,13 +19,9 @@ function Ddetail() {
     setIsPlan(true);
   };
 
-  const openModal = () => {
-    setOpenSemi(true);
-  };
-
   const { campId } = useParams();
 
-  const detailItem: any = useGetApi.useGetCampDetail(campId)?.data?.[0];
+  const detailItem = useGetApi.useGetCampDetail(campId)?.data?.[0];
 
   return (
     <Wrapper>
@@ -68,18 +64,18 @@ function Ddetail() {
         <MidLane></MidLane>
       </InfoBox>
 
+      <MapTitle>지도</MapTitle>
       <MapWrapper>
-        <MapTitle>지도</MapTitle>
         <DetailMap />
+        <BtnBox>
+          <CopyToClipboard text={url}>
+            <ClipBoardBtn onClick={copied}>
+              <img src="/images/icon-share.svg" alt="share" />
+            </ClipBoardBtn>
+          </CopyToClipboard>
+          <PlanBtn onClick={openPlan}>내 여행일정에 저장</PlanBtn>
+        </BtnBox>
       </MapWrapper>
-      <BtnBox>
-        <CopyToClipboard text={url}>
-          <ClipBoardBtn onClick={copied}>
-            <img src="/images/icon-share.svg" alt="share" />
-          </ClipBoardBtn>
-        </CopyToClipboard>
-        <PlanBtn onClick={openPlan}>내 여행일정에 저장</PlanBtn>
-      </BtnBox>
     </Wrapper>
   );
 }
@@ -212,16 +208,17 @@ const Adven = styled.div`
   color: #666;
 `;
 
+//
 const MapWrapper = styled.div`
-  margin-top: 20px;
-  margin-left: 20px;
-  width: ${(props) => props.theme.pixelToRem(335)};
+  margin: 0 auto;
+  width: ${(props) => props.theme.pixelToRem(355)};
+  /* max-width: ${(props) => props.theme.pixelToRem(475)}; */
   height: ${(props) => props.theme.pixelToRem(162)};
   justify-content: center;
 `;
 
 const MapTitle = styled.div`
-  margin-left: -10px;
+  margin-left: 10px;
   font-weight: 600;
   font-size: ${(props) => props.theme.pixelToRem(18)};
   color: #222;
@@ -230,8 +227,8 @@ const MapTitle = styled.div`
 
 const BtnBox = styled.div`
   display: flex;
-  margin-top: 60px;
-  margin-left: 20px;
+  margin: 10px;
+  width: ${(props) => props.theme.pixelToRem(355)};
 `;
 
 const ClipBoardBtn = styled.button`

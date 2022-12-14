@@ -159,6 +159,7 @@ const ImgCover = styled.div`
   border-radius: ${(props) => props.theme.pixelToRem(10)};
   z-index: 1;
   position: absolute;
+  cursor: pointer;
 `;
 
 const CarouselImg = styled.img`

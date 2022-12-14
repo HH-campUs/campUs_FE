@@ -168,6 +168,7 @@ const TopContainer = styled.div`
   border-bottom-right-radius: ${(props) => props.theme.pixelToRem(12)};
   background-size: cover;
   object-fit: cover;
+  position: relative;
 `;
 
 const ImgCover = styled.div`
@@ -268,6 +269,7 @@ const ResultItem = styled.div`
 `;
 
 const CampImg = styled.div`
+  cursor: pointer;
   img {
     width: 100%;
     height: ${(props) => props.theme.pixelToRem(196)};

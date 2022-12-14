@@ -1,10 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import SemiSearch from "../withSearch/SemiSearch";
 import { usePostsApi } from "../../APIs/postsApi";
-import { IGetTravelPlan } from "../../interfaces/MyPage";
-import { semiOpenProps } from "../../interfaces/props";
-import PlanUpdate from "../../components/withPlan/PlanUpdate";
 
 function Kebop({ tripId }: any) {
   const [openMore, setOpenMore] = useState(false);

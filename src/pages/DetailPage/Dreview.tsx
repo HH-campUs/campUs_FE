@@ -6,9 +6,6 @@ import { IGetCampReview } from "../../interfaces/get";
 
 function Dreview() {
   const navigate = useNavigate();
-  // const loca = useLocation();
-  // const state = loca.state as { campId: number };
-
   const { campId } = useParams();
 
   const detailItem = useGetApi?.useGetCampDetail(campId).data?.[0];
@@ -26,46 +23,50 @@ function Dreview() {
           <img src="/images/mypage/reviewwrite.svg" />
         </ReviewIcon>
       </ReviewBox>
-      {reviewItem?.map((item: IGetCampReview, i: number) => (
-        <ReviewMap key={i}>
-          <PfBox>
-            <PfImg>
-              <img src={item?.profileImg} alt="pfImg" />
-            </PfImg>
-            <PfDetail>
-              <NickBox>
-                <PfNick>{item?.nickname}</PfNick>
-                <Date>{item?.createdAt.slice(0, 10)}</Date>
-              </NickBox>
+      <ReviewList>
+        {reviewItem?.map((item: IGetCampReview, i: number) => (
+          <ReviewMap key={i}>
+            <PfBox>
+              <PfImg>
+                <img src={item?.profileImg} alt="pfImg" />
+              </PfImg>
+              <PfDetail>
+                <NickBox>
+                  <PfNick>{item?.nickname}</PfNick>
+                  <Date>{item?.createdAt.slice(0, 10)}</Date>
+                </NickBox>
 
-              <Recommend>
-                {item?.likeStatus === 1 ? (
-                  <YesRe> 최고!추천해요!</YesRe>
-                ) : item?.likeStatus === 2 ? (
-                  <GoodRe>좋았어요!</GoodRe>
-                ) : (
-                  <BadRe>추천하지 않아요</BadRe>
-                )}
-              </Recommend>
-            </PfDetail>
-          </PfBox>
-          <CommentBox>
-            <ReviewText>{item?.reviewComment}</ReviewText>
-          </CommentBox>
-          <ImgFlex>
-            {item?.reviewImg
-              .toString()
-              .split(",")
-              .map((image: string, campId: number) => (
-                <ImgBox>
-                  {item?.reviewImg ? (
-                    <img src={image} alt="reviewImg" key={campId} />
-                  ) : null}
-                </ImgBox>
-              ))}
-          </ImgFlex>
-        </ReviewMap>
-      ))}
+                <Recommend>
+                  {item?.likeStatus === 1 ? (
+                    <YesRe> 최고!추천해요!</YesRe>
+                  ) : item?.likeStatus === 2 ? (
+                    <GoodRe>좋았어요!</GoodRe>
+                  ) : (
+                    <BadRe>추천하지 않아요</BadRe>
+                  )}
+                </Recommend>
+              </PfDetail>
+            </PfBox>
+            <CommentBox>
+              <ReviewText title={item?.reviewComment}>
+                {item?.reviewComment}
+              </ReviewText>
+            </CommentBox>
+            <ImgFlex>
+              {item?.reviewImg
+                .toString()
+                .split(",")
+                .map((image: string, campId: number) => (
+                  <ImgBox>
+                    {item?.reviewImg ? (
+                      <img src={image} alt="reviewImg" key={campId} />
+                    ) : null}
+                  </ImgBox>
+                ))}
+            </ImgFlex>
+          </ReviewMap>
+        ))}
+      </ReviewList>
     </Wrapper>
   );
 }
@@ -73,7 +74,8 @@ function Dreview() {
 export default Dreview;
 
 const Wrapper = styled.div`
-  margin-top: ${(props) => props.theme.pixelToRem(31)};
+  margin-top: ${(props) => props.theme.pixelToRem(21)};
+  margin-bottom: 30px;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -81,10 +83,17 @@ const Wrapper = styled.div`
 `;
 
 const ReviewBox = styled.div`
+  width: 100%;
   display: flex;
   align-items: center;
   font-weight: bolder;
   justify-content: space-between;
+`;
+
+const ReviewList = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 `;
 
 const ReviewText = styled.div`
@@ -102,31 +111,31 @@ const ReviewNum = styled.div`
 const ReviewIcon = styled.div`
   margin-right: ${(props) => props.theme.pixelToRem(20)};
   margin-top: ${(props) => props.theme.pixelToRem(2)};
+  cursor: pointer;
 `;
 
+//
 const ReviewMap = styled.div`
-  margin-top: 16px;
-  margin-left: 20px;
-  /* margin-bottom: 250px; */
-  width: ${(props) => props.theme.pixelToRem(335)};
-  height: ${(props) => props.theme.pixelToRem(258)};
-  border-radius: ${(props) => props.theme.pixelToRem(10)};
+  width: 100%;
+  height: ${(props) => props.theme.pixelToRem(263)};
+  margin-bottom: 18px;
   border-bottom: 1px solid #eee;
-  /* background-color: #f8f8f8; */
   flex-direction: column;
 `;
 
 const PfBox = styled.div`
-  width: ${(props) => props.theme.pixelToRem(300)};
-  height: ${(props) => props.theme.pixelToRem(40)};
-  margin: 18px 18px 0 22px;
+  width: 100%;
+  padding: 5px 18px 5px 30px;
   display: flex;
-  /* background-color: red; */
+  align-items: center;
+  margin-top: 20px;
 `;
 
 const PfImg = styled.div`
+  display: flex;
+
   img {
-    width: ${(props) => props.theme.pixelToRem(36.6)};
+    width: ${(props) => props.theme.pixelToRem(40)};
     height: ${(props) => props.theme.pixelToRem(40)};
     border-radius: ${(props) => props.theme.pixelToRem(20)};
     object-fit: cover;
@@ -134,14 +143,14 @@ const PfImg = styled.div`
 `;
 
 const PfDetail = styled.div`
-  width: ${(props) => props.theme.pixelToRem(275)};
+  width: 100%;
   display: flex;
   margin-left: 8px;
   justify-content: space-between;
 `;
 
 const NickBox = styled.div`
-  width: ${(props) => props.theme.pixelToRem(250)};
+  width: 100%;
   display: flex;
   flex-direction: column;
   font-size: ${(props) => props.theme.pixelToRem(14)};
@@ -160,7 +169,7 @@ const Recommend = styled.div`
   align-items: center;
   text-align: center;
   margin-top: 3px;
-  /* right: 0; */
+  justify-content: flex-end;
 `;
 
 const YesRe = styled.div`
@@ -192,18 +201,26 @@ const BadRe = styled.div`
   color: #ffffff;
   padding-top: 6px;
 `;
+/* ${(props) => props.theme.pixelToRem(300)}; */
+
 const CommentBox = styled.div`
-  width: ${(props) => props.theme.pixelToRem(300)};
+  width: 100%;
   color: #666;
   font-size: ${(props) => props.theme.pixelToRem(14)};
-  margin-top: 15px;
-  margin-left: 18px;
+  margin-top: 10px;
+  margin-left: 10px;
   line-height: 1.57;
+  word-break: break-all;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const ImgFlex = styled.div`
   margin-top: 14px;
-  margin-left: 20px;
+  margin-left: 30px;
   width: ${(props) => props.theme.pixelToRem(77)};
   height: ${(props) => props.theme.pixelToRem(84)};
   display: flex;

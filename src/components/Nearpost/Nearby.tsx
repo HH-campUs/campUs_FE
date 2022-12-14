@@ -1,29 +1,22 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useGetApi } from "../../APIs/getApi";
-import KaKaomap from "../KaKaomap";
 import NearestMap from "./NearestMap";
 import NearPostMap from "./NearPostMap";
 
+import { IGetCampResult } from "../../interfaces/get";
+import { Loading } from "./Loading";
+
 export default function Nearby() {
-  const [campX, setCampX] = useState<number | undefined>();
-  const [campY, setCampY] = useState<number | undefined>();
+  const [campX, setCampX] = useState<number>();
+  const [campY, setCampY] = useState<number>();
 
   useEffect(() => {
-    getLocation();
-  }, []);
-
-  const getLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          // const time = new Date(position.timestamp);
           setCampX(position.coords.latitude);
           setCampY(position.coords.longitude);
-          // console.log(position);
-          // console.log(`현재시간 : ${time}`);
-          // console.log(`위도 : ${position.coords.latitude}`);
-          // console.log(`경도 : ${position.coords.longitude}`);
         },
         (error) => {
           console.error(error);
@@ -37,47 +30,49 @@ export default function Nearby() {
     } else {
       alert("사용이 불가능합니다.");
     }
-  };
+  }, []);
 
-  const nearPost: any = useGetApi.useGetDistance(campX!, campY!).data || [];
-  // console.log("가까운캠프", nearPost?.nearCamp);
-  // console.log(nearPost?.data?.nearCamp?.);
+  useEffect(() => {
+    if (campX && campY) {
+      setTimeout(() => {
+        refetch();
+      }, 1);
+    }
+  }, [campX, campY]);
 
+  const { data: nearPost, refetch }: any =
+    useGetApi.useGetDistance(+campY!, +campX!) || [];
+
+  //로딩중 화면 처리 구상.
   return (
     <Wrapper>
       <TextBox>가장 가까운 캠핑장</TextBox>
+      {/* <Loading /> */}
       <PlanBox>
-        <PlanWrapper>
-          <MapBox>
-            <NearPostMap />
-          </MapBox>
-          <RightBox>
-            <DistanceText>
-              {nearPost?.nearCamp?.distance
-                ? nearPost?.nearCamp?.distance
-                : "로딩중입니다"}
-              km
-            </DistanceText>
-            <CampName>
-              {nearPost?.nearCamp?.address
-                ? nearPost?.nearCamp?.address
-                : "로딩중입니다"}
-            </CampName>
-            <Induty>로딩중입니다.</Induty>
-          </RightBox>
-        </PlanWrapper>
-        <Line></Line>
-        <PlanWrapper>
-          <MapBox>
-            <KaKaomap />
-          </MapBox>
-          <RightBox>
-            <DistanceText></DistanceText>
-            <CampName></CampName>
-          </RightBox>
-        </PlanWrapper>
+        {nearPost?.map((item: IGetCampResult, i: number) => (
+          <PlanWrapper>
+            <MapBox>
+              {i === 0 ? (
+                <NearPostMap campX={item?.X} campY={item?.Y} />
+              ) : (
+                <NearestMap campX={item?.X} campY={item?.Y} />
+              )}
+            </MapBox>
+            <RightBox>
+              <DistanceText>
+                {item?.distance?.toString().slice(0, 3)}km
+              </DistanceText>
+              <CampName>{item?.campName}</CampName>
+              {item?.induty.split(",").map((item, i) => (
+                <Induty key={i}>
+                  <Dutycc></Dutycc>
+                  {item}
+                </Induty>
+              ))}
+            </RightBox>
+          </PlanWrapper>
+        ))}
       </PlanBox>
-      {/* <MapBox></MapBox> */}
     </Wrapper>
   );
 }
@@ -86,7 +81,8 @@ export default function Nearby() {
 }
 
 const Wrapper = styled.div`
-  margin: 40px 20px;
+  margin-left: 20px;
+  margin-top: 40px;
   font-weight: 500; //temporary
   width: 100%;
   /* width: ${(props) => props.theme.pixelToRem(375)}; */
@@ -100,21 +96,20 @@ const TextBox = styled.div`
 `;
 
 const PlanBox = styled.div`
-  width: 80%;
+  width: 90%;
   height: ${(props) => props.theme.pixelToRem(264)};
   border-radius: ${(props) => props.theme.pixelToRem(10)};
   box-shadow: 15px;
-  margin: 15px auto;
-  display: flex;
+  /* display: flex; */
   position: relative;
   flex-direction: column;
+  border: 1px solid #eee;
 `;
 
 const Line = styled.div`
   width: ${(props) => props.theme.pixelToRem(300)};
   height: 1px;
   margin-left: 38px;
-  /* background-color: #eee; */
   border-bottom: 1px solid #eee;
 `;
 
@@ -128,13 +123,13 @@ const MapBox = styled.div`
   width: ${(props) => props.theme.pixelToRem(100)};
   height: ${(props) => props.theme.pixelToRem(100)} !important;
   border-radius: ${(props) => props.theme.pixelToRem(10)};
-  background-color: grey;
-  /* margin: 20px 10px; */
 `;
 
 const RightBox = styled.div`
   margin-left: 16px;
-  margin-top: 18px;
+  margin-top: 5px;
+  display: flex;
+  flex-direction: column;
 `;
 
 const DistanceText = styled.div`
@@ -143,17 +138,24 @@ const DistanceText = styled.div`
 `;
 
 const CampName = styled.div`
-  margin-top: 5px;
-  font-size: ${(props) => props.theme.pixelToRem(14)};
+  margin-top: 10px;
+  font-size: ${(props) => props.theme.pixelToRem(16)};
   color: #222;
 `;
 
 const Induty = styled.div`
   margin-top: 12px;
   font-size: ${(props) => props.theme.pixelToRem(12)};
-  width: 70px;
-  height: 20px;
-
+  display: flex;
   text-align: center;
+  align-items: center;
   padding: 2px;
+`;
+
+const Dutycc = styled.div`
+  margin-right: 5px;
+  width: ${(props) => props.theme.pixelToRem(8)};
+  height: ${(props) => props.theme.pixelToRem(8)};
+  background-color: #024873;
+  border-radius: 8px;
 `;

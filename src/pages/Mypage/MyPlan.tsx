@@ -3,8 +3,6 @@ import styled from "styled-components";
 import Kebop from "../../components/withPlan/Kebop";
 import SemiSearch from "../../components/withSearch/SemiSearch";
 import PlanUpdate from "../../components/withPlan/PlanUpdate";
-
-import { usePostsApi } from "../../APIs/postsApi";
 import { useNavigate } from "react-router-dom";
 import { getCamperToken } from "../../instance/cookies";
 import { IGetTravelPlan } from "../../interfaces/MyPage";

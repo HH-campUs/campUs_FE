@@ -13,7 +13,6 @@ export interface IGetCampReview {
   reviewComment: string;
   likeStatus: number;
   data: IGetCampReview[];
-  // reviewMap: IGetCampReview[];
   createdAt: string;
   updatedAt: string;
   nickname: string;
@@ -43,7 +42,6 @@ export interface IGetDistance {
   campName: string;
   induty: string;
   doNm: string;
-  sigunguNm: string;
   address: string;
   X: string;
   Y: string;
@@ -63,14 +61,12 @@ export interface IGetDistance {
   createdtime: string;
   featureNm: string;
   clturEvent: string;
-  nearPost: IGetDistance;
+  nearPost: IGetDistance[];
   nearCamp: IGetDistance;
   reviewCount: number;
   pickCount: number;
   lookUp: number;
   distance: number;
-  lat: number;
-  lon: number;
 }
 
 export interface weather {
@@ -116,14 +112,6 @@ export interface IGetWeather {
   morn?: number;
   rain?: number;
   snow?: number;
-}
-
-export interface IMostList extends IGetCampResult {
-  look: IGetCampResult;
-  pick: IGetCampResult;
-  review: IGetCampResult;
-  MostList: IGetCampResult[];
-  // data: string[] = ["look", "pick", "review"];
 }
 
 export interface RecoWeather extends IGetWeather {

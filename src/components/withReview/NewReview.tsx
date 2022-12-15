@@ -79,10 +79,9 @@ export default function NewReview() {
                         >
                           {item?.campName}
                         </PfCamp>
-                      </NickBox>
-                      <LocaBox>
                         <Date>&nbsp;{item?.createdAt.slice(0, 10)}</Date>
-                      </LocaBox>
+                      </NickBox>
+                      <LocaBox></LocaBox>
                     </div>
                   </PfBox>
                   <ReviewBox>
@@ -130,14 +129,11 @@ const CaroImgBox = styled.div`
   display: flex;
 `;
 
-const Wrapper = styled.div`
-  /* margin-left: 20px; */
-`;
+const Wrapper = styled.div``;
 
 const MainBox = styled.div`
   margin-top: 18px;
   margin-left: 20px;
-  /* transform: translateX(20px); */
   width: ${(props) => props.theme.pixelToRem(268)};
   height: ${(props) => props.theme.pixelToRem(256)};
   border-radius: ${(props) => props.theme.pixelToRem(10)};
@@ -149,7 +145,6 @@ const PfBox = styled.div`
   height: ${(props) => props.theme.pixelToRem(40)};
   margin: 18px 18px 0 22px;
   display: flex;
-  /* background-color: red; */
 `;
 
 const PfImg = styled.div`
@@ -160,15 +155,14 @@ const PfImg = styled.div`
     object-fit: cover;
   }
 `;
-// width: ${(props) => props.theme.pixelToRem(180)};
 const NickBox = styled.div`
   width: 73%;
   display: flex;
   justify-content: space-between;
   font-size: ${(props) => props.theme.pixelToRem(14)};
-  overflow: hidden;
-  text-overflow: ellipsis;
   white-space: nowrap;
+  flex-direction: column;
+  margin-top: -3px;
 `;
 
 const PfNick = styled.div`
@@ -178,22 +172,27 @@ const PfNick = styled.div`
 
 const PfCamp = styled.div`
   font-size: ${(props) => props.theme.pixelToRem(12)};
+  margin-top: 4px;
   color: #222;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
   cursor: pointer;
+  margin-left: 3px;
+  width: fit-content;
 `;
 
 const LocaBox = styled.div`
-  width: ${(props) => props.theme.pixelToRem(250)};
+  width: fit-content;
   display: flex;
   margin-top: 6px;
   font-size: ${(props) => props.theme.pixelToRem(14)};
   color: #666;
 `;
 
-const Date = styled.div``;
+const Date = styled.div`
+  display: flex;
+  margin-top: 4px;
+  font-size: ${(props) => props.theme.pixelToRem(12)};
+  color: #666;
+`;
 
 const ReviewBox = styled.div`
   width: ${(props) => props.theme.pixelToRem(240)};
@@ -214,7 +213,6 @@ const ReviewText = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   cursor: pointer;
-  /* white-space: nowrap; */
 `;
 
 const ImgFlex = styled.div`

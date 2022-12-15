@@ -151,6 +151,7 @@ export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
                       />
                       <PhotoCameraIcon
                         sx={{
+                          cursor: "pointer",
                           marginLeft: "0.5px",
                           marginTop: "5.5px",
                         }}

@@ -33,7 +33,6 @@ export default function TopicMap({ Camp }: { Camp: IGetCampResult }) {
     window.alert("찜하기 취소");
   };
 
-  //onclick한번 / icon 3항.
   return (
     <>
       {Camp.status ? (
@@ -73,11 +72,13 @@ const Bookmark = styled.div`
   position: absolute;
   top: 10px;
   right: 10px;
+  cursor: pointer;
 `;
 const BookmarkBorderIcon = styled.div`
   position: absolute;
   top: 10px;
   right: 10px;
+  cursor: pointer;
 `;
 
 const CampImgBox = styled.div``;

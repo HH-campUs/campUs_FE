@@ -4,6 +4,7 @@ import { getCamperToken } from "../instance/cookies";
 import { instance } from "../instance/instance";
 import { IGetTravelPlan } from "../interfaces/get";
 import { IGetMyReview } from "../interfaces/MyPage";
+import { IGetMyInfo } from "../interfaces/MyPage";
 
 const serverUrl = process.env.REACT_APP_API;
 
@@ -11,7 +12,6 @@ const isLogin = getCamperToken();
 
 export const useMyPageApi = {
   // ** 내가 쓴 리뷰 조회 / get ** // /users/review - mypage용.
-  // 토큰값필요할텐데 이렇게 사용되는지 확인해야함.
   useGetMyReview: () => {
     return useQuery<IGetMyReview>(["myreviewinfo"], async () => {
       const { data } = await instance.get("/reviews/users");
@@ -33,7 +33,6 @@ export const useMyPageApi = {
   useGetMyPick: () => {
     return useQuery(["mypick"], async () => {
       const data = await instance.get("/users/myPage/myPick");
-      // console.log(data.data);
       return data;
     });
   },
@@ -46,7 +45,4 @@ export const useMyPageApi = {
       return data;
     });
   },
-
-  // ** 유저 정보 변경 ** //
-  // 분리
 };

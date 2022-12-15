@@ -1,119 +1,201 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import styled, { keyframes } from "styled-components";
 import { useMyPageApi } from "../../APIs/myPageApi";
-import { instance } from "../../instance/instance";
+import { instance, postInstance } from "../../instance/instance";
+
+import { IReviewPosts } from "../../interfaces/Posts";
 
 import { IGetMyReview } from "../../interfaces/MyPage";
+import { IEditReviewPosts } from "../../interfaces/Posts";
 
-export default function MyReviewUpdate({ review }: { review: IGetMyReview }) {
-  const [openRevised, setOpenRevised] = useState(false);
-  const [update, SetUpdate] = useState(false);
-  const [reviewComment, setReviewComment] = useState(review.reviewComment);
-  const [previewImage, setPreviewImage] = useState([]);
-  console.log(review.reviewImg);
-  console.time();
+export default function MyReviewUpdate({
+  review,
+  openUpdate,
+  closeUpdate,
+}: {
+  review: IGetMyReview;
+  openUpdate: () => void;
+  closeUpdate: () => void;
+}) {
+  const [reviewComment, setReviewComment] = useState(review?.reviewComment);
+  const [imagePreview, setImagePreview] = useState<string[]>([]);
 
-  //Open modal
-  const revised = () => {
-    console.log("openRevised", openRevised);
-    setOpenRevised((prev) => !prev);
-  };
+  const [imageFiles, setImageFiles] = useState<(File | string)[]>([]);
 
-  const openUpdate = () => {
-    console.log("update", update);
-    SetUpdate((prev) => !prev);
-  };
+  useEffect(() => {
+    if (review?.reviewImg.length > 0) {
+      console.log("review", review?.reviewImg);
+      setImagePreview(review?.reviewImg.split(","));
+      setImageFiles(review?.reviewImg.split(","));
+    }
+  }, []);
 
-  //Close modal
-  const closeUpdate = () => {
-    setOpenRevised(false);
-    SetUpdate(false);
-  };
+  // useEffect(() => {
+  //   if (imagePreview.length === 0) return;
+  //   if (imagePreview.length > 3) {
+  //     window.alert("이미지는 3장까지 첨부가능합니다.");
+  //     setImagePreview((prev) => prev.slice(0, 3));
+  //     setImageFiles((prev: File[]) => prev.slice(0, 3));
+  //   }
+  // }, [imagePreview]);
 
-  //input입력
-  const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setReviewComment(event.target.value);
-  };
+  //form
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IReviewPosts>();
 
-  //Review 삭제
-  const queryClient = useQueryClient();
-  const mutateFn = async (reviewId: number) => {
-    const { data } = await instance.delete(`/reviews/${reviewId}`);
-    return data;
-  };
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const imageLists = e.target.files;
+    console.log("이미지리스트", imageLists);
+    if (!imageLists) return;
+    for (let i = 0; i < imageLists.length; i++) {
+      setImageFiles((prev) => [...prev, imageLists[i]]);
+    }
 
-  const reviewDelete = useMutation(mutateFn, {
-    onSuccess: () => queryClient.invalidateQueries(),
-    onError: () => console.log("삭제에 실패했습니다."),
-  });
-
-  const delReview = () => {
-    if (window.confirm("정말 삭제하시겠습니까?") === true) {
-      reviewDelete.mutate(review.reviewId);
-      window.alert("삭제되었습니다");
+    for (let i = 0; i < imageLists?.length; i++) {
+      const blobImage = URL.createObjectURL(imageLists[i]);
+      setImagePreview((prev) => [...prev, blobImage]);
     }
   };
 
+  const handleValid = (data: IReviewPosts) => {
+    const formData = new FormData();
+    for (let i = 0; i < imageFiles.length; i++) {
+      formData.append("reviewImg", imageFiles[i]);
+    }
+    const body = {
+      reviewImg: formData,
+      reviewComment: data.reviewComment,
+      reviewId: review?.reviewId,
+    };
+    reviewUpdate.mutate(body);
+  };
+
+  //*토스트
+  // // setToastState(true);
+  // const timer = setTimeout(() => {
+  //   navigate(-1);
+  // }, 1530);
+
+  // return () => {
+  // clearTimeout(timer);
+  // };
+  console.log("imagesfiles", imageFiles);
+
   //수정하기. reviewId , reviewImg, reviewComment, likeStatus(x) - body값
-  const updateFn = async (reviewId: number) => {
-    const { data } = await instance.put(`/reviews/${reviewId}`, {
-      // payload.reviewComment
+  const updateFn = async (payload: IEditReviewPosts) => {
+    const updateItem = payload.reviewImg;
+    // if (!updateItem) return;
+    // updateItem.append("reviewComment", payload.reviewComment);
+    const { data } = await postInstance.put(`/reviews/${payload.reviewId}`, {
+      reviewImg: updateItem,
+      reviewComment: payload.reviewComment,
     });
+    console.log(data);
     return data;
   };
+  const queryClient = useQueryClient();
 
   const reviewUpdate = useMutation(updateFn, {
     onSuccess: () => queryClient.invalidateQueries(),
     onError: () => console.log("수정에 실패했습니다."),
   });
 
-  const updateReview = () => {
-    if (window.confirm("수정 하시겠습니까?") === true) {
-      // reviewUpdate.mutate(reviewId);
-    }
-  };
+  // const updateReview = () => {
+  //   if (window.confirm("수정 하시겠습니까?") === true) {
+  //     // reviewUpdate.mutate(reviewId);
+  //   }
+  // };
+
+  const handleDeleteImage = useCallback(
+    (idx: number) => () => {
+      setImagePreview((prev) => prev.filter((_, index) => index !== idx));
+      console.log(imagePreview);
+      setImageFiles((prev) =>
+        Array.from(prev).filter(
+          (_: string | File, index: number) => index !== idx
+        )
+      );
+    },
+    []
+  );
 
   return (
     <>
-      {update ? (
-        <UpdateContainer>
-          <UpdateBox>
-            <TitleBox>
-              <Title>리뷰 수정하기</Title>
-              <CloseBtn
-                src="/images/closeBtn.svg"
-                alt="close"
-                onClick={closeUpdate}
+      <UpdateContainer>
+        <UpdateBox>
+          <TitleBox>
+            <Title>리뷰 수정</Title>
+            <CloseBtn
+              src="/images/closeBtn.svg"
+              alt="close"
+              onClick={closeUpdate}
+            />
+          </TitleBox>
+          <MinMax>
+            <p style={{ color: "#5185A6" }}>최소 10자 | 최대 80자</p>
+          </MinMax>
+          <ContentBox>
+            <ReviewForm onSubmit={handleSubmit(handleValid)}>
+              <StTextArea
+                {...register("reviewComment", {
+                  required: "리뷰를 작성해주세요.",
+                  minLength: {
+                    value: 10,
+                    message: "10자 이상 작성해주세요.",
+                  },
+                  maxLength: {
+                    value: 80,
+                    message: "80자 이하로 작성해주세요.",
+                  },
+                })}
+                defaultValue={review.reviewComment}
               />
-            </TitleBox>
-            <ContentBox>
-              <ReviewText>
-                <input
-                  onChange={onChangeHandler}
-                  type="text"
-                  value={reviewComment}
-                />
-              </ReviewText>
-              <ReviewImg>
-                <ImgFlex>
-                  {review.reviewImg
-                    .toString()
-                    .split(",")
-                    .map((image: string, i: number) => (
-                      <ImgBox>
-                        {review.reviewImg ? (
-                          <img src={image} alt="" key={i} />
-                        ) : null}
-                      </ImgBox>
-                    ))}
-                </ImgFlex>
-              </ReviewImg>
-            </ContentBox>
-          </UpdateBox>
-        </UpdateContainer>
-      ) : null}
-      <ReviewUpdate>
+
+              <Error>{errors.reviewComment?.message}</Error>
+              <ImgList>
+                <Upload>
+                  <img src="/images/review/camera.svg" alt="camera" />
+                  <span>사진업로드</span>
+                  <ImgInput
+                    type="file"
+                    multiple
+                    accept="image/*"
+                    Content-Type="multipart/form-data"
+                    onChange={onChange}
+                  />
+                </Upload>
+                {imagePreview &&
+                  imagePreview?.map((image: string, i: number) => (
+                    <Images key={i}>
+                      <img src={image} alt="img" />
+                      <XIcon>
+                        <img
+                          src="/images/mypage/closeimage.svg"
+                          alt="xicon"
+                          onClick={handleDeleteImage(i)}
+                        />
+                      </XIcon>
+                    </Images>
+                  ))}
+              </ImgList>
+
+              <CancleBtn onClick={closeUpdate}>취소</CancleBtn>
+              <StBtn>리뷰 남기기</StBtn>
+            </ReviewForm>
+          </ContentBox>
+        </UpdateBox>
+      </UpdateContainer>
+    </>
+  );
+}
+
+{
+  /* <ReviewUpdate>
         <img src="/images/icon-more.svg" alt="more" onClick={revised} />
         {openRevised === true ? (
           <BtnBox>
@@ -123,9 +205,7 @@ export default function MyReviewUpdate({ review }: { review: IGetMyReview }) {
         ) : null}
 
         <div></div>
-      </ReviewUpdate>
-    </>
-  );
+      </ReviewUpdate>  */
 }
 
 const ReviewUpdate = styled.div`
@@ -183,10 +263,8 @@ const slideIn = keyframes`
 
 const UpdateContainer = styled.div`
   width: 100%;
-  height: 100%;
-  /* background-color: blue; */
+  height: 120vh;
   background-color: rgba(0, 0, 0, 0.55);
-  /* backdrop-filter: blur(3px); */
   position: absolute;
   display: flex;
   justify-content: center;
@@ -195,24 +273,24 @@ const UpdateContainer = styled.div`
   right: 0;
   left: 0;
   bottom: 0;
-  z-index: 1;
+  z-index: 10;
 `;
 
 const UpdateBox = styled.div`
-  width: 80%;
-  height: 350px;
-  border: 1px solid #666;
-  background-color: #f8f8f8;
-  border-radius: 8px;
+  width: 90%;
+  height: ${(props) => props.theme.pixelToRem(472)};
+  border: 1px solid #fff;
+  background-color: #fff;
+  border-radius: 10px;
   flex-direction: column;
   transition: all 0.5s ease-in-out;
   animation: ${slideIn};
   animation-duration: 0.7s;
   position: absolute;
-  display: flex;
+  /* display: flex; */
   justify-content: center;
   align-items: center;
-  top: 25%;
+  top: 15%;
   right: 0;
   left: 0;
   bottom: 0;
@@ -221,14 +299,17 @@ const UpdateBox = styled.div`
 `;
 
 const TitleBox = styled.div`
-  width: 80%;
+  width: 90%;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-top: 20px;
+  margin-left: 20px;
 `;
 
 const Title = styled.div`
-  ${(props) => props.theme.pixelToRem(22)};
+  font-size: ${(props) => props.theme.pixelToRem(22)};
+  color: #222;
 `;
 
 const CloseBtn = styled.img`
@@ -237,10 +318,18 @@ const CloseBtn = styled.img`
   cursor: pointer;
 `;
 
+const MinMax = styled.div`
+  width: 95%;
+  margin-top: 20px;
+  text-align: right;
+  font-size: ${(props) => props.theme.pixelToRem(12)};
+`;
+
 const ContentBox = styled.div`
-  width: 80%;
-  height: 250px;
-  border: 1px solid lightgray;
+  margin-top: 10px;
+  display: flex;
+  width: 100%;
+  height: ${(props) => props.theme.pixelToRem(280)};
   border-radius: 10px;
 `;
 
@@ -248,24 +337,98 @@ const ReviewText = styled.div``;
 
 const ReviewImg = styled.div``;
 
-const ImgFlex = styled.div`
-  margin-top: 14px;
-  margin-left: 20px;
-  width: ${(props) => props.theme.pixelToRem(77)};
-  height: ${(props) => props.theme.pixelToRem(84)};
-  display: flex;
+//form
+
+const ReviewForm = styled.form`
+  width: 90%;
+  margin: 0 auto;
 `;
 
-const ImgBox = styled.div`
-  /* display: flex; */
+const StTextArea = styled.textarea`
+  width: 100%;
+  height: ${(props) => props.theme.pixelToRem(198)};
+  padding: 14px 16px;
+  border: 1px solid lightgray;
+  resize: none;
+  /* letter-spacing: 0px; */
+`;
+
+const Error = styled.div`
+  font-size: 0.75rem;
+  color: red;
+`;
+
+const ImgList = styled.div`
+  margin-top: 5px;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: ${(props) => props.theme.pixelToRem(5)};
+  padding-top: ${(props) => props.theme.pixelToRem(5)};
+  /* object-fit: cover; */
 
   img {
-    width: ${(props) => props.theme.pixelToRem(77)};
-    height: ${(props) => props.theme.pixelToRem(84)};
+    width: 100%;
     aspect-ratio: 1/1;
     /* border: 1px solid lightgray; */
   }
+`;
+
+const ImgInput = styled.input`
+  display: none;
+`;
+
+const Upload = styled.label`
+  cursor: pointer;
+  border: 1px solid lightgray;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  aspect-ratio: 1/1;
+
+  img {
+    width: 30px;
+    height: 30px;
+  }
+
+  span {
+    /* margin-top: 5px; */
+    font-size: ${(props) => props.theme.pixelToRem(12)};
+    color: grey;
+  }
+`;
+
+const Images = styled.div``;
+
+const XIcon = styled.div`
+  width: ${(props) => props.theme.pixelToRem(22)};
+  position: absolute;
+  margin-left: 14%;
+  bottom: 145px;
+`;
+
+const CancleBtn = styled.button`
+  margin-top: 10px;
+  width: 38%;
+  height: ${(props) => props.theme.pixelToRem(50)};
+  border: 0.5px none grey;
+  background-color: #adc2ce;
+  color: #fff;
+  font-size: ${(props) => props.theme.pixelToRem(16)};
+  border-radius: ${(props) => props.theme.pixelToRem(10)};
+  cursor: pointer;
+`;
+
+const StBtn = styled.button`
+  margin-left: 10px;
+  margin-top: 10px;
+  width: 58%;
+  height: ${(props) => props.theme.pixelToRem(50)};
+  font-size: ${(props) => props.theme.pixelToRem(16)};
+  border: 0.5px none grey;
+  border-radius: ${(props) => props.theme.pixelToRem(10)};
+  background-color: #024873;
+  color: #fff;
+  cursor: pointer;
 `;

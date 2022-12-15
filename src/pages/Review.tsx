@@ -1,23 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 
 import styled from "styled-components";
 import { useGetApi } from "../APIs/getApi";
 import { usePostsApi } from "../APIs/postsApi";
-import PreviewImgDelete from "../components/PreviewImgDelete";
 import { getCamperToken } from "../instance/cookies";
 import { IReviewPosts } from "../interfaces/Posts";
 import { StrDay, StrMonth } from "../store/dateAtom";
 import { InfoToast } from "../components/Toast/Toast";
 
 export default function Review() {
-  // interface Props {
-  //   setImagePreview: React.Dispatch<React.SetStateAction<string[]>>;
-  //   setImageFiles: React.Dispatch<React.SetStateAction<File[]>>;
-  // }
   /* toast */
+
   const [toastState, setToastState] = useState(false);
 
   const isLogin = getCamperToken();
@@ -27,7 +23,6 @@ export default function Review() {
   const { campId } = useParams();
 
   //useQuery사용.
-
   const detailItem: any = useGetApi.useGetCampDetail(campId).data?.[0];
 
   //버튼클릭 색상 변경
@@ -109,12 +104,16 @@ export default function Review() {
     };
   };
 
-  // const handleDeleteImage = useCallback((idx: number) => {
-  //   setImagePreview((prev) => prev.filter((_, index) => index !== idx));
-  //   setImageFiles((prev) =>
-  //     prev.filter((_: string, index: number) => index !== idx)
-  //   );
-  // }, []);
+  const handleDeleteImage = useCallback(
+    (idx: number) => () => {
+      setImagePreview((prev) => prev.filter((_, index) => index !== idx));
+      console.log(imagePreview);
+      setImageFiles((prev) =>
+        Array.from(prev).filter((_: File, index: number) => index !== idx)
+      );
+    },
+    []
+  );
 
   useEffect(() => {
     if (imagePreview.length === 0) return;
@@ -139,7 +138,6 @@ export default function Review() {
           <img
             src="/images/back.svg"
             alt="back"
-            style={{ marginLeft: "20px" }}
             onClick={() => {
               navigate(-1);
             }}
@@ -163,10 +161,13 @@ export default function Review() {
 
       <VisitDay>
         방문일선택
-        <p style={{ textDecoration: "underline", marginLeft: "160px" }}>
+        <p>
           2022.{Month}.{Day}
         </p>
-        <RightArrow src="/images/review/rightArrow.svg" />
+        <RightArrow
+          src="/images/review/rightArrow.svg"
+          style={{ paddingTop: "3px" }}
+        />
       </VisitDay>
       <Line />
 
@@ -282,24 +283,12 @@ export default function Review() {
             <PreviewDiv key={idx}>
               <PreviewImg>
                 <img src={image} alt="reviewImg" />
-                {/* <Delete
-                  onClick={(event) => {
-                    event.preventDefault();
-                    handleDeleteImage(idx);
-                  }}
-                > */}
-                {/* <img
-                    src="/images/review/close.svg"
-                    style={{ width: "18px", height: "18px" }}
-                    alt="closeBtn"
-                  />
-                </Delete> */}
+                <CloseBtn
+                  onClick={handleDeleteImage(idx)}
+                  src="/images/mypage/closeimage.svg"
+                  alt="closeBtn"
+                />
               </PreviewImg>
-              {/* <PreviewImgDelete
-                image={image}
-                setImagePreview={setImagePreview}
-                setImageFiles={setImageFiles}
-              /> */}
             </PreviewDiv>
           ))}
         </ImgList>
@@ -315,9 +304,10 @@ export default function Review() {
     </Wrapper>
   );
 }
+// width: ${(props) => props.theme.pixelToRem(375)};
 
 const Wrapper = styled.div`
-  width: ${(props) => props.theme.pixelToRem(375)};
+  width: 100%;
   margin: 0 auto;
   flex-direction: column;
   height: 100vh;
@@ -325,19 +315,22 @@ const Wrapper = styled.div`
 `;
 
 const Head = styled.div`
+  width: 100%;
   display: flex;
   align-items: center;
-  margin-right: 45px;
+  /* transform: translateX(-15px); */
+  /* background-color: red; */
 `;
 
 const HeadText = styled.div`
   margin: auto;
   font-size: ${(props) => props.theme.pixelToRem(18)};
+  transform: translateX(-15px);
 `;
-
+// ${(props) => props.theme.pixelToRem(375)};
 const ReviewImgBox = styled.div`
   position: relative;
-  width: ${(props) => props.theme.pixelToRem(375)};
+  width: 100%;
   height: ${(props) => props.theme.pixelToRem(170)};
   margin-top: 10px;
 
@@ -348,9 +341,9 @@ const ReviewImgBox = styled.div`
     filter: contrast(55%);
   }
 `;
-
+// width: ${(props) => props.theme.pixelToRem(375)};
 const TextBox = styled.div`
-  width: ${(props) => props.theme.pixelToRem(375)};
+  width: 100%;
   justify-content: center;
   align-items: center;
   display: flex;
@@ -373,11 +366,19 @@ const CampLoca = styled.div`
 `;
 
 const VisitDay = styled.div`
-  display: flex;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 4.5fr 1fr 1fr;
   justify-content: space-between;
-  font-size: ${(props) => props.theme.pixelToRem(16)};
+  align-items: center;
+  font-size: ${(props) => props.theme.pixelToRem(18)};
   margin-top: 20px;
   margin: 20px;
+
+  p {
+    text-decoration: underline;
+    font-size: ${(props) => props.theme.pixelToRem(16)};
+  }
 `;
 
 const RightArrow = styled.img`
@@ -436,11 +437,22 @@ const BestInput = styled.input`
   }
 `;
 
-const PreviewImg = styled.div``;
-
-const Delete = styled.div`
+const PreviewDiv = styled.div`
   position: relative;
-  margin-top: -80px;
+`;
+
+const PreviewImg = styled.div`
+  position: absolute;
+`;
+
+const CloseBtn = styled.img`
+  width: ${(props) => props.theme.pixelToRem(22)};
+  height: ${(props) => props.theme.pixelToRem(22)};
+  transform: translateX(-55px);
+  margin-top: 5px;
+  position: absolute;
+  z-index: 2;
+  /* background-color: red; */
 `;
 
 const BestBtnDiv = styled.div<{ isBest: Boolean }>`
@@ -646,10 +658,6 @@ const Upload = styled.label`
     font-size: ${(props) => props.theme.pixelToRem(12)};
     color: grey;
   }
-`;
-
-const PreviewDiv = styled.div`
-  /* position: absolute; */
 `;
 
 const StBtn = styled.button`

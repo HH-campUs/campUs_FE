@@ -8,7 +8,6 @@ import {
   campArray,
   pickedCamp,
   IGetTravelPlan,
-  IMostList,
   IGetDistance,
   IGetNewReview,
 } from "../interfaces/get";
@@ -82,6 +81,7 @@ export const useGetCamp = (doNm: string, sort: string) => {
 //infiniteQuery for Topic
 export const useGetTopicInfinite = (topicId: string, sort: string) => {
   const topicData = async ({ pageParam = 0 }) => {
+    console.log("sort", sort);
     const { data } = await instance.get<pickedCamp>(
       `/camps/${topicId}?&numOfRows=10&pageNo=${pageParam}&sort=${sort}`
     );
@@ -194,21 +194,15 @@ export const useGetApi = {
   // ** 캠핑장 거리 조회 ** //
   useGetDistance: (campX: number, campY: number) => {
     console.log("196", campX, campY);
-    return useQuery<IGetDistance>(
-      ["distanceinfo"],
-      async () => {
-        if (campX && campY) {
-          const { data } = await instance.get(
-            `users/nearCamp?campX=${campX}&campY=${campY}`
-          );
-          console.log("203", campX, campY);
-          console.log(data);
-          return data.nearCamp;
-        }
-        return [];
+    return useQuery<IGetDistance>(["distanceinfo"], async () => {
+      if (campX && campY) {
+        const { data } = await instance.get(
+          `users/nearCamp?campX=${campX}&campY=${campY}`
+        );
+        return data.nearCamp;
       }
-      // { enabled: !!(campX && campY) }
-    );
+      return [];
+    });
   },
 
   /* topic 별 캠핑장 결과 조회 */

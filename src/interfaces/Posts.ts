@@ -1,4 +1,3 @@
-//url to image : string, image used as <img> ele : HTMLImageElement
 export interface IReviewPosts {
   reviewImg: FormData;
   reviewComment: string;
@@ -14,8 +13,9 @@ export interface IReviewRead {
 }
 
 export interface IEditReviewPosts {
-  reviewImg?: File;
+  reviewImg?: FormData;
   reviewComment: string;
+  reviewId: number;
 }
 
 export interface IDeleteReviewPosts {}

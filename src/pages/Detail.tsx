@@ -191,7 +191,7 @@ function Detail() {
                   <PickImg
                     onClick={(e) => {
                       e.stopPropagation();
-                      setToastState4(true);
+                      setToastState3(true);
                       Mypick(detailItem.campId);
                     }}>
                     <img
@@ -208,7 +208,7 @@ function Detail() {
                   <UnpickImg
                     onClick={(e) => {
                       e.stopPropagation();
-                      setToastState3(true);
+                      setToastState4(true);
                       Unpick(detailItem.campId);
                     }}>
                     <img

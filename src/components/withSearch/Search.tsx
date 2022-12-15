@@ -89,7 +89,7 @@ function Search() {
 
         {toastState4 == true ? (
           <ResetToast
-            text={"검색조건들이 초기화됬어요."}
+            text={"검색조건들이 초기화됐어요."}
             toastState4={toastState4}
             setToastState4={setToastState4}
           />

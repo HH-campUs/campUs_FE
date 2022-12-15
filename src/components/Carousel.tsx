@@ -42,21 +42,53 @@ export default function Carousel() {
 
   return (
     <>
-      {/* <CarouselSwiper
-        slidesPerView={3}
-        spaceBetween={30}
+      <CarouselSwiper
+        slidesPerView={2}
+        spaceBetween={20}
         pagination={{
           clickable: true,
         }}
         className="mySwiper">
-        <SwiperSlide>
+        <Outline>
+          <ImgCover onClick={handleClick(campLook?.campId)} />
+
+          <CarouselImg src={campLook?.ImageUrl} alt="img" />
+          <CrTextBox>
+            <CampName>{campLook?.campName}</CampName>
+          </CrTextBox>
+          <ReviewInfo>
+            <NumText>
+              찜({campLook?.pickCount}) 리뷰({campLook?.reviewCount})
+            </NumText>
+          </ReviewInfo>
+        </Outline>
+        <Outline>
           <ImgCover onClick={handleClick(campReview?.campId)} />
-          <CarouselImg draggable={false} src={campReview?.ImageUrl} alt="img" />
-        </SwiperSlide>
-        <SwiperSlide>Slide 2</SwiperSlide>
-        <SwiperSlide>Slide 3</SwiperSlide>
-      </CarouselSwiper> */}
-      <CarouselViewer
+          <CarouselImg src={campReview?.ImageUrl} alt="img" />
+          <CrTextBox>
+            <CampName>{campReview?.campName}</CampName>
+          </CrTextBox>
+          <ReviewInfo>
+            <NumText>
+              찜({campReview?.pickCount}) 리뷰({campReview?.reviewCount})
+            </NumText>
+          </ReviewInfo>
+        </Outline>
+        <Outline>
+          <ImgCover onClick={handleClick(campPick?.campId)} />
+          <CarouselImg src={campPick?.ImageUrl} alt="img" />
+          <CrTextBox>
+            <CampName>{campPick?.campName}</CampName>
+          </CrTextBox>
+          <ReviewInfo>
+            <NumText>
+              찜({campPick?.pickCount}) 리뷰({campPick?.reviewCount})
+            </NumText>
+          </ReviewInfo>
+        </Outline>
+      </CarouselSwiper>
+      {/* <CarouselViewer
+
         style={{
           overflow: hide ? "hidden" : "visible",
         }}>
@@ -86,7 +118,7 @@ export default function Carousel() {
               <ImgCover onClick={handleClick(campLook?.campId)} />
 
               <CarouselImg
-                draggable={true}
+                draggable={false}
                 src={campLook?.ImageUrl}
                 alt="img"
                 width={SLIDER_WIDTH}
@@ -103,7 +135,7 @@ export default function Carousel() {
             <Outline>
               <ImgCover onClick={handleClick(campReview?.campId)} />
               <CarouselImg
-                draggable={true}
+                draggable={false}
                 src={campReview?.ImageUrl}
                 alt="img"
                 width={SLIDER_WIDTH}
@@ -120,7 +152,7 @@ export default function Carousel() {
             <Outline>
               <ImgCover onClick={handleClick(campPick?.campId)} />
               <CarouselImg
-                draggable={true}
+                draggable={false}
                 src={campPick?.ImageUrl}
                 alt="img"
                 width={SLIDER_WIDTH}
@@ -136,7 +168,7 @@ export default function Carousel() {
             </Outline>
           </CarouselSlide>
         </CarouselSlider>
-      </CarouselViewer>
+      </CarouselViewer> */}
     </>
   );
 }
@@ -167,13 +199,14 @@ const CarouselSlide = styled.div`
   display: flex;
 `;
 
-const Outline = styled.div`
+const Outline = styled(SwiperSlide)`
   /* display: flex; */
   width: ${(props) => props.theme.pixelToRem(214)};
   height: ${(props) => props.theme.pixelToRem(260)};
   position: relative;
   margin-top: ${(props) => props.theme.pixelToRem(18)};
-  margin-left: ${(props) => props.theme.pixelToRem(20)};
+  margin-left: ${(props) => props.theme.pixelToRem(10)};
+  margin-right: ${(props) => props.theme.pixelToRem(0)} !important;
 `;
 
 const ImgCover = styled.div`
@@ -187,7 +220,7 @@ const ImgCover = styled.div`
 `;
 
 const CarouselImg = styled.img`
-  width: 100%;
+  width: ${(props) => props.theme.pixelToRem(214)} !important;
   height: 100%;
   border-radius: ${(props) => props.theme.pixelToRem(15)};
   object-fit: cover;
@@ -199,7 +232,7 @@ const CrTextBox = styled.div`
   padding: 5px;
   position: absolute;
   top: 175px;
-  margin-left: 10px;
+  margin-left: -70px;
   color: #ffffff;
   z-index: 5;
 `;
@@ -213,8 +246,8 @@ const ReviewInfo = styled.div`
   font-size: 1rem;
   position: absolute;
   border-radius: 0.4rem;
-  margin-top: -35px;
-  margin-left: 17px;
+  margin-top: 205px;
+  margin-left: -106px;
   z-index: 5;
 `;
 

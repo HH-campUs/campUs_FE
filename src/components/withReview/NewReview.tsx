@@ -1,27 +1,20 @@
 import styled from "styled-components";
 import { useGetApi } from "../../APIs/getApi";
-import registDragEvent from "../../utils/registDragEvent";
-import ReviewSizeHook from "./ReviewSizeHook";
+import { Swiper, SwiperSlide } from "swiper/react";
 
 import { useState } from "react";
 import { useMyPageApi } from "../../APIs/myPageApi";
 import { useNavigate } from "react-router-dom";
 
+import "swiper/css";
+
+import "../../style/swiper.css";
+
 export default function NewReview() {
   const NewReview = useGetApi.useGetNewReview().data?.data || [];
   console.log("메인리뷰", NewReview);
   const [hide, setHide] = useState(true);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [transX, setTransX] = useState(0);
   const navigation = useNavigate();
-
-  const { ref, width, height } = ReviewSizeHook();
-
-  const inrange = (v: number, min: number, max: number) => {
-    if (v < min) return min;
-    if (v > max) return max;
-    return v;
-  };
 
   const toDetail = (campId: number) => () => {
     navigation(`/detail/${campId}/review`);
@@ -30,87 +23,128 @@ export default function NewReview() {
   const imageList = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   return (
     <>
-      <CarouselViewer
-        ref={ref}
-        className="w-full max-w-lg"
-        style={{
-          height,
-          overflow: hide ? "hidden" : "visible",
-        }}>
-        <CarouselSlider
-          className="flex"
-          style={{
-            transform: `translateX(${-currentIndex * width + transX}px)`,
-            transition: `transform ${transX ? 0 : 300}ms ease-in-out 0s`,
-          }}
-          {...registDragEvent({
-            onDragChange: (deltaX) => {
-              setTransX(inrange(deltaX, -width, width));
-            },
-            onDragEnd: (deltaX) => {
-              const maxIndex = imageList.length;
-
-              if (deltaX < -100)
-                setCurrentIndex(inrange(currentIndex + 1, 0, maxIndex));
-              if (deltaX > 100)
-                setCurrentIndex(inrange(currentIndex - 1, 0, maxIndex));
-
-              setTransX(0);
-            },
-          })}>
-          {NewReview.map((item, reviewId) => (
-            <CaroImgBox key={reviewId}>
-              <Wrapper draggable="true">
-                <MainBox>
-                  <PfBox>
-                    <PfImg>
-                      <img src={item?.profileImg} alt="pfImg" />
-                    </PfImg>
-                    <div
-                      style={{ flexDirection: "column", marginLeft: "6.5px" }}>
-                      <NickBox>
-                        <PfNick>{item?.nickname}</PfNick>
-                        <PfCamp
-                          title={item?.campName}
-                          onClick={toDetail(item.campId)}>
-                          {item?.campName}
-                        </PfCamp>
-                      </NickBox>
-                      <LocaBox>
-                        <Date>&nbsp;{item?.createdAt.slice(0, 10)}</Date>
-                      </LocaBox>
-                    </div>
-                  </PfBox>
-                  <ReviewBox>
-                    <ReviewText
-                      title={item?.reviewComment}
-                      onClick={toDetail(item.campId)}>
-                      {item?.reviewComment}
-                    </ReviewText>
-                  </ReviewBox>
-                  <ImgFlex>
-                    {item?.reviewImg
-                      .toString()
-                      .split(",")
-                      .map((image: string, reviewId) => (
-                        <ImgBox>
-                          {item?.reviewImg ? (
-                            <img src={image} alt="reviewImg" key={reviewId} />
-                          ) : null}
-                        </ImgBox>
-                      ))}
-                  </ImgFlex>
-                </MainBox>
-              </Wrapper>
-            </CaroImgBox>
-          ))}
-        </CarouselSlider>
-      </CarouselViewer>
+      <CarouselSwiper
+        slidesPerView={2}
+        spaceBetween={20}
+        pagination={{
+          clickable: true,
+        }}
+        className="mySwiper">
+        {NewReview.map((item, reviewId) => (
+          <MainBox key={reviewId}>
+            <PfBox>
+              <PfImg>
+                <img src={item?.profileImg} alt="pfImg" />
+              </PfImg>
+              <div style={{ flexDirection: "column", marginLeft: "6.5px" }}>
+                <NickBox>
+                  <PfNick>{item?.nickname}</PfNick>
+                  <PfCamp
+                    title={item?.campName}
+                    onClick={toDetail(item.campId)}>
+                    {item?.campName}
+                  </PfCamp>
+                </NickBox>
+                <LocaBox>
+                  <Date>&nbsp;{item?.createdAt.slice(0, 10)}</Date>
+                </LocaBox>
+              </div>
+            </PfBox>
+            <ReviewBox>
+              <ReviewText
+                title={item?.reviewComment}
+                onClick={toDetail(item.campId)}>
+                {item?.reviewComment}
+              </ReviewText>
+            </ReviewBox>
+            <ImgFlex>
+              {item?.reviewImg
+                .toString()
+                .split(",")
+                .map((image: string, reviewId) => (
+                  <ImgBox>
+                    {item?.reviewImg ? (
+                      <img src={image} alt="reviewImg" key={reviewId} />
+                    ) : null}
+                  </ImgBox>
+                ))}
+            </ImgFlex>
+          </MainBox>
+        ))}
+      </CarouselSwiper>
+      {/* <CarouselSlider
+            className="flex"
+            style={{
+              transform: `translateX(${-currentIndex * width + transX}px)`,
+              transition: `transform ${transX ? 0 : 300}ms ease-in-out 0s`,
+            }}
+            {...registDragEvent({
+              onDragChange: (deltaX) => {
+                setTransX(inrange(deltaX, -width, width));
+              },
+              onDragEnd: (deltaX) => {
+                const maxIndex = imageList.length;
+  
+                if (deltaX < -100)
+                  setCurrentIndex(inrange(currentIndex + 1, 0, maxIndex));
+                if (deltaX > 100)
+                  setCurrentIndex(inrange(currentIndex - 1, 0, maxIndex));
+  
+                setTransX(0);
+              },
+            })}>
+            {NewReview.map((item, reviewId) => (
+              <CaroImgBox key={reviewId}>
+                <Wrapper draggable="true">
+                  <MainBox>
+                    <PfBox>
+                      <PfImg>
+                        <img src={item?.profileImg} alt="pfImg" />
+                      </PfImg>
+                      <div
+                        style={{ flexDirection: "column", marginLeft: "6.5px" }}>
+                        <NickBox>
+                          <PfNick>{item?.nickname}</PfNick>
+                          <PfCamp
+                            title={item?.campName}
+                            onClick={toDetail(item.campId)}>
+                            {item?.campName}
+                          </PfCamp>
+                        </NickBox>
+                        <LocaBox>
+                          <Date>&nbsp;{item?.createdAt.slice(0, 10)}</Date>
+                        </LocaBox>
+                      </div>
+                    </PfBox>
+                    <ReviewBox>
+                      <ReviewText
+                        title={item?.reviewComment}
+                        onClick={toDetail(item.campId)}>
+                        {item?.reviewComment}
+                      </ReviewText>
+                    </ReviewBox>
+                    <ImgFlex>
+                      {item?.reviewImg
+                        .toString()
+                        .split(",")
+                        .map((image: string, reviewId) => (
+                          <ImgBox>
+                            {item?.reviewImg ? (
+                              <img src={image} alt="reviewImg" key={reviewId} />
+                            ) : null}
+                          </ImgBox>
+                        ))}
+                    </ImgFlex>
+                  </MainBox>
+                </Wrapper>
+              </CaroImgBox>
+            ))}
+          </CarouselSlider> */}
     </>
   );
 }
 
-const CarouselViewer = styled.div`
+const CarouselSwiper = styled(Swiper)`
   width: ${(props) => props.theme.pixelToRem(475)};
   height: ${(props) => props.theme.pixelToRem(300)} !important;
   overflow: hidden;
@@ -129,11 +163,11 @@ const Wrapper = styled.div`
   /* margin-left: 20px; */
 `;
 
-const MainBox = styled.div`
+const MainBox = styled(SwiperSlide)`
   margin-top: 18px;
   margin-left: 20px;
   /* transform: translateX(20px); */
-  width: ${(props) => props.theme.pixelToRem(268)};
+  width: ${(props) => props.theme.pixelToRem(268)} !important;
   height: ${(props) => props.theme.pixelToRem(256)};
   border-radius: ${(props) => props.theme.pixelToRem(10)};
   border: 1px solid #eee;
@@ -142,7 +176,7 @@ const MainBox = styled.div`
 const PfBox = styled.div`
   width: ${(props) => props.theme.pixelToRem(300)};
   height: ${(props) => props.theme.pixelToRem(40)};
-  margin: 18px 18px 0 22px;
+  margin: -178px -390px 0 20px !important;
   display: flex;
   /* background-color: red; */
 `;
@@ -194,8 +228,8 @@ const ReviewBox = styled.div`
   width: ${(props) => props.theme.pixelToRem(240)};
   color: #666;
   font-size: ${(props) => props.theme.pixelToRem(14)};
-  margin-top: 15px;
-  margin-left: 18px;
+  margin-top: -65px;
+  margin-left: 100px;
   line-height: 1.57;
   word-break: normal;
 `;
@@ -203,6 +237,7 @@ const ReviewBox = styled.div`
 const ReviewText = styled.div`
   width: 240px;
   word-break: break-all;
+  text-align: left;
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
@@ -213,11 +248,12 @@ const ReviewText = styled.div`
 `;
 
 const ImgFlex = styled.div`
-  margin-top: 14px;
-  margin-left: 20px;
+  margin-top: 69px;
+  margin-left: -150px;
   width: ${(props) => props.theme.pixelToRem(77)};
   height: ${(props) => props.theme.pixelToRem(84)};
   display: flex;
+  position: absolute;
 `;
 
 const ImgBox = styled.div`

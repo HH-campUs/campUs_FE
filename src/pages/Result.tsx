@@ -679,7 +679,7 @@ const WeatherModal = styled.div<{ isWeather: boolean }>`
           &:nth-child(5) {
             width: ${(props) => props.theme.pixelToRem(30)};
             margin-top: 3px;
-            margin-left: 13px;
+            margin-left: 8px;
           }
           &:nth-child(6) {
             width: ${(props) => props.theme.pixelToRem(30)};
@@ -689,7 +689,7 @@ const WeatherModal = styled.div<{ isWeather: boolean }>`
           &:nth-child(7) {
             width: ${(props) => props.theme.pixelToRem(30)};
             margin-top: -1px;
-            margin-left: 262px;
+            margin-left: 257px;
           }
         }
       }

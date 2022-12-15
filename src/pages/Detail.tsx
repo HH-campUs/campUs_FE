@@ -12,7 +12,12 @@ import { StrDay } from "../store/dateAtom";
 import getIcons from "../utils/getIcons";
 import { getCamperToken } from "../instance/cookies";
 import { isToast, isToast2 } from "../store/toastAtom";
-import { NoIdPickToast, NavToast2 } from "../components/Toast/Toast";
+import {
+  NoIdPickToast,
+  NavToast2,
+  InfoToast3,
+  NavToast4,
+} from "../components/Toast/Toast";
 import { usePostsApi } from "../APIs/postsApi";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ICampingPicked } from "../interfaces/Posts";
@@ -20,13 +25,15 @@ import { instance } from "../instance/instance";
 
 function Detail() {
   const [toastState, setToastState] = useRecoilState(isToast);
+  const [toastState2, setToastState2] = useRecoilState(isToast2);
+  const [toastState3, setToastState3] = useState(false);
+  const [toastState4, setToastState4] = useState(false);
 
   const url = window.location.href;
   //toast
   const copied = () => {
     window.alert("복사완료");
   };
-  const [toastState2, setToastState2] = useRecoilState(isToast2);
 
   const copyLinkRef = useRef();
   const navigate = useNavigate();
@@ -58,7 +65,7 @@ function Detail() {
 
   const Mypick = (campId: number) => {
     pickMutate.mutate(campId);
-    console.log("짬하기", campId);
+    console.log("찜하기", campId);
   };
 
   const Unpick = (campId: number) => {
@@ -110,7 +117,6 @@ function Detail() {
         <PlanWrite isPlan={isPlan} setIsPlan={setIsPlan} campId={campId} />
       )}
       <Wrapper>
-        {/* 최상단 이미지*/}
         {/* 로그인 없이 일정버튼 누를 때 */}
         {toastState == true ? (
           <NoIdPickToast
@@ -120,12 +126,32 @@ function Detail() {
           />
         ) : null}
 
+        {/* 찜목록 제거 */}
+        {toastState3 == true ? (
+          <InfoToast3
+            text={"찜목록에 제거되었어요."}
+            toastState3={toastState3}
+            setToastState3={setToastState3}
+          />
+        ) : null}
+
+        {/* 여행일정 등록완료 */}
         {toastState2 == true ? (
           <NavToast2
             text={"여행일정 등록을 완료했어요."}
             url={"/mypage/myplan"}
             toastState2={toastState2}
             setToastState2={setToastState2}
+          />
+        ) : null}
+
+        {/* 찜목록 추가 */}
+        {toastState4 == true ? (
+          <NavToast4
+            text={"찜목록에 추가되었어요."}
+            url={"/mypage/mypick"}
+            toastState4={toastState4}
+            setToastState4={setToastState4}
           />
         ) : null}
 
@@ -165,9 +191,9 @@ function Detail() {
                   <PickImg
                     onClick={(e) => {
                       e.stopPropagation();
+                      setToastState4(true);
                       Mypick(detailItem.campId);
-                    }}
-                  >
+                    }}>
                     <img
                       src="/images/icons/picked.svg"
                       alt="Picked"
@@ -182,9 +208,9 @@ function Detail() {
                   <UnpickImg
                     onClick={(e) => {
                       e.stopPropagation();
+                      setToastState3(true);
                       Unpick(detailItem.campId);
-                    }}
-                  >
+                    }}>
                     <img
                       src="/images/icons/unPicked.svg"
                       alt="unPicked"
@@ -235,11 +261,8 @@ function Detail() {
                 fontSize: "1rem",
                 marginTop: "-4px",
                 marginLeft: "4px",
-
-              }}
-            ></span>
+              }}></span>
             <Plan> 일정을 저장해 보세요! </Plan>
-
           </div>
           {isLogin ? (
             <div className="rightBtn" onClick={openPlan}>

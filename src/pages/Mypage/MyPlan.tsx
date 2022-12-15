@@ -1,12 +1,12 @@
 import React, { useState } from "react";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import Kebop from "../../components/withPlan/Kebop";
 import SemiSearch from "../../components/withSearch/SemiSearch";
 import PlanUpdate from "../../components/withPlan/PlanUpdate";
-import { useRecoilState } from "recoil";
+import { InfoToast, InfoToast2 } from "../../components/Toast/Toast";
 
 import { usePostsApi } from "../../APIs/postsApi";
-
 import { useNavigate } from "react-router-dom";
 import { getCamperToken } from "../../instance/cookies";
 import { IGetTravelPlan } from "../../interfaces/MyPage";
@@ -14,6 +14,10 @@ import { useMyPageApi } from "../../APIs/myPageApi";
 import { updateState } from "../../store/profileAtoms";
 
 export default function MyPlan() {
+  /* for Toast */
+  const [toastState, setToastState] = useState(false);
+  const [toastState2, setToastState2] = useState(false);
+
   const [onOff, setOnOff] = useState(false);
   const [isPlan, setIsPlan] = useRecoilState(updateState);
 
@@ -53,10 +57,21 @@ export default function MyPlan() {
 
   return (
     <>
-      {/* {isPlan == false ? null : (
-        <PlanUpdate isPlan={isPlan} setIsPlan={setIsPlan} />
-      )} */}
       <TotalContainer>
+        {toastState == true ? (
+          <InfoToast
+            text={"여행일정가 삭제되었어요."}
+            toastState={toastState}
+            setToastState={setToastState}
+          />
+        ) : null}
+        {toastState == true ? (
+          <InfoToast2
+            text={"여행일정을 수정했어요."}
+            toastState2={toastState2}
+            setToastState2={setToastState2}
+          />
+        ) : null}
         <ToggleBtn onOff={onOff}>
           <input type="checkbox" id="toggle" onChange={onChangeText} hidden />
 

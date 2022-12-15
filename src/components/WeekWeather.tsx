@@ -148,7 +148,7 @@ export default function Subject() {
                         {/* humidity */}
                         {recommendData.humidity > 60 ? (
                           <p style={{ color: "#eb4343" }}>
-                            <b>·</b> 많이 습해서 불쾌지수가 올라가요
+                            <b>·</b> 습해서 불쾌지수가 올라가요
                           </p>
                         ) : recommendData.humidity < 60 &&
                           recommendData.humidity > 30 ? (

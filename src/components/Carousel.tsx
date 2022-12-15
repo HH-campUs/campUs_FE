@@ -1,8 +1,13 @@
 import registDragEvent from "../utils/registDragEvent";
 import { useState } from "react";
 import useCarouselSize from "./useCarouselSize";
+import { Swiper, SwiperSlide } from "swiper/react";
 
 //css
+import "swiper/css";
+import "swiper/css/pagination";
+
+import "../style/swiper.css";
 import styled from "styled-components";
 import { useGetApi } from "../APIs/getApi";
 import { useNavigate, useParams } from "react-router-dom";
@@ -37,11 +42,22 @@ export default function Carousel() {
 
   return (
     <>
+      {/* <CarouselSwiper
+        slidesPerView={3}
+        spaceBetween={30}
+        pagination={{
+          clickable: true,
+        }}
+        className="mySwiper">
+        <SwiperSlide>
+          <ImgCover onClick={handleClick(campReview?.campId)} />
+          <CarouselImg draggable={false} src={campReview?.ImageUrl} alt="img" />
+        </SwiperSlide>
+        <SwiperSlide>Slide 2</SwiperSlide>
+        <SwiperSlide>Slide 3</SwiperSlide>
+      </CarouselSwiper> */}
       <CarouselViewer
-        /* ref={ref} */
-
         style={{
-          /* height, */
           overflow: hide ? "hidden" : "visible",
         }}>
         <CarouselSlider
@@ -70,7 +86,7 @@ export default function Carousel() {
               <ImgCover onClick={handleClick(campLook?.campId)} />
 
               <CarouselImg
-                draggable={false}
+                draggable={true}
                 src={campLook?.ImageUrl}
                 alt="img"
                 width={SLIDER_WIDTH}
@@ -87,7 +103,7 @@ export default function Carousel() {
             <Outline>
               <ImgCover onClick={handleClick(campReview?.campId)} />
               <CarouselImg
-                draggable={false}
+                draggable={true}
                 src={campReview?.ImageUrl}
                 alt="img"
                 width={SLIDER_WIDTH}
@@ -104,7 +120,7 @@ export default function Carousel() {
             <Outline>
               <ImgCover onClick={handleClick(campPick?.campId)} />
               <CarouselImg
-                draggable={false}
+                draggable={true}
                 src={campPick?.ImageUrl}
                 alt="img"
                 width={SLIDER_WIDTH}
@@ -124,6 +140,15 @@ export default function Carousel() {
     </>
   );
 }
+
+const CarouselSwiper = styled(Swiper)`
+  width: ${(props) => props.theme.pixelToRem(475)};
+  max-width: ${(props) => props.theme.pixelToRem(475)};
+  min-width: ${(props) => props.theme.pixelToRem(375)};
+  height: ${(props) => props.theme.pixelToRem(318)} !important;
+  overflow: hidden;
+  user-select: none;
+`;
 
 const CarouselViewer = styled.div`
   width: ${(props) => props.theme.pixelToRem(475)};

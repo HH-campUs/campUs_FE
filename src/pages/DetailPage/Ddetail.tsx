@@ -6,6 +6,7 @@ import { useGetApi } from "../../APIs/getApi";
 import DetailMap from "./DetailMap";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import SemiSearch from "../../components/withSearch/SemiSearch";
+import PlanWrite from "../../components/withPlan/PlanWrite";
 
 function Ddetail() {
   const url = window.location.href;
@@ -25,8 +26,8 @@ function Ddetail() {
 
   return (
     <Wrapper>
-      {openSemi == false ? null : (
-        <SemiSearch openSemi={openSemi} setOpenSemi={setOpenSemi} />
+      {isPlan == false ? null : (
+        <PlanWrite isPlan={isPlan} setIsPlan={setIsPlan} campId={campId} />
       )}
       <InfoBox>
         <Title>기본 정보</Title>

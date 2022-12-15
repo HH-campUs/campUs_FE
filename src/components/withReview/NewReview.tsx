@@ -36,8 +36,7 @@ export default function NewReview() {
         style={{
           height,
           overflow: hide ? "hidden" : "visible",
-        }}
-      >
+        }}>
         <CarouselSlider
           className="flex"
           style={{
@@ -58,25 +57,22 @@ export default function NewReview() {
 
               setTransX(0);
             },
-          })}
-        >
+          })}>
           {NewReview.map((item, reviewId) => (
             <CaroImgBox key={reviewId}>
-              <Wrapper draggable={false}>
+              <Wrapper>
                 <MainBox>
                   <PfBox>
                     <PfImg>
                       <img src={item?.profileImg} alt="pfImg" />
                     </PfImg>
                     <div
-                      style={{ flexDirection: "column", marginLeft: "6.5px" }}
-                    >
+                      style={{ flexDirection: "column", marginLeft: "6.5px" }}>
                       <NickBox>
                         <PfNick>{item?.nickname}</PfNick>
                         <PfCamp
                           title={item?.campName}
-                          onClick={toDetail(item.campId)}
-                        >
+                          onClick={toDetail(item.campId)}>
                           {item?.campName}
                         </PfCamp>
                       </NickBox>
@@ -88,8 +84,7 @@ export default function NewReview() {
                   <ReviewBox>
                     <ReviewText
                       title={item?.reviewComment}
-                      onClick={toDetail(item.campId)}
-                    >
+                      onClick={toDetail(item.campId)}>
                       {item?.reviewComment}
                     </ReviewText>
                   </ReviewBox>

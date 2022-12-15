@@ -27,6 +27,7 @@ function Splash() {
 
     setTimeout(() => {
       setIsShow(false);
+      document.body.style.overflow = "unset";
     }, 2500);
   }, []);
 
@@ -57,6 +58,8 @@ const SplashBg = styled.div`
   height: 100vh;
   padding: 0 auto;
   background-color: ${(props) => props.theme.colorTheme.main};
+  position: fixed;
+  overflow: hidden;
 `;
 const SplashLogo = styled.div`
   width: 290px;
@@ -76,7 +79,7 @@ const SplashLogo = styled.div`
 `;
 const SpanBottom = styled.div`
   top: 86%;
-  left: 32%;
+  left: 32.7%;
   font-size: ${(props) => props.theme.pixelToRem(13)};
   font-weight: regular;
   font-stretch: normal;
@@ -96,7 +99,7 @@ const Root = styled.div`
   box-sizing: border-box;
   display: flex;
   justify-content: center;
-  position: relative;
+  position: fixed;
   overflow: hidden;
   overflow-y: scroll;
   background-color: #e2e7eb;

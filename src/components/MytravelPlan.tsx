@@ -14,6 +14,17 @@ export default function MytravelPlan() {
   console.log(trip);
   const navigate = useNavigate();
   const isLogin = getCamperToken();
+
+  const DdayCalculator = (date: string) => {
+    const planDay = new Date(date);
+    const today = new Date();
+    const gap = planDay.getTime() - today.getTime();
+    const result = Math.floor(gap / (1000 * 60 * 60 * 24) + 1);
+
+    console.log(result, typeof result);
+    return result;
+  };
+
   return (
     <Wrapper>
       <TextBox>
@@ -33,7 +44,7 @@ export default function MytravelPlan() {
             <PlaceName>
               <PlaceBox>
                 <Campname className="isLogin">{trip?.campName}</Campname>
-                <Dday>D - {trip?.dDay}</Dday>
+                <Dday>D - {DdayCalculator(trip.date)}</Dday>
               </PlaceBox>
               <Location>
                 <LocationOnIcon />
@@ -119,7 +130,7 @@ const AllList = styled.div`
 
 const PlanBox = styled.div`
   width: 100%;
-  max-width: ${(props) => props.theme.pixelToRem(375)};
+  max-width: ${(props) => props.theme.pixelToRem(365)};
   height: ${(props) => props.theme.pixelToRem(102)};
   border-radius: ${(props) => props.theme.pixelToRem(10)};
   background-color: #f5f5f5;

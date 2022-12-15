@@ -7,10 +7,8 @@ import { useGetApi, useGetTravelPlan2 } from "../APIs/getApi";
 //css
 import styled from "styled-components";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import { IGetMainTrip } from "../interfaces/get";
 
 export default function MytravelPlan() {
-  // const isLogin = useRecoilValue(LoginState);
   const data = useGetTravelPlan2();
   const trip = data?.myTrip?.trip[0];
   console.log(trip);
@@ -29,7 +27,7 @@ export default function MytravelPlan() {
       </TextBox>
 
       {isLogin ? (
-        trip?.tripId !== null ? (
+        trip !== undefined ? (
           <PlanBox>
             <ImgBox src={trip?.ImageUrl} alt="img" />
             <PlaceName>

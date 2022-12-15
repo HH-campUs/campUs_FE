@@ -50,6 +50,27 @@ export const InfoToast2 = ({
   );
 };
 
+export const InfoToast3 = ({
+  text,
+  toastState3,
+  setToastState3,
+}: ToastProps3) => {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setToastState3(false);
+    }, 1500);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
+  return (
+    <ToastAlert3 toastState3={toastState3}>
+      <p>{text}</p>
+    </ToastAlert3>
+  );
+};
+
 /* 검색 에러 토스트 */
 export const SearchToast = ({
   text,
@@ -126,6 +147,7 @@ export const NavToast = ({
   );
 };
 
+/* 한페이지에서 바로가기 토스트를 2개 사용해야될 때 */
 export const NavToast2 = ({
   text,
   url,
@@ -157,6 +179,38 @@ export const NavToast2 = ({
   );
 };
 
+/* 한페이지에서 바로가기 토스트를 3개 사용해야될 때 */
+export const NavToast4 = ({
+  text,
+  url,
+  toastState4,
+  setToastState4,
+}: ToastProps4) => {
+  const nav = useNavigate();
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setToastState4(false);
+    }, 1500);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
+  return (
+    <NaviToast4 toastState4={toastState4}>
+      <p>{text}</p>
+      <img
+        src="/images/whiteBack.svg"
+        alt="nav"
+        onClick={(e) => {
+          e.stopPropagation();
+          nav(`${url}`);
+        }}
+      />
+    </NaviToast4>
+  );
+};
+
 /* Id가 없어요 */
 export const NoIdPickToast = ({
   text,
@@ -182,8 +236,7 @@ export const NoIdPickToast = ({
         onClick={(e) => {
           e.stopPropagation();
           nav("/login");
-        }}
-      >
+        }}>
         로그인
         <img src="/images/whiteBack.svg" alt="nav" />
       </span>
@@ -286,6 +339,48 @@ const ToastAlert2 = styled.div<{ toastState2: boolean }>`
   animation-duration: 0.2s;
 `;
 
+const ToastAlert3 = styled.div<{ toastState3: boolean }>`
+  width: ${(props) => props.theme.pixelToRem(243)};
+  height: ${(props) => props.theme.pixelToRem(48)};
+  margin: 0 auto;
+  left: 20%;
+  bottom: ${(props) => props.theme.pixelToRem(30)};
+  ${(props) => props.theme.fontTheme.Caption2};
+  line-height: 1.29;
+  letter-spacing: normal;
+  color: ${(props) => props.theme.colorTheme.textWhite};
+  background-color: #272727d8;
+  border-radius: 25px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  position: fixed;
+  z-index: 1000;
+  animation-name: ${(props) => (props.toastState3 == true ? fadeIn : fadeOut)};
+  animation-duration: 0.2s;
+`;
+
+const ToastAlert4 = styled.div<{ toastState4: boolean }>`
+  width: ${(props) => props.theme.pixelToRem(243)};
+  height: ${(props) => props.theme.pixelToRem(48)};
+  margin: 0 auto;
+  left: 20%;
+  bottom: ${(props) => props.theme.pixelToRem(30)};
+  ${(props) => props.theme.fontTheme.Caption2};
+  line-height: 1.29;
+  letter-spacing: normal;
+  color: ${(props) => props.theme.colorTheme.textWhite};
+  background-color: #272727d8;
+  border-radius: 25px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  position: fixed;
+  z-index: 1000;
+  animation-name: ${(props) => (props.toastState4 == true ? fadeIn : fadeOut)};
+  animation-duration: 0.2s;
+`;
+
 const CenterAlert = styled(ToastAlert)`
   width: ${(props) => props.theme.pixelToRem(245)};
   height: ${(props) => props.theme.pixelToRem(124)};
@@ -330,6 +425,20 @@ const NaviToast = styled(ToastAlert)`
 `;
 
 const NaviToast2 = styled(ToastAlert2)`
+  width: ${(props) => props.theme.pixelToRem(351)};
+  padding: 20px;
+  left: ${(props) => props.theme.pixelToRem(21)};
+  bottom: 10%;
+  position: absoulte;
+  border-radius: 10px;
+  justify-content: space-between !important;
+
+  img {
+    transform: rotate(180deg);
+  }
+`;
+
+const NaviToast4 = styled(ToastAlert4)`
   width: ${(props) => props.theme.pixelToRem(351)};
   padding: 20px;
   left: ${(props) => props.theme.pixelToRem(21)};

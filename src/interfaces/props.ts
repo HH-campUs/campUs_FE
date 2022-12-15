@@ -53,6 +53,7 @@ export interface ToastProps3 {
 
 export interface ToastProps4 {
   text?: string;
+  url?: string;
   setText?: React.Dispatch<React.SetStateAction<string>>;
   toastState4: boolean;
   setToastState4: React.Dispatch<React.SetStateAction<boolean>>;

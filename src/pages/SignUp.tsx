@@ -7,7 +7,7 @@ import { instance } from "../instance/instance";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { isToast } from "../store/toastAtom";
 
-import { InfoToast } from "../components/Toast/Toast";
+import { InfoToast, InfoToast2, InfoToast3 } from "../components/Toast/Toast";
 
 //css
 import styled from "styled-components";
@@ -16,6 +16,8 @@ import CheckIcon from "@mui/icons-material/Check";
 
 export default function SignUp() {
   const [toastState, setToastState] = useState(false);
+  const [toastState2, setToastState2] = useState(false);
+  const [toastState3, setToastState3] = useState(false);
 
   const navigate = useNavigate();
 
@@ -63,11 +65,11 @@ export default function SignUp() {
     await instance
       .post(`users/signup/check`, { email: mailwatch })
       .then(() => {
-        window.alert("사용가능한 메일입니다.");
         setMailCk(true);
+        setToastState3(true);
       })
       .catch(() => {
-        window.alert("사용이 불가능한 메일입니다.");
+        setToastState2(true);
       });
   };
 
@@ -80,6 +82,23 @@ export default function SignUp() {
           setToastState={setToastState}
         />
       ) : null}
+
+      {toastState2 == true ? (
+        <InfoToast2
+          text={`사용이 불가능한 메일입니다.`}
+          toastState2={toastState2}
+          setToastState2={setToastState2}
+        />
+      ) : null}
+
+      {toastState3 == true ? (
+        <InfoToast3
+          text={`사용 가능한 이메일입니다!`}
+          toastState3={toastState3}
+          setToastState3={setToastState3}
+        />
+      ) : null}
+
       <LoginTitle>
         <div>
           <KeyboardArrowLeftIcon

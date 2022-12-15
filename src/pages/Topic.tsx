@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-
 import { useRecoilState } from "recoil";
 
 import Search from "../components/withSearch/Search";
 import { isModal } from "../store/searchAtom";
+import { isToast, isToast2 } from "../store/toastAtom";
+
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 
@@ -12,7 +13,7 @@ import { useInView } from "react-intersection-observer";
 
 //css
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import { NoIdPickToast } from "../components/Toast/Toast";
+import { InfoToast2, NoIdPickToast, NavToast } from "../components/Toast/Toast";
 
 import { IGetCampResult } from "../interfaces/get";
 import TopicBookmark from "../components/TopicBookmark";
@@ -25,7 +26,8 @@ import Circle from "../components/TopicHead/Circle";
 
 function Topic() {
   /* toast boolean */
-  const [toastState, setToastState] = useState(false);
+  const [toastState, setToastState] = useRecoilState(isToast);
+  const [toastState2, setToastState2] = useRecoilState(isToast2);
 
   const toZero = () => {
     window.scrollTo({ left: 0, top: 0, behavior: "smooth" });
@@ -80,7 +82,28 @@ function Topic() {
       {isSearch == false ? null : <Search />}
 
       {toastState == true ? (
-        <NoIdPickToast toastState={toastState} setToastState={setToastState} />
+        !isLogin ? (
+          <NoIdPickToast
+            text={"로그인 후 찜하기가 가능해요."}
+            toastState={toastState}
+            setToastState={setToastState}
+          />
+        ) : (
+          <NavToast
+            text={"찜목록에 추가되었어요."}
+            url={"/mypage/mypick"}
+            toastState={toastState}
+            setToastState={setToastState}
+          />
+        )
+      ) : null}
+
+      {toastState2 == true ? (
+        <InfoToast2
+          text={"찜목록에 제거되었어요."}
+          toastState2={toastState2}
+          setToastState2={setToastState2}
+        />
       ) : null}
 
       <TopContainer>
@@ -208,7 +231,6 @@ const ResultTop = styled.div`
   display: flex;
 
   .result {
-    font-family: Pretendard;
     font-size: ${(props) => props.theme.pixelToRem(18)};
     font-stretch: normal;
     font-style: normal;
@@ -218,7 +240,6 @@ const ResultTop = styled.div`
   }
 
   .total {
-    font-family: Pretendard;
     font-size: ${(props) => props.theme.pixelToRem(14)};
     font-weight: 500;
     font-stretch: normal;
@@ -230,7 +251,6 @@ const ResultTop = styled.div`
   }
 
   .popular {
-    font-family: Pretendard;
     font-size: ${(props) => props.theme.pixelToRem(12)};
     font-weight: 500;
     font-stretch: normal;

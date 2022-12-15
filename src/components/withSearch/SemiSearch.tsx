@@ -69,7 +69,7 @@ function SemiSearch({ openSemi, setOpenSemi }: semiOpenProps) {
               onClick={() => {
                 setOpenSemi(false);
               }}>
-              검색하기
+              변경하기
             </SearchBtn>
           </BtnContainer>
         </SearchModal>

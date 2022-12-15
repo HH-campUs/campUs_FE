@@ -60,7 +60,7 @@ export default function NewReview() {
           })}>
           {NewReview.map((item, reviewId) => (
             <CaroImgBox key={reviewId}>
-              <Wrapper>
+              <Wrapper draggable="true">
                 <MainBox>
                   <PfBox>
                     <PfImg>

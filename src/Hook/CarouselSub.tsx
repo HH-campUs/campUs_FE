@@ -1,23 +1,17 @@
-import registDragEvent from "../utils/registDragEvent";
 import { useState } from "react";
-import useCarouselSize from "./useCarouselSizeHook";
+import { Swiper, SwiperSlide } from "swiper/react";
 import styled from "styled-components";
 
 import { useNavigate, useParams } from "react-router-dom";
 
+import "swiper/css";
+import "swiper/css/pagination";
+
+import "../style/swiper.css";
+
 export default function CarouselSub() {
   const navigate = useNavigate();
   const [hide, setHide] = useState(true);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [transX, setTransX] = useState(0);
-
-  const { ref, width, height } = useCarouselSize();
-
-  const inrange = (v: number, min: number, max: number) => {
-    if (v < min) return min;
-    if (v > max) return max;
-    return v;
-  };
 
   const { topicId } = useParams();
 
@@ -55,14 +49,44 @@ export default function CarouselSub() {
 
   return (
     <>
-      <CarouselViewer
+      <CarouselSwiper
+        slidesPerView={3}
+        spaceBetween={20}
+        pagination={{
+          clickable: true,
+        }}
+        className="mySwiper">
+        <BoxEx>
+          <New>NEW</New>
+          <CaroText>일몰 명소</CaroText>
+          <ImgCover onClick={handleClick(1)} />
+          <CarouselImg src={"/images/subject/image6.jpg"} alt="img" />
+        </BoxEx>
+
+        <BoxEx>
+          <CaroText>애견동반</CaroText>
+          <ImgCover onClick={handleClick(2)} />
+          <CarouselImg src={"/images/subject/image4.jpg"} alt="img" />
+        </BoxEx>
+
+        <BoxEx>
+          <CaroText>장비대여</CaroText>
+          <ImgCover onClick={handleClick(3)} />
+          <CarouselImg src={"/images/subject/image2.jpg"} alt="img" />
+        </BoxEx>
+        <BoxEx>
+          <CaroText>겨울 낚시</CaroText>
+          <ImgCover onClick={handleClick(4)} />
+          <CarouselImg src={"/images/subject/image5.jpg"} alt="img" />
+        </BoxEx>
+      </CarouselSwiper>
+      {/* <CarouselViewer
         ref={ref}
         className="w-full max-w-lg"
         style={{
           height,
           overflow: hide ? "hidden" : "visible",
-        }}
-      >
+        }}>
         <CarouselSlider
           className="flex"
           style={{
@@ -83,8 +107,7 @@ export default function CarouselSub() {
 
               setTransX(0);
             },
-          })}
-        >
+          })}>
           <CaroImgBox>
             <BoxEx>
               <New>NEW</New>
@@ -131,12 +154,12 @@ export default function CarouselSub() {
             </BoxEx>
           </CaroImgBox>
         </CarouselSlider>
-      </CarouselViewer>
+      </CarouselViewer> */}
     </>
   );
 }
 
-const CarouselViewer = styled.div`
+const CarouselSwiper = styled(Swiper)`
   width: ${(props) => props.theme.pixelToRem(475)};
   height: ${(props) => props.theme.pixelToRem(210)} !important;
   overflow: hidden;
@@ -144,8 +167,13 @@ const CarouselViewer = styled.div`
   margin-top: 18px; ;
 `;
 
-const CarouselSlider = styled.div`
-  display: flex;
+const CarouselSlider = styled(SwiperSlide)`
+  width: ${(props) => props.theme.pixelToRem(214)};
+  height: ${(props) => props.theme.pixelToRem(260)};
+  position: relative;
+  margin-top: ${(props) => props.theme.pixelToRem(18)};
+  margin-left: ${(props) => props.theme.pixelToRem(10)};
+  margin-right: ${(props) => props.theme.pixelToRem(0)} !important;
 `;
 
 const CaroImgBox = styled.div`
@@ -163,35 +191,37 @@ const ImgCover = styled.div`
 `;
 
 const CarouselImg = styled.img`
-  width: ${(props) => props.theme.pixelToRem(140)};
-  height: ${(props) => props.theme.pixelToRem(202)};
+  width: ${(props) => props.theme.pixelToRem(140)} !important;
+  height: ${(props) => props.theme.pixelToRem(202)} !important;
   border-radius: ${(props) => props.theme.pixelToRem(10)};
   object-fit: cover;
   transition: all 0.3s ease;
   flex: none;
 `;
 
-const BoxEx = styled.div`
+const BoxEx = styled(SwiperSlide)`
   position: relative;
   width: ${(props) => props.theme.pixelToRem(156)};
+  margin-right: 7px !important;
 `;
 
 const New = styled.div`
   width: ${(props) => props.theme.pixelToRem(40)};
   height: ${(props) => props.theme.pixelToRem(16)};
+  margin-top: -165px !important;
+  margin-left: -80px !important;
   font-size: 0.8rem;
-  padding-left: 6px;
+  padding-left: 2px;
   padding-top: 2px;
   position: absolute;
   color: black;
   border-radius: ${(props) => props.theme.pixelToRem(14)};
   background-color: #fff;
-  margin: 10px;
   z-index: 2;
 `;
 
 const CaroText = styled.div`
-  right: 40%;
+  right: 33%;
   bottom: ${(props) => props.theme.pixelToRem(14)};
   position: absolute;
   color: #fff;

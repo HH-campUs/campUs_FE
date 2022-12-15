@@ -127,7 +127,10 @@ const TextBox = styled.div`
 `;
 
 const CampText = styled.div`
-  font-weight: 500;
+  ${(props) => props.theme.fontTheme.Headline1};
+  line-height: normal;
+  letter-spacing: normal;
+  color: #333 !important;
 `;
 
 const Title = styled.div`

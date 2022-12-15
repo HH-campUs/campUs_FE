@@ -11,7 +11,6 @@ import { ICampingPicked } from "../interfaces/Posts";
 //css
 import styled from "styled-components";
 import { IGetCampResult } from "../interfaces/get";
-import { InfoToast, NoIdPickToast, NavToast } from "../components/Toast/Toast";
 import { instance } from "../instance/instance";
 
 export default function ResultBookmark({ camp }: { camp: IGetCampResult }) {
@@ -54,8 +53,7 @@ export default function ResultBookmark({ camp }: { camp: IGetCampResult }) {
             onClick={(e) => {
               e.stopPropagation();
               unpick(camp.campId);
-            }}
-          >
+            }}>
             <img
               src="/images/picked2.svg"
               alt="Bookmarked"
@@ -69,8 +67,7 @@ export default function ResultBookmark({ camp }: { camp: IGetCampResult }) {
             onClick={(e) => {
               e.stopPropagation();
               pick(camp.campId);
-            }}
-          >
+            }}>
             <img
               src="/images/pick1.svg"
               alt="Bookmark"

@@ -1,23 +1,14 @@
-import registDragEvent from "../utils/registDragEvent";
-import { useState } from "react";
-import useCarouselSize from "./useCarouselSize";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 //css
 import "swiper/css";
-import "swiper/css/pagination";
 
 import "../style/swiper.css";
 import styled from "styled-components";
 import { useGetApi } from "../APIs/getApi";
 import { useNavigate, useParams } from "react-router-dom";
 
-const imageList = [0, 1, 2, 3];
-
 export default function Carousel() {
-  const [hide, setHide] = useState(true);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [transX, setTransX] = useState(0);
   const navigate = useNavigate();
   const { campId } = useParams();
 
@@ -25,20 +16,9 @@ export default function Carousel() {
   const campReview = useGetApi.useGetSort()?.data?.MostList?.[1]?.review || [];
   const campPick = useGetApi.useGetSort()?.data?.MostList?.[2]?.pick || [];
 
-  /* const { ref, width, height } = useCarouselSize(); */
-
-  const inrange = (v: number, min: number, max: number) => {
-    if (v < min) return min;
-    if (v > max) return max;
-    return v;
-  };
-
   const handleClick = (campId: string | undefined) => () => {
     navigate(`/detail/${campId}/detail`);
   };
-
-  const SLIDER_WIDTH = 400;
-  const SLIDER_HEIGHT = 400;
 
   return (
     <>
@@ -87,88 +67,6 @@ export default function Carousel() {
           </ReviewInfo>
         </Outline>
       </CarouselSwiper>
-      {/* <CarouselViewer
-
-        style={{
-          overflow: hide ? "hidden" : "visible",
-        }}>
-        <CarouselSlider
-          className="flex"
-          style={{
-            transform: `translateX(${-currentIndex * SLIDER_WIDTH + transX}px)`,
-            transition: `transform ${transX ? 0 : 300}ms ease-in-out 0s`,
-          }}
-          {...registDragEvent({
-            onDragChange: (deltaX) => {
-              setTransX(inrange(deltaX, -SLIDER_WIDTH, SLIDER_WIDTH));
-            },
-            onDragEnd: (deltaX) => {
-              const maxIndex = imageList.length - 1;
-
-              if (deltaX < -100)
-                setCurrentIndex(inrange(currentIndex + 1, 0, maxIndex));
-              if (deltaX > 100)
-                setCurrentIndex(inrange(currentIndex - 1, 0, maxIndex));
-
-              setTransX(0);
-            },
-          })}>
-          <CarouselSlide>
-            <Outline>
-              <ImgCover onClick={handleClick(campLook?.campId)} />
-
-              <CarouselImg
-                draggable={false}
-                src={campLook?.ImageUrl}
-                alt="img"
-                width={SLIDER_WIDTH}
-              />
-              <CrTextBox>
-                <CampName>{campLook?.campName}</CampName>
-              </CrTextBox>
-              <ReviewInfo>
-                <NumText>
-                  찜({campLook?.pickCount}) 리뷰({campLook?.reviewCount})
-                </NumText>
-              </ReviewInfo>
-            </Outline>
-            <Outline>
-              <ImgCover onClick={handleClick(campReview?.campId)} />
-              <CarouselImg
-                draggable={false}
-                src={campReview?.ImageUrl}
-                alt="img"
-                width={SLIDER_WIDTH}
-              />
-              <CrTextBox>
-                <CampName>{campReview?.campName}</CampName>
-              </CrTextBox>
-              <ReviewInfo>
-                <NumText>
-                  찜({campReview?.pickCount}) 리뷰({campReview?.reviewCount})
-                </NumText>
-              </ReviewInfo>
-            </Outline>
-            <Outline>
-              <ImgCover onClick={handleClick(campPick?.campId)} />
-              <CarouselImg
-                draggable={false}
-                src={campPick?.ImageUrl}
-                alt="img"
-                width={SLIDER_WIDTH}
-              />
-              <CrTextBox>
-                <CampName>{campPick?.campName}</CampName>
-              </CrTextBox>
-              <ReviewInfo>
-                <NumText>
-                  찜({campPick?.pickCount}) 리뷰({campPick?.reviewCount})
-                </NumText>
-              </ReviewInfo>
-            </Outline>
-          </CarouselSlide>
-        </CarouselSlider>
-      </CarouselViewer> */}
     </>
   );
 }

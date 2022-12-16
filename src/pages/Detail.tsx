@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { Outlet, useMatch, useNavigate, useParams } from "react-router-dom";
@@ -18,7 +18,6 @@ import {
   InfoToast3,
   NavToast4,
 } from "../components/Toast/Toast";
-import { usePostsApi } from "../APIs/postsApi";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ICampingPicked } from "../interfaces/Posts";
 import { instance } from "../instance/instance";
@@ -35,7 +34,6 @@ function Detail() {
     window.alert("복사완료");
   };
 
-  const copyLinkRef = useRef();
   const navigate = useNavigate();
   const [isSearch, setIsSearch] = useRecoilState(isModal);
 

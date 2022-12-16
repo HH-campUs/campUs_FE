@@ -9,7 +9,7 @@ const fire = "/images/faclIcon/icon-firewood.svg";
 const dog = "/images/faclIcon/icon-dog.svg";
 const elec = "/images/faclIcon/icon-plug.svg";
 const swimpool = "/images/faclIcon/icon-pool.svg";
-const walkway = "/images/faclIcon/icon-walk.svg";
+const walkway = "/images/faclIcon/icon-tree.svg";
 
 //타입수정필요.
 function getIcons(name: string) {

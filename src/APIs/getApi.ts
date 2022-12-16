@@ -8,7 +8,6 @@ import {
   campArray,
   pickedCamp,
   IGetTravelPlan,
-  IMostList,
   IGetDistance,
   IGetNewReview,
 } from "../interfaces/get";
@@ -23,7 +22,7 @@ export const useSearchCamp = (keyword: string, sort: string) => {
     const { data } = await instanceTopic.get<campArray>(
       `/searchSort?keyword=${keyword}&numOfRows=15&pageNo=${pageParam}&sort=${sort}`
     );
-    console.log(data, keyword);
+
     return {
       /* 같은 객체 레벨에 있는 total 값도 사용하기 위해서 data만 */
       camps: data,
@@ -75,7 +74,7 @@ export const useGetCamp = (doNm: string, sort: string) => {
       return lastPage.camps ? lastPage.currentPage + 1 : undefined;
     },
   });
-  // console.log(campData);
+
   return { campData, fetchNextPage, isSuccess, hasNextPage, refetch };
 };
 
@@ -127,7 +126,6 @@ export const useGetWeather = (pardo: string, date: string) => {
     refetchOnMount: false,
     refetchOnWindowFocus: false,
   });
-  console.log(WeatherData);
 
   return { WeatherData, isLoading, isError };
 };
@@ -185,7 +183,6 @@ export const useGetApi = {
   useGetNewReview: () => {
     return useQuery<IGetNewReview>(["reviewnew"], async () => {
       const { data } = await instance.get(`/reviews`);
-      console.log("review", data);
       return data;
     });
   },
@@ -215,33 +212,14 @@ export const useGetApi = {
 
   // ** 캠핑장 거리 조회 ** //
   useGetDistance: (campX: number, campY: number) => {
-    console.log("196", campX, campY);
-    return useQuery<IGetDistance>(
-      ["distanceinfo"],
-      async () => {
-        if (campX && campY) {
-          const { data } = await instance.get(
-            `users/nearCamp?campX=${campX}&campY=${campY}`
-          );
-          console.log("203", campX, campY);
-          console.log(data);
-          return data.nearCamp;
-        }
-        return [];
+    return useQuery<IGetDistance>(["distanceinfo"], async () => {
+      if (campX && campY) {
+        const { data } = await instance.get(
+          `users/nearCamp?campX=${campX}&campY=${campY}`
+        );
+        return data.nearCamp;
       }
-      // { enabled: !!(campX && campY) }
-    );
-  },
-
-  /* topic 별 캠핑장 결과 조회 */
-  useGetTopicResult: () => {
-    const params = 2;
-    return useQuery<pickedCamp[]>(["topicResult"], async () => {
-      const { data } = await instance.get(
-        `/camps/${params}?numOfRows=20&pageNo=1`
-      );
-
-      return data[0];
+      return [];
     });
   },
 
@@ -249,7 +227,6 @@ export const useGetApi = {
   useGetSort: () => {
     return useQuery(["topicSort"], async () => {
       const { data } = await instance.get(`/camps/sort`);
-      console.log("mostList", data.MostList[0].look);
       return data;
     });
   },

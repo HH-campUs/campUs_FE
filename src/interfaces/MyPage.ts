@@ -65,7 +65,7 @@ export interface IEditProfile {
   nickname: string;
 }
 
-//닉변용 form
+//닉네임변경용
 export interface IEditPfForm {
   profileImg: string;
   nickname: string;

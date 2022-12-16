@@ -69,7 +69,7 @@ export default function Review() {
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const imageLists = e.target.files;
-    console.log(imageLists);
+
     if (!imageLists) return;
     for (let i = 0; i < imageLists.length; i++) {
       setImageFiles((prev) => [...prev, imageLists[i]]);
@@ -93,6 +93,7 @@ export default function Review() {
       likeStatus: value,
       campId: campId,
     };
+
     reviewPost.mutate(body);
     setToastState(true);
     const timer = setTimeout(() => {
@@ -318,8 +319,6 @@ const Head = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
-  /* transform: translateX(-15px); */
-  /* background-color: red; */
 `;
 
 const HeadText = styled.div`
@@ -327,7 +326,7 @@ const HeadText = styled.div`
   font-size: ${(props) => props.theme.pixelToRem(18)};
   transform: translateX(-15px);
 `;
-// ${(props) => props.theme.pixelToRem(375)};
+
 const ReviewImgBox = styled.div`
   position: relative;
   width: 100%;
@@ -341,7 +340,7 @@ const ReviewImgBox = styled.div`
     filter: contrast(55%);
   }
 `;
-// width: ${(props) => props.theme.pixelToRem(375)};
+
 const TextBox = styled.div`
   width: 100%;
   justify-content: center;
@@ -452,7 +451,6 @@ const CloseBtn = styled.img`
   margin-top: 5px;
   position: absolute;
   z-index: 2;
-  /* background-color: red; */
 `;
 
 const BestBtnDiv = styled.div<{ isBest: Boolean }>`
@@ -630,7 +628,6 @@ const ImgList = styled.div`
   img {
     width: 100%;
     aspect-ratio: 1/1;
-    /* border: 1px solid lightgray; */
   }
 `;
 
@@ -654,7 +651,6 @@ const Upload = styled.label`
   }
 
   span {
-    /* margin-top: 5px; */
     font-size: ${(props) => props.theme.pixelToRem(12)};
     color: grey;
   }

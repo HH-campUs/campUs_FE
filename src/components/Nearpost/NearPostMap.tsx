@@ -17,12 +17,11 @@ export default function NearPostMap({
   campX: string;
   campY: string;
 }) {
-  const [isLoading, setLoading] = useState(true);
-
   const X = +campX;
   const Y = +campY;
 
   console.log(X, Y);
+
   useEffect(() => {
     const container = document.getElementById("nearmap");
     const options = {
@@ -39,7 +38,11 @@ export default function NearPostMap({
     marker.setMap(map);
   }, []);
 
-  return <Wrapper id="nearmap"></Wrapper>;
+  return (
+    <>
+      <Wrapper id="nearmap"></Wrapper>
+    </>
+  );
 }
 
 const Wrapper = styled.div`

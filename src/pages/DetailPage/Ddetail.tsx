@@ -87,10 +87,11 @@ const Wrapper = styled.div`
   margin-top: 20px;
   margin-bottom: 80px;
 `;
+// width: ${(props) => props.theme.pixelToRem(375)};
 
 const InfoBox = styled.div`
+  width: 100%;
   position: relative;
-  width: ${(props) => props.theme.pixelToRem(375)};
   margin: 20px 10px;
   height: ${(props) => props.theme.pixelToRem(180)};
   min-height: ${(props) => props.theme.pixelToRem(650)};
@@ -135,8 +136,9 @@ const IntroDuce = styled.div`
   color: #666;
 `;
 
+// ${(props) => props.theme.pixelToRem(375)};
 const MidLane = styled.div`
-  width: ${(props) => props.theme.pixelToRem(375)};
+  width: 95%;
   height: ${(props) => props.theme.pixelToRem(8)};
   margin-top: 20px;
   background-color: #f2f2f2;

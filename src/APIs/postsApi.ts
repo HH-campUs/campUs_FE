@@ -17,6 +17,7 @@ export const usePostsApi = {
         `reviews/${payload.campId}/`,
         fd
       );
+      console.log("리뷰작성data", data);
       return data;
     });
   },

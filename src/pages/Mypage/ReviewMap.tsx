@@ -117,12 +117,9 @@ export default ReviewMap;
 const ReviewMapContainer = styled.div`
   margin-top: 16px;
   margin-left: 20px;
-  /* margin-bottom: 250px; */
   width: 90%;
   height: fit-content;
   max-height: ${(props) => props.theme.pixelToRem(258)};
-  /* height: fit-content; */
-  /* height: ${(props) => props.theme.pixelToRem(258)}; */
   border-radius: ${(props) => props.theme.pixelToRem(10)};
   border: 1px solid #eee;
   background-color: #f8f8f8;

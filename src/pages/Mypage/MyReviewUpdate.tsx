@@ -9,6 +9,7 @@ import { IReviewPosts } from "../../interfaces/Posts";
 
 import { IGetMyReview } from "../../interfaces/MyPage";
 import { IEditReviewPosts } from "../../interfaces/Posts";
+import { useNavigate } from "react-router-dom";
 
 export default function MyReviewUpdate({
   review,
@@ -21,8 +22,8 @@ export default function MyReviewUpdate({
 }) {
   const [reviewComment, setReviewComment] = useState(review?.reviewComment);
   const [imagePreview, setImagePreview] = useState<string[]>([]);
-
   const [imageFiles, setImageFiles] = useState<(File | string)[]>([]);
+  const navigation = useNavigate();
 
   useEffect(() => {
     if (review?.reviewImg.length > 0) {
@@ -52,6 +53,7 @@ export default function MyReviewUpdate({
     const imageLists = e.target.files;
     console.log("이미지리스트", imageLists);
     if (!imageLists) return;
+
     for (let i = 0; i < imageLists.length; i++) {
       setImageFiles((prev) => [...prev, imageLists[i]]);
     }
@@ -60,6 +62,11 @@ export default function MyReviewUpdate({
       const blobImage = URL.createObjectURL(imageLists[i]);
       setImagePreview((prev) => [...prev, blobImage]);
     }
+  };
+
+  const complete = () => {
+    navigation("/mypage/myreview");
+    closeUpdate();
   };
 
   const handleValid = (data: IReviewPosts) => {
@@ -73,6 +80,7 @@ export default function MyReviewUpdate({
       reviewId: review?.reviewId,
     };
     reviewUpdate.mutate(body);
+    complete();
   };
 
   //*토스트
@@ -84,18 +92,12 @@ export default function MyReviewUpdate({
   // return () => {
   // clearTimeout(timer);
   // };
-  console.log("imagesfiles", imageFiles);
 
   //수정하기. reviewId , reviewImg, reviewComment, likeStatus(x) - body값
   const updateFn = async (payload: IEditReviewPosts) => {
-    const updateItem = payload.reviewImg;
-    // if (!updateItem) return;
-    // updateItem.append("reviewComment", payload.reviewComment);
-    const { data } = await postInstance.put(`/reviews/${payload.reviewId}`, {
-      reviewImg: updateItem,
-      reviewComment: payload.reviewComment,
-    });
-    console.log(data);
+    const fd = payload.reviewImg;
+    fd?.append("reviewComment", payload.reviewComment);
+    const { data } = await postInstance.put(`/reviews/${payload.reviewId}`, fd);
     return data;
   };
   const queryClient = useQueryClient();
@@ -105,16 +107,9 @@ export default function MyReviewUpdate({
     onError: () => console.log("수정에 실패했습니다."),
   });
 
-  // const updateReview = () => {
-  //   if (window.confirm("수정 하시겠습니까?") === true) {
-  //     // reviewUpdate.mutate(reviewId);
-  //   }
-  // };
-
   const handleDeleteImage = useCallback(
     (idx: number) => () => {
       setImagePreview((prev) => prev.filter((_, index) => index !== idx));
-      console.log(imagePreview);
       setImageFiles((prev) =>
         Array.from(prev).filter(
           (_: string | File, index: number) => index !== idx

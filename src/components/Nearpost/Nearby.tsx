@@ -10,6 +10,7 @@ import { Loading } from "./Loading";
 export default function Nearby() {
   const [campX, setCampX] = useState<number>();
   const [campY, setCampY] = useState<number>();
+  console.log(campX, campY);
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -40,15 +41,21 @@ export default function Nearby() {
     }
   }, [campX, campY]);
 
-  const { data: nearPost, refetch }: any =
-    useGetApi.useGetDistance(+campY!, +campX!) || [];
+  const {
+    data: nearPost,
+    refetch,
+    isLoading,
+  }: any = useGetApi.useGetDistance(+campY!, +campX!) || [];
+  // console.log(nearPost[0].X);
 
   //로딩중 화면 처리 구상.
   return (
     <Wrapper>
       <TextBox>가장 가까운 캠핑장</TextBox>
-      {/* <Loading /> */}
+
       <PlanBox>
+        {nearPost?.[0] ? null : <Loading></Loading>}
+
         {nearPost?.map((item: IGetCampResult, i: number) => (
           <PlanWrapper>
             <MapBox>

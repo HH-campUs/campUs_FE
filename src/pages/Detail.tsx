@@ -420,12 +420,13 @@ const AddtripBtn = styled.button`
   width: 93%;
   height: ${(props) => props.theme.pixelToRem(46)};
   margin: ${(props) => props.theme.pixelToRem(4)} auto;
-  flex-grow: 0;
+  /* flex-grow: 0; */
   border-radius: ${(props) => props.theme.pixelToRem(10)};
   border: solid 1px ${(props) => props.theme.colorTheme.border};
   background-color: ${(props) => props.theme.colorTheme.textWhite};
-  justify-content: space-between;
+  /* justify-content: space-between; */
   display: flex;
+  /* grid-template-columns: 1fr 5fr 1fr; */
   position: relative;
 
   .leftInfo {
@@ -493,26 +494,26 @@ const AddtripBtn = styled.button`
 `;
 
 const Plan = styled.div`
-  margin-left: 6px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  flex-direction: center;
   transform: translateY(-2px);
 `;
 
 const PickImg = styled.div`
   display: flex;
   flex-direction: column;
-  /* background-color: red; */
 `;
 const UnpickImg = styled.div`
   display: flex;
   flex-direction: column;
-  /* background-color: red; */
 `;
 
 const WFcBox = styled.div`
   width: ${(props) => props.theme.pixelToRem(355)};
   margin: auto;
   justify-content: space-around;
-  /* background-color: red; */
 `;
 
 const FcBox = styled.div`

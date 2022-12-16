@@ -5,7 +5,7 @@ import { IEditPfForm } from "../interfaces/MyPage";
 import { useMyPageApi } from "../APIs/myPageApi";
 import { useNavigate } from "react-router-dom";
 import { isToast, isToast2 } from "../store/toastAtom";
-import { InfoToast2 } from "../components/Toast/Toast";
+import { InfoToast, InfoToast2 } from "../components/Toast/Toast";
 
 //Login
 import { LoginState, userInfo } from "../store/loginAtom";
@@ -22,7 +22,7 @@ import { postInstance } from "../instance/instance";
 
 export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
   const checkPf = useMyPageApi.useGetMyPage().data?.data;
-  const [toastState, setToastState] = useRecoilState(isToast);
+  const [toastState, setToastState] = useState(false);
   const [toastState2, setToastState2] = useState(false);
 
   const queryClient = useQueryClient();
@@ -63,7 +63,14 @@ export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
     const body = { nickname: data.nickname, profileImg: data.profileImg[0] };
     profileMutate.mutate(body);
     setToastState(true);
-    closeModal();
+    const timer = setTimeout(() => {
+      setToastState(false);
+      closeModal();
+    }, 1500);
+
+    return () => {
+      clearTimeout(timer);
+    };
   };
 
   const modalPop = () => {
@@ -94,11 +101,13 @@ export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
       <PfModalWrap className="setIsPopUp" onClick={modalPop}>
         수정
       </PfModalWrap>
-      {/* <InfoToast2
-        text={"다음에 또 봐요!"}
-        toastState2={toastState2}
-        setToastState2={setToastState2}
-      /> */}
+      {toastState == true ? (
+        <InfoToast
+          text={"프로필이 변경되었어요."}
+          toastState={toastState}
+          setToastState={setToastState}
+        />
+      ) : null}
       {toastState2 == true ? (
         <InfoToast2
           text={"다음에 또 봐요!"}

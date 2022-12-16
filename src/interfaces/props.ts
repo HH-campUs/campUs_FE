@@ -22,6 +22,8 @@ export interface planOpenProps {
   setIsPlan: React.Dispatch<React.SetStateAction<boolean>>;
   toastState?: boolean;
   setToastState?: React.Dispatch<React.SetStateAction<boolean>>;
+  campId?: number | string;
+  tripId?: number | string;
 }
 
 export interface ToastProps {
@@ -51,6 +53,7 @@ export interface ToastProps3 {
 
 export interface ToastProps4 {
   text?: string;
+  url?: string;
   setText?: React.Dispatch<React.SetStateAction<string>>;
   toastState4: boolean;
   setToastState4: React.Dispatch<React.SetStateAction<boolean>>;

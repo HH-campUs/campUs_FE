@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { usePostsApi } from "../APIs/postsApi";
+import { useRecoilState } from "recoil";
+import { isToast, isToast2 } from "../store/toastAtom";
 
 //css
 import styled from "styled-components";
@@ -10,6 +12,10 @@ import { ICampingPicked } from "../interfaces/Posts";
 import { instance } from "../instance/instance";
 
 export default function TopicMap({ Camp }: { Camp: IGetCampResult }) {
+  /* toast State */
+  const [toastState, setToastState] = useRecoilState(isToast);
+  const [toastState2, setToastState2] = useRecoilState(isToast2);
+
   //찜하기 query
   const queryClient = useQueryClient();
   const mutateFn = async (payload: ICampingPicked) => {
@@ -24,13 +30,13 @@ export default function TopicMap({ Camp }: { Camp: IGetCampResult }) {
 
   const pick = (campId: number) => {
     pickMutate.mutate(campId);
-    window.alert("찜하기 완료");
+    setToastState(true);
     console.log("좋아요", Camp.status);
   };
 
   const unpick = (campId: number) => {
     pickMutate.mutate(campId);
-    window.alert("찜하기 취소");
+    setToastState2(true);
   };
 
   return (
@@ -40,8 +46,7 @@ export default function TopicMap({ Camp }: { Camp: IGetCampResult }) {
           <BookmarkBorderIcon
             onClick={() => {
               unpick(Camp.campId);
-            }}
-          >
+            }}>
             <img
               src="/images/picked2.svg"
               alt="Bookmarked"
@@ -54,8 +59,7 @@ export default function TopicMap({ Camp }: { Camp: IGetCampResult }) {
           <Bookmark
             onClick={() => {
               pick(Camp.campId);
-            }}
-          >
+            }}>
             <img
               src="/images/pick1.svg"
               alt="Bookmark"

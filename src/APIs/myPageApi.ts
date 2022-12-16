@@ -10,6 +10,25 @@ const serverUrl = process.env.REACT_APP_API;
 
 const isLogin = getCamperToken();
 
+export const useGetTravelPlan = () => {
+  const useData = async () => {
+    const { data } = await instance.get<IGetTravelPlan>("/camps");
+    console.log(data);
+    return data;
+  };
+
+  const { data: Trips } = useQuery(["Trips"], useData, {
+    onError: (err) => {
+      console.error(err);
+    },
+
+    refetchOnMount: true,
+    refetchOnWindowFocus: false,
+  });
+
+  return { Trips };
+};
+
 export const useMyPageApi = {
   // ** 내가 쓴 리뷰 조회 / get ** // /users/review - mypage용.
   useGetMyReview: () => {
@@ -41,7 +60,6 @@ export const useMyPageApi = {
   useGetTravelPlan: () => {
     return useQuery(["travelplan"], async () => {
       const { data } = await instance.get<IGetTravelPlan>(`/camps/`);
-
       return data;
     });
   },

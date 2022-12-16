@@ -20,7 +20,7 @@ const serverUrl = process.env.REACT_APP_API;
 export const useSearchCamp = (keyword: string, sort: string) => {
   const useData = async ({ pageParam = 1 }) => {
     const { data } = await instanceTopic.get<campArray>(
-      `/searchSort?keyword=${keyword}&numOfRows=20&pageNo=${pageParam}&sort=${sort}`
+      `/searchSort?keyword=${keyword}&numOfRows=15&pageNo=${pageParam}&sort=${sort}`
     );
 
     return {
@@ -51,7 +51,7 @@ export const useSearchCamp = (keyword: string, sort: string) => {
 export const useGetCamp = (doNm: string, sort: string) => {
   const useData = async ({ pageParam = 1 }) => {
     const { data } = await instance.get<campArray>(
-      `/camps?doNm=${doNm}&numOfRows=20&pageNo=${pageParam}&sort=${sort}`
+      `/camps?doNm=${doNm}&numOfRows=15&pageNo=${pageParam}&sort=${sort}`
     );
 
     return {
@@ -154,6 +154,28 @@ export const useRecommendWeather = () => {
   return { RecommendData, isLoading, isError };
 };
 
+export const useGetTravelPlan2 = () => {
+  const useData = async () => {
+    const { data } = await instance.get<IGetTravelPlan>("/trip");
+    return data;
+  };
+
+  const {
+    data: myTrip,
+    isLoading,
+    isError,
+  } = useQuery(["myTrip"], useData, {
+    onError: (err) => {
+      console.error(err);
+    },
+
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+  });
+
+  return { myTrip, isLoading, isError };
+};
+
 /* 정보 get Api 모음 */
 
 export const useGetApi = {
@@ -208,12 +230,11 @@ export const useGetApi = {
       return data;
     });
   },
-
   /* 여행일정 조회 */
   useGetTravelPlan2: () => {
     return useQuery(["travelplan2"], async () => {
-      const { data } = await instance.get<IGetTravelPlan>(`/camps`);
-
+      const { data } = await instance.get<IGetTravelPlan>(`/trip`);
+      console.log(data);
       return data;
     });
   },

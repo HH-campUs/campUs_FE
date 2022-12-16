@@ -7,9 +7,9 @@ const hotwater = "/images/faclIcon/icon-hotwater.svg";
 const ground = "/images/faclIcon/icon-ground.svg";
 const fire = "/images/faclIcon/icon-firewood.svg";
 const dog = "/images/faclIcon/icon-dog.svg";
-const elec = "/images/faclIcon/plug.svg";
-const swimpool = "/images/faclIcon/pool.svg";
-const walkway = "/images/faclIcon/walk.svg";
+const elec = "/images/faclIcon/icon-plug.svg";
+const swimpool = "/images/faclIcon/icon-pool.svg";
+const walkway = "/images/faclIcon/icon-walk.svg";
 
 //타입수정필요.
 function getIcons(name: string) {

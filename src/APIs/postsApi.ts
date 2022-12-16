@@ -51,11 +51,13 @@ export const usePostsApi = {
 
   /* 여행일정수정/ put */
   useUpdateTravelPlan: () => {
-    return useMutation((payload: IPostTravelPlan) =>
-      instance.put(`/camps/${payload}`, {
+    return useMutation(async (payload: IPostTravelPlan) => {
+      console.log(payload);
+      const { data } = await instance.put(`/camps/${payload.tripId}/`, {
         date: payload.date,
         memo: payload.memo,
-      })
-    );
+      });
+      return data;
+    });
   },
 };

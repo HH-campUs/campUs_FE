@@ -11,13 +11,14 @@ import { setAccessToken, setRefreshToken } from "../instance/cookies";
 import styled from "styled-components";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
-import { InfoToast } from "../components/Toast/Toast";
+import { InfoToast, InfoToast2 } from "../components/Toast/Toast";
 import { useState } from "react";
 
 function Login() {
   const serverUrl = process.env.REACT_APP_API;
   const navigate = useNavigate();
   const [toastState, setToastState] = useState(false);
+  const [toastState2, setToastState2] = useState(false);
 
   const [toKen, setToken] = useRecoilState(LoginState);
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(userInfo);
@@ -44,9 +45,18 @@ function Login() {
       setRefreshToken(response.data.Tokens.RefreshToken);
       setToken(response.data.Tokens.AccessToken);
 
-      setIsLoggedIn(true);
-      window.location.replace("/");
       setToastState(true);
+      setIsLoggedIn(true);
+
+      const timer = setTimeout(() => {
+        window.location.replace("/");
+      }, 1505);
+
+      return () => {
+        clearTimeout(timer);
+      };
+    } else {
+      setToastState2(true);
     }
   };
 
@@ -57,7 +67,8 @@ function Login() {
   };
 
   const GoogleLogin = async () => {
-    window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?scope=profile&response_type=code&state=security_token%3D138r5719ru3e1%26url%3Dhttps%3A%2F%2Foauth2.example.com%2Ftoken&redirect_uri=${"http://localhost:3000/google/callback"}&client_id=${"495084276046-fm2mkolqihqio0iv1al1i6ddbqg4t6dg.apps.googleusercontent.com"}`;
+    window.location.href = `
+https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.REACT_APP_GOOGLE_CLIENT_ID}&response_type=token&redirect_uri=${process.env.REACT_APP_GOOGLE_REDIRECT_URI}&scope=email+profile`;
   };
 
   return (
@@ -68,6 +79,14 @@ function Login() {
             text={"환영합니다"}
             toastState={toastState}
             setToastState={setToastState}
+          />
+        ) : null}
+
+        {toastState2 == true ? (
+          <InfoToast2
+            text={"로그인 정보가 맞지 않습니다."}
+            toastState2={toastState2}
+            setToastState2={setToastState2}
           />
         ) : null}
       </Toast>

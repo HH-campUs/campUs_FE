@@ -35,7 +35,11 @@ function Home() {
       {/* 찜하기 알림 토스트 */}
 
       {toastState == true ? (
-        <NoIdPickToast toastState={toastState} setToastState={setToastState} />
+        <NoIdPickToast
+          text={"로그인 후 찜하기가 가능해요."}
+          toastState={toastState}
+          setToastState={setToastState}
+        />
       ) : null}
       {isSearch == false ? null : <Search />}
 
@@ -123,7 +127,10 @@ const TextBox = styled.div`
 `;
 
 const CampText = styled.div`
-  font-weight: 500;
+  ${(props) => props.theme.fontTheme.Headline1};
+  line-height: normal;
+  letter-spacing: normal;
+  color: #333 !important;
 `;
 
 const Title = styled.div`

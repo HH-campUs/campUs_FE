@@ -2,18 +2,29 @@ import { useRecoilValue } from "recoil";
 import { LoginState } from "../store/loginAtom";
 import { useNavigate } from "react-router-dom";
 import { getCamperToken } from "../instance/cookies";
-import { useGetApi } from "../APIs/getApi";
+import { useGetApi, useGetTravelPlan2 } from "../APIs/getApi";
 
 //css
 import styled from "styled-components";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 
 export default function MytravelPlan() {
-  // const isLogin = useRecoilValue(LoginState);
-  /* const data = useGetApi.useGetTravelPlan(); */
-
+  const data = useGetTravelPlan2();
+  const trip = data?.myTrip?.trip[0];
+  console.log(trip);
   const navigate = useNavigate();
   const isLogin = getCamperToken();
+
+  const DdayCalculator = (date: string) => {
+    const planDay = new Date(date);
+    const today = new Date();
+    const gap = planDay.getTime() - today.getTime();
+    const result = Math.floor(gap / (1000 * 60 * 60 * 24) + 1);
+
+    console.log(result, typeof result);
+    return result;
+  };
+
   return (
     <Wrapper>
       <TextBox>
@@ -21,28 +32,50 @@ export default function MytravelPlan() {
         <AllList
           onClick={() => {
             navigate("/mypage/myplan");
-          }}
-        >
+          }}>
           전체보기
         </AllList>
       </TextBox>
 
       {isLogin ? (
-        <PlanBox>
-          <ImgBox />
-          <PlaceName>
-            <PlaceBox>
-              <Campname className="isLogin">캠핑장이름</Campname>
-              <Dday>D-16</Dday>
-            </PlaceBox>
-            <Location>
-              <LocationOnIcon />
-              <span> 주소 </span>
-              <img src="/images/Calendar.svg" alt="Calendar" />
-              <p>2022.12.28</p>
-            </Location>
-          </PlaceName>
-        </PlanBox>
+        trip !== undefined ? (
+          <PlanBox>
+            <ImgBox src={trip?.ImageUrl} alt="img" />
+            <PlaceName>
+              <PlaceBox>
+                <Campname className="isLogin">{trip?.campName}</Campname>
+                <Dday>D - {DdayCalculator(trip.date)}</Dday>
+              </PlaceBox>
+              <Location>
+                <LocationOnIcon />
+                <span> {trip?.address} </span>
+                <img src="/images/Calendar.svg" alt="Calendar" />
+                <p>
+                  {trip?.date.slice(0, 4)}.{trip?.date.slice(5, 7)}.
+                  {trip?.date.slice(8, 10)}
+                </p>
+              </Location>
+            </PlaceName>
+          </PlanBox>
+        ) : (
+          <CloseBox>
+            <CloBox>
+              <Carlendar>
+                <img
+                  src="/images/travelplan/calendarplan.svg"
+                  alt="carlendar"
+                />
+              </Carlendar>
+              <CloseText>
+                <p style={{ textDecoration: "underline", cursor: "pointer" }}>
+                  캠핑장을 검색하고
+                </p>
+                &nbsp;
+                <span>내 여행일정을 등록해 보세요</span>
+              </CloseText>
+            </CloBox>
+          </CloseBox>
+        )
       ) : (
         <CloseBox>
           <CloBox>
@@ -54,8 +87,7 @@ export default function MytravelPlan() {
                 onClick={() => {
                   navigate("/login");
                 }}
-                style={{ textDecoration: "underline", cursor: "pointer" }}
-              >
+                style={{ textDecoration: "underline", cursor: "pointer" }}>
                 로그인하고
               </p>
               &nbsp;
@@ -97,7 +129,8 @@ const AllList = styled.div`
 `;
 
 const PlanBox = styled.div`
-  width: 90%;
+  width: 100%;
+  max-width: ${(props) => props.theme.pixelToRem(365)};
   height: ${(props) => props.theme.pixelToRem(102)};
   border-radius: ${(props) => props.theme.pixelToRem(10)};
   background-color: #f5f5f5;
@@ -172,7 +205,7 @@ const HiddenBox = styled.div`
   display: flex;
 `;
 
-export const ImgBox = styled.div`
+export const ImgBox = styled.img`
   width: ${(props) => props.theme.pixelToRem(70)};
   height: ${(props) => props.theme.pixelToRem(70)};
   border-radius: ${(props) => props.theme.pixelToRem(10)};
@@ -186,11 +219,14 @@ const Campname = styled.div`
   margin-top: ${(props) => props.theme.pixelToRem(18)};
   margin-left: ${(props) => props.theme.pixelToRem(5)};
   font-size: ${(props) => props.theme.pixelToRem(16)};
-
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
   line-height: 1.25;
   letter-spacing: normal;
+  text-align: left;
   color: #222;
-  line-height: 1.25;
+
   islogin {
     background-color: grey;
   }
@@ -200,11 +236,17 @@ const Location = styled.div`
   display: flex;
   align-items: center;
   font-size: ${(props) => props.theme.pixelToRem(12)};
-  margin-top: ${(props) => props.theme.pixelToRem(3)};
+  margin-top: ${(props) => props.theme.pixelToRem(23)};
   /* background-color: red; */
 
   span {
     width: ${(props) => props.theme.pixelToRem(105)};
+    font-size: ${(props) => props.theme.pixelToRem(12)};
+    font-weight: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: left;
+    color: #222;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -221,7 +263,7 @@ const Dday = styled.div`
   width: ${(props) => props.theme.pixelToRem(66)};
   height: ${(props) => props.theme.pixelToRem(26)};
   margin-top: ${(props) => props.theme.pixelToRem(14)};
-  margin-right: ${(props) => props.theme.pixelToRem(9)};
+  margin-right: ${(props) => props.theme.pixelToRem(-1)};
   font-size: ${(props) => props.theme.pixelToRem(14)};
   border-radius: 1rem;
   background-color: #5185a6;

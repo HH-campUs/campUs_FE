@@ -27,6 +27,7 @@ function Splash() {
 
     setTimeout(() => {
       setIsShow(false);
+      document.body.style.overflow = "unset";
     }, 2500);
   }, []);
 
@@ -36,11 +37,12 @@ function Splash() {
       <RightTemplate>
         <SplashBg>
           <SplashLogo>
-            <div style={{ top: "-60%", left: "-41%", position: "absolute" }}>
-              <Lottie options={defaultOptions} height={600} width={600} />
+            <div style={{ top: "-10%", left: "10%", position: "absolute" }}>
+              <Lottie options={defaultOptions} height={300} width={300} />
             </div>
-            <img src="/images/logo.svg" alt="logo" />
+            <img src="/images/mypage/campUs logo-white.svg" alt="logo" />
           </SplashLogo>
+          <SpanBottom>모바일 환경 사용을 권장합니다. </SpanBottom>
         </SplashBg>
       </RightTemplate>
     </Root>
@@ -52,14 +54,17 @@ export default Splash;
 
 const SplashBg = styled.div`
   width: 100%;
-  max-width: 475px;
+  max-width: ${(props) => props.theme.pixelToRem(475)};
+  min-width: ${(props) => props.theme.pixelToRem(375)};
   height: 100vh;
   padding: 0 auto;
   background-color: ${(props) => props.theme.colorTheme.main};
+  position: fixed;
+  overflow: hidden;
 `;
 const SplashLogo = styled.div`
-  width: 290px;
-  height: 290px;
+  width: ${(props) => props.theme.pixelToRem(290)};
+  height: ${(props) => props.theme.pixelToRem(290)};
   margin: 0 auto;
   top: 25%;
   left: -7%;
@@ -67,24 +72,36 @@ const SplashLogo = styled.div`
   display: flex;
 
   img {
-    width: 10rem;
-    top: 80%;
-    left: 34%;
+    width: ${(props) => props.theme.pixelToRem(90)};
+    top: 70%;
+    left: 46%;
     position: absolute;
   }
+`;
+const SpanBottom = styled.div`
+  top: 86%;
+  left: 32.7%;
+  font-size: ${(props) => props.theme.pixelToRem(13)};
+  font-weight: regular;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.29;
+  letter-spacing: normal;
+  text-align: center;
+  color: #fff;
+  position: absolute;
 `;
 
 const Root = styled.div`
   width: 100vw;
-  //width: 915px;
-  /* margin-top: 200px; */
   margin: 0 auto;
   box-sizing: border-box;
   display: flex;
   justify-content: center;
-  position: relative;
+  position: fixed;
   overflow: hidden;
   overflow-y: scroll;
+  background-color: #e2e7eb;
   touch-action: none;
   -ms-overflow-style: none;
   z-index: 100;
@@ -104,10 +121,9 @@ const Root = styled.div`
 `;
 //left
 const LeftTemplate = styled.div`
-  width: 475px;
+  width: ${(props) => props.theme.pixelToRem(475)};
   min-height: 650px;
   border: soild 1px black;
-  background-color: white;
 
   @media screen and (max-width: 915px) {
     display: none;

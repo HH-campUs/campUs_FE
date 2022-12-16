@@ -5,7 +5,8 @@ import { useGetApi } from "../../APIs/getApi";
 
 import DetailMap from "./DetailMap";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import SemiSearch from "../../components/withSearch/SemiSearch";
+import PlanWrite from "../../components/withPlan/PlanWrite";
+import { getCamperToken } from "../../instance/cookies";
 
 function Ddetail() {
   const url = window.location.href;
@@ -19,14 +20,15 @@ function Ddetail() {
     setIsPlan(true);
   };
 
+  const isLogin = getCamperToken();
   const { campId } = useParams();
 
   const detailItem = useGetApi.useGetCampDetail(campId)?.data?.[0];
 
   return (
     <Wrapper>
-      {openSemi == false ? null : (
-        <SemiSearch openSemi={openSemi} setOpenSemi={setOpenSemi} />
+      {isPlan == false ? null : (
+        <PlanWrite isPlan={isPlan} setIsPlan={setIsPlan} campId={campId} />
       )}
       <InfoBox>
         <Title>기본 정보</Title>
@@ -73,7 +75,11 @@ function Ddetail() {
               <img src="/images/icon-share.svg" alt="share" />
             </ClipBoardBtn>
           </CopyToClipboard>
-          <PlanBtn onClick={openPlan}>내 여행일정에 저장</PlanBtn>
+          {isLogin ? (
+            <PlanBtn onClick={openPlan}>내 여행일정에 저장</PlanBtn>
+          ) : (
+            <PlanBtn className="none">로그인 후 일정 저장이 가능해요</PlanBtn>
+          )}
         </BtnBox>
       </MapWrapper>
     </Wrapper>
@@ -252,4 +258,8 @@ const PlanBtn = styled.button`
   background-color: #024873;
   color: #fff;
   cursor: pointer;
+
+  &.none {
+    background-color: ${(props) => props.theme.colorTheme.border};
+  }
 `;

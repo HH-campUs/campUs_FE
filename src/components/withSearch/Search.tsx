@@ -89,7 +89,7 @@ function Search() {
 
         {toastState4 == true ? (
           <ResetToast
-            text={"검색조건들이 초기화됬어요."}
+            text={"검색조건들이 초기화됐어요."}
             toastState4={toastState4}
             setToastState4={setToastState4}
           />
@@ -389,7 +389,7 @@ const BtnContainer = styled.button<{ isSearch: boolean }>`
   background: transparent;
   border: none;
   justify-content: space-between;
-  position: fixed;
+  position: absolute;
   display: flex;
   animation: ${(props) => (props.isSearch == false ? slideOut : slideIn)};
 `;

@@ -92,11 +92,13 @@ const ReviewBox = styled.div`
 
 const ReviewList = styled.div`
   width: 100%;
+  height: fit-content;
   display: flex;
   flex-direction: column;
 `;
 
 const ReviewText = styled.div`
+  width: 84%;
   margin-left: ${(props) => props.theme.pixelToRem(20)};
   font-size: ${(props) => props.theme.pixelToRem(18)};
 `;
@@ -117,8 +119,7 @@ const ReviewIcon = styled.div`
 //
 const ReviewMap = styled.div`
   width: 100%;
-  height: ${(props) => props.theme.pixelToRem(263)};
-  margin-bottom: 18px;
+  height: fit-content;
   border-bottom: 1px solid #eee;
   flex-direction: column;
 `;
@@ -201,7 +202,6 @@ const BadRe = styled.div`
   color: #ffffff;
   padding-top: 6px;
 `;
-/* ${(props) => props.theme.pixelToRem(300)}; */
 
 const CommentBox = styled.div`
   width: 100%;
@@ -224,18 +224,17 @@ const ImgFlex = styled.div`
   width: ${(props) => props.theme.pixelToRem(77)};
   height: ${(props) => props.theme.pixelToRem(84)};
   display: flex;
+  margin-bottom: 15px;
 `;
 
 const ImgBox = styled.div`
-  /* display: flex; */
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: ${(props) => props.theme.pixelToRem(5)};
 
   img {
-    width: ${(props) => props.theme.pixelToRem(77)};
+    width: ${(props) => props.theme.pixelToRem(80)};
     height: ${(props) => props.theme.pixelToRem(84)};
     aspect-ratio: 1/1;
-    /* border: 1px solid lightgray; */
   }
 `;

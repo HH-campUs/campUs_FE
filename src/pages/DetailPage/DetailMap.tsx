@@ -16,6 +16,7 @@ const DetailMap = () => {
   const { campId } = useParams();
 
   const detailItem = useGetApi.useGetCampDetail(campId)?.data?.[0];
+
   const X = +detailItem?.X!;
   const Y = +detailItem?.Y!;
 

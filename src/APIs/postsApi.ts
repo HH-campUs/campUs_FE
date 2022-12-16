@@ -2,11 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { instance, postInstance } from "../instance/instance";
 
-import {
-  IReviewPosts,
-  IEditReviewPosts,
-  IPostTravelPlan,
-} from "../interfaces/Posts";
+import { IReviewPosts, IPostTravelPlan } from "../interfaces/Posts";
 
 const serverUrl = process.env.REACT_APP_API;
 
@@ -21,24 +17,11 @@ export const usePostsApi = {
         `reviews/${payload.campId}/`,
         fd
       );
+      console.log("리뷰작성data", data);
       return data;
     });
   },
 
-  // ** 리뷰수정 / put ** //
-  useEditReview: () => {
-    return useMutation((payload: IEditReviewPosts) =>
-      instance.put(`${serverUrl}/camps/:campId/:ewviewId`, {
-        reviewImg: payload.reviewImg,
-        reviewComment: payload.reviewComment,
-      })
-    );
-  },
-
-  // const removeCommentData = {
-  //   groupId: groupId,
-  //   commentId: commentId,
-  // };
   //** 리뷰삭제 / delete ** //
   useDeleteReview: () => {
     return useMutation(async (reviewId: number) => {

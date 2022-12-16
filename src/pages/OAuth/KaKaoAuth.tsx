@@ -2,7 +2,6 @@
 import axios from "axios";
 import React, { useEffect } from "react";
 import { setAccessToken, setRefreshToken } from "../../instance/cookies";
-import { instance } from "../../instance/instance";
 
 function KakaoLogin() {
   const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
@@ -39,8 +38,7 @@ function KakaoLogin() {
           data: { accessToken, refreshToken },
         } = response;
         if (status !== 200) return;
-        // setAccessToken(response.data.Tokens.accessToken);
-        // localStorage.setItem("token", refreshToken);
+
         const backAccess = response.data.accesstoken;
         const backfresh = response.data.refreshtoken;
         setAccessToken(backAccess);
@@ -53,7 +51,6 @@ function KakaoLogin() {
         }
       } catch (e) {
         console.error(e);
-        /* window.location.replace("/"); */
       }
     })();
   }, [code]);

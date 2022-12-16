@@ -2,7 +2,7 @@ export interface IGetMyReview {
   userId: number;
   campId: number;
   campName: string;
-  reviewImg: string[];
+  reviewImg: string;
   reviewComment: string;
   likeStatus: number;
   myReview: IGetMyReview[];
@@ -24,15 +24,40 @@ export interface IGetTravelPlan {
   Camp?: IGetTravelPlan;
 }
 
-/* interface IGetMyCamp {
+export interface Camp {
   campId: number;
-  memo?:   string;
-  ImageUrl: string;
   campName: string;
-  address?: string;
-} */
+  induty: string;
+  ImageUrl: string;
+  address: string;
+}
 
-export interface IGetMyPage {}
+export interface Pickitem {
+  Camp: Camp;
+  userId: number;
+}
+
+export interface Review {
+  Camp: Camp;
+  reviewComment: string;
+  reviewImg: string;
+}
+
+export interface Trip {
+  Camp: Camp;
+  date: string;
+  memo: string;
+  tripId: string;
+}
+
+export interface IGetMyInfo {
+  Pick: Pickitem[];
+  Review: Review[];
+  Trip: Trip[];
+  email: string;
+  nickname: string;
+  profileImg: string;
+}
 
 //api용
 export interface IEditProfile {
@@ -40,7 +65,7 @@ export interface IEditProfile {
   nickname: string;
 }
 
-//닉변용 form
+//닉네임변경용
 export interface IEditPfForm {
   profileImg: string;
   nickname: string;

@@ -4,6 +4,11 @@ import { useMyPageApi } from "../../APIs/myPageApi";
 import styled from "styled-components";
 import { IGetMyReview } from "../../interfaces/MyPage";
 import MyReviewUpdate from "./MyReviewUpdate";
+import { useState } from "react";
+
+import ReviewMap from "./ReviewMap";
+
+import { IGetMyInfo } from "../../interfaces/MyPage";
 
 export default function MyReview() {
   const isLogin = getCamperToken();
@@ -11,8 +16,8 @@ export default function MyReview() {
 
   const myReviewDummy = useMyPageApi.useGetMyReview();
   const myReview = myReviewDummy.data?.data;
-  // console.log("내리뷰", myReview);
-  const checkPf = useMyPageApi.useGetMyPage().data?.data;
+
+  const checkPf: IGetMyInfo = useMyPageApi.useGetMyPage().data?.data;
 
   return (
     <Wrapper>
@@ -25,47 +30,14 @@ export default function MyReview() {
             <RightIcon src="/images/mypage/reviewwrite.svg" alt="write" />
           </ReviewHead>
 
-          {myReview?.map((item: IGetMyReview, i: number) => (
-            <ReviewMap key={i}>
-              <PfBox>
-                <PfImg>
-                  <img src={checkPf?.profileImg} alt="pfImg" />
-                </PfImg>
-                <div
-                  style={{
-                    flexDirection: "column",
-                    marginLeft: "6.5px",
-                    display: "flex",
-                    width: "100%",
-                  }}
-                >
-                  <NickBox>
-                    <PfNick>{checkPf?.nickname}</PfNick>
-                    <MyReviewUpdate review={item} />
-                  </NickBox>
-                  <LocaBox>
-                    <CampLoca>{item?.campName} </CampLoca>
-                    <Date>&nbsp;{item?.createdAt.slice(0, 10)}</Date>
-                  </LocaBox>
-                </div>
-              </PfBox>
-              <ReviewBox>
-                <ReviewText>{item?.reviewComment}</ReviewText>
-              </ReviewBox>
-              <ImgFlex>
-                {item?.reviewImg
-                  .toString()
-                  .split(",")
-                  .map((image: string, i: number) => (
-                    <ImgBox>
-                      {item?.reviewImg ? (
-                        <img src={image} alt="" key={i} />
-                      ) : null}
-                    </ImgBox>
-                  ))}
-              </ImgFlex>
-            </ReviewMap>
-          ))}
+          {myReview &&
+            myReview?.map((item: IGetMyReview, i: number) => (
+              <ReviewMap
+                key={item.reviewId}
+                checkPf={checkPf}
+                myReview={item}
+              />
+            ))}
         </WrapperFirst>
       ) : (
         <>
@@ -117,104 +89,7 @@ const LeftText = styled.div`
   }
 `;
 
-const RightIcon = styled.img`
-  /* right: 100; */
-  /* margin-right: 40px; */
-`;
-
-const ReviewMap = styled.div`
-  margin-top: 16px;
-  margin-left: 20px;
-  /* margin-bottom: 250px; */
-  width: 90%;
-  height: fit-content;
-  max-height: ${(props) => props.theme.pixelToRem(258)};
-  /* height: fit-content; */
-  /* height: ${(props) => props.theme.pixelToRem(258)}; */
-  border-radius: ${(props) => props.theme.pixelToRem(10)};
-  border: 1px solid #eee;
-  background-color: #f8f8f8;
-  flex-direction: column;
-`;
-
-const PfBox = styled.div`
-  width: 100%;
-  height: ${(props) => props.theme.pixelToRem(40)};
-  margin: 18px 0 0 20px;
-  display: flex;
-`;
-
-const PfImg = styled.div`
-  img {
-    width: ${(props) => props.theme.pixelToRem(36.6)};
-    height: ${(props) => props.theme.pixelToRem(40)};
-    border-radius: ${(props) => props.theme.pixelToRem(20)};
-    object-fit: cover;
-  }
-`;
-
-const NickBox = styled.div`
-  margin-top: 3px;
-  width: 100%;
-  justify-content: space-between;
-  display: flex;
-  font-size: ${(props) => props.theme.pixelToRem(14)};
-`;
-
-const PfNick = styled.div`
-  color: #222;
-`;
-
-const LocaBox = styled.div`
-  width: ${(props) => props.theme.pixelToRem(250)};
-  display: flex;
-  font-size: ${(props) => props.theme.pixelToRem(14)};
-  color: #666;
-`;
-
-const CampLoca = styled.div``;
-
-const Date = styled.div`
-  margin-left: 5px;
-`;
-
-const ReviewBox = styled.div`
-  width: ${(props) => props.theme.pixelToRem(300)};
-  color: #666;
-  font-size: ${(props) => props.theme.pixelToRem(14)};
-  margin-top: 15px;
-  margin-left: 18px;
-  line-height: 1.57;
-  word-break: normal;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`;
-
-const ReviewText = styled.div``;
-
-const ImgFlex = styled.div`
-  margin-top: 14px;
-  margin-left: 20px;
-  width: ${(props) => props.theme.pixelToRem(77)};
-  height: ${(props) => props.theme.pixelToRem(84)};
-  display: flex;
-  margin-bottom: 15px;
-`;
-
-const ImgBox = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: ${(props) => props.theme.pixelToRem(5)};
-
-  img {
-    width: ${(props) => props.theme.pixelToRem(77)};
-    height: ${(props) => props.theme.pixelToRem(84)};
-    aspect-ratio: 1/1;
-  }
-`;
+const RightIcon = styled.img``;
 
 const NotiBox = styled.div`
   display: flex;
@@ -240,4 +115,54 @@ const PickBtn = styled.button`
   background-color: #fff;
   border-radius: ${(props) => props.theme.pixelToRem(50)};
   cursor: pointer;
+`;
+
+//modal
+
+const ReviewUpdate = styled.div`
+  margin-right: 40px;
+  position: relative;
+  img {
+    cursor: pointer;
+  }
+`;
+
+const BtnBox = styled.div`
+  width: ${(props) => props.theme.pixelToRem(85)};
+  height: ${(props) => props.theme.pixelToRem(94)};
+  flex-grow: 0;
+  right: 55%;
+  background-color: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(6px);
+  border-radius: 10px;
+  box-shadow: 4px 4px 15px 0 rgba(0, 0, 0, 0.18);
+  background-color: #fff;
+  display: flex;
+  position: absolute;
+  flex-direction: column;
+  cursor: pointer;
+
+  div {
+    cursor: pointer;
+    width: ${(props) => props.theme.pixelToRem(85)};
+    height: ${(props) => props.theme.pixelToRem(47)};
+    margin-left: 1px;
+    background-color: transparent;
+    text-align: right;
+    ${(props) => props.theme.fontTheme.Caption1};
+    line-height: 1.29;
+    letter-spacing: normal;
+    color: ${(props) => props.theme.colorTheme.text2};
+
+    &:first-child {
+      margin-top: -2px;
+      padding-top: 18px;
+      padding-right: 15px;
+    }
+    &:last-child {
+      margin-top: 3px;
+      padding-top: 13px;
+      padding-right: 15px;
+    }
+  }
 `;

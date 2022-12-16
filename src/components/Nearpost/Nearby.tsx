@@ -10,6 +10,7 @@ import { Loading } from "./Loading";
 export default function Nearby() {
   const [campX, setCampX] = useState<number>();
   const [campY, setCampY] = useState<number>();
+  console.log(campX, campY);
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -40,15 +41,21 @@ export default function Nearby() {
     }
   }, [campX, campY]);
 
-  const { data: nearPost, refetch }: any =
-    useGetApi.useGetDistance(+campY!, +campX!) || [];
+  const {
+    data: nearPost,
+    refetch,
+    isLoading,
+  }: any = useGetApi.useGetDistance(+campY!, +campX!) || [];
+  // console.log(nearPost[0].X);
 
   //로딩중 화면 처리 구상.
   return (
     <Wrapper>
       <TextBox>가장 가까운 캠핑장</TextBox>
-      {/* <Loading /> */}
+
       <PlanBox>
+        {nearPost?.[0] ? null : <Loading></Loading>}
+
         {nearPost?.map((item: IGetCampResult, i: number) => (
           <PlanWrapper>
             <MapBox>
@@ -63,12 +70,14 @@ export default function Nearby() {
                 {item?.distance?.toString().slice(0, 3)}km
               </DistanceText>
               <CampName>{item?.campName}</CampName>
-              {item?.induty.split(",").map((item, i) => (
-                <Induty key={i}>
-                  <Dutycc></Dutycc>
-                  {item}
-                </Induty>
-              ))}
+              <MapFlex>
+                {item?.induty.split(",").map((item, i) => (
+                  <Induty key={i}>
+                    <Dutycc></Dutycc>
+                    {item}
+                  </Induty>
+                ))}
+              </MapFlex>
             </RightBox>
           </PlanWrapper>
         ))}
@@ -76,16 +85,12 @@ export default function Nearby() {
     </Wrapper>
   );
 }
-{
-  /* <NearestMap campX={campX} campY={campY} /> */
-}
 
 const Wrapper = styled.div`
   margin-left: 20px;
   margin-top: 40px;
-  font-weight: 500; //temporary
+  font-weight: 500;
   width: 100%;
-  /* width: ${(props) => props.theme.pixelToRem(375)}; */
   flex-direction: column;
 `;
 
@@ -100,7 +105,6 @@ const PlanBox = styled.div`
   height: ${(props) => props.theme.pixelToRem(264)};
   border-radius: ${(props) => props.theme.pixelToRem(10)};
   box-shadow: 15px;
-  /* display: flex; */
   position: relative;
   flex-direction: column;
   border: 1px solid #eee;
@@ -126,6 +130,7 @@ const MapBox = styled.div`
 `;
 
 const RightBox = styled.div`
+  width: 60%;
   margin-left: 16px;
   margin-top: 5px;
   display: flex;
@@ -143,7 +148,13 @@ const CampName = styled.div`
   color: #222;
 `;
 
+const MapFlex = styled.div`
+  display: flex;
+  transform: translateX(-5px);
+`;
+
 const Induty = styled.div`
+  margin-left: 5px;
   margin-top: 12px;
   font-size: ${(props) => props.theme.pixelToRem(12)};
   display: flex;

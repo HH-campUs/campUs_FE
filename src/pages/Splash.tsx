@@ -54,7 +54,8 @@ export default Splash;
 
 const SplashBg = styled.div`
   width: 100%;
-  max-width: 475px;
+  max-width: ${(props) => props.theme.pixelToRem(475)};
+  min-width: ${(props) => props.theme.pixelToRem(375)};
   height: 100vh;
   padding: 0 auto;
   background-color: ${(props) => props.theme.colorTheme.main};
@@ -62,8 +63,8 @@ const SplashBg = styled.div`
   overflow: hidden;
 `;
 const SplashLogo = styled.div`
-  width: 290px;
-  height: 290px;
+  width: ${(props) => props.theme.pixelToRem(290)};
+  height: ${(props) => props.theme.pixelToRem(290)};
   margin: 0 auto;
   top: 25%;
   left: -7%;

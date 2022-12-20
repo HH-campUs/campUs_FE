@@ -2,8 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import styled, { keyframes } from "styled-components";
-import { useMyPageApi } from "../../APIs/myPageApi";
-import { instance, postInstance } from "../../instance/instance";
+import { postInstance } from "../../instance/instance";
 
 import { IReviewPosts } from "../../interfaces/Posts";
 
@@ -13,14 +12,12 @@ import { useNavigate } from "react-router-dom";
 
 export default function MyReviewUpdate({
   review,
-  openUpdate,
   closeUpdate,
 }: {
   review: IGetMyReview;
   openUpdate: () => void;
   closeUpdate: () => void;
 }) {
-  const [reviewComment, setReviewComment] = useState(review?.reviewComment);
   const [imagePreview, setImagePreview] = useState<string[]>([]);
   const [imageFiles, setImageFiles] = useState<(File | string)[]>([]);
   const navigation = useNavigate();
@@ -32,15 +29,6 @@ export default function MyReviewUpdate({
       setImageFiles(review?.reviewImg.split(","));
     }
   }, []);
-
-  // useEffect(() => {
-  //   if (imagePreview.length === 0) return;
-  //   if (imagePreview.length > 3) {
-  //     window.alert("이미지는 3장까지 첨부가능합니다.");
-  //     setImagePreview((prev) => prev.slice(0, 3));
-  //     setImageFiles((prev: File[]) => prev.slice(0, 3));
-  //   }
-  // }, [imagePreview]);
 
   //form
   const {
@@ -82,16 +70,6 @@ export default function MyReviewUpdate({
     reviewUpdate.mutate(body);
     complete();
   };
-
-  //*토스트
-  // // setToastState(true);
-  // const timer = setTimeout(() => {
-  //   navigate(-1);
-  // }, 1530);
-
-  // return () => {
-  // clearTimeout(timer);
-  // };
 
   //수정하기. reviewId , reviewImg, reviewComment, likeStatus(x) - body값
   const updateFn = async (payload: IEditReviewPosts) => {
@@ -187,20 +165,6 @@ export default function MyReviewUpdate({
       </UpdateContainer>
     </>
   );
-}
-
-{
-  /* <ReviewUpdate>
-        <img src="/images/icon-more.svg" alt="more" onClick={revised} />
-        {openRevised === true ? (
-          <BtnBox>
-            <div onClick={openUpdate}>수정하기</div>
-            <div onClick={delReview}>삭제</div>
-          </BtnBox>
-        ) : null}
-
-        <div></div>
-      </ReviewUpdate>  */
 }
 
 const ReviewUpdate = styled.div`

@@ -1,6 +1,6 @@
 import { useMyPageApi } from "../../APIs/myPageApi";
 import styled from "styled-components";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { IPickedCamp } from "../../interfaces/Posts";
 import { getCamperToken } from "../../instance/cookies";
 import MyPickDelete from "../../components/MyPickDelete";
@@ -9,7 +9,6 @@ export default function MyPick() {
   const navigate = useNavigate();
   const isLogin = getCamperToken();
 
-  const params = useParams();
   const myPick = useMyPageApi.useGetMyPick().data?.data.Pick;
   const picked = myPick?.map((picks: IPickedCamp) => picks.Camp) || [];
 
@@ -45,8 +44,7 @@ export default function MyPick() {
             <PickBtn
               onClick={() => {
                 navigate(`/topic/1`);
-              }}
-            >
+              }}>
               인기 캠핑장 구경가기
             </PickBtn>
           </NotiBox>
@@ -57,24 +55,18 @@ export default function MyPick() {
 }
 
 const Wrapper = styled.div`
-  /* background-color: red; */
-  /* margin-top: 130px; */
   height: 100vh;
-  /* margin-bottom: 500px; */
   min-height: 500px;
   overflow-y: scroll;
 `;
 
 const MapBox = styled.div`
   margin-bottom: 250px;
-  /* background-color: blue; */
 `;
 
 const Box = styled.div`
   width: 335px;
   margin: 20px auto;
-  /* justify-content: center; */
-  /* text-align: left; */
   flex-direction: column;
   display: flex;
 `;
@@ -88,7 +80,6 @@ const NameBox = styled.div`
 
 const CampName = styled.div`
   display: flex;
-  /* position: absolute; */
   margin-top: 15px;
   font-size: ${(props) => props.theme.pixelToRem(18)};
   color: #222222;
@@ -96,7 +87,6 @@ const CampName = styled.div`
 `;
 
 const CampDuty = styled.div`
-  /* position: absolute; */
   display: flex;
   justify-content: flex-end;
   color: grey;

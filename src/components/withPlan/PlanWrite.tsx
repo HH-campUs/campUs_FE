@@ -1,44 +1,24 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  MouseEvent,
-  useCallback,
-} from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useState, MouseEvent } from "react";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { useForm } from "react-hook-form";
-import {
-  StartDate,
-  DateState,
-  ExportDate,
-  ExportYear,
-  ExportMonth,
-  ExportDay,
-  StrDay,
-  StrMonth,
-  StrYear,
-} from "../../store/dateAtom";
+import { DateState, StrDay, StrMonth } from "../../store/dateAtom";
 import { isToast2 } from "../../store/toastAtom";
 
-import { isModal, textValue } from "../../store/searchAtom";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-import styled, { keyframes, css } from "styled-components";
+import styled, { keyframes } from "styled-components";
 import Datepicker from "../withSearch/Datepicker";
 import { usePostsApi } from "../../APIs/postsApi";
 import { getCamperToken } from "../../instance/cookies";
-import { planOpenProps, ToastProps } from "../../interfaces/props";
+import { planOpenProps } from "../../interfaces/props";
 import { IPostTravelPlan } from "../../interfaces/Posts";
 
 function PlanWrite({ isPlan, setIsPlan, campId }: planOpenProps) {
   /* toast boolean */
-  const [toastState2, setToastState2] = useRecoilState(isToast2);
+  const setToastState2 = useSetRecoilState(isToast2);
   const [openDate, setOpenDate] = useState(false);
 
   /* search api 에 사용될  keyword */
-  const [sendDate, setSendDate] = useRecoilState(DateState);
+  const [sendDate] = useRecoilState(DateState);
 
-  const selectDate = useRecoilValue(ExportDate);
-  const selectYear = useRecoilValue(StrYear);
   const selectMonth = useRecoilValue(StrMonth);
   const selectDay = useRecoilValue(StrDay);
 
@@ -46,8 +26,6 @@ function PlanWrite({ isPlan, setIsPlan, campId }: planOpenProps) {
     event.stopPropagation();
     setOpenDate(!openDate);
   };
-
-  const isLogin = getCamperToken();
 
   const planPost = usePostsApi.usePostTravelPlan();
   const {
@@ -298,7 +276,6 @@ const StTextArea = styled.textarea`
   padding: 14px 16px;
   border: 1px solid lightgray;
   resize: none;
-  /* letter-spacing: 0px; */
 `;
 
 const SearchBtn = styled.button`

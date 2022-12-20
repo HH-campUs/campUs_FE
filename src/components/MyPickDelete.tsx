@@ -1,16 +1,12 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import React, { useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
-import { usePostsApi } from "../APIs/postsApi";
 import { IPickedCamp } from "../interfaces/Posts";
-import { InfoToast } from "./Toast/Toast";
 
 import { ICampingPicked } from "../interfaces/Posts";
 import { instance } from "../instance/instance";
 
 export default function MyPickDelete({ pick }: { pick: IPickedCamp }) {
-  const [toastState, setToastState] = useState(false);
-
   const queryClient = useQueryClient();
   const mutateFn = async (payload: ICampingPicked) => {
     const { data } = await instance.put(`/camps/${payload}/pick`);
@@ -57,18 +53,8 @@ const CampImg = styled.div`
   }
 `;
 
-const Toast = styled.div`
-  margin-left: 50px;
-`;
-
 const Delete = styled.img`
-  /* position: relative; */
   position: absolute;
   right: 0;
-  /* transform: translateX(900%); */
-
-  /* margin-right: 25px; */
   cursor: pointer;
-  /* background-color: red; */
-  /* margin-top: 10px; */
 `;

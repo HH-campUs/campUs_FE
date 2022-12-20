@@ -1,12 +1,9 @@
 //redirect경로는 백엔드와 동일해야함.
 import axios from "axios";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { setAccessToken, setRefreshToken } from "../../instance/cookies";
 
 function KakaoLogin() {
-  const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
-  const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URI;
-
   const code = new URL(window.location.href).searchParams.get("code");
   const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${process.env.REACT_APP_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}&code=${code}`;
   console.log(code);

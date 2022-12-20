@@ -12,7 +12,6 @@ import { useGetTopicInfinite } from "../APIs/getApi";
 import { useInView } from "react-intersection-observer";
 
 //css
-import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { InfoToast2, NoIdPickToast, NavToast } from "../components/Toast/Toast";
 
 import { IGetCampResult } from "../interfaces/get";
@@ -33,7 +32,7 @@ function Topic() {
     window.scrollTo({ left: 0, top: 0, behavior: "smooth" });
   };
   const navigate = useNavigate();
-  const [isSearch, setIsSearch] = useRecoilState(isModal);
+  const [isSearch] = useRecoilState(isModal);
   const [sortState, setSortState] = useState("lookUp");
   const { topicId } = useParams();
 
@@ -46,30 +45,6 @@ function Topic() {
   console.log("campTopic", campTopic);
 
   const [ref, isView] = useInView();
-
-  // <div>
-  // {sortState == "lookUp" ? (
-  //   <span
-  //     className="popular"
-  //     onClick={() => setSortState("pickCount")}
-  //   >
-  //     조회순
-  //   </span>
-  // ) : sortState == "pickCount" ? (
-  //   <span
-  //     className="popular"
-  //     onClick={() => setSortState("reviewCount")}
-  //   >
-  //     인기순
-  //   </span>
-  // ) : (
-  //   <span
-  //     className="popular"
-  //     onClick={() => setSortState("lookUp")}
-  //   >
-  //     리뷰순
-  //   </span>
-  // )}
 
   useEffect(() => {
     if (isView && hasNextPage) {

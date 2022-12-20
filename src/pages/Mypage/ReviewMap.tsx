@@ -66,8 +66,7 @@ const ReviewMap = ({
             marginLeft: "6.5px",
             display: "flex",
             width: "100%",
-          }}
-        >
+          }}>
           <NickBox>
             <PfNick>{checkPf?.nickname}</PfNick>
             <ReviewUpdate>

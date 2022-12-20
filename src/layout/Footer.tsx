@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { isModal } from "../store/searchAtom";
 
 import BottomNavigation from "@mui/material/BottomNavigation";
@@ -8,7 +8,7 @@ import { useNavigate } from "react-router";
 
 export default function Footer() {
   const [value, setValue] = React.useState(0);
-  const [isSearch, setIsSearch] = useRecoilState(isModal);
+  const setIsSearch = useSetRecoilState(isModal);
   const navigate = useNavigate();
 
   const [isHome, setIsHome] = useState(false);
@@ -32,8 +32,7 @@ export default function Footer() {
         justifyContent: "center",
         alignItems: "center",
         fontFamily: "Pretendard-Regular !important",
-      }}
-    >
+      }}>
       <BottomNavigationAction
         label="Home"
         onClick={() => {

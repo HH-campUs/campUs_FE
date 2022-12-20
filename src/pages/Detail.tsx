@@ -35,7 +35,7 @@ function Detail() {
   };
 
   const navigate = useNavigate();
-  const [isSearch, setIsSearch] = useRecoilState(isModal);
+  const [isSearch] = useRecoilState(isModal);
 
   const [openSemi, setOpenSemi] = useState(false);
   const [isPlan, setIsPlan] = useState(false);
@@ -93,7 +93,6 @@ function Detail() {
   // useEffect로 detail아이템이 바꼈을때 checkitem으로 state값으로관리
   // setquerydata
   const detailItem: any = useGetApi.useGetCampDetail(campId)?.data?.[0];
-  // console.log("detail", detailItem);
 
   const icons = useMemo<string[]>(() => {
     if (!detailItem) return [];

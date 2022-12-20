@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 import {
@@ -6,7 +6,6 @@ import {
   ToastProps2,
   ToastProps3,
   ToastProps4,
-  ToastProps5,
 } from "../../interfaces/props";
 
 /* toast custom hook */

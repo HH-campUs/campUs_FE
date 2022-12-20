@@ -99,14 +99,10 @@ export default function MytravelPlan() {
     </Wrapper>
   );
 }
-{
-  /* <HiddenBox></HiddenBox> */
-}
+
 const Wrapper = styled.div`
-  /* background-color: red; */
   margin-top: ${(props) => props.theme.pixelToRem(40)};
   width: 100%;
-  /* margin: 20px 10px 20px 10px; */
 `;
 
 const TextBox = styled.div`
@@ -165,7 +161,6 @@ const CloBox = styled.div`
   font-size: ${(props) => props.theme.pixelToRem(13)};
   display: flex;
   z-index: 3;
-  /* position: relative; */
 `;
 
 const Carlendar = styled.div`
@@ -237,7 +232,6 @@ const Location = styled.div`
   align-items: center;
   font-size: ${(props) => props.theme.pixelToRem(12)};
   margin-top: ${(props) => props.theme.pixelToRem(23)};
-  /* background-color: red; */
 
   span {
     width: ${(props) => props.theme.pixelToRem(105)};
@@ -255,8 +249,6 @@ const Location = styled.div`
   img {
     margin-left: ${(props) => props.theme.pixelToRem(5)};
   }
-  /* margin-top: ${(props) => props.theme.pixelToRem(11)}; */
-  /* background-color: blue; */
 `;
 
 const Dday = styled.div`

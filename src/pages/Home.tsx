@@ -10,7 +10,6 @@ import { useRecoilState } from "recoil";
 import { isModal } from "../store/searchAtom";
 import NewReview from "../components/withReview/NewReview";
 import { NoIdPickToast } from "../components/Toast/Toast";
-import { getCamperToken } from "../instance/cookies";
 
 //Css
 import styled from "styled-components";

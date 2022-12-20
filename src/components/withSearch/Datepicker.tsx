@@ -1,9 +1,6 @@
-import React, { useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import DatePicker from "react-datepicker";
 import "../../style/customDatepicker.css";
-import dayjs from "dayjs";
-import { originDate } from "../../interfaces/inDate";
 import { ko } from "date-fns/locale";
 import { addDays } from "date-fns";
 import {
@@ -19,12 +16,12 @@ import styled, { keyframes } from "styled-components";
 function Datepicker({ openDate }: isDateProps) {
   /* 처음에 new Date()로 datepicker에게 인지 */
   const [startDate, setStartDate] = useRecoilState(StartDate);
-  const [sendYear, setSendYear] = useRecoilState(StrYear);
-  const [sendMonth, setSendMonth] = useRecoilState(StrMonth);
-  const [sendDay, setSendDay] = useRecoilState(StrDay);
+  const setSendYear = useSetRecoilState(StrYear);
+  const setSendMonth = useSetRecoilState(StrMonth);
+  const setSendDay = useSetRecoilState(StrDay);
 
   /* weather api 에 사용될 dt값 */
-  const [sendDate, setSendDate] = useRecoilState(DateState);
+  const setSendDate = useSetRecoilState(DateState);
 
   /* weather 로 넘길 string으로 */
   const useYear = startDate.getFullYear().toString();

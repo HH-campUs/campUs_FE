@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Lottie from "react-lottie";
 import lottie from "../style/lottie.json";
-import { FaAccusoft } from "react-icons/fa";
 
 function Splash() {
   const [isShow, setIsShow] = useState<boolean>(true);
@@ -52,6 +51,7 @@ function Splash() {
 }
 export default Splash;
 
+/* splash background */
 const SplashBg = styled.div`
   width: 100%;
   max-width: ${(props) => props.theme.pixelToRem(475)};
@@ -62,6 +62,8 @@ const SplashBg = styled.div`
   position: fixed;
   overflow: hidden;
 `;
+
+/* lottie & campUs logo */
 const SplashLogo = styled.div`
   width: ${(props) => props.theme.pixelToRem(290)};
   height: ${(props) => props.theme.pixelToRem(290)};
@@ -78,6 +80,7 @@ const SplashLogo = styled.div`
     position: absolute;
   }
 `;
+
 const SpanBottom = styled.div`
   top: 86%;
   left: 32.7%;
@@ -119,6 +122,7 @@ const Root = styled.div`
     background: none;
   }
 `;
+
 //left
 const LeftTemplate = styled.div`
   width: ${(props) => props.theme.pixelToRem(475)};
@@ -129,16 +133,14 @@ const LeftTemplate = styled.div`
     display: none;
   }
 `;
+
 //right
 const RightTemplate = styled.div`
-  //background-color: teal;
   width: 475px;
-  //height: 500px;
   min-width: 375px;
   position: relative;
 
   @media screen and (min-width: 915px) {
     max-width: 475px;
-    //margin-left: -17.5px;
   }
 `;

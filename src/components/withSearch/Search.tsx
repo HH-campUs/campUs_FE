@@ -1,30 +1,12 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  MouseEvent,
-  useCallback,
-} from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
-import {
-  StartDate,
-  DateState,
-  ExportDate,
-  ExportYear,
-  ExportMonth,
-  ExportDay,
-  StrDay,
-  StrMonth,
-  StrYear,
-} from "../../store/dateAtom";
-import { isToast, isToast2 } from "../../store/toastAtom";
+import React, { useState, MouseEvent, useCallback } from "react";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { StartDate, StrDay, StrMonth } from "../../store/dateAtom";
 import { selectLo, showLo } from "../../store/locationAtom";
 import { isModal, textValue } from "../../store/searchAtom";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 import Datepicker from "./Datepicker";
 import Location from "./Location";
-import { isProps, searchData } from "../../interfaces/inSearch";
 import { ResetToast, SearchToast } from "../Toast/Toast";
 
 function Search() {
@@ -35,18 +17,15 @@ function Search() {
   /* search Modal 여닫는 boolean */
   const [isSearch, setIsSearch] = useRecoilState(isModal);
   const [openDate, setOpenDate] = useState(false);
-  const [startDate, setStartDate] = useRecoilState(StartDate);
+  const setStartDate = useSetRecoilState(StartDate);
 
   /* search api 에 사용될  keyword */
   const [inputValue, setInputValue] = useRecoilState(textValue);
   /* camp api 에 사용될 address */
-  const [locationValue, setLocationValue] = useRecoilState(showLo);
+  const setLocationValue = useSetRecoilState(showLo);
   /* weather api에 사용될 pardo & dt */
   const [sendLocation, setSendLocation] = useRecoilState(selectLo);
-  const [sendDate, setSendDate] = useRecoilState(DateState);
 
-  const selectDate = useRecoilValue(ExportDate);
-  const selectYear = useRecoilValue(StrYear);
   const selectMonth = useRecoilValue(StrMonth);
   const selectDay = useRecoilValue(StrDay);
 
@@ -96,6 +75,7 @@ function Search() {
         ) : null}
 
         <ModalBg isSearch={isSearch} onClick={closeModal} />
+
         {/* 모달창 밖 blur background 토글 기능 부여 (event bubbling 해결) */}
         <SearchModal isSearch={isSearch} className="isSearch">
           {/* Headline + close btn */}
@@ -371,14 +351,6 @@ const DateText = styled.div`
 const DateContainer = styled.div`
   margin-top: -8px;
   position: absolute;
-`;
-
-const LocationText = styled(DateText)`
-  width: auto !important;
-  margin-left: 40px !important;
-  img {
-    position: absolute;
-  }
 `;
 
 const BtnContainer = styled.button<{ isSearch: boolean }>`

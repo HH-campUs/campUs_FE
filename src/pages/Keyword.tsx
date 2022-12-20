@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { useInView } from "react-intersection-observer";
 
 import Up from "../components/Up";
@@ -21,17 +21,14 @@ function Keyword() {
   const [toastState, setToastState] = useRecoilState(isToast);
   const [toastState2, setToastState2] = useRecoilState(isToast2);
   /* data */
-  const [isSearch, setIsSearch] = useRecoilState(isModal);
-  const [inputValue, setInputValue] = useRecoilState(textValue);
+  const [isSearch] = useRecoilState(isModal);
+  const [inputValue] = useRecoilState(textValue);
   const [sortState, setSortState] = useState("lookUp");
   const [bookmarking, setBookMarking] = useState(false);
 
   const Month = useRecoilValue(StrMonth);
   const Day = useRecoilValue(StrDay);
 
-  const doNm = useRecoilValue(showLo);
-  const pardo = useRecoilValue(selectLo);
-  const date = useRecoilValue(DateState);
   const keyword = useRecoilValue(textValue);
 
   const isLogin = getCamperToken();
@@ -46,10 +43,10 @@ function Keyword() {
 
   /* handler */
 
-  const picking = () => {
+  /*   const picking = () => {
     setBookMarking((prev) => !prev);
     console.log("asdfads");
-  };
+  }; */
 
   useEffect(() => {
     if (inView && hasNextPage) {
@@ -105,14 +102,6 @@ function Keyword() {
 
         {/* Weather modal */}
 
-        {/* 여기서 문제... pardo값을 받게 되었을 때 잘나오지만 만약 pardo 값을 인자로 넣지
-      않는다면..?  => undefined 값이 나오게 된다잉.. 그렇다고 이 값을 여기에 맞추기엔 pardo
-      값을 정확히 입력하고, 날짜가 날씨를 지원하지 않는 거라면 Query Option 으로 isError일때, 
-      다른 컴포넌트가 나오게 처리해야된다.. 그렇다면?? 조건문을 중첩해서 써도 되지 않을까?
-      => 이거 질문해야겠다 시부레,.. */}
-
-        {/* 일단 키워드가 있고 없고 해도 잘 안됩니당 */}
-
         <NoWeather>
           <div className="top">
             <span>날씨</span>
@@ -164,8 +153,8 @@ function Keyword() {
               <React.Fragment key={page.currentPage}>
                 {page?.camps.searchCamp?.map((item: IGetCampResult) => (
                   <ResultBox key={item.campId}>
-                    <ResultItem onClick={() => nav(`/detail/${item.campId}/detail`)} >
-
+                    <ResultItem
+                      onClick={() => nav(`/detail/${item.campId}/detail`)}>
                       <ResultImg src={item.ImageUrl} alt={item.ImageUrl} />
                       <InnerBg>
                         <span>
@@ -398,7 +387,7 @@ const ResultImg = styled.img`
   object-fit: cover;
 `;
 
-const Bookmark = styled.div`
+/* const Bookmark = styled.div`
   position: absolute;
   margin-left: 150px;
   margin-top: 10px;
@@ -407,7 +396,7 @@ const BookmarkBorderIcon = styled.div`
   position: absolute;
   margin-left: 150px;
   margin-top: 10px;
-`;
+`; */
 
 const InnerBg = styled.div`
   width: 80px;

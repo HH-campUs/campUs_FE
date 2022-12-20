@@ -1,6 +1,4 @@
-import React, { useState } from "react";
-import { usePostsApi } from "../APIs/postsApi";
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { isToast, isToast2 } from "../store/toastAtom";
 
 //css
@@ -13,8 +11,8 @@ import { instance } from "../instance/instance";
 
 export default function TopicMap({ Camp }: { Camp: IGetCampResult }) {
   /* toast State */
-  const [toastState, setToastState] = useRecoilState(isToast);
-  const [toastState2, setToastState2] = useRecoilState(isToast2);
+  const setToastState = useSetRecoilState(isToast);
+  const setToastState2 = useSetRecoilState(isToast2);
 
   //찜하기 query
   const queryClient = useQueryClient();

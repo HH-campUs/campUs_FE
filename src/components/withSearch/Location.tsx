@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { selectLo, showLo } from "../../store/locationAtom";
-import { textValue } from "../../store/searchAtom";
 import styled, { keyframes } from "styled-components";
 import { isTextProps } from "../../interfaces/inSearch";
 

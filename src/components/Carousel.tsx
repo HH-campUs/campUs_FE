@@ -6,11 +6,10 @@ import "swiper/css";
 import "../style/swiper.css";
 import styled from "styled-components";
 import { useGetApi } from "../APIs/getApi";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function Carousel() {
   const navigate = useNavigate();
-  const { campId } = useParams();
 
   const campLook = useGetApi.useGetSort()?.data?.MostList?.[0].look || [];
   const campReview = useGetApi.useGetSort()?.data?.MostList?.[1]?.review || [];
@@ -80,25 +79,7 @@ const CarouselSwiper = styled(Swiper)`
   user-select: none;
 `;
 
-const CarouselViewer = styled.div`
-  width: ${(props) => props.theme.pixelToRem(475)};
-  max-width: ${(props) => props.theme.pixelToRem(475)};
-  min-width: ${(props) => props.theme.pixelToRem(375)};
-  height: ${(props) => props.theme.pixelToRem(318)} !important;
-  overflow: hidden;
-  user-select: none;
-`;
-
-const CarouselSlider = styled.div`
-  display: flex;
-`;
-
-const CarouselSlide = styled.div`
-  display: flex;
-`;
-
 const Outline = styled(SwiperSlide)`
-  /* display: flex; */
   width: ${(props) => props.theme.pixelToRem(214)};
   height: ${(props) => props.theme.pixelToRem(260)};
   position: relative;

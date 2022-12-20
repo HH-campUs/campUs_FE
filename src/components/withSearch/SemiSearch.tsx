@@ -1,40 +1,11 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  MouseEvent,
-  useCallback,
-} from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
-import {
-  StartDate,
-  DateState,
-  ExportDate,
-  ExportYear,
-  ExportMonth,
-  ExportDay,
-  StrDay,
-  StrMonth,
-  StrYear,
-} from "../../store/dateAtom";
-import { selectLo, showLo } from "../../store/locationAtom";
-import { isModal, textValue } from "../../store/searchAtom";
-import { Link, useNavigate } from "react-router-dom";
-import styled, { keyframes, css } from "styled-components";
+import { useState } from "react";
+
+import styled, { keyframes } from "styled-components";
 import Datepicker from "./Datepicker";
 import { semiOpenProps } from "../../interfaces/props";
 
 function SemiSearch({ openSemi, setOpenSemi }: semiOpenProps) {
   const [openDate, setOpenDate] = useState(false);
-  const [startDate, setStartDate] = useRecoilState(StartDate);
-
-  /* search api 에 사용될  keyword */
-  const [sendDate, setSendDate] = useRecoilState(DateState);
-
-  const selectDate = useRecoilValue(ExportDate);
-  const selectYear = useRecoilValue(StrYear);
-  const selectMonth = useRecoilValue(StrMonth);
-  const selectDay = useRecoilValue(StrDay);
 
   return (
     <>
@@ -144,7 +115,6 @@ const SearchModal = styled.div<{ openSemi: boolean }>`
     padding: 25px 20px 39px;
     position: fixed;
     z-index: 100;
-    //overflow: auto;
     animation: ${(props) => (props.openSemi == false ? slideOut : slideIn)};
     animation-duration: 0.7s;
 

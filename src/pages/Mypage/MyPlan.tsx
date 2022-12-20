@@ -1,17 +1,12 @@
 import React, { useState } from "react";
-import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import Kebop from "../../components/withPlan/Kebop";
-import SemiSearch from "../../components/withSearch/SemiSearch";
-import PlanUpdate from "../../components/withPlan/PlanUpdate";
 import { InfoToast, InfoToast2 } from "../../components/Toast/Toast";
 
-import { usePostsApi } from "../../APIs/postsApi";
 import { useNavigate } from "react-router-dom";
 import { getCamperToken } from "../../instance/cookies";
 import { IGetTravelPlan } from "../../interfaces/MyPage";
 import { useMyPageApi } from "../../APIs/myPageApi";
-import { updateState } from "../../store/profileAtoms";
 
 export default function MyPlan() {
   /* for Toast */
@@ -19,7 +14,6 @@ export default function MyPlan() {
   const [toastState2, setToastState2] = useState(false);
 
   const [onOff, setOnOff] = useState(false);
-  const [isPlan, setIsPlan] = useRecoilState(updateState);
 
   const isLogin = getCamperToken();
   const navigate = useNavigate();
@@ -45,6 +39,7 @@ export default function MyPlan() {
     }
   };
 
+  /* D-day 계산기 */
   const DdayCalculator = (date: string) => {
     const planDay = new Date(date);
     const today = new Date();

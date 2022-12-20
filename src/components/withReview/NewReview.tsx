@@ -2,8 +2,6 @@ import styled from "styled-components";
 import { useGetApi } from "../../APIs/getApi";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-import { useState } from "react";
-import { useMyPageApi } from "../../APIs/myPageApi";
 import { useNavigate } from "react-router-dom";
 
 import "swiper/css";
@@ -13,14 +11,12 @@ import "../../style/swiper.css";
 export default function NewReview() {
   const NewReview = useGetApi.useGetNewReview().data?.data || [];
   console.log("메인리뷰", NewReview);
-  const [hide, setHide] = useState(true);
   const navigation = useNavigate();
 
   const toDetail = (campId: number) => () => {
     navigation(`/detail/${campId}/review`);
   };
 
-  const imageList = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   return (
     <>
       <CarouselSwiper

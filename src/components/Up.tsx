@@ -23,8 +23,6 @@ const FloatingBtn = styled.button`
   height: 45px;
   border-radius: 45px;
   background-color: white;
-  /* justify-content: center; */
-  /* align-items: center; */
   cursor: pointer;
   z-index: 1;
   border: 1px solid #eee;

@@ -35,7 +35,6 @@ function Result() {
   const doNm = useRecoilValue(showLo);
   const pardo = useRecoilValue(selectLo);
   const date = useRecoilValue(DateState);
-  const keyword = useRecoilValue(textValue);
 
   const isLogin = getCamperToken();
 
@@ -52,7 +51,6 @@ function Result() {
   const { ref, inView } = useInView();
 
   /* handler */
-
   const WeatherHandler = () => {
     setIsWeather(!isWeather);
   };
@@ -402,6 +400,7 @@ function Result() {
                           : item.address}
                       </span>
                     </DetailAddress>
+
                     {/* 시설 태그들 (max: 4) */}
                     <TagContainer>
                       {item.sbrsCl == ""

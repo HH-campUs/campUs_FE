@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 
 function Error() {
@@ -9,8 +8,14 @@ function Error() {
       </Circle>
       <Welcomee>
         <h2>음. 뭔가 문제가 생긴 것 같아요</h2>
-        <p className="sub">브라우저의 뒤로가기 버튼을 눌러주세요</p>
+        <p className="sub">하단의 버튼을 눌러주세요</p>
       </Welcomee>
+      <MainBtn
+        onClick={() => {
+          window.location.href = "/";
+        }}>
+        메인으로 가기
+      </MainBtn>
     </Wrapper>
   );
 }
@@ -54,7 +59,7 @@ const Welcomee = styled.div`
   color: #222;
 
   .sub {
-    margin: 7px -24px 0;
+    margin: 7px auto;
     font-size: 14px;
     font-weight: normal;
     font-stretch: normal;
@@ -68,7 +73,7 @@ const Welcomee = styled.div`
 `;
 
 const MainBtn = styled.button`
-  margin: 100px auto 0;
+  margin: 120px auto 0;
   width: 327px;
   height: 60px;
   display: flex;

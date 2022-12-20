@@ -3,8 +3,6 @@ import { getCamperToken } from "../../instance/cookies";
 import { useMyPageApi } from "../../APIs/myPageApi";
 import styled from "styled-components";
 import { IGetMyReview } from "../../interfaces/MyPage";
-import MyReviewUpdate from "./MyReviewUpdate";
-import { useState } from "react";
 
 import ReviewMap from "./ReviewMap";
 
@@ -49,8 +47,7 @@ export default function MyReview() {
             <PickBtn
               onClick={() => {
                 navigate("/result");
-              }}
-            >
+              }}>
               다녀온 캠핑장 구경가기
             </PickBtn>
           </NotiBox>

@@ -1,16 +1,15 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { isPop } from "../interfaces/Modal";
 import { IEditPfForm } from "../interfaces/MyPage";
 import { useMyPageApi } from "../APIs/myPageApi";
 import { useNavigate } from "react-router-dom";
-import { isToast, isToast2 } from "../store/toastAtom";
 import { InfoToast, InfoToast2 } from "../components/Toast/Toast";
 
 //Login
-import { LoginState, userInfo } from "../store/loginAtom";
+import { userInfo } from "../store/loginAtom";
 import { removeAccessToken, removeRefreshToken } from "../instance/cookies";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 
 //css
 import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
@@ -38,7 +37,7 @@ export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
     onError: () => console.log("파일전송에 실패했습니다."),
   });
 
-  const [isLoggedIn, setIsLoggedIn] = useRecoilState(userInfo);
+  const setIsLoggedIn = useSetRecoilState(userInfo);
   const navigate = useNavigate();
 
   const {
@@ -204,7 +203,6 @@ const ModalBg = styled.div`
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.55);
-  /* backdrop-filter: blur(1px); */
   animation-name: ${fadeIn};
   animation-duration: 0.2s;
 `;
@@ -213,7 +211,6 @@ const PfModalWrap = styled.button`
   border: 1px solid #bdbdbd;
   background-color: white;
   color: #474747;
-  /* z-index: 1; */
 
   &.setIsPopUp {
     width: ${(props) => props.theme.pixelToRem(53)};
@@ -244,7 +241,6 @@ const PfModalWrap = styled.button`
 `;
 
 const Container = styled.div`
-  /* background-color: red; */
   width: 100%;
   height: 100%;
   z-index: 10;
@@ -259,19 +255,12 @@ const Container = styled.div`
   transition: all 0.5s ease-in-out;
 `;
 
-const Toast = styled.div`
-  margin: 0 auto;
-`;
-
 const HeadText = styled.div`
   text-align: left;
   font-size: ${(props) => props.theme.pixelToRem(20)};
   margin-left: 20px;
 `;
-const PfBox = styled.div`
-  /* position: relative; */
-  /* position: absolute; */
-`;
+const PfBox = styled.div``;
 
 const PfText = styled.span`
   font-weight: 500;
@@ -292,7 +281,6 @@ const PfCircle = styled.div`
   border-radius: ${(props) => props.theme.pixelToRem(50)};
   margin-top: 17px;
   margin-left: 113px;
-  /* position: absolute; */
 `;
 const ImgPreview = styled.img`
   width: ${(props) => props.theme.pixelToRem(90)};
@@ -313,9 +301,6 @@ const CameraCircle = styled.div`
 `;
 
 const NickForm = styled.form`
-  /* justify-content: center; */
-  /* align-items: center; */
-  /* display: flex; */
   flex-direction: column;
 `;
 
@@ -331,10 +316,8 @@ const NickInput = styled.input`
   border: 1px solid #bdbdbd;
   width: ${(props) => props.theme.pixelToRem(295)};
   height: ${(props) => props.theme.pixelToRem(54)};
-  /* box-sizing: border-box; */
 `;
 
-// #adc2e;
 const NickBtn = styled.button`
   margin-top: 18px;
   border-radius: 0.8rem;

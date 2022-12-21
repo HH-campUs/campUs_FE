@@ -54,8 +54,8 @@ export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
   useEffect(() => {
     if (image && image.length > 0) {
       //any type check
-      const file: any = image[0];
-      setImagePreview(URL.createObjectURL(file));
+      const fileImage: any = image[0];
+      setImagePreview(URL.createObjectURL(fileImage));
     }
   }, [image]);
 

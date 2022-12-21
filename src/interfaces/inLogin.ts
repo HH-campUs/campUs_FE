@@ -8,8 +8,3 @@ export interface ISignUpForm {
   password: string;
   passwordcheck: string;
 }
-
-export interface IUser {
-  email: string;
-  password: string;
-}

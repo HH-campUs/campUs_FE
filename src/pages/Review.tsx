@@ -13,8 +13,6 @@ import { StrDay, StrMonth } from "../store/dateAtom";
 import { InfoToast, InfoToast2 } from "../components/Toast/Toast";
 
 export default function Review() {
-
-
   const [toastState, setToastState] = useState(false);
   const [toastState2, setToastState2] = useState(false);
 
@@ -28,7 +26,7 @@ export default function Review() {
   const { campId } = useParams();
 
   //useQuery사용.
-  const detailItem: any = useGetApi.useGetCampDetail(campId).data?.[0];
+  const detailItem = useGetApi.useGetCampDetail(campId).data?.[0];
 
   //버튼클릭 색상 변경
   const [bestStatus, setBestStatus] = useState(false);
@@ -110,7 +108,6 @@ export default function Review() {
     };
   };
 
-
   const handleDeleteImage = useCallback(
     (idx: number) => () => {
       setImagePreview((prev) => prev.filter((_, index) => index !== idx));
@@ -121,7 +118,7 @@ export default function Review() {
     },
     []
   );
-  
+
   useEffect(() => {
     if (imagePreview.length === 0) return;
     if (imagePreview.length > 3) {
@@ -180,10 +177,10 @@ export default function Review() {
 
       <VisitDay>
         방문일선택
-
         <p
           style={{ textDecoration: "underline", marginLeft: "160px" }}
-          onClick={() => setOpenSemi(true)}>
+          onClick={() => setOpenSemi(true)}
+        >
           2022.{Month}.{Day}
         </p>
         <RightArrow

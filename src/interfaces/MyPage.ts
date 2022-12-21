@@ -69,4 +69,6 @@ export interface IEditProfile {
 export interface IEditPfForm {
   profileImg: string;
   nickname: string;
+  image: Blob | MediaSource;
+  fileImage: Blob | MediaSource;
 }

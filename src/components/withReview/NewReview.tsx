@@ -29,7 +29,8 @@ export default function NewReview() {
         pagination={{
           clickable: true,
         }}
-        className="mySwiper">
+        className="mySwiper"
+      >
         {NewReview.map((item, reviewId) => (
           <MainBox key={reviewId}>
             <PfBox>
@@ -41,7 +42,8 @@ export default function NewReview() {
                   <PfNick>{item?.nickname}</PfNick>
                   <PfCamp
                     title={item?.campName}
-                    onClick={toDetail(item.campId)}>
+                    onClick={toDetail(item.campId)}
+                  >
                     {item?.campName}
                   </PfCamp>
                 </NickBox>
@@ -53,7 +55,8 @@ export default function NewReview() {
             <ReviewBox>
               <ReviewText
                 title={item?.reviewComment}
-                onClick={toDetail(item.campId)}>
+                onClick={toDetail(item.campId)}
+              >
                 {item?.reviewComment}
               </ReviewText>
             </ReviewBox>
@@ -151,22 +154,9 @@ const CarouselSwiper = styled(Swiper)`
   user-select: none;
 `;
 
-const CarouselSlider = styled.div`
-  display: flex;
-`;
-
-const CaroImgBox = styled.div`
-  display: flex;
-`;
-
-const Wrapper = styled.div`
-  /* margin-left: 20px; */
-`;
-
 const MainBox = styled(SwiperSlide)`
   margin-top: 18px;
   margin-left: 20px;
-  /* transform: translateX(20px); */
   width: ${(props) => props.theme.pixelToRem(268)} !important;
   height: ${(props) => props.theme.pixelToRem(256)};
   border-radius: ${(props) => props.theme.pixelToRem(10)};
@@ -178,7 +168,6 @@ const PfBox = styled.div`
   height: ${(props) => props.theme.pixelToRem(40)};
   margin: -178px -390px 0 20px !important;
   display: flex;
-  /* background-color: red; */
 `;
 
 const PfImg = styled.div`
@@ -189,7 +178,6 @@ const PfImg = styled.div`
     object-fit: cover;
   }
 `;
-// width: ${(props) => props.theme.pixelToRem(180)};
 const NickBox = styled.div`
   width: 73%;
   display: flex;
@@ -244,7 +232,6 @@ const ReviewText = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   cursor: pointer;
-  /* white-space: nowrap; */
 `;
 
 const ImgFlex = styled.div`

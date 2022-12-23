@@ -94,7 +94,7 @@ function Detail() {
 
   // useEffect로 detail아이템이 바꼈을때 checkitem으로 state값으로관리
   // setquerydata
-  const detailItem: any = useGetApi.useGetCampDetail(campId)?.data?.[0];
+  const detailItem = useGetApi.useGetCampDetail(campId)?.data?.[0];
   console.log("detail", detailItem?.sbrsCl);
 
   const icons = useMemo<string[]>(() => {
@@ -210,7 +210,7 @@ function Detail() {
                     onClick={(e) => {
                       e.stopPropagation();
                       setToastState4(true);
-                      Unpick(detailItem.campId);
+                      Unpick(detailItem!.campId);
                     }}
                   >
                     <img

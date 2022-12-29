@@ -90,7 +90,8 @@ function Keyword() {
           <div
             onClick={() => {
               nav("/");
-            }}>
+            }}
+          >
             <div style={{ position: "relative" }}>
               <img src="/images/back.svg" alt="back" />
               <span style={{ width: "60px" }}>검색조건</span>
@@ -102,16 +103,6 @@ function Keyword() {
             </span>
           </div>
         </ReSearch>
-
-        {/* Weather modal */}
-
-        {/* 여기서 문제... pardo값을 받게 되었을 때 잘나오지만 만약 pardo 값을 인자로 넣지
-      않는다면..?  => undefined 값이 나오게 된다잉.. 그렇다고 이 값을 여기에 맞추기엔 pardo
-      값을 정확히 입력하고, 날짜가 날씨를 지원하지 않는 거라면 Query Option 으로 isError일때, 
-      다른 컴포넌트가 나오게 처리해야된다.. 그렇다면?? 조건문을 중첩해서 써도 되지 않을까?
-      => 이거 질문해야겠다 시부레,.. */}
-
-        {/* 일단 키워드가 있고 없고 해도 잘 안됩니당 */}
 
         <NoWeather>
           <div className="top">
@@ -141,19 +132,22 @@ function Keyword() {
               {sortState == "lookUp" ? (
                 <span
                   className="popular"
-                  onClick={() => setSortState("pickCount")}>
+                  onClick={() => setSortState("pickCount")}
+                >
                   조회순
                 </span>
               ) : sortState == "pickCount" ? (
                 <span
                   className="popular"
-                  onClick={() => setSortState("reviewCount")}>
+                  onClick={() => setSortState("reviewCount")}
+                >
                   인기순
                 </span>
               ) : (
                 <span
                   className="popular"
-                  onClick={() => setSortState("lookUp")}>
+                  onClick={() => setSortState("lookUp")}
+                >
                   리뷰순
                 </span>
               )}
@@ -164,8 +158,9 @@ function Keyword() {
               <React.Fragment key={page.currentPage}>
                 {page?.camps.searchCamp?.map((item: IGetCampResult) => (
                   <ResultBox key={item.campId}>
-                    <ResultItem onClick={() => nav(`/detail/${item.campId}/detail`)} >
-
+                    <ResultItem
+                      onClick={() => nav(`/detail/${item.campId}/detail`)}
+                    >
                       <ResultImg src={item.ImageUrl} alt={item.ImageUrl} />
                       <InnerBg>
                         <span>

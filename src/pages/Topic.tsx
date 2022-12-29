@@ -40,12 +40,18 @@ function Topic() {
   const isLogin = getCamperToken();
 
   //infiniteScroll
-  const { campTopic, fetchNextPage, isSuccess, hasNextPage, refetch } =
+  const { campTopic, fetchNextPage, isSuccess, hasNextPage } =
     useGetTopicInfinite(topicId!, sortState);
 
   console.log("campTopic", campTopic);
 
   const [ref, isView] = useInView();
+
+  useEffect(() => {
+    if (isView && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [isView]);
 
   // <div>
   // {sortState == "lookUp" ? (
@@ -70,12 +76,6 @@ function Topic() {
   //     리뷰순
   //   </span>
   // )}
-
-  useEffect(() => {
-    if (isView && hasNextPage) {
-      fetchNextPage();
-    }
-  }, [isView]);
 
   return (
     <>
@@ -148,7 +148,8 @@ function Topic() {
                   <ResultBox key={item.campId}>
                     <TopicBookmark Camp={item} />
                     <ResultItem
-                      onClick={() => navigate(`/detail/${item.campId}/detail`)}>
+                      onClick={() => navigate(`/detail/${item.campId}/detail`)}
+                    >
                       <CampImg>
                         <img src={item.ImageUrl} alt={item.campName} />
                         <ReviewInfo>

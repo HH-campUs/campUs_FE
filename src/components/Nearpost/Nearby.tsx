@@ -41,14 +41,9 @@ export default function Nearby() {
     }
   }, [campX, campY]);
 
-  const {
-    data: nearPost,
-    refetch,
-    isLoading,
-  }: any = useGetApi.useGetDistance(+campY!, +campX!) || [];
-  // console.log(nearPost[0].X);
+  const { data: nearPost, refetch } =
+    useGetApi.useGetDistance(+campY!, +campX!) || [];
 
-  //로딩중 화면 처리 구상.
   return (
     <Wrapper>
       <TextBox>가장 가까운 캠핑장</TextBox>

@@ -18,8 +18,6 @@ export interface IEditReviewPosts {
   reviewId: number;
 }
 
-export interface IDeleteReviewPosts {}
-
 export interface IPostTravelPlan {
   campId?: number | string;
   tripId?: number | string;

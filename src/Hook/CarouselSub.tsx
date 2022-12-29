@@ -51,7 +51,8 @@ export default function CarouselSub() {
         pagination={{
           clickable: true,
         }}
-        className="mySwiper">
+        className="mySwiper"
+      >
         <BoxEx>
           <New>NEW</New>
           <CaroText>일몰 명소</CaroText>

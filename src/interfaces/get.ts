@@ -54,7 +54,7 @@ export interface IGetNewReview {
   campName: string;
 }
 
-export interface IGetDistance {
+export interface IGetDistance extends IGetCampResult {
   campId: number;
   campName: string;
   induty: string;

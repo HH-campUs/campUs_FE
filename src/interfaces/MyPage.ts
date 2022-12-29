@@ -61,12 +61,14 @@ export interface IGetMyInfo {
 
 //api용
 export interface IEditProfile {
-  profileImg: string;
+  profileImg: File;
   nickname: string;
 }
 
 //닉네임변경용
 export interface IEditPfForm {
-  profileImg: string;
+  profileImg: FileList;
   nickname: string;
+  image: Blob | MediaSource;
+  fileImage: Blob | MediaSource;
 }

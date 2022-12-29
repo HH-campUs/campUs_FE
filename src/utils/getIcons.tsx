@@ -11,7 +11,6 @@ const elec = "/images/faclIcon/icon-plug.svg";
 const swimpool = "/images/faclIcon/icon-pool.svg";
 const walkway = "/images/faclIcon/icon-tree.svg";
 
-//타입수정필요.
 function getIcons(name: string) {
   switch (name) {
     case "전기":

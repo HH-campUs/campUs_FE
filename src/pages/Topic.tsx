@@ -39,7 +39,7 @@ function Topic() {
   const isLogin = getCamperToken();
 
   //infiniteScroll
-  const { campTopic, fetchNextPage, isSuccess, hasNextPage, refetch } =
+  const { campTopic, fetchNextPage, isSuccess, hasNextPage } =
     useGetTopicInfinite(topicId!, sortState);
 
   console.log("campTopic", campTopic);
@@ -51,6 +51,31 @@ function Topic() {
       fetchNextPage();
     }
   }, [isView]);
+
+
+  // <div>
+  // {sortState == "lookUp" ? (
+  //   <span
+  //     className="popular"
+  //     onClick={() => setSortState("pickCount")}
+  //   >
+  //     조회순
+  //   </span>
+  // ) : sortState == "pickCount" ? (
+  //   <span
+  //     className="popular"
+  //     onClick={() => setSortState("reviewCount")}
+  //   >
+  //     인기순
+  //   </span>
+  // ) : (
+  //   <span
+  //     className="popular"
+  //     onClick={() => setSortState("lookUp")}
+  //   >
+  //     리뷰순
+  //   </span>
+  // )}
 
   return (
     <>
@@ -123,7 +148,8 @@ function Topic() {
                   <ResultBox key={item.campId}>
                     <TopicBookmark Camp={item} />
                     <ResultItem
-                      onClick={() => navigate(`/detail/${item.campId}/detail`)}>
+                      onClick={() => navigate(`/detail/${item.campId}/detail`)}
+                    >
                       <CampImg>
                         <img src={item.ImageUrl} alt={item.campName} />
                         <ReviewInfo>

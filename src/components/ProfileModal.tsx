@@ -50,11 +50,12 @@ export default function ProfileModal({ isPopUp, setIsPopUp }: isPop) {
   //이미지미리보기
   const [imagePreview, setImagePreview] = useState("");
   const image = watch("profileImg");
+  console.log("watch", image);
   useEffect(() => {
     if (image && image.length > 0) {
       //any type check
-      const file: any = image[0];
-      setImagePreview(URL.createObjectURL(file));
+      const fileImage: any = image[0];
+      setImagePreview(URL.createObjectURL(fileImage));
     }
   }, [image]);
 

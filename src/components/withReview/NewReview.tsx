@@ -2,8 +2,6 @@ import styled from "styled-components";
 import { useGetApi } from "../../APIs/getApi";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-import { useState } from "react";
-import { useMyPageApi } from "../../APIs/myPageApi";
 import { useNavigate } from "react-router-dom";
 
 import "swiper/css";
@@ -13,14 +11,12 @@ import "../../style/swiper.css";
 export default function NewReview() {
   const NewReview = useGetApi.useGetNewReview().data?.data || [];
   console.log("메인리뷰", NewReview);
-  const [hide, setHide] = useState(true);
   const navigation = useNavigate();
 
   const toDetail = (campId: number) => () => {
     navigation(`/detail/${campId}/review`);
   };
 
-  const imageList = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   return (
     <>
       <CarouselSwiper
@@ -45,6 +41,7 @@ export default function NewReview() {
                     onClick={toDetail(item.campId)}
                   >
                     {item?.campName}
+                    <img src="/images/back.svg" alt="back" />
                   </PfCamp>
                 </NickBox>
                 <LocaBox>
@@ -75,74 +72,6 @@ export default function NewReview() {
           </MainBox>
         ))}
       </CarouselSwiper>
-      {/* <CarouselSlider
-            className="flex"
-            style={{
-              transform: `translateX(${-currentIndex * width + transX}px)`,
-              transition: `transform ${transX ? 0 : 300}ms ease-in-out 0s`,
-            }}
-            {...registDragEvent({
-              onDragChange: (deltaX) => {
-                setTransX(inrange(deltaX, -width, width));
-              },
-              onDragEnd: (deltaX) => {
-                const maxIndex = imageList.length;
-  
-                if (deltaX < -100)
-                  setCurrentIndex(inrange(currentIndex + 1, 0, maxIndex));
-                if (deltaX > 100)
-                  setCurrentIndex(inrange(currentIndex - 1, 0, maxIndex));
-  
-                setTransX(0);
-              },
-            })}>
-            {NewReview.map((item, reviewId) => (
-              <CaroImgBox key={reviewId}>
-                <Wrapper draggable="true">
-                  <MainBox>
-                    <PfBox>
-                      <PfImg>
-                        <img src={item?.profileImg} alt="pfImg" />
-                      </PfImg>
-                      <div
-                        style={{ flexDirection: "column", marginLeft: "6.5px" }}>
-                        <NickBox>
-                          <PfNick>{item?.nickname}</PfNick>
-                          <PfCamp
-                            title={item?.campName}
-                            onClick={toDetail(item.campId)}>
-                            {item?.campName}
-                          </PfCamp>
-                        </NickBox>
-                        <LocaBox>
-                          <Date>&nbsp;{item?.createdAt.slice(0, 10)}</Date>
-                        </LocaBox>
-                      </div>
-                    </PfBox>
-                    <ReviewBox>
-                      <ReviewText
-                        title={item?.reviewComment}
-                        onClick={toDetail(item.campId)}>
-                        {item?.reviewComment}
-                      </ReviewText>
-                    </ReviewBox>
-                    <ImgFlex>
-                      {item?.reviewImg
-                        .toString()
-                        .split(",")
-                        .map((image: string, reviewId) => (
-                          <ImgBox>
-                            {item?.reviewImg ? (
-                              <img src={image} alt="reviewImg" key={reviewId} />
-                            ) : null}
-                          </ImgBox>
-                        ))}
-                    </ImgFlex>
-                  </MainBox>
-                </Wrapper>
-              </CaroImgBox>
-            ))}
-          </CarouselSlider> */}
     </>
   );
 }
@@ -166,7 +95,7 @@ const MainBox = styled(SwiperSlide)`
 const PfBox = styled.div`
   width: ${(props) => props.theme.pixelToRem(300)};
   height: ${(props) => props.theme.pixelToRem(40)};
-  margin: -178px -390px 0 20px !important;
+  margin: -185px -390px 0 20px !important;
   display: flex;
 `;
 
@@ -174,6 +103,7 @@ const PfImg = styled.div`
   img {
     width: ${(props) => props.theme.pixelToRem(36.6)};
     height: ${(props) => props.theme.pixelToRem(40)};
+    margin-top: -3px;
     border-radius: ${(props) => props.theme.pixelToRem(20)};
     object-fit: cover;
   }
@@ -181,7 +111,6 @@ const PfImg = styled.div`
 const NickBox = styled.div`
   width: 73%;
   display: flex;
-  justify-content: space-between;
   font-size: ${(props) => props.theme.pixelToRem(14)};
   overflow: hidden;
   text-overflow: ellipsis;
@@ -194,12 +123,24 @@ const PfNick = styled.div`
 `;
 
 const PfCamp = styled.div`
+  margin-top: 50px;
+  margin-left: -46px;
   font-size: ${(props) => props.theme.pixelToRem(12)};
-  color: #222;
+  ${(props) => props.theme.fontTheme.Caption2};
+  color: #666666 !important;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   cursor: pointer;
+  justify-content: center;
+  display: flex;
+  position: absolute;
+
+  img {
+    width: ${(props) => props.theme.pixelToRem(16)};
+    margin-top: -0.7px;
+    transform: rotate(180deg);
+  }
 `;
 
 const LocaBox = styled.div`
@@ -216,7 +157,7 @@ const ReviewBox = styled.div`
   width: ${(props) => props.theme.pixelToRem(240)};
   color: #666;
   font-size: ${(props) => props.theme.pixelToRem(14)};
-  margin-top: -65px;
+  margin-top: -24px;
   margin-left: 100px;
   line-height: 1.57;
   word-break: normal;
@@ -224,8 +165,11 @@ const ReviewBox = styled.div`
 
 const ReviewText = styled.div`
   width: 240px;
+  margin-top: -29px;
+  margin-left: -11px;
   word-break: break-all;
   text-align: left;
+  position: absolute;
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
@@ -235,8 +179,8 @@ const ReviewText = styled.div`
 `;
 
 const ImgFlex = styled.div`
-  margin-top: 69px;
-  margin-left: -150px;
+  margin-top: 132px;
+  margin-left: -154px;
   width: ${(props) => props.theme.pixelToRem(77)};
   height: ${(props) => props.theme.pixelToRem(84)};
   display: flex;

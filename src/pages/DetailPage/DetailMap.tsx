@@ -1,6 +1,5 @@
-import axios from "axios";
-import { useEffect, useMemo } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useGetApi } from "../../APIs/getApi";
 

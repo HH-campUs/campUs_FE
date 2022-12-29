@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { Outlet, useMatch, useNavigate, useParams } from "react-router-dom";
@@ -18,7 +18,6 @@ import {
   InfoToast3,
   NavToast4,
 } from "../components/Toast/Toast";
-import { usePostsApi } from "../APIs/postsApi";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ICampingPicked } from "../interfaces/Posts";
 import { instance } from "../instance/instance";
@@ -35,9 +34,8 @@ function Detail() {
     window.alert("복사완료");
   };
 
-  const copyLinkRef = useRef();
   const navigate = useNavigate();
-  const [isSearch, setIsSearch] = useRecoilState(isModal);
+  const [isSearch] = useRecoilState(isModal);
 
   const [openSemi, setOpenSemi] = useState(false);
   const [isPlan, setIsPlan] = useState(false);
@@ -94,8 +92,8 @@ function Detail() {
 
   // useEffect로 detail아이템이 바꼈을때 checkitem으로 state값으로관리
   // setquerydata
-  const detailItem = useGetApi.useGetCampDetail(campId)?.data?.[0];
-  console.log("detail", detailItem?.sbrsCl);
+  const detailItem: any = useGetApi.useGetCampDetail(campId)?.data?.[0];
+
 
   const icons = useMemo<string[]>(() => {
     if (!detailItem) return [];

@@ -3,11 +3,8 @@ import { isModal } from "../store/searchAtom";
 import Search from "../components/withSearch/Search";
 import { Link, Outlet, useMatch, useNavigate } from "react-router-dom";
 import ProfileModal from "../components/ProfileModal";
-import { InfoToast } from "../components/Toast/Toast";
-import { isToast, isToast2 } from "../store/toastAtom";
 
 //Login
-
 import { useMyPageApi } from "../APIs/myPageApi";
 import { useRecoilState } from "recoil";
 import { getCamperToken } from "../instance/cookies";
@@ -17,9 +14,7 @@ import styled from "styled-components";
 
 function Mypage() {
   const checkPf = useMyPageApi.useGetMyPage().data?.data;
-  const [isSearch, setIsSearch] = useRecoilState(isModal);
-  const [toastState, setToastState] = useRecoilState(isToast);
-  const [toastState2, setToastState2] = useRecoilState(isToast2);
+  const [isSearch] = useRecoilState(isModal);
 
   const [isPopUp, setIsPopUp] = useState(false);
   const myReviewMatch = useMatch("/mypage/myreview");
@@ -34,14 +29,6 @@ function Mypage() {
       {isSearch == false ? null : <Search />}
 
       <Wrapper>
-        {toastState == true ? (
-          <InfoToast
-            text={"프로필이 변경되었어요."}
-            toastState={toastState}
-            setToastState={setToastState}
-          />
-        ) : null}
-
         {isLogin ? (
           <>
             <UserProfile>
@@ -96,16 +83,14 @@ function Mypage() {
                     onClick={(e) => {
                       e.preventDefault();
                       navigate("/login");
-                    }}
-                  >
+                    }}>
                     로그인
                   </LoginBtn>
                   <SignBtn
                     onClick={(e) => {
                       e.preventDefault();
                       navigate("/signup");
-                    }}
-                  >
+                    }}>
                     회원가입
                   </SignBtn>
                 </LoginBox>
@@ -125,8 +110,7 @@ function Mypage() {
               <div
                 style={{
                   marginTop: "20px",
-                }}
-              >
+                }}>
                 <Outlet />
               </div>
             </UserProfile>
@@ -218,7 +202,6 @@ const LoginBox = styled.div`
   margin-left: 20px;
   gap: ${(props) => props.theme.pixelToRem(11)};
 `;
-// ${(props) => props.theme.pixelToRem(162)};
 const LoginBtn = styled.button`
   width: 44%;
   height: ${(props) => props.theme.pixelToRem(48)};
@@ -229,7 +212,6 @@ const LoginBtn = styled.button`
   color: #024873;
   cursor: pointer;
 `;
-// ${(props) => props.theme.pixelToRem(162)};
 const SignBtn = styled.button`
   width: 44%;
   height: ${(props) => props.theme.pixelToRem(48)};
@@ -251,13 +233,11 @@ const Tabs = styled.div`
 `;
 
 const Tab = styled.span<{ isActive: boolean }>`
-  /* background-color: red; */
   font-size: ${(props) => props.theme.pixelToRem(20)};
   font-weight: 600;
   background-color: ${(props) => props.theme.bgColor};
   border-bottom: ${(props) => (props.isActive ? "2px solid black" : "none")};
   color: ${(props) => (props.isActive ? "#222" : "#ccc")};
-  /* height: 100vh; */
 `;
 
 const Line = styled.div`

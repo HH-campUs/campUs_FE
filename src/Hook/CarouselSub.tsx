@@ -1,8 +1,7 @@
-import { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import styled from "styled-components";
 
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import "swiper/css";
 import "swiper/css/pagination";
@@ -11,9 +10,6 @@ import "../style/swiper.css";
 
 export default function CarouselSub() {
   const navigate = useNavigate();
-  const [hide, setHide] = useState(true);
-
-  const { topicId } = useParams();
 
   const imageList = [
     {

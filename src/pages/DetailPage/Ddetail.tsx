@@ -14,7 +14,6 @@ function Ddetail() {
     window.alert("복사완료");
   };
   const [isPlan, setIsPlan] = useState(false);
-  const [openSemi, setOpenSemi] = useState(false);
 
   const openPlan = () => {
     setIsPlan(true);
@@ -27,7 +26,7 @@ function Ddetail() {
 
   return (
     <Wrapper>
-      {isPlan == false ? null : (
+      {isPlan === false ? null : (
         <PlanWrite isPlan={isPlan} setIsPlan={setIsPlan} campId={campId} />
       )}
       <InfoBox>
@@ -93,7 +92,6 @@ const Wrapper = styled.div`
   margin-top: 20px;
   margin-bottom: 80px;
 `;
-// width: ${(props) => props.theme.pixelToRem(375)};
 
 const InfoBox = styled.div`
   width: 100%;
@@ -142,7 +140,6 @@ const IntroDuce = styled.div`
   color: #666;
 `;
 
-// ${(props) => props.theme.pixelToRem(375)};
 const MidLane = styled.div`
   width: 95%;
   height: ${(props) => props.theme.pixelToRem(8)};
@@ -198,12 +195,6 @@ const NearInfo = styled.div`
   color: #666;
 `;
 
-const BasicInfo = styled.div`
-  margin-top: 5px;
-  font-size: ${(props) => props.theme.pixelToRem(14)};
-  font-weight: 300;
-`;
-
 const AdTitle = styled.div`
   margin-top: 30px;
   font-size: ${(props) => props.theme.pixelToRem(15)};
@@ -220,7 +211,6 @@ const Adven = styled.div`
 const MapWrapper = styled.div`
   margin: 0 auto;
   width: ${(props) => props.theme.pixelToRem(355)};
-  /* max-width: ${(props) => props.theme.pixelToRem(475)}; */
   height: ${(props) => props.theme.pixelToRem(162)};
   justify-content: center;
 `;

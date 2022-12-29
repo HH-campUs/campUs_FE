@@ -1,8 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 
 import { isToast, isToast2 } from "../store/toastAtom";
-import { usePostsApi } from "../APIs/postsApi";
 import { getCamperToken } from "../instance/cookies";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
@@ -14,8 +12,8 @@ import { IGetCampResult } from "../interfaces/get";
 import { instance } from "../instance/instance";
 
 export default function ResultBookmark({ camp }: { camp: IGetCampResult }) {
-  const [toastState, setToastState] = useRecoilState(isToast);
-  const [toastState2, setToastState2] = useRecoilState(isToast2);
+  const setToastState = useSetRecoilState(isToast);
+  const setToastState2 = useSetRecoilState(isToast2);
 
   const isLogin = getCamperToken();
 

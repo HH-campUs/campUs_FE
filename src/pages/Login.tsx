@@ -1,9 +1,8 @@
 import { useForm } from "react-hook-form";
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { useNavigate } from "react-router";
 import { ILoginForm } from "../interfaces/inLogin";
 
-/* import { KAKAO_AUTH_URL } from "../components/KaKaoAuth"; */
 import { LoginState, userInfo } from "../store/loginAtom";
 import { instance } from "../instance/instance";
 import { setAccessToken, setRefreshToken } from "../instance/cookies";
@@ -15,13 +14,12 @@ import { InfoToast, InfoToast2 } from "../components/Toast/Toast";
 import { useState } from "react";
 
 function Login() {
-  const serverUrl = process.env.REACT_APP_API;
   const navigate = useNavigate();
   const [toastState, setToastState] = useState(false);
   const [toastState2, setToastState2] = useState(false);
 
-  const [toKen, setToken] = useRecoilState(LoginState);
-  const [isLoggedIn, setIsLoggedIn] = useRecoilState(userInfo);
+  const setToken = useSetRecoilState(LoginState);
+  const setIsLoggedIn = useSetRecoilState(userInfo);
 
   const {
     register,

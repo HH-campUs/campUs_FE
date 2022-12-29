@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { useInView } from "react-intersection-observer";
 
 import Up from "../components/Up";
@@ -21,17 +21,14 @@ function Keyword() {
   const [toastState, setToastState] = useRecoilState(isToast);
   const [toastState2, setToastState2] = useRecoilState(isToast2);
   /* data */
-  const [isSearch, setIsSearch] = useRecoilState(isModal);
-  const [inputValue, setInputValue] = useRecoilState(textValue);
+  const [isSearch] = useRecoilState(isModal);
+  const [inputValue] = useRecoilState(textValue);
   const [sortState, setSortState] = useState("lookUp");
   const [bookmarking, setBookMarking] = useState(false);
 
   const Month = useRecoilValue(StrMonth);
   const Day = useRecoilValue(StrDay);
 
-  const doNm = useRecoilValue(showLo);
-  const pardo = useRecoilValue(selectLo);
-  const date = useRecoilValue(DateState);
   const keyword = useRecoilValue(textValue);
 
   const isLogin = getCamperToken();
@@ -46,10 +43,10 @@ function Keyword() {
 
   /* handler */
 
-  const picking = () => {
+  /*   const picking = () => {
     setBookMarking((prev) => !prev);
     console.log("asdfads");
-  };
+  }; */
 
   useEffect(() => {
     if (inView && hasNextPage) {
@@ -159,8 +156,9 @@ function Keyword() {
                 {page?.camps.searchCamp?.map((item: IGetCampResult) => (
                   <ResultBox key={item.campId}>
                     <ResultItem
-                      onClick={() => nav(`/detail/${item.campId}/detail`)}
-                    >
+
+                      onClick={() => nav(`/detail/${item.campId}/detail`)}>
+
                       <ResultImg src={item.ImageUrl} alt={item.ImageUrl} />
                       <InnerBg>
                         <span>
@@ -393,7 +391,7 @@ const ResultImg = styled.img`
   object-fit: cover;
 `;
 
-const Bookmark = styled.div`
+/* const Bookmark = styled.div`
   position: absolute;
   margin-left: 150px;
   margin-top: 10px;
@@ -402,7 +400,7 @@ const BookmarkBorderIcon = styled.div`
   position: absolute;
   margin-left: 150px;
   margin-top: 10px;
-`;
+`; */
 
 const InnerBg = styled.div`
   width: 80px;

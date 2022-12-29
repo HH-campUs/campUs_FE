@@ -325,7 +325,6 @@ const StTextArea = styled.textarea`
   padding: 14px 16px;
   border: 1px solid lightgray;
   resize: none;
-  /* letter-spacing: 0px; */
 
   ::placeholder {
     ${(props) => props.theme.fontTheme.Caption2};

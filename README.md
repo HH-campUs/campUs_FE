@@ -102,15 +102,19 @@
 
 <br/>
 
+### 기술적 의사결정
+
 <details>
   <summary>Typescript</summary>
   <div markdown="6">
   <div>
-  자바스크립트는 동적타입의 언어로 런타임 시 변수의 타입이 결정되기 때문에
-  코드를 실행 시키기전까지 에러를 알 수 없기 때문에 치명적이다.
-  그에 반해 TypeScript는 정적 타입 언어로 컴파일 단계에서 오류를 포착할 수 있는 장점이 있으며
-  명시적인 정적 타입 지정은 개발자의 의도를 명확하게 코드로 작성 할 수 있고
-  코드의 가독성을 높이고 예측할 수 있게 하며 디버깅이 쉽기 때문에 사용
+    
+    자바스크립트는 동적타입의 언어로 런타임 시 변수의 타입이 결정되기 때문에
+    코드를 실행 시키기전까지 에러를 알 수 없기 때문에 치명적이다.
+    그에 반해 TypeScript는 정적 타입 언어로 컴파일 단계에서 오류를 포착할 수 있는 장점이 있으며
+    명시적인 정적 타입 지정은 개발자의 의도를 명확하게 코드로 작성 할 수 있고
+    코드의 가독성을 높이고 예측할 수 있게 하며 디버깅이 쉽기 때문에 사용
+    
 </div>
   </div>
  </details>
@@ -119,8 +123,10 @@
   <summary>Recoil</summary>
   <div markdown="7">
   <div>
-  props drilling을 방지하기 위해 다른컴포넌트에 사용되는 전역상태 관리 라이브러리가 필요하다고 판단하였습니다. 
-  redux-thunk / redux-toolkit도 있었지만 서버상태 관리를 react-query가 하기 때문에 좀 더 가볍고 직관적인 recoil을 선택하였습니다.
+    
+    props drilling을 방지하기 위해 다른컴포넌트에 사용되는 전역상태 관리 라이브러리가 필요하다고 판단하였습니다. 
+    redux-thunk / redux-toolkit도 있었지만 서버상태 관리를 react-query가 하기 때문에 좀 더 가볍고 직관적인 recoil을 선택하였습니다.
+    
 </div>
   </div>
  </details>
@@ -129,8 +135,34 @@
   <summary>React Query</summary>
   <div markdown="8">
   <div>
-  캠핑장/날씨 api 데이터를 효율적으로 사용 하기위해서 리액트 쿼리를 사용하였습니다.
-  useState/useEffect 등 코드들의 중복도 줄여주고, 캐싱을 해주기때문에 더 나은 사용자환경을 만들수 있었습니다.
+    
+    캠핑장/날씨 api 데이터를 효율적으로 사용 하기위해서 리액트 쿼리를 사용하였습니다.
+    useState/useEffect 등 코드들의 중복도 줄여주고, 캐싱을 해주기때문에 더 나은 사용자환경을 만들수 있었습니다.
+    
+</div>
+  </div>
+ </details>
+
+ <details>
+  <summary>Styled Components</summary>
+  <div markdown="9">
+  <div>
+    
+    캠핑장/날씨 api 데이터를 효율적으로 사용 하기위해서 리액트 쿼리를 사용하였습니다.
+    useState/useEffect 등 코드들의 중복도 줄여주고, 캐싱을 해주기때문에 더 나은 사용자환경을 만들수 있었습니다.
+    
+</div>
+  </div>
+ </details>
+ 
+ <details>
+  <summary>Styled Components</summary>
+  <div markdown="9">
+  <div>
+    
+    캠핑장/날씨 api 데이터를 효율적으로 사용 하기위해서 리액트 쿼리를 사용하였습니다.
+    useState/useEffect 등 코드들의 중복도 줄여주고, 캐싱을 해주기때문에 더 나은 사용자환경을 만들수 있었습니다.
+    
 </div>
   </div>
  </details>

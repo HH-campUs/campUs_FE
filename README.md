@@ -101,15 +101,38 @@
 
 <br/>
 
-**Back End**
-<br/>
-<br/>
-<img src="https://img.shields.io/badge/TYPESCRIPT-3178C6?style=for-the-badge&logo=Typescript&logoColor=black"> <img src="https://img.shields.io/badge/NODE.JS-339933?style=for-the-badge&logo=NODE.JS&logoColor=black"> <img src="https://img.shields.io/badge/EXPRESS-000000?style=for-the-badge&logo=Express&logoColor=white"> <img src="https://img.shields.io/badge/MYSQL-4479A1?style=for-the-badge&logo=MYSQL&logoColor=white"> <img src="https://img.shields.io/badge/PM2-2B037A?style=for-the-badge&logo=PM2&logoColor=white"> <img src="https://img.shields.io/badge/NGINX-009639?style=for-the-badge&logo=NGINX&logoColor=white"> <img src="https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=JSON Web Tokens&logoColor=white">
-<img src="https://img.shields.io/badge/SEQUELIZE-52B0E7?style=for-the-badge&logo=SEQUELIZE&logoColor=white">
-<img src="https://img.shields.io/badge/MULTER-F46519?style=for-the-badge&logo=MULTER&logoColor=white">
-<img src="https://img.shields.io/badge/AXIOS-5A29E4?style=for-the-badge&logo=AXIOS&logoColor=white">
-
-<img src="https://img.shields.io/badge/Github-181717?style=for-the-badge&logo=GITHUB&logoColor=white"> <img src="https://img.shields.io/badge/VISUAL STUDIO CODE-007ACC?style=for-the-badge&logo=VISUAL STUDIO CODE&logoColor=white"> <img src="https://img.shields.io/badge/AMAZON EC2-ff9900?style=for-the-badge&logo=AMAZON EC2&logoColor=white"> <img src="https://img.shields.io/badge/AMAZON S3-569A31?style=for-the-badge&logo=AMAZON S3&logoColor=white">
+<details>
+  <summary>Typescript</summary>
+  <div markdown="6">
+  <div>
+  자바스크립트는 동적타입의 언어로 런타임 시 변수의 타입이 결정되기 때문에
+  코드를 실행 시키기전까지 에러를 알 수 없기 때문에 치명적이다.
+  그에 반해 TypeScript는 정적 타입 언어로 컴파일 단계에서 오류를 포착할 수 있는 장점이 있으며
+  명시적인 정적 타입 지정은 개발자의 의도를 명확하게 코드로 작성 할 수 있고
+  코드의 가독성을 높이고 예측할 수 있게 하며 디버깅이 쉽기 때문에 사용
+</div>
+  </div>
+ </details>
+ 
+ <details>
+  <summary>Recoil</summary>
+  <div markdown="7">
+  <div>
+  props drilling을 방지하기 위해 다른컴포넌트에 사용되는 전역상태 관리 라이브러리가 필요하다고 판단하였습니다. 
+  redux-thunk / redux-toolkit도 있었지만 서버상태 관리를 react-query가 하기 때문에 좀 더 가볍고 직관적인 recoil을 선택하였습니다.
+</div>
+  </div>
+ </details>
+ 
+ <details>
+  <summary>React Query</summary>
+  <div markdown="8">
+  <div>
+  캠핑장/날씨 api 데이터를 효율적으로 사용 하기위해서 리액트 쿼리를 사용하였습니다.
+  useState/useEffect 등 코드들의 중복도 줄여주고, 캐싱을 해주기때문에 더 나은 사용자환경을 만들수 있었습니다.
+</div>
+  </div>
+ </details>
 
 <br/>
 

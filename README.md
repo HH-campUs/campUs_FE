@@ -142,18 +142,6 @@
 </div>
   </div>
  </details>
-
- <details>
-  <summary>Styled Components</summary>
-  <div markdown="9">
-  <div>
-    
-    캠핑장/날씨 api 데이터를 효율적으로 사용 하기위해서 리액트 쿼리를 사용하였습니다.
-    useState/useEffect 등 코드들의 중복도 줄여주고, 캐싱을 해주기때문에 더 나은 사용자환경을 만들수 있었습니다.
-    
-</div>
-  </div>
- </details>
  
 
 <br/>

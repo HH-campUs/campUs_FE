@@ -227,6 +227,7 @@ export const useGetApi = {
   useGetSort: () => {
     return useQuery(["topicSort"], async () => {
       const { data } = await instance.get(`/camps/sort`);
+      console.log(data);
       return data;
     });
   },

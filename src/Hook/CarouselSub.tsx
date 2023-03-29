@@ -14,22 +14,22 @@ export default function CarouselSub() {
   const imageList = [
     {
       text: "일몰명소",
-      img: "/images/subject/image6.jpg",
+      img: "/images/subject/image6.webp",
       id: 1,
     },
     {
       text: "애견동반",
-      img: "/images/subject/image4.jpg",
+      img: "/images/subject/image4.webp",
       id: 2,
     },
     {
       text: "장비대여",
-      img: "/images/subject/image2.jpg",
+      img: "/images/subject/image2.webp",
       id: 3,
     },
     {
       text: "겨울낚시",
-      img: "/images/subject/image5.jpg",
+      img: "/images/subject/image5.webp",
       id: 4,
     },
   ];
@@ -76,81 +76,6 @@ export default function CarouselSub() {
           <CarouselImg src={"/images/subject/image5.jpg"} alt="img" />
         </BoxEx>
       </CarouselSwiper>
-      {/* <CarouselViewer
-        ref={ref}
-        className="w-full max-w-lg"
-        style={{
-          height,
-          overflow: hide ? "hidden" : "visible",
-        }}>
-        <CarouselSlider
-          className="flex"
-          style={{
-            transform: `translateX(${-currentIndex * width + transX}px)`,
-            transition: `transform ${transX ? 0 : 300}ms ease-in-out 0s`,
-          }}
-          {...registDragEvent({
-            onDragChange: (deltaX) => {
-              setTransX(inrange(deltaX, -width, width));
-            },
-            onDragEnd: (deltaX) => {
-              const maxIndex = imageList.length - 1;
-
-              if (deltaX < -100)
-                setCurrentIndex(inrange(currentIndex + 1, 0, maxIndex));
-              if (deltaX > 100)
-                setCurrentIndex(inrange(currentIndex - 1, 0, maxIndex));
-
-              setTransX(0);
-            },
-          })}>
-          <CaroImgBox>
-            <BoxEx>
-              <New>NEW</New>
-              <CaroText>일몰 명소</CaroText>
-              <ImgCover onClick={handleClick(1)} />
-              <CarouselImg
-                src={"/images/subject/image6.jpg"}
-                alt="img"
-                width={width}
-                draggable={false}
-              />
-            </BoxEx>
-
-            <BoxEx>
-              <CaroText>애견동반</CaroText>
-              <ImgCover onClick={handleClick(2)} />
-              <CarouselImg
-                draggable={false}
-                src={"/images/subject/image4.jpg"}
-                alt="img"
-                width={width}
-              />
-            </BoxEx>
-
-            <BoxEx>
-              <CaroText>장비대여</CaroText>
-              <ImgCover onClick={handleClick(3)} />
-              <CarouselImg
-                draggable={false}
-                src={"/images/subject/image2.jpg"}
-                alt="img"
-                width={width}
-              />
-            </BoxEx>
-            <BoxEx>
-              <CaroText>겨울 낚시</CaroText>
-              <ImgCover onClick={handleClick(4)} />
-              <CarouselImg
-                draggable={false}
-                src={"/images/subject/image5.jpg"}
-                alt="img"
-                width={width}
-              />
-            </BoxEx>
-          </CaroImgBox>
-        </CarouselSlider>
-      </CarouselViewer> */}
     </>
   );
 }
@@ -161,19 +86,6 @@ const CarouselSwiper = styled(Swiper)`
   overflow: hidden;
   user-select: none;
   margin-top: 18px; ;
-`;
-
-const CarouselSlider = styled(SwiperSlide)`
-  width: ${(props) => props.theme.pixelToRem(214)};
-  height: ${(props) => props.theme.pixelToRem(260)};
-  position: relative;
-  margin-top: ${(props) => props.theme.pixelToRem(18)};
-  margin-left: ${(props) => props.theme.pixelToRem(10)};
-  margin-right: ${(props) => props.theme.pixelToRem(0)} !important;
-`;
-
-const CaroImgBox = styled.div`
-  display: flex;
 `;
 
 const ImgCover = styled.div`

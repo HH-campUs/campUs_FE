@@ -45,8 +45,10 @@ function Result() {
 
   /* camp result 무한스크롤 */
 
-  const { campData, fetchNextPage, isSuccess, hasNextPage, refetch } =
-    useGetCamp(doNm, sortState);
+  const { campData, fetchNextPage, isSuccess, hasNextPage } = useGetCamp(
+    doNm,
+    sortState
+  );
 
   const { ref, inView } = useInView();
 

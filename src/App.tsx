@@ -1,19 +1,47 @@
 import Router from "./router/Router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 /* import { ReactQueryDevtools } from "react-query/devtools"; */
-import { TransitionGroup, CSSTransition } from "react-transition-group";
 import "./style/transition.css";
 
-import Splash from "./pages/Splash";
 import Error from "./pages/Error";
 
 import { ErrorBoundary } from "react-error-boundary";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { theme } from "./layout/theme";
 
-import { useRecoilValue } from "recoil";
-import { isDarkAtom } from "./store/atmos";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      staleTime: 3,
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
+
+function App() {
+  if (process.env.NODE_ENV === "production") {
+    console.log = function no_console() {};
+    console.warn = function no_console() {};
+  }
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider theme={theme}>
+        <GlobalStyle />
+        <ErrorBoundary FallbackComponent={Error}>
+          <Router />
+        </ErrorBoundary>
+        <ReactQueryDevtools initialIsOpen={true}></ReactQueryDevtools>
+      </ThemeProvider>
+    </QueryClientProvider>
+  );
+}
+
+export default App;
 
 const GlobalStyle = createGlobalStyle`
 @import url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff');
@@ -107,27 +135,3 @@ const GlobalStyle = createGlobalStyle`
     outline: none;
   }
 `;
-
-const queryClient = new QueryClient();
-
-function App() {
-  if (process.env.NODE_ENV === "production") {
-    console.log = function no_console() {};
-    console.warn = function no_console() {};
-  }
-  const isDark = useRecoilValue(isDarkAtom);
-
-  return (
-    <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={theme}>
-        <GlobalStyle />
-        <ErrorBoundary FallbackComponent={Error}>
-          <Router />
-        </ErrorBoundary>
-        <ReactQueryDevtools initialIsOpen={true}></ReactQueryDevtools>
-      </ThemeProvider>
-    </QueryClientProvider>
-  );
-}
-
-export default App;

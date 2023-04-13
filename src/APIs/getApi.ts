@@ -12,8 +12,6 @@ import {
   IGetNewReview,
 } from "../interfaces/get";
 
-const serverUrl = process.env.REACT_APP_API;
-
 // ** 캠핑장 카테고리 정보 조회 / get ** //
 
 /* 캠핑장 키워드 검색 */
@@ -54,6 +52,8 @@ export const useGetCamp = (doNm: string, sort: string) => {
       `/camps?doNm=${doNm}&numOfRows=15&pageNo=${pageParam}&sort=${sort}`
     );
 
+    console.log(data);
+
     return {
       /* 같은 객체 레벨에 있는 total 값도 사용하기 위해서 data만 */
       camps: data,
@@ -68,8 +68,6 @@ export const useGetCamp = (doNm: string, sort: string) => {
     hasNextPage,
     refetch,
   } = useInfiniteQuery(["getCamp", doNm], useData, {
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
     getNextPageParam: (lastPage) => {
       return lastPage.camps ? lastPage.currentPage + 1 : undefined;
     },
@@ -118,16 +116,15 @@ export const useGetWeather = (pardo: string, date: string) => {
     data: WeatherData,
     isLoading,
     isError,
-  } = useQuery(["getWeather", date, pardo], useData, {
+    isFetching,
+  } = useQuery(["getWeather"], useData, {
     onError: () => {
       console.error("에러가 났습니다.");
     },
-    retry: false,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
+    notifyOnChangeProps: ["data"],
   });
 
-  return { WeatherData, isLoading, isError };
+  return { WeatherData, isLoading, isError, isFetching };
 };
 
 /* 추천 날씨 정보 조회 */
@@ -146,9 +143,6 @@ export const useRecommendWeather = () => {
     onError: () => {
       console.error("에러가 났습니다.");
     },
-
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
   });
 
   return { RecommendData, isLoading, isError };
@@ -168,9 +162,6 @@ export const useGetTravelPlan2 = () => {
     onError: (err) => {
       console.error(err);
     },
-
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
   });
 
   return { myTrip, isLoading, isError };
@@ -188,17 +179,10 @@ export const useGetApi = {
   },
 
   useGetCampDetail: (campId: string | undefined) => {
-    return useQuery<campArray[]>(
-      ["campDetail", campId],
-      async () => {
-        const { data } = await instance.get(`/camps/detail/${campId}`);
-        return data;
-      },
-      {
-        refetchOnMount: false,
-        refetchOnWindowFocus: false,
-      }
-    );
+    return useQuery<campArray[]>(["campDetail", campId], async () => {
+      const { data } = await instance.get(`/camps/detail/${campId}`);
+      return data;
+    });
   },
 
   // ** 캠핑장 리뷰 조회 / get ** //

@@ -41,14 +41,14 @@ function Result() {
   /* weather api */
   const { WeatherData, isLoading, isError } = useGetWeather(pardo, date);
 
-  console.log(WeatherData, isLoading, isError);
-
   /* camp result 무한스크롤 */
 
   const { campData, fetchNextPage, isSuccess, hasNextPage } = useGetCamp(
     doNm,
     sortState
   );
+
+  console.log(campData);
 
   const { ref, inView } = useInView();
 

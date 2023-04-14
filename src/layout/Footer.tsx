@@ -44,9 +44,9 @@ export default function Footer() {
         }}
         icon={
           isHome ? (
-            <img src="/images/navbar/navhome.svg" />
+            <img src="/images/navbar/navhome.svg" alt="home" />
           ) : (
-            <img src="/images/navbar/emptyhome.svg" />
+            <img src="/images/navbar/emptyhome.svg" alt="emptyhome" />
           )
         }
       />
@@ -61,9 +61,9 @@ export default function Footer() {
         }}
         icon={
           isIcon ? (
-            <img src="/images/navbar/navsearch.svg" />
+            <img src="/images/navbar/navsearch.svg" alt="search" />
           ) : (
-            <img src="/images/navbar/emptysearch.svg" />
+            <img src="/images/navbar/emptysearch.svg" alt="emptysearch" />
           )
         }
       />
@@ -78,9 +78,9 @@ export default function Footer() {
         }}
         icon={
           isPick ? (
-            <img src="/images/navbar/navpick.svg" />
+            <img src="/images/navbar/navpick.svg" alt="pick" />
           ) : (
-            <img src="/images/navbar/emptybookmark.svg" />
+            <img src="/images/navbar/emptybookmark.svg" alt="bookmark" />
           )
         }
       />
@@ -96,9 +96,9 @@ export default function Footer() {
         label="마이캠핑"
         icon={
           isMypf ? (
-            <img src="/images/navbar/mypage.svg" />
+            <img src="/images/navbar/mypage.svg" alt="mypage" />
           ) : (
-            <img src="/images/navbar/emptypf.svg" />
+            <img src="/images/navbar/emptypf.svg" alt="pf" />
           )
         }
       />

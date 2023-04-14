@@ -110,6 +110,7 @@ export const useGetWeather = (pardo: string, date: string) => {
     const { data } = await instance.get<IGetWeather>(
       `/weathers?pardo=${pardo}&dt=${date}`
     );
+    console.log(data);
     return data;
   };
   const {

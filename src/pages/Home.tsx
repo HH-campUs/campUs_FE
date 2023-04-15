@@ -33,14 +33,14 @@ function Home() {
     <Wrapper>
       {/* 찜하기 알림 토스트 */}
 
-      {toastState == true ? (
+      {toastState === true ? (
         <NoIdPickToast
           text={"로그인 후 찜하기가 가능해요."}
           toastState={toastState}
           setToastState={setToastState}
         />
       ) : null}
-      {isSearch == false ? null : <Search />}
+      {isSearch === false ? null : <Search />}
 
       <HeadText>
         {backgroundPhrase} <br></br> 캠프어스에서

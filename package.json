@@ -44,7 +44,6 @@
     "react-transition-group": "^4.4.5",
     "recoil": "^0.7.6",
     "recoil-persist": "^4.2.0",
-    "sass": "^1.56.1",
     "styled-components": "^5.3.6",
     "swiper": "^8.4.5",
     "typescript": "^4.8.4",

@@ -28,7 +28,7 @@ export default function MyReviewUpdate({
       setImagePreview(review?.reviewImg.split(","));
       setImageFiles(review?.reviewImg.split(","));
     }
-  }, []);
+  }, [review?.reviewImg]);
 
   //form
   const {
@@ -167,54 +167,6 @@ export default function MyReviewUpdate({
   );
 }
 
-const ReviewUpdate = styled.div`
-  margin-right: 40px;
-  position: relative;
-  img {
-    cursor: pointer;
-  }
-`;
-
-const BtnBox = styled.div`
-  width: ${(props) => props.theme.pixelToRem(85)};
-  height: ${(props) => props.theme.pixelToRem(94)};
-  flex-grow: 0;
-  right: 55%;
-  background-color: rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(6px);
-  border-radius: 10px;
-  box-shadow: 4px 4px 15px 0 rgba(0, 0, 0, 0.18);
-  background-color: #fff;
-  display: flex;
-  position: absolute;
-  flex-direction: column;
-  cursor: pointer;
-
-  div {
-    cursor: pointer;
-    width: ${(props) => props.theme.pixelToRem(85)};
-    height: ${(props) => props.theme.pixelToRem(47)};
-    margin-left: 1px;
-    background-color: transparent;
-    text-align: right;
-    ${(props) => props.theme.fontTheme.Caption1};
-    line-height: 1.29;
-    letter-spacing: normal;
-    color: ${(props) => props.theme.colorTheme.text2};
-
-    &:first-child {
-      margin-top: -2px;
-      padding-top: 18px;
-      padding-right: 15px;
-    }
-    &:last-child {
-      margin-top: 3px;
-      padding-top: 13px;
-      padding-right: 15px;
-    }
-  }
-`;
-
 const slideIn = keyframes`
   from {bottom: -300px; opacity: 0} 
     to {bottom: 0; opacity: 1}
@@ -291,12 +243,6 @@ const ContentBox = styled.div`
   height: ${(props) => props.theme.pixelToRem(280)};
   border-radius: 10px;
 `;
-
-const ReviewText = styled.div``;
-
-const ReviewImg = styled.div``;
-
-//form
 
 const ReviewForm = styled.form`
   width: 90%;

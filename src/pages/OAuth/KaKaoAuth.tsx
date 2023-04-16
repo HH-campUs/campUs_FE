@@ -17,7 +17,7 @@ function KakaoLogin() {
           },
         });
         if (kakaoResult.status !== 200) console.log("연결실패");
-        if (kakaoResult.status == 200) {
+        if (kakaoResult.status === 200) {
         }
         const token = kakaoResult.data.access_token;
         const response = await axios.post(
@@ -40,7 +40,7 @@ function KakaoLogin() {
         const backfresh = response.data.refreshtoken;
         setAccessToken(backAccess);
         setRefreshToken(backfresh);
-        if (status == 200) {
+        if (status === 200) {
           console.log(accessToken, refreshToken);
           return window.location.replace(`/`);
         } else {
@@ -50,7 +50,7 @@ function KakaoLogin() {
         console.error(e);
       }
     })();
-  }, [code]);
+  }, [code, KAKAO_AUTH_URL]);
 
   return <div></div>;
 }

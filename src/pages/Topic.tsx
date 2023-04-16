@@ -33,13 +33,13 @@ function Topic() {
   };
   const navigate = useNavigate();
   const [isSearch] = useRecoilState(isModal);
-  const [sortState, setSortState] = useState("lookUp");
+  const [sortState] = useState("lookUp");
   const { topicId } = useParams();
 
   const isLogin = getCamperToken();
 
   //infiniteScroll
-  const { campTopic, fetchNextPage, isSuccess, hasNextPage, refetch } =
+  const { campTopic, fetchNextPage, isSuccess, hasNextPage } =
     useGetTopicInfinite(topicId!, sortState);
 
   console.log("campTopic", campTopic);
@@ -50,13 +50,13 @@ function Topic() {
     if (isView && hasNextPage) {
       fetchNextPage();
     }
-  }, [isView]);
+  }, [isView, fetchNextPage, hasNextPage]);
 
   return (
     <>
-      {isSearch == false ? null : <Search />}
+      {isSearch === false ? null : <Search />}
 
-      {toastState == true ? (
+      {toastState === true ? (
         !isLogin ? (
           <NoIdPickToast
             text={"로그인 후 찜하기가 가능해요."}
@@ -73,7 +73,7 @@ function Topic() {
         )
       ) : null}
 
-      {toastState2 == true ? (
+      {toastState2 === true ? (
         <InfoToast2
           text={"찜목록에 제거되었어요."}
           toastState2={toastState2}
@@ -89,11 +89,11 @@ function Topic() {
         </BackBtn>
 
         <div>
-          {topicId == "1" ? (
+          {topicId === "1" ? (
             <Sunset />
-          ) : topicId == "2" ? (
+          ) : topicId === "2" ? (
             <Animal />
-          ) : topicId == "3" ? (
+          ) : topicId === "3" ? (
             <Equipment />
           ) : (
             <Fishing />

@@ -116,7 +116,7 @@ export default function Review() {
         Array.from(prev).filter((_: File, index: number) => index !== idx)
       );
     },
-    []
+    [imagePreview]
   );
 
   useEffect(() => {
@@ -130,10 +130,10 @@ export default function Review() {
 
   return (
     <Wrapper>
-      {openSemi == true ? (
+      {openSemi === true ? (
         <SemiSearch openSemi={openSemi} setOpenSemi={setOpenSemi} />
       ) : null}
-      {toastState == true ? (
+      {toastState === true ? (
         <InfoToast
           text={"리뷰 쓰기 완료"}
           toastState={toastState}
@@ -141,7 +141,7 @@ export default function Review() {
         />
       ) : null}
 
-      {toastState2 == true ? (
+      {toastState2 === true ? (
         <InfoToast2
           text={"이미지는 3장까지 첨부가능합니다."}
           toastState2={toastState2}

@@ -26,7 +26,7 @@ function Mypage() {
 
   return (
     <>
-      {isSearch == false ? null : <Search />}
+      {isSearch === false ? null : <Search />}
 
       <Wrapper>
         {isLogin ? (

@@ -83,7 +83,7 @@ const fadeOut = keyframes`
 `;
 
 const CustomDatepicker = styled.div<{ openDate: boolean }>`
-  animation-name: ${(props) => (props.openDate == false ? fadeOut : fadeIn)};
+  animation-name: ${(props) => (props.openDate === false ? fadeOut : fadeIn)};
   animation-duration: 1.2s;
 `;
 

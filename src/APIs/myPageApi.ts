@@ -1,12 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
 import { getCamperToken } from "../instance/cookies";
 import { instance } from "../instance/instance";
 import { IGetTravelPlan } from "../interfaces/get";
 import { IGetMyReview } from "../interfaces/MyPage";
-import { IGetMyInfo } from "../interfaces/MyPage";
-
-const serverUrl = process.env.REACT_APP_API;
 
 const isLogin = getCamperToken();
 

@@ -1,6 +1,6 @@
 {
   "name": "campus",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.10.5",
@@ -46,11 +46,11 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "webpack serve",
+    "start": "react-scripts start",
     "build": "webpack",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "dev": "webpack serve"
+    "dev": "webpack serve --env DEV=true"
   },
   "eslintConfig": {
     "extends": [
@@ -93,6 +93,7 @@
     "typescript": "^5.0.4",
     "webpack": "^5.79.0",
     "webpack-cli": "^5.0.1",
-    "webpack-dev-server": "^4.13.3"
+    "webpack-dev-server": "^4.13.3",
+    "webpack-merge": "^5.8.0"
   }
 }

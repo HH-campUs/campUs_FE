@@ -44,9 +44,19 @@ export default function Footer() {
         }}
         icon={
           isHome ? (
-            <img src="/images/navbar/navhome.svg" alt="home" />
+            <img
+              src="/images/navbar/navhome.svg"
+              alt="home"
+              width="30"
+              height="30"
+            />
           ) : (
-            <img src="/images/navbar/emptyhome.svg" alt="emptyhome" />
+            <img
+              src="/images/navbar/emptyhome.svg"
+              alt="emptyhome"
+              width="30"
+              height="30"
+            />
           )
         }
       />
@@ -61,9 +71,19 @@ export default function Footer() {
         }}
         icon={
           isIcon ? (
-            <img src="/images/navbar/navsearch.svg" alt="search" />
+            <img
+              src="/images/navbar/navsearch.svg"
+              alt="search"
+              width="30"
+              height="30"
+            />
           ) : (
-            <img src="/images/navbar/emptysearch.svg" alt="emptysearch" />
+            <img
+              src="/images/navbar/emptysearch.svg"
+              alt="emptysearch"
+              width="30"
+              height="30"
+            />
           )
         }
       />
@@ -78,9 +98,19 @@ export default function Footer() {
         }}
         icon={
           isPick ? (
-            <img src="/images/navbar/navpick.svg" alt="pick" />
+            <img
+              src="/images/navbar/navpick.svg"
+              alt="pick"
+              width="30"
+              height="30"
+            />
           ) : (
-            <img src="/images/navbar/emptybookmark.svg" alt="bookmark" />
+            <img
+              src="/images/navbar/emptybookmark.svg"
+              alt="bookmark"
+              width="30"
+              height="30"
+            />
           )
         }
       />
@@ -96,9 +126,19 @@ export default function Footer() {
         label="마이캠핑"
         icon={
           isMypf ? (
-            <img src="/images/navbar/mypage.svg" alt="mypage" />
+            <img
+              src="/images/navbar/mypage.svg"
+              alt="mypage"
+              width="30"
+              height="30"
+            />
           ) : (
-            <img src="/images/navbar/emptypf.svg" alt="pf" />
+            <img
+              src="/images/navbar/emptypf.svg"
+              alt="pf"
+              width="30"
+              height="30"
+            />
           )
         }
       />

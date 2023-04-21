@@ -41,12 +41,8 @@ export default function Nearby() {
     }
   }, [campX, campY]);
 
-  const {
-    data: nearPost,
-    refetch,
-    isLoading,
-  }: any = useGetApi.useGetDistance(+campY!, +campX!) || [];
-  // console.log(nearPost[0].X);
+  const { data: nearPost, refetch }: any =
+    useGetApi.useGetDistance(+campY!, +campX!) || [];
 
   //로딩중 화면 처리 구상.
   return (
@@ -108,13 +104,6 @@ const PlanBox = styled.div`
   position: relative;
   flex-direction: column;
   border: 1px solid #eee;
-`;
-
-const Line = styled.div`
-  width: ${(props) => props.theme.pixelToRem(300)};
-  height: 1px;
-  margin-left: 38px;
-  border-bottom: 1px solid #eee;
 `;
 
 const PlanWrapper = styled.div`

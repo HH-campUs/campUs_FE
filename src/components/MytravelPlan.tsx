@@ -49,7 +49,12 @@ export default function MytravelPlan() {
               <Location>
                 <LocationOnIcon />
                 <span> {trip?.address} </span>
-                <img src="/images/Calendar.svg" alt="Calendar" />
+                <img
+                  src="/images/Calendar.svg"
+                  alt="Calendar"
+                  width="50"
+                  height="50"
+                />
                 <p>
                   {trip?.date.slice(0, 4)}.{trip?.date.slice(5, 7)}.
                   {trip?.date.slice(8, 10)}
@@ -64,6 +69,8 @@ export default function MytravelPlan() {
                 <img
                   src="/images/travelplan/calendarplan.svg"
                   alt="carlendar"
+                  width="50"
+                  height="50"
                 />
               </Carlendar>
               <CloseText>
@@ -80,7 +87,12 @@ export default function MytravelPlan() {
         <CloseBox>
           <CloBox>
             <Carlendar>
-              <img src="/images/travelplan/calendarplan.svg" alt="carlendar" />
+              <img
+                src="/images/travelplan/calendarplan.svg"
+                alt="carlendar"
+                width="50"
+                height="50"
+              />
             </Carlendar>
             <CloseText>
               <p

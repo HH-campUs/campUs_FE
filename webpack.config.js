@@ -4,6 +4,11 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+const CopyPlugin = require("copy-webpack-plugin");
+
+const BundleAnalyzerPlugin =
+  require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
 const dotenv = require("dotenv");
 
@@ -39,9 +44,9 @@ module.exports = {
   entry: "./src/index.tsx",
   output: {
     filename: "[name].bundle.js",
-    chunkFilename: "[name].chunk.bundle.js",
+    /* chunkFilename: "[name].[chunkhash].js", */
     path: path.resolve(__dirname, "dist"),
-    // 새로운 결과물로 디렉토리 엎
+    // 새로운 결과물로 디렉토리 엎기
     clean: true,
   },
 
@@ -66,12 +71,29 @@ module.exports = {
 
   // 번들링 후 결과물의 처리 방식 등 다양한 플러그인들을 설
   plugins: [
+    new BundleAnalyzerPlugin(),
+    /* new webpack.optimize.UglifyJsPlugin({
+      sourceMap: true,
+      compress: {
+        warning: false,
+      },
+    }), */
     new MiniCssExtractPlugin(),
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: "./public/index.html",
     }),
     new webpack.DefinePlugin(env),
+    new CopyPlugin({
+      patterns: [
+        {
+          from: "public",
+          globOptions: {
+            ignore: ["**/index.html"],
+          },
+        },
+      ],
+    }),
   ],
 
   devServer: {
@@ -86,8 +108,14 @@ module.exports = {
   optimization: {
     minimize: true,
     minimizer: [
+      new CssMinimizerPlugin(),
       new TerserPlugin({
-        test: /\.(ts|js|tsx)$/,
+        extractComments: false,
+        terserOptions: {
+          format: {
+            comments: false,
+          },
+        },
       }),
     ],
     runtimeChunk: "single",
@@ -95,10 +123,10 @@ module.exports = {
     splitChunks: {
       chunks: "all",
       cacheGroups: {
-        defaultVendors: {
-          test: /[\\/]node_modules[\\/]/,
-          priority: -10,
-          reuseExistingChunk: true,
+        react: {
+          test: /[\\/]node_modules[\\/](react|react-dom|react-router-dom)[\\/]/,
+          name: "react-vendor",
+          chunks: "all",
         },
         default: {
           minChunks: 2,

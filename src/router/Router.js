@@ -3,35 +3,20 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 
 import Home from "../pages/Home";
-/* import Login from "../pages/Login"; */
-import SignUp from "../pages/SignUp";
-import Welcome from "../pages/Welcome";
 import Splash from "../pages/Splash";
 import KaKaoAuth from "../pages/OAuth/KaKaoAuth";
 import GoogleAuth from "../pages/OAuth/GoogleAuth";
 
-/* import Topic from "../pages/Topic"; */
-import Detail from "../pages/Detail";
 import Ddetail from "../pages/DetailPage/Ddetail";
 import Dreview from "../pages/DetailPage/Dreview";
-/* import Result from "../pages/Result";
-import Keyword from "../pages/Keyword";
-import Mypage from "../pages/Mypage"; */
 
-import NotFound from "../pages/NotFound";
 import Layout from "../layout/Layout";
-import MyReview from "../pages/Mypage/MyReview";
-import MyPick from "../pages/Mypage/MyPick";
-import MyPlan from "../pages/Mypage/MyPlan";
-import Review from "../pages/Review";
 
 /* Switch가 react-router-dom ver 6 넘어가며 Switch를 지원 안하게 됨 -> Routes */
 
 function Router() {
   /* Lazy를 활용하여 페이지 분리하기 */
-  const Home = lazy(() =>
-    /* webpackChunkName: "Home" */ import("../pages/Home")
-  );
+
   const Result = lazy(() =>
     /* webpackChunkName: "Result" */ import("../pages/Result")
   );
@@ -68,6 +53,9 @@ function Router() {
   );
   const Detail = lazy(() =>
     /* webpackChunkName: "Detail" */ import("../pages/Detail")
+  );
+  const Review = lazy(() =>
+    /* webpackChunkName: "Review" */ import("../pages/Review")
   );
 
   return (

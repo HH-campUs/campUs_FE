@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, lazy } from "react";
 import styled from "styled-components";
 import Lottie from "react-lottie";
 import lottie from "../style/lottie.json";
@@ -6,7 +6,6 @@ import lottie from "../style/lottie.json";
 function Splash() {
   const [isShow, setIsShow] = useState<boolean>(true);
 
-  /* lottie animation */
   const defaultOptions = {
     loop: true,
     autoplay: true,

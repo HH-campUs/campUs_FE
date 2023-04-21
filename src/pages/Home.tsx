@@ -46,7 +46,7 @@ function Home() {
         {backgroundPhrase} <br></br> 캠프어스에서
       </HeadText>
       <SearchBar isSearch={isSearch} onClick={openModal}>
-        <img src="/images/search.svg" alt="Search" />
+        <img src="/images/search.svg" alt="Search" width="20" height="20" />
         <span>캠핑 어디로 가시나요?</span>
       </SearchBar>
 

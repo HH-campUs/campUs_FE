@@ -1,28 +1,25 @@
 import { useState } from "react";
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { selectLo, showLo } from "../store/locationAtom";
 import { DateState } from "../store/dateAtom";
 import { Link } from "react-router-dom";
 import { useRecommendWeather } from "../APIs/getApi";
 import styled, { keyframes } from "styled-components";
 
-import { useNavigate } from "react-router-dom";
-
 //css
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 
 export default function Subject() {
-  const navigate = useNavigate();
   const [isWeather, setIsWeather] = useState(false);
 
-  const { RecommendData, isLoading, isError } = useRecommendWeather();
+  const { RecommendData } = useRecommendWeather();
   const recommendData = RecommendData?.recommend[0];
 
   /* 캠핑 조회 address */
-  const [locationValue, setLocationValue] = useRecoilState(showLo);
+  const setLocationValue = useSetRecoilState(showLo);
   /* 날씨 조회 pardo, dt */
-  const [sendLocation, setSendLocation] = useRecoilState(selectLo);
-  const [sendDate, setSendDate] = useRecoilState(DateState);
+  const setSendLocation = useSetRecoilState(selectLo);
+  const setSendDate = useSetRecoilState(DateState);
 
   /* 토요일의 추천 장소의 캠핑장 결과창으로 전송했을 때 필요한 requests 
   렌더링 시 깔아주면 검색창에 default로 깔리는 걸 방지하여 Link 를 눌렀을
@@ -44,7 +41,12 @@ export default function Subject() {
     <>
       <WeatherModal>
         <WeatherModal>
-          <img src="/images/mainSunRain.svg" alt="weather" />
+          <img
+            src="/images/mainSunRain.svg"
+            alt="weather"
+            width="40"
+            height="40"
+          />
           <ContentText onClick={isModal}>
             이번주 날씨 가장 좋은 곳 어디지?{" "}
           </ContentText>
@@ -166,7 +168,7 @@ export default function Subject() {
                           <p style={{ color: "#eb4343" }}>
                             <b>·</b> 야외활동을 추천하지 않아요
                           </p>
-                        ) : recommendData.uvi < 5 && recommendData.uvi == 3 ? (
+                        ) : recommendData.uvi < 5 && recommendData.uvi === 3 ? (
                           <p style={{ color: "#fc9701" }}>
                             <b>·</b> 썬크림은 꼭 발라주세요
                           </p>

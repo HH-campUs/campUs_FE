@@ -38,7 +38,7 @@ const env = {
 };
 
 module.exports = {
-  mode: "development", // 배포할 때에는 "production" master 브랜치에만 적용하면 될 듯
+  mode: "production", // 배포할 때에는 "production" master 브랜치에만 적용하면 될 듯
   devtool: "inline-source-map",
   target: ["web", "es5"],
   entry: "./src/index.tsx",
@@ -78,7 +78,9 @@ module.exports = {
         warning: false,
       },
     }), */
-    new MiniCssExtractPlugin(),
+    new MiniCssExtractPlugin({
+      filename: "[name].[contenthash].css",
+    }),
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: "./public/index.html",
@@ -127,6 +129,7 @@ module.exports = {
           test: /[\\/]node_modules[\\/](react|react-dom|react-router-dom)[\\/]/,
           name: "react-vendor",
           chunks: "all",
+          reuseExistingChunk: true,
         },
         default: {
           minChunks: 2,

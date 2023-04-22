@@ -1,8 +1,7 @@
-import { useRecoilValue } from "recoil";
-import { LoginState } from "../store/loginAtom";
+import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { getCamperToken } from "../instance/cookies";
-import { useGetApi, useGetTravelPlan2 } from "../APIs/getApi";
+import { useGetTravelPlan2 } from "../APIs/getApi";
 
 //css
 import styled from "styled-components";
@@ -199,17 +198,6 @@ const CloseText = styled.div`
   span {
     font-size: ${(props) => props.theme.pixelToRem(16)};
   }
-`;
-
-const HiddenBox = styled.div`
-  width: ${(props) => props.theme.pixelToRem(335)};
-  height: ${(props) => props.theme.pixelToRem(102)};
-  border-radius: ${(props) => props.theme.pixelToRem(10)};
-
-  background-color: rgba(100, 100, 100, 0.1);
-  margin: 15px auto;
-  font-size: ${(props) => props.theme.pixelToRem(13)};
-  display: flex;
 `;
 
 export const ImgBox = styled.img`

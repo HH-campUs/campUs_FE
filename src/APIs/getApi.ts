@@ -197,7 +197,7 @@ export const useGetApi = {
 
   // ** 캠핑장 거리 조회 ** //
   useGetDistance: (campX: number, campY: number) => {
-    return useQuery<IGetDistance>(["distanceinfo"], async () => {
+    return useQuery<IGetDistance[]>(["distanceinfo"], async () => {
       if (campX && campY) {
         const { data } = await instance.get(
           `users/nearCamp?campX=${campX}&campY=${campY}`

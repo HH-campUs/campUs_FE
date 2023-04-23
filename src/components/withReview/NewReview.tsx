@@ -25,7 +25,8 @@ export default function NewReview() {
         pagination={{
           clickable: true,
         }}
-        className="mySwiper">
+        className="mySwiper"
+      >
         {NewReview.map((item, reviewId) => (
           <MainBox key={reviewId}>
             <PfBox>
@@ -37,7 +38,8 @@ export default function NewReview() {
                   <PfNick>{item?.nickname}</PfNick>
                   <PfCamp
                     title={item?.campName}
-                    onClick={toDetail(item.campId)}>
+                    onClick={toDetail(item.campId)}
+                  >
                     {item?.campName}
                     <img src="/images/back.svg" alt="back" />
                   </PfCamp>
@@ -50,7 +52,8 @@ export default function NewReview() {
             <ReviewBox>
               <ReviewText
                 title={item?.reviewComment}
-                onClick={toDetail(item.campId)}>
+                onClick={toDetail(item.campId)}
+              >
                 {item?.reviewComment}
               </ReviewText>
             </ReviewBox>
@@ -83,7 +86,6 @@ const CarouselSwiper = styled(Swiper)`
 const MainBox = styled(SwiperSlide)`
   margin-top: 18px;
   margin-left: 20px;
-  /* transform: translateX(20px); */
   width: ${(props) => props.theme.pixelToRem(268)} !important;
   height: ${(props) => props.theme.pixelToRem(256)};
   border-radius: ${(props) => props.theme.pixelToRem(10)};

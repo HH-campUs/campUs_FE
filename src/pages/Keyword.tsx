@@ -87,7 +87,8 @@ function Keyword() {
           <div
             onClick={() => {
               nav("/");
-            }}>
+            }}
+          >
             <div style={{ position: "relative" }}>
               <img src="/images/back.svg" alt="back" />
               <span style={{ width: "60px" }}>검색조건</span>
@@ -99,8 +100,6 @@ function Keyword() {
             </span>
           </div>
         </ReSearch>
-
-        {/* Weather modal */}
 
         <NoWeather>
           <div className="top">
@@ -130,19 +129,22 @@ function Keyword() {
               {sortState == "lookUp" ? (
                 <span
                   className="popular"
-                  onClick={() => setSortState("pickCount")}>
+                  onClick={() => setSortState("pickCount")}
+                >
                   조회순
                 </span>
               ) : sortState == "pickCount" ? (
                 <span
                   className="popular"
-                  onClick={() => setSortState("reviewCount")}>
+                  onClick={() => setSortState("reviewCount")}
+                >
                   인기순
                 </span>
               ) : (
                 <span
                   className="popular"
-                  onClick={() => setSortState("lookUp")}>
+                  onClick={() => setSortState("lookUp")}
+                >
                   리뷰순
                 </span>
               )}
@@ -154,7 +156,9 @@ function Keyword() {
                 {page?.camps.searchCamp?.map((item: IGetCampResult) => (
                   <ResultBox key={item.campId}>
                     <ResultItem
+
                       onClick={() => nav(`/detail/${item.campId}/detail`)}>
+
                       <ResultImg src={item.ImageUrl} alt={item.ImageUrl} />
                       <InnerBg>
                         <span>

@@ -94,6 +94,7 @@ function Detail() {
   // setquerydata
   const detailItem: any = useGetApi.useGetCampDetail(campId)?.data?.[0];
 
+
   const icons = useMemo<string[]>(() => {
     if (!detailItem) return [];
     return detailItem.sbrsCl?.split(",");
@@ -190,7 +191,8 @@ function Detail() {
                       e.stopPropagation();
                       setToastState3(true);
                       Mypick(detailItem.campId);
-                    }}>
+                    }}
+                  >
                     <img
                       src="/images/icons/picked.svg"
                       alt="Picked"
@@ -206,8 +208,9 @@ function Detail() {
                     onClick={(e) => {
                       e.stopPropagation();
                       setToastState4(true);
-                      Unpick(detailItem.campId);
-                    }}>
+                      Unpick(detailItem!.campId);
+                    }}
+                  >
                     <img
                       src="/images/icons/unPicked.svg"
                       alt="unPicked"
@@ -258,7 +261,8 @@ function Detail() {
                 fontSize: "1rem",
                 marginTop: "-4px",
                 marginLeft: "4px",
-              }}></span>
+              }}
+            ></span>
             <Plan> 일정을 저장해 보세요! </Plan>
           </div>
           {isLogin ? (
@@ -294,12 +298,14 @@ function Detail() {
         <Tabs>
           <Tab
             isLine={Boolean(detailMatch)}
-            onClick={() => navigate(`/detail/${campId}/detail`)}>
+            onClick={() => navigate(`/detail/${campId}/detail`)}
+          >
             상세정보
           </Tab>
           <Tab
             isLine={Boolean(reviewMatch)}
-            onClick={() => navigate(`/detail/${campId}/review`)}>
+            onClick={() => navigate(`/detail/${campId}/review`)}
+          >
             리뷰
           </Tab>
         </Tabs>
@@ -622,7 +628,7 @@ const Tabs = styled.div`
   display: flex;
   justify-content: center;
   align-content: center;
-  margin: 5px;
+  margin-top: 5px;
 `;
 
 const Tab = styled.span<{ isLine: boolean }>`

@@ -11,7 +11,7 @@ export default function Equipment() {
   return (
     <Wrapper>
       <BackImg>
-        <TextBox>
+        <TextBox> 
           <TextTitle>장비대여</TextTitle>
           <MidTextBox>
             <MidText>

@@ -42,7 +42,6 @@ export default function ResultBookmark({ camp }: { camp: IGetCampResult }) {
     setToastState2(true);
   };
 
-  //onclick한번 / icon 3항.
   return (
     <>
       {camp.status ? (
@@ -51,7 +50,8 @@ export default function ResultBookmark({ camp }: { camp: IGetCampResult }) {
             onClick={(e) => {
               e.stopPropagation();
               unpick(camp.campId);
-            }}>
+            }}
+          >
             <img
               src="/images/picked2.svg"
               alt="Bookmarked"
@@ -65,7 +65,8 @@ export default function ResultBookmark({ camp }: { camp: IGetCampResult }) {
             onClick={(e) => {
               e.stopPropagation();
               pick(camp.campId);
-            }}>
+            }}
+          >
             <img
               src="/images/pick1.svg"
               alt="Bookmark"

@@ -1,6 +1,7 @@
 import { Suspense, lazy } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
+
 import Home from "../pages/Home";
 import Splash from "../pages/Splash";
 import KaKaoAuth from "../pages/OAuth/KaKaoAuth";

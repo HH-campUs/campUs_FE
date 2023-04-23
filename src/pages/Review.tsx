@@ -26,7 +26,7 @@ export default function Review() {
   const { campId } = useParams();
 
   //useQuery사용.
-  const detailItem: any = useGetApi.useGetCampDetail(campId).data?.[0];
+  const detailItem = useGetApi.useGetCampDetail(campId).data?.[0];
 
   //버튼클릭 색상 변경
   const [bestStatus, setBestStatus] = useState(false);
@@ -179,7 +179,8 @@ export default function Review() {
         방문일선택
         <p
           style={{ textDecoration: "underline", marginLeft: "160px" }}
-          onClick={() => setOpenSemi(true)}>
+          onClick={() => setOpenSemi(true)}
+        >
           2022.{Month}.{Day}
         </p>
         <RightArrow

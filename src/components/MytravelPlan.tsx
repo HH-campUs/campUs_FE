@@ -1,8 +1,7 @@
-import { useRecoilValue } from "recoil";
-import { LoginState } from "../store/loginAtom";
+import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { getCamperToken } from "../instance/cookies";
-import { useGetApi, useGetTravelPlan2 } from "../APIs/getApi";
+import { useGetTravelPlan2 } from "../APIs/getApi";
 
 //css
 import styled from "styled-components";
@@ -49,7 +48,12 @@ export default function MytravelPlan() {
               <Location>
                 <LocationOnIcon />
                 <span> {trip?.address} </span>
-                <img src="/images/Calendar.svg" alt="Calendar" />
+                <img
+                  src="/images/Calendar.svg"
+                  alt="Calendar"
+                  width="50"
+                  height="50"
+                />
                 <p>
                   {trip?.date.slice(0, 4)}.{trip?.date.slice(5, 7)}.
                   {trip?.date.slice(8, 10)}
@@ -64,6 +68,8 @@ export default function MytravelPlan() {
                 <img
                   src="/images/travelplan/calendarplan.svg"
                   alt="carlendar"
+                  width="50"
+                  height="50"
                 />
               </Carlendar>
               <CloseText>
@@ -80,7 +86,12 @@ export default function MytravelPlan() {
         <CloseBox>
           <CloBox>
             <Carlendar>
-              <img src="/images/travelplan/calendarplan.svg" alt="carlendar" />
+              <img
+                src="/images/travelplan/calendarplan.svg"
+                alt="carlendar"
+                width="50"
+                height="50"
+              />
             </Carlendar>
             <CloseText>
               <p
@@ -187,17 +198,6 @@ const CloseText = styled.div`
   span {
     font-size: ${(props) => props.theme.pixelToRem(16)};
   }
-`;
-
-const HiddenBox = styled.div`
-  width: ${(props) => props.theme.pixelToRem(335)};
-  height: ${(props) => props.theme.pixelToRem(102)};
-  border-radius: ${(props) => props.theme.pixelToRem(10)};
-
-  background-color: rgba(100, 100, 100, 0.1);
-  margin: 15px auto;
-  font-size: ${(props) => props.theme.pixelToRem(13)};
-  display: flex;
 `;
 
 export const ImgBox = styled.img`

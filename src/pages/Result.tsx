@@ -5,7 +5,7 @@ import { useInView } from "react-intersection-observer";
 import Up from "../components/Up";
 import { InfoToast2, NoIdPickToast, NavToast } from "../components/Toast/Toast";
 
-import { isModal, textValue } from "../store/searchAtom";
+import { isModal } from "../store/searchAtom";
 import { showLo, selectLo } from "../store/locationAtom";
 import { isToast, isToast2 } from "../store/toastAtom";
 import { StrMonth, StrDay, DateState } from "../store/dateAtom";
@@ -24,9 +24,8 @@ function Result() {
   const [toastState2, setToastState2] = useRecoilState(isToast2);
 
   /* data */
-  const [isActive, setIsActive] = useState(false);
   const [isWeather, setIsWeather] = useState(false);
-  const [isSearch, setIsSearch] = useRecoilState(isModal);
+  const [isSearch] = useRecoilState(isModal);
   const [sortState, setSortState] = useState("lookUp");
 
   const Month = useRecoilValue(StrMonth);
@@ -39,14 +38,16 @@ function Result() {
   const isLogin = getCamperToken();
 
   /* weather api */
-  const { WeatherData, isLoading, isError } = useGetWeather(pardo, date);
-
-  console.log(WeatherData, isLoading, isError);
+  const { WeatherData, isError } = useGetWeather(pardo, date);
 
   /* camp result 무한스크롤 */
 
-  const { campData, fetchNextPage, isSuccess, hasNextPage, refetch } =
-    useGetCamp(doNm, sortState);
+  const { campData, fetchNextPage, isSuccess, hasNextPage } = useGetCamp(
+    doNm,
+    sortState
+  );
+
+  console.log(campData);
 
   const { ref, inView } = useInView();
 
@@ -59,12 +60,12 @@ function Result() {
     if (inView && hasNextPage) {
       fetchNextPage();
     }
-  }, [inView]);
+  }, [inView, fetchNextPage, hasNextPage]);
 
   return (
     <>
       <Wrapper>
-        {toastState == true ? (
+        {toastState === true ? (
           !isLogin ? (
             <NoIdPickToast
               text={"로그인 후 찜하기가 가능해요."}
@@ -81,7 +82,7 @@ function Result() {
           )
         ) : null}
 
-        {toastState2 == true ? (
+        {toastState2 === true ? (
           <InfoToast2
             text={"찜목록에 제거되었어요."}
             toastState2={toastState2}
@@ -89,7 +90,7 @@ function Result() {
           />
         ) : null}
 
-        {isSearch == false ? undefined : <Search />}
+        {isSearch === false ? undefined : <Search />}
         <ReSearch>
           <div
             onClick={() => {
@@ -109,7 +110,7 @@ function Result() {
 
         {/* Weather modal */}
 
-        {isError == false ? (
+        {isError === false ? (
           <WeatherModal
             isWeather={isWeather}
             onClick={WeatherHandler}
@@ -268,7 +269,7 @@ function Result() {
                         <b>·</b> 야외활동을 추천하지 않아요
                       </p>
                     ) : WeatherData?.weather[0].uvi < 5 &&
-                      WeatherData?.weather[0].uvi == 3 ? (
+                      WeatherData?.weather[0].uvi === 3 ? (
                       <p style={{ color: "#fc9701" }}>
                         <b>·</b> 선크림은 꼭 발라주세요
                       </p>
@@ -351,13 +352,13 @@ function Result() {
               </span>
             </div>
             <div>
-              {sortState == "lookUp" ? (
+              {sortState === "lookUp" ? (
                 <span
                   className="popular"
                   onClick={() => setSortState("pickCount")}>
                   조회순
                 </span>
-              ) : sortState == "pickCount" ? (
+              ) : sortState === "pickCount" ? (
                 <span
                   className="popular"
                   onClick={() => setSortState("reviewCount")}>
@@ -395,7 +396,7 @@ function Result() {
                     <DetailAddress>
                       <img src="/images/location.svg" alt="location" />
                       <span>
-                        {item.address == ""
+                        {item.address === ""
                           ? "등록된 주소가 없습니다.."
                           : item.address}
                       </span>
@@ -403,7 +404,7 @@ function Result() {
 
                     {/* 시설 태그들 (max: 4) */}
                     <TagContainer>
-                      {item.sbrsCl == ""
+                      {item.sbrsCl === ""
                         ? null
                         : item.sbrsCl
                             .split(",")
@@ -476,7 +477,7 @@ const ReSearch = styled.div`
 const WeatherModal = styled.div<{ isWeather: boolean }>`
   width: 89%;
   height: ${(props) =>
-    props.isWeather == false
+    props.isWeather === false
       ? props.theme.pixelToRem(116)
       : props.theme.pixelToRem(404)};
   flex-grow: 0;
@@ -619,7 +620,7 @@ const WeatherModal = styled.div<{ isWeather: boolean }>`
     height: ${(props) => props.theme.pixelToRem(298)};
     margin: 0 auto;
     padding: 10px;
-    opacity: ${(props) => (props.isWeather == true ? 1 : 0)};
+    opacity: ${(props) => (props.isWeather === true ? 1 : 0)};
     transition: opacity 0.2s ease-in;
 
     hr {
@@ -957,17 +958,6 @@ const ResultImg = styled.img`
   border-radius: 13px;
   display: block;
   object-fit: cover;
-`;
-
-const Bookmark = styled.div`
-  position: absolute;
-  margin-left: 150px;
-  margin-top: 10px;
-`;
-const BookmarkBorderIcon = styled.div`
-  position: absolute;
-  margin-left: 150px;
-  margin-top: 10px;
 `;
 
 const InnerBg = styled.div`

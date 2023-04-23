@@ -6,7 +6,6 @@ import lottie from "../style/lottie.json";
 function Splash() {
   const [isShow, setIsShow] = useState<boolean>(true);
 
-  /* lottie animation */
   const defaultOptions = {
     loop: true,
     autoplay: true,

@@ -21,10 +21,13 @@ export default function MyPlan() {
   const checkbox = document.getElementById("toggle") as HTMLInputElement | null;
 
   const toggle = () => {
-    if (checkbox?.checked == true)
-      return (checkbox.checked = false), setOnOff(false);
-    else if (checkbox?.checked == false)
-      return (checkbox.checked = true), setOnOff(true);
+    if (checkbox?.checked) {
+      checkbox.checked = false;
+      setOnOff(false);
+    } else if (checkbox?.checked === false) {
+      checkbox.checked = true;
+      setOnOff(true);
+    }
   };
 
   const Trips = useMyPageApi.useGetMyPage().data?.data.Trip;
@@ -53,14 +56,14 @@ export default function MyPlan() {
   return (
     <>
       <TotalContainer>
-        {toastState == true ? (
+        {toastState === true ? (
           <InfoToast
             text={"여행일정가 삭제되었어요."}
             toastState={toastState}
             setToastState={setToastState}
           />
         ) : null}
-        {toastState == true ? (
+        {toastState === true ? (
           <InfoToast2
             text={"여행일정을 수정했어요."}
             toastState2={toastState2}
@@ -83,7 +86,7 @@ export default function MyPlan() {
         <Wrapper>
           {isLogin ? (
             <>
-              {onOff == false ? (
+              {onOff === false ? (
                 <Container>
                   {/* 다녀올 여행일 때는 Dday가 0 이상일 때 */}
                   {Trips.filter(
@@ -222,7 +225,7 @@ const ToggleBtn = styled.div<{ onOff: boolean }>`
     line-height: 1.25;
     letter-spacing: normal;
     text-align: center;
-    color: ${(props) => (props.onOff == true ? "#ffffff" : "#000000")};
+    color: ${(props) => (props.onOff === true ? "#ffffff" : "#000000")};
     z-index: 2;
     position: absolute;
     transition: color 0.2s ease-in-out;
@@ -238,7 +241,7 @@ const ToggleBtn = styled.div<{ onOff: boolean }>`
     line-height: 1.25;
     letter-spacing: normal;
     text-align: center;
-    color: ${(props) => (props.onOff == true ? "#000000" : "#ffffff")};
+    color: ${(props) => (props.onOff === true ? "#000000" : "#ffffff")};
     z-index: 2;
     position: absolute;
     transition: color 0.2s ease-in-out;

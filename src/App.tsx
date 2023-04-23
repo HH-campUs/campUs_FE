@@ -1,22 +1,67 @@
 import Router from "./router/Router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 /* import { ReactQueryDevtools } from "react-query/devtools"; */
-import { TransitionGroup, CSSTransition } from "react-transition-group";
 import "./style/transition.css";
 
-import Splash from "./pages/Splash";
 import Error from "./pages/Error";
 
 import { ErrorBoundary } from "react-error-boundary";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { theme } from "./layout/theme";
 
-import { useRecoilValue } from "recoil";
-import { isDarkAtom } from "./store/atmos";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      staleTime: 3,
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
+
+function App() {
+  if (process.env.NODE_ENV === "production") {
+    console.log = function no_console() {};
+    console.warn = function no_console() {};
+  }
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider theme={theme}>
+        <GlobalStyle />
+        <ErrorBoundary FallbackComponent={Error}>
+          <Router />
+        </ErrorBoundary>
+        <ReactQueryDevtools initialIsOpen={true}></ReactQueryDevtools>
+      </ThemeProvider>
+    </QueryClientProvider>
+  );
+}
+
+export default App;
+
 const GlobalStyle = createGlobalStyle`
-@import url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff');
+  @font-face {
+    font-family: "Pretendard-Regular";
+    src: local("Pretendard-Regular"),
+    url('/assets/fonts/Pretendard-Regular.woff2') format('woff2'), 
+    url('/assets/fonts/Pretendard-Regular.woff') format('woff'),
+    url('/assets/fonts/Pretendard-Regular.ttf') format('truetype');
+
+    font-display: swap;
+}
+
+/* 웹폰트 cdn 속도 비교 */
+ /* @font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+} */
+
   html, body, div, span, applet, object, iframe,
   h1, h2, h3, h4, h5, h6, p, blockquote, pre,
   a, abbr, acronym, address, big, cite, code,
@@ -60,20 +105,17 @@ const GlobalStyle = createGlobalStyle`
   /* HTML5 hidden-attribute fix for newer browsers */
 
 
-  @font-face {
-    font-family: 'Pretendard-Regular';
-    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
-    font-weight: 400;
-    font-style: normal;
-}
+
   *{
     user-select: none;
+    box-sizing: border-box;
   }
   *[hidden] {
       display: none;
   }
   body {
     line-height: 1;
+    font-family: 'Pretendard-Regular', sans-serif;
   }
   menu, ol, ul {
     list-style: none;
@@ -90,13 +132,6 @@ const GlobalStyle = createGlobalStyle`
     border-collapse: collapse;
     border-spacing: 0;
   }
-  * {
-    box-sizing: border-box;
-  }
-  body{
-    font-family: 'Pretendard-Regular';
-   
-}
 
   }
   a{
@@ -107,27 +142,3 @@ const GlobalStyle = createGlobalStyle`
     outline: none;
   }
 `;
-
-const queryClient = new QueryClient();
-
-function App() {
-  if (process.env.NODE_ENV === "production") {
-    console.log = function no_console() {};
-    console.warn = function no_console() {};
-  }
-  const isDark = useRecoilValue(isDarkAtom);
-
-  return (
-    <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={theme}>
-        <GlobalStyle />
-        <ErrorBoundary FallbackComponent={Error}>
-          <Router />
-        </ErrorBoundary>
-        <ReactQueryDevtools initialIsOpen={true}></ReactQueryDevtools>
-      </ThemeProvider>
-    </QueryClientProvider>
-  );
-}
-
-export default App;

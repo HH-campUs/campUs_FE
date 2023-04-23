@@ -5,7 +5,7 @@ export const Loading = () => {
   return (
     <Background>
       <LoadingText></LoadingText>
-      <img src="/assets/spinner.gif" alt="Spinner" />
+      <img src="/assets/spinner.gif" alt="Spinner" width="200" height="200" />
     </Background>
   );
 };

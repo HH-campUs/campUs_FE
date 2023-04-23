@@ -30,7 +30,7 @@ function GoogleAuth() {
         const backfresh = response.data.refreshtoken;
         setAccessToken(backAccess);
         setRefreshToken(backfresh);
-        if (status == 200) {
+        if (status === 200) {
           console.log(accessToken, refreshToken);
           return window.location.replace(`/`);
         } else {

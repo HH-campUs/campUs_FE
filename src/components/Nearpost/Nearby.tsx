@@ -41,6 +41,7 @@ export default function Nearby() {
     }
   }, [campX, campY]);
 
+
   const { data: nearPost, refetch } =
     useGetApi.useGetDistance(+campY!, +campX!) || [];
 
@@ -103,13 +104,6 @@ const PlanBox = styled.div`
   position: relative;
   flex-direction: column;
   border: 1px solid #eee;
-`;
-
-const Line = styled.div`
-  width: ${(props) => props.theme.pixelToRem(300)};
-  height: 1px;
-  margin-left: 38px;
-  border-bottom: 1px solid #eee;
 `;
 
 const PlanWrapper = styled.div`

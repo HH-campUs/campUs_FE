@@ -33,20 +33,20 @@ function Home() {
     <Wrapper>
       {/* 찜하기 알림 토스트 */}
 
-      {toastState == true ? (
+      {toastState === true ? (
         <NoIdPickToast
           text={"로그인 후 찜하기가 가능해요."}
           toastState={toastState}
           setToastState={setToastState}
         />
       ) : null}
-      {isSearch == false ? null : <Search />}
+      {isSearch === false ? null : <Search />}
 
       <HeadText>
         {backgroundPhrase} <br></br> 캠프어스에서
       </HeadText>
       <SearchBar isSearch={isSearch} onClick={openModal}>
-        <img src="/images/search.svg" alt="Search" />
+        <img src="/images/search.svg" alt="Search" width="20" height="20" />
         <span>캠핑 어디로 가시나요?</span>
       </SearchBar>
 

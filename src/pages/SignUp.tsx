@@ -73,7 +73,7 @@ export default function SignUp() {
 
   return (
     <LoginWrap>
-      {toastState == true ? (
+      {toastState === true ? (
         <InfoToast
           text={`환영합니다.`}
           toastState={toastState}
@@ -81,7 +81,7 @@ export default function SignUp() {
         />
       ) : null}
 
-      {toastState2 == true ? (
+      {toastState2 === true ? (
         <InfoToast2
           text={`사용이 불가능한 메일입니다.`}
           toastState2={toastState2}
@@ -89,7 +89,7 @@ export default function SignUp() {
         />
       ) : null}
 
-      {toastState3 == true ? (
+      {toastState3 === true ? (
         <InfoToast3
           text={`사용 가능한 이메일입니다!`}
           toastState3={toastState3}
@@ -119,7 +119,7 @@ export default function SignUp() {
             {...register("email", {
               required: "이메일을 입력해주세요.",
               pattern: {
-                value: /^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w+[.]?\w{2,3}/,
+                value: /^[a-z0-9]+[_]?[a-z0-9]+[@]\w+[.]\w+[.]?\w{2,3}/,
                 message: "올바른 이메일 형식을 입력해주세요.",
               },
             })}

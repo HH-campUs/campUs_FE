@@ -1,4 +1,4 @@
-import { useEffect, useState, lazy } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Lottie from "react-lottie";
 import lottie from "../style/lottie.json";

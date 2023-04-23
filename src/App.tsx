@@ -44,7 +44,24 @@ function App() {
 export default App;
 
 const GlobalStyle = createGlobalStyle`
-@import url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff');
+  @font-face {
+    font-family: "Pretendard-Regular";
+    src: local("Pretendard-Regular"),
+    url('/assets/fonts/Pretendard-Regular.woff2') format('woff2'), 
+    url('/assets/fonts/Pretendard-Regular.woff') format('woff'),
+    url('/assets/fonts/Pretendard-Regular.ttf') format('truetype');
+
+    font-display: swap;
+}
+
+/* 웹폰트 cdn 속도 비교 */
+ /* @font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+} */
+
   html, body, div, span, applet, object, iframe,
   h1, h2, h3, h4, h5, h6, p, blockquote, pre,
   a, abbr, acronym, address, big, cite, code,
@@ -88,21 +105,17 @@ const GlobalStyle = createGlobalStyle`
   /* HTML5 hidden-attribute fix for newer browsers */
 
 
-  @font-face {
-    font-family: 'Pretendard-Regular';
-    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff'), url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff2') format('woff2');
-    font-weight: 400;
-    font-style: normal;
-    font-display: swap;
-}
+
   *{
     user-select: none;
+    box-sizing: border-box;
   }
   *[hidden] {
       display: none;
   }
   body {
     line-height: 1;
+    font-family: 'Pretendard-Regular', sans-serif;
   }
   menu, ol, ul {
     list-style: none;
@@ -119,13 +132,6 @@ const GlobalStyle = createGlobalStyle`
     border-collapse: collapse;
     border-spacing: 0;
   }
-  * {
-    box-sizing: border-box;
-  }
-  body{
-    font-family: 'Pretendard-Regular';
-   
-}
 
   }
   a{

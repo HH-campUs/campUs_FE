@@ -119,6 +119,7 @@ const CrTextBox = styled.div`
 const CampName = styled.div`
   font-weight: 600;
   font-size: 1.2rem;
+  margin-left: 16px;
 `;
 
 const ReviewInfo = styled.div`

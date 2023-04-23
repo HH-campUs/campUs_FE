@@ -39,7 +39,7 @@ const env = {
 
 module.exports = {
   mode: "production", // 배포할 때에는 "production" master 브랜치에만 적용하면 될 듯
-  devtool: "inline-source-map",
+  //devtool: "inline-source-map",
   target: ["web", "es5"],
   entry: "./src/index.tsx",
   output: {
@@ -66,18 +66,30 @@ module.exports = {
         test: /\.(css|scss)$/i,
         use: ["style-loader", "css-loader"],
       },
+
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/i,
+        type: "assets/fonts",
+      },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/i,
+        use: [
+          {
+            loader: "file-loader",
+            options: {
+              name: "[name].[ext]",
+              outputPath: "fonts/", // the output directory for the fonts
+              publicPath: "assets/fonts", // the public URL for the fonts
+            },
+          },
+        ],
+      },
     ],
   },
 
   // 번들링 후 결과물의 처리 방식 등 다양한 플러그인들을 설
   plugins: [
     new BundleAnalyzerPlugin(),
-    /* new webpack.optimize.UglifyJsPlugin({
-      sourceMap: true,
-      compress: {
-        warning: false,
-      },
-    }), */
     new MiniCssExtractPlugin({
       filename: "[name].[contenthash].css",
     }),
@@ -124,16 +136,24 @@ module.exports = {
     moduleIds: "deterministic",
     splitChunks: {
       chunks: "all",
+      minSize: 0,
+      minRemainingSize: 0,
+      maxSize: 0,
+      minChunks: 1,
+      maxAsyncRequests: 30,
+      maxInitialRequests: 20,
+      enforceSizeThreshold: 50000,
       cacheGroups: {
         react: {
           test: /[\\/]node_modules[\\/](react|react-dom|react-router-dom)[\\/]/,
           name: "react-vendor",
           chunks: "all",
+          priority: -10,
           reuseExistingChunk: true,
         },
         default: {
           minChunks: 2,
-          priority: -20,
+          priority: -10,
           reuseExistingChunk: true,
         },
       },

@@ -98,7 +98,8 @@
 <img src="https://img.shields.io/badge/REACT ROUTER-CA4245?style=for-the-badge&logo=REACTROUTER&logoColor=white">
 
 <img src="https://img.shields.io/badge/Github-181717?style=for-the-badge&logo=GITHUB&logoColor=white"> <img src="https://img.shields.io/badge/VISUAL STUDIO CODE-007ACC?style=for-the-badge&logo=VISUAL STUDIO CODE&logoColor=white">  <img src="https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=FIGMA&logoColor=white">
- <img src="https://img.shields.io/badge/Netlify-00C7B7?style=for-the-badge&logo=NETLIFY&logoColor=white"> 
+ <img src="https://img.shields.io/badge/Netlify-00C7B7?style=for-the-badge&logo=NETLIFY&logoColor=white"> <img src="https://img.shields.io/badge/Webpack-66FFFF?style=for-the-badge&logo=WEBPACK&logoColor=white">
+
 
 <br/>
 

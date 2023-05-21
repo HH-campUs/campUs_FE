@@ -44,7 +44,7 @@ module.exports = {
   entry: "./src/index.tsx",
   output: {
     filename: "[name].bundle.js",
-    /* chunkFilename: "[name].[chunkhash].js", */
+    chunkFilename: "[name].[chunkhash].js",
     path: path.resolve(__dirname, "dist"),
     // 새로운 결과물로 디렉토리 엎기
     clean: true,
@@ -66,11 +66,6 @@ module.exports = {
         test: /\.(css|scss)$/i,
         use: ["style-loader", "css-loader"],
       },
-
-      {
-        test: /\.(woff|woff2|eot|ttf|otf)$/i,
-        type: "assets/fonts",
-      },
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/i,
         use: [
@@ -89,7 +84,13 @@ module.exports = {
 
   // 번들링 후 결과물의 처리 방식 등 다양한 플러그인들을 설
   plugins: [
-    new BundleAnalyzerPlugin(),
+    new BundleAnalyzerPlugin({
+      analyzerMode: "server",
+      openAnalyzer: true,
+      generateStatsFile: true,
+      statsFilename: "bundle-report.json",
+      excludeAssets: [/node_modules/],
+    }),
     new MiniCssExtractPlugin({
       filename: "[name].[contenthash].css",
     }),
@@ -119,7 +120,7 @@ module.exports = {
     extensions: [".tsx", ".ts", ".js"],
   },
 
-  optimization: {
+  /* optimization: {
     minimize: true,
     minimizer: [
       new CssMinimizerPlugin(),
@@ -158,5 +159,5 @@ module.exports = {
         },
       },
     },
-  },
+  }, */
 };

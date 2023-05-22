@@ -1,4 +1,4 @@
-import React, { useState, MouseEvent, useMemo } from "react";
+import React, { useState, MouseEvent, useCallback } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { StartDate, StrDay, StrMonth } from "../../store/dateAtom";
 import { selectLo, showLo } from "../../store/locationAtom";
@@ -29,10 +29,11 @@ function Search() {
   const selectMonth = useRecoilValue(StrMonth);
   const selectDay = useRecoilValue(StrDay);
 
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  /* 키를 누를때마다 불필요한 리렌더링을 방지하고자 일단 함수 자체를 메모이제이션, 추후에 디바운싱을 추가하여 더욱더 쾌적화 예정 */
+  const onChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
     console.log(inputValue);
-  };
+  }, []);
 
   /* SearchModal 작동 boolean  default: false */
 

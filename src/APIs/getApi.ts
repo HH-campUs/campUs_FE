@@ -79,7 +79,7 @@ export const useGetCamp = (doNm: string, sort: string) => {
 //infiniteQuery for Topic
 export const useGetTopicInfinite = (topicId: string, sort: string) => {
   const topicData = async ({ pageParam = 0 }) => {
-    const { data } = await instance.get<pickedCamp>(
+    const { data } = await instance.get<campArray>(
       `/camps/${topicId}?&numOfRows=10&pageNo=${pageParam}&sort=${sort}`
     );
     return {

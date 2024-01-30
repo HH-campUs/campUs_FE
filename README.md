@@ -12,7 +12,7 @@
 ![서비스 시연 영상 - Clipchamp로 제작](https://user-images.githubusercontent.com/83018778/209465837-b70c0904-1900-494f-95bd-25594fa88095.gif)
 
   
-### [🚗 CampUs를 체험해보세요!](https://camp-us.co.kr/)  
+### [🚗 CampUs를 체험해보세요!](http://teamcampus.s3-website.ap-northeast-2.amazonaws.com/)  
 **현재는 백엔드 서버의 지원이 불가하여 원할한 서비스 이용에 제약이 있습니다.**
 
 <br/>
@@ -33,6 +33,7 @@
 ## ⌛ TimeLine | 타임라인
 - 총 프로젝트 기간 11월 4일 ~ 12월 15일 (6주)
 - 12월 10일 배포 및 런칭
+- 24년 1월 S3로 재배포
 
 <br/>
 
